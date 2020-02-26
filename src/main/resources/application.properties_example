@@ -1,0 +1,9 @@
+logging.level.nl.haarlem=INFO
+
+openzaak.jwt.secret=test
+openzaak.jwt.issuer=test
+openzaak.baseUrl = https://openzaak.local
+
+nl.haarlem.translations.zdstozgw.trustAllCerts = false
+
+nl.haarlem.translations.zdstozgw.enableJWTEntpoint = false

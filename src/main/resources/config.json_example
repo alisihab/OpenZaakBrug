@@ -1,0 +1,34 @@
+{
+  "zaakTypes": [
+    {
+      "code": "1",
+      "zaakType": "https://openzaak.local/catalogi/api/v1/zaaktypen/cb47385c-d954-47fc-a696-14b694f648f1",
+      "zaakTypeOmschrijving" : "Melding openbare ruimte",
+      "ingangsdatumObject" : "20170901",
+      "initiatorRolTypeUrl" : "https://openzaak.local/catalogi/api/v1/roltypen/c8d9bd56-2abb-4ef1-bbd6-bf404b31869e"
+    },
+    {
+      "code": "2",
+      "zaakType": "https://openzaak.local/catalogi/api/v1/zaaktypen/asdasdasd",
+      "zaakTypeOmschrijving" : "Test",
+      "ingangsdatumObject" : "20170901",
+      "initiatorRolTypeUrl" : "https://openzaak.local/catalogi/api/v1/roltypen/c8d9bd56-2abb-4ef1-bbd6-bf404b31869e"
+    }
+  ],
+  "organisaties": [
+    {
+      "gemeenteCode" : "0392",
+      "RSIN" : "001005650"
+    },
+    {
+      "gemeenteCode" : "0478",
+      "RSIN" : "001509962"
+    }
+  ],
+  "documentTypes" : [
+      {
+        "documentType" : "https://openzaak.local/catalogi/api/v1/informatieobjecttypen/b380e35f-3b10-4d76-81b5-58f8013dca4a",
+        "omschrijving" : "Overig stuk inkomend"
+      }
+    ]
+}
