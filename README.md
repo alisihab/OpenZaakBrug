@@ -11,7 +11,7 @@ ZGW 1.0 without having to wait until all vendors support it.
 Clone the repo and build and run the service with Maven
 
 ```
-$ git clone https://bitbucket.org/haarlem_ontwikkel/zds-stuf-to-zgw-api-translator
+$ git clone https://github.com/Haarlem/zds-stuf-to-zgw-api-translator/
 $ cd zds-stuf-to-zgw-api-translator
 $ mvn spring-boot:run
 ```
