@@ -12,7 +12,7 @@ public class JWTController {
     @Autowired
     private JWTService jwtService;
 
-    @Value("${nl.haarlem.transtlations.zdstozgw.enableJWTEntpoint}")
+    @Value("${nl.haarlem.translations.zdstozgw.enableJWTEntpoint}")
     private boolean enabled;
 
     @GetMapping("/jwt")
