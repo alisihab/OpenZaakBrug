@@ -50,7 +50,7 @@ public class ZaakTranslator {
         zakLa01.setToelichting(zgwZaak.getToelichting());
         if (zgwZaak.getResultaat() != null) {
             //TODO Fetch resultaat for this zaak from ZGW API
-            zakLa01.setResultaat("TODO", "Fetch resultaay for this zaak from ZGW API");
+            zakLa01.setResultaat("TODO", "Fetch resultaat for this zaak from ZGW API");
         } else {
             zakLa01.setEmptyResultaat();
         }
@@ -112,7 +112,7 @@ public class ZaakTranslator {
         var taal = xpath.getNodeValue("//zkn:object/zkn:taal");
         var bestandsnaam = xpath.getAttributeValue("//zkn:object/zkn:inhoud","http://www.egem.nl/StUF/StUF0301","bestandsnaam");
         var inhoud = xpath.getNodeValue("//zkn:object/zkn:inhoud");
-        var informatieObjectType = "https://openzaak.local/catalogi/api/v1/informatieobjecttypen/b380e35f-3b10-4d76-81b5-58f8013dca4a";
+        var informatieObjectType = configService.getConfiguratie().getDocumentTypes().get(0).getDocumentType();
 
         var eio = new ZgwEnkelvoudigInformatieObject();
         eio.setIdentificatie(identificatie);
