@@ -1,0 +1,39 @@
+package nl.haarlem.translations.zdstozgw.translation.zds.model;
+import javax.xml.bind.annotation.*;
+import java.util.List;
+
+import static nl.haarlem.translations.zdstozgw.translation.zds.model.namespace.Namespace.*;
+
+@XmlRootElement(namespace = ZKN, name="zakLk01")
+@XmlAccessorType(XmlAccessType.FIELD)
+public class ZakLk01_v2 {
+
+    @XmlAccessorType(XmlAccessType.FIELD)
+    public static class Object{
+        @XmlAttribute(namespace = STUF)
+        public String entiteittype;
+
+        @XmlElement(namespace = ZKN)
+        public String identificatie;
+
+        @XmlElement(namespace = ZKN)
+        public String omschrijving;
+
+        @XmlElement(namespace = ZKN)
+        public String startdatum;
+
+        @XmlElement(namespace = ZKN)
+        public String registratiedatum;
+
+        @XmlElement(namespace = ZKN, name="isVan")
+        public GerelateerdeWrapper isVan;
+
+        @XmlElement(namespace = ZKN, name="heeft")
+        public GerelateerdeWrapper heeft;
+    }
+
+    @XmlElement(namespace = ZKN, name="object")
+    public List<ZakLk01_v2.Object> objects;
+
+
+}

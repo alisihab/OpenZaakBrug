@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.soap.MessageFactory;
+import java.io.ByteArrayInputStream;
 import java.lang.invoke.MethodHandles;
 
 @RestController
@@ -51,6 +54,15 @@ public class SoapController {
 
     @PostMapping(value = "/OntvangAsynchroon", consumes = MediaType.TEXT_XML_VALUE, produces = MediaType.TEXT_XML_VALUE)
     public String ontvangAsynchroon(@RequestBody String body) {
+
+
+        try {
+            JAXBContext.newInstance(ZakLk01_v2.class)
+                    .createUnmarshaller()
+                    .unmarshal(MessageFactory.newInstance().createMessage(null, new ByteArrayInputStream(body.getBytes())).getSOAPBody().extractContentAsDocument());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         var stufRequest = new StufRequest(XmlUtils.convertStringToDocument(body));
 
