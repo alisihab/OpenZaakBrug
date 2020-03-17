@@ -1,6 +1,10 @@
 package nl.haarlem.translations.zdstozgw.convertor.impl;
 
 import nl.haarlem.translations.zdstozgw.convertor.Convertor;
+import nl.haarlem.translations.zdstozgw.translation.zds.model.StufRequest;
+import nl.haarlem.translations.zdstozgw.translation.zds.model.ZakLk01;
+import nl.haarlem.translations.zdstozgw.translation.zds.model.ZakLk01_v2;
+import nl.haarlem.translations.zdstozgw.translation.zds.services.ZaakService;
 
 public class CreeerZaak implements Convertor {
     protected String templatePath;
@@ -10,10 +14,10 @@ public class CreeerZaak implements Convertor {
     }
 
     @Override
-    public String Convert(nl.haarlem.translations.zdstozgw.translation.zds.services.ZaakService zaakService, nl.haarlem.translations.zdstozgw.translation.zds.model.StufRequest stufRequest) {
+    public String Convert(ZaakService zaakService, Object object) {
         try {
-            var zakLk01 = stufRequest.getZakLk01();
-            var zaak = zaakService.creeerZaak(zakLk01);
+
+            var zaak = zaakService.creeerZaak((ZakLk01_v2) object);
             var bv03 = new nl.haarlem.translations.zdstozgw.translation.zds.model.Bv03();
             bv03.setReferentienummer(zaak.getUuid());
             return bv03.getSoapMessageAsString();

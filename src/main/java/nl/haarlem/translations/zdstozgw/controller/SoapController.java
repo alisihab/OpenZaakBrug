@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.w3c.dom.NodeList;
 
 import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
 import javax.xml.soap.*;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -57,24 +58,33 @@ public class SoapController {
         return response;
     }
 
+    private ZakLk01_v2 getZakLka01(String body) {
+        ZakLk01_v2 zakLk01 = null;
+        try {
+            zakLk01 =  (ZakLk01_v2) JAXBContext.newInstance(ZakLk01_v2.class)
+                    .createUnmarshaller()
+                    .unmarshal(MessageFactory.newInstance().createMessage(null, new ByteArrayInputStream(body.getBytes())).getSOAPBody().extractContentAsDocument());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return  zakLk01;
+    }
+
     @PostMapping(value = "/OntvangAsynchroon", consumes = MediaType.TEXT_XML_VALUE, produces = MediaType.TEXT_XML_VALUE)
     public String ontvangAsynchroon(@RequestHeader(name = "SOAPAction", required = true) String soapAction, @RequestBody String body) {
-
         soapAction = soapAction.replace("\"", "");
-        /// @TODO: xpath: .//stuf:zender//stuf:applicatie, haal deze uit stuf, maar daarvoor moet ik refactoren en XpahtDocument toeveogen aan stufRequest
-        String applicatie = "haal deze uit stuf, maar daarvoor moet ik refactoren en XpahtDocument toeveogen aan stufRequest";
 
-        Convertor convertor = ConvertorFactory.getConvertor(soapAction, applicatie);
+        Convertor convertor = null;
+        ZakLk01_v2 zakLk01_v2r = getZakLka01(body);
+        convertor = ConvertorFactory.getConvertor(soapAction, zakLk01_v2r.stuurgegevens.zender.applicatie);
 
-         var stufRequest = new StufRequest(XmlUtils.convertStringToDocument(body));
+        var stufRequest = new StufRequest(XmlUtils.convertStringToDocument(body));
 
         if (convertor != null) {
-            response = convertor.Convert(zaakService, stufRequest);
+            response = convertor.Convert(zaakService, zakLk01_v2r);
+        } else {
+            response = "Soap action: " + soapAction + " is niet geimplementeerd (soapaction niet gevonden in ConversieFactory)";
         }
-        else {
-            response =  "Soap action: " + soapAction + " is niet geimplementeerd (soapaction niet gevonden in ConversieFactory)";
-        }
-
 
         if (stufRequest.isVoegZaakdocumentToe()) {
             voegZaakDocumentToe(stufRequest);
@@ -101,13 +111,13 @@ public class SoapController {
         return response;
     }
 
-    private void actualiseerZaakstatus(ZakLk01_v2 zakLk01){
+    private void actualiseerZaakstatus(ZakLk01_v2 zakLk01) {
         // TODO: call ZGW api
     }
 
     private String getActionFromSoapHeader(SOAPPart soapPart) throws SOAPException {
         NodeList nodeList = soapPart.getEnvelope().getHeader().getElementsByTagNameNS("http://www.w3.org/2005/08/addressing", "Action");
-        if(nodeList.getLength()>0) return nodeList.item(0).getFirstChild().getNodeValue();
+        if (nodeList.getLength() > 0) return nodeList.item(0).getFirstChild().getNodeValue();
         return "";
     }
 
@@ -120,16 +130,6 @@ public class SoapController {
             handleAddZaakException(e);
         }
 
-    }
-
-    private void creerZaak(StufRequest stufRequest) {
-        try {
-            ZakLk01 zakLk01 = stufRequest.getZakLk01();
-            var zaak = zaakService.creeerZaak(zakLk01);
-            setResponseToZaakBv03(zaak);
-        } catch (Exception ex) {
-            handleAddZaakException(ex);
-        }
     }
 
     private void setResponseToZaakBv03(ZgwZaak createdZaak) {

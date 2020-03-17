@@ -3,6 +3,7 @@ package nl.haarlem.translations.zdstozgw.translation.zds.services;
 import nl.haarlem.translations.zdstozgw.translation.ZaakTranslator;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.EdcLk01;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZakLk01;
+import nl.haarlem.translations.zdstozgw.translation.zds.model.ZakLk01_v2;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZakLv01;
 import nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwEnkelvoudigInformatieObject;
@@ -14,6 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.w3c.dom.Document;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Marshaller;
 import java.lang.invoke.MethodHandles;
 import java.util.HashMap;
 import java.util.Map;
@@ -29,9 +32,11 @@ public class ZaakService {
     @Autowired
     private ZaakTranslator zaakTranslator;
 
-    public ZgwZaak creeerZaak(ZakLk01 zakLk01) throws Exception {
+    public ZgwZaak creeerZaak(ZakLk01_v2 zakLk01) throws Exception {
 
-        zaakTranslator.setDocument(zakLk01.getDocument()).zdsZaakToZgwZaak();
+
+        //zaakTranslator.setDocument((Document) zakLk01).zdsZaakToZgwZaak();
+        zaakTranslator.setZakLk01(zakLk01).zdsZaakToZgwZaak();
 
         ZgwZaak zaak = zaakTranslator.getZgwZaak();
 

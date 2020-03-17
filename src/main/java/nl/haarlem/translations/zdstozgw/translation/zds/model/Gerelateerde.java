@@ -30,4 +30,7 @@ public class Gerelateerde {
 
     @XmlElement(namespace = ZKN)
     public Medewerker medewerker;
+
+    @XmlElement(namespace = ZKN)
+    public NatuurlijkPersoon natuurlijkPersoon;
 }
