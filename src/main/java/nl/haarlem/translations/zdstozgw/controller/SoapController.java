@@ -16,6 +16,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.soap.MessageFactory;
+import java.io.ByteArrayInputStream;
 import java.lang.invoke.MethodHandles;
 
 @RestController
@@ -60,6 +63,15 @@ public class SoapController {
         String applicatie = "haal deze uit stuf, maar daarvoor moet ik refactoren en XpahtDocument toeveogen aan stufRequest";
 
         Convertor convertor = ConvertorFactory.getConvertor(soapAction, applicatie);
+
+
+        try {
+            JAXBContext.newInstance(ZakLk01_v2.class)
+                    .createUnmarshaller()
+                    .unmarshal(MessageFactory.newInstance().createMessage(null, new ByteArrayInputStream(body.getBytes())).getSOAPBody().extractContentAsDocument());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         var stufRequest = new StufRequest(XmlUtils.convertStringToDocument(body));
 
