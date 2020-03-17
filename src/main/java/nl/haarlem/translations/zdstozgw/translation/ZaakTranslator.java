@@ -164,6 +164,7 @@ public class ZaakTranslator {
         var nodes = document.getElementsByTagNameNS("http://www.egem.nl/StUF/sector/zkn/0310", "heeftAlsInitiator");
         if (nodes.getLength() > 0) {
             var xpath = new XpathDocument(document);
+
             BetrokkeneIdentificatieNPS nps = new BetrokkeneIdentificatieNPS();
             nps.setInpBsn(xpath.getNodeValue("//zkn:object/zkn:heeftAlsInitiator/zkn:gerelateerde/zkn:natuurlijkPersoon/bg:inp.bsn"));
             nps.setGeslachtsnaam(xpath.getNodeValue("//zkn:object/zkn:heeftAlsInitiator/zkn:gerelateerde/zkn:natuurlijkPersoon/bg:geslachtsnaam"));
@@ -176,7 +177,7 @@ public class ZaakTranslator {
             rol.setBetrokkeneIdentificatieNPS(nps);
             rol.setBetrokkeneType("natuurlijk_persoon");
             rol.setRoltoelichting("Inititator");
-            rol.setRoltype(getZaakTypeByZDSCode(xpath.getNodeValue(xpath.getNodeValue("//zkn:object/zkn:isVan/zkn:gerelateerde/zkn:code"))).getInitiatorRolTypeUrl());
+            rol.setRoltype(getZaakTypeByZDSCode(xpath.getNodeValue("//zkn:object/zkn:isVan/zkn:gerelateerde/zkn:code")).getInitiatorRolTypeUrl());
 
             return rol;
         } else {

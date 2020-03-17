@@ -51,7 +51,7 @@ public class StufRequest {
     }
 
     public ZakLk01 getZakLk01() {
-        var nodes = body.getElementsByTagNameNS("http://www.stufstandaarden.nl/koppelvlak/zds0120", "creeerZaak_ZakLk01").item(0).getChildNodes();
+        var nodes = body.getElementsByTagNameNS("http://www.egem.nl/StUF/sector/zkn/0310", "zakLk01").item(0).getChildNodes();
 
         return new ZakLk01(xmlNodesToDocument(nodes, "creeerZaak_ZakLk01"));
     }

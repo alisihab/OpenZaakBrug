@@ -1,5 +1,7 @@
 package nl.haarlem.translations.zdstozgw.controller;
 
+import nl.haarlem.translations.zdstozgw.convertor.ConvertorFactory;
+import nl.haarlem.translations.zdstozgw.convertor.Convertor;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.*;
 import nl.haarlem.translations.zdstozgw.translation.zds.services.ZaakService;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwZaak;
@@ -11,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.lang.invoke.MethodHandles;
@@ -50,13 +53,24 @@ public class SoapController {
     }
 
     @PostMapping(value = "/OntvangAsynchroon", consumes = MediaType.TEXT_XML_VALUE, produces = MediaType.TEXT_XML_VALUE)
-    public String ontvangAsynchroon(@RequestBody String body) {
+    public String ontvangAsynchroon(@RequestHeader(name = "SOAPAction", required = true) String soapAction, @RequestBody String body) {
+
+        soapAction = soapAction.replace("\"", "");
+        /// @TODO: xpath: .//stuf:zender//stuf:applicatie, haal deze uit stuf, maar daarvoor moet ik refactoren en XpahtDocument toeveogen aan stufRequest
+        String applicatie = "haal deze uit stuf, maar daarvoor moet ik refactoren en XpahtDocument toeveogen aan stufRequest";
+
+        Convertor convertor = ConvertorFactory.getConvertor(soapAction, applicatie);
 
         var stufRequest = new StufRequest(XmlUtils.convertStringToDocument(body));
 
-        if (stufRequest.isCreeerZaak()) {
-            creerZaak(stufRequest);
+        if (convertor != null) {
+            response = convertor.Convert(zaakService, stufRequest);
         }
+        else {
+            response =  "Soap action: " + soapAction + " is niet geimplementeerd (soapaction niet gevonden in ConversieFactory)";
+        }
+
+
         if (stufRequest.isVoegZaakdocumentToe()) {
             voegZaakDocumentToe(stufRequest);
         }
