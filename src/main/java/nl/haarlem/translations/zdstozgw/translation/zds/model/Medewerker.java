@@ -1,15 +1,16 @@
 package nl.haarlem.translations.zdstozgw.translation.zds.model;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 
 import static nl.haarlem.translations.zdstozgw.translation.zds.model.namespace.Namespace.ZKN;
 
-@XmlAccessorType(XmlAccessType.FIELD)
-public class GerelateerdeWrapper {
+public class Medewerker {
+    @XmlElement(namespace = ZKN)
+    public String identificatie;
 
     @XmlElement(namespace = ZKN)
-    public Gerelateerde gerelateerde;
+    public String achternaam;
 
+    @XmlElement(namespace = ZKN)
+    public String voorletters;
 }

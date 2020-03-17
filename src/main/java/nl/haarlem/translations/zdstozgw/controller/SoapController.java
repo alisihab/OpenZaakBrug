@@ -15,10 +15,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
+import org.w3c.dom.NodeList;
 
 import javax.xml.bind.JAXBContext;
-import javax.xml.soap.MessageFactory;
+import javax.xml.soap.*;
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.lang.invoke.MethodHandles;
 
 @RestController
@@ -64,16 +66,7 @@ public class SoapController {
 
         Convertor convertor = ConvertorFactory.getConvertor(soapAction, applicatie);
 
-
-        try {
-            JAXBContext.newInstance(ZakLk01_v2.class)
-                    .createUnmarshaller()
-                    .unmarshal(MessageFactory.newInstance().createMessage(null, new ByteArrayInputStream(body.getBytes())).getSOAPBody().extractContentAsDocument());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        var stufRequest = new StufRequest(XmlUtils.convertStringToDocument(body));
+         var stufRequest = new StufRequest(XmlUtils.convertStringToDocument(body));
 
         if (convertor != null) {
             response = convertor.Convert(zaakService, stufRequest);
@@ -87,7 +80,35 @@ public class SoapController {
             voegZaakDocumentToe(stufRequest);
         }
 
+        try {
+            SOAPPart soapPart = MessageFactory.newInstance()
+                    .createMessage(null, new ByteArrayInputStream(body.getBytes())).getSOAPPart();
+
+            switch (getActionFromSoapHeader(soapPart)) {
+                case "http://www.egem.nl/StUF/sector/zkn/0310/actualiseerZaakstatus_Lk01": {
+                    ZakLk01_v2 zakLk01 = (ZakLk01_v2) JAXBContext.newInstance(ZakLk01_v2.class)
+                            .createUnmarshaller()
+                            .unmarshal(soapPart.getEnvelope().getBody().extractContentAsDocument());
+                    actualiseerZaakstatus(zakLk01);
+                    break;
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         return response;
+    }
+
+    private void actualiseerZaakstatus(ZakLk01_v2 zakLk01){
+        // TODO: call ZGW api
+    }
+
+    private String getActionFromSoapHeader(SOAPPart soapPart) throws SOAPException {
+        NodeList nodeList = soapPart.getEnvelope().getHeader().getElementsByTagNameNS("http://www.w3.org/2005/08/addressing", "Action");
+        if(nodeList.getLength()>0) return nodeList.item(0).getFirstChild().getNodeValue();
+        return "";
     }
 
     private void voegZaakDocumentToe(StufRequest stufRequest) {
