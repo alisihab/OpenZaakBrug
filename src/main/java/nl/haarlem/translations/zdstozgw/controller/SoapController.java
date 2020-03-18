@@ -18,10 +18,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.w3c.dom.NodeList;
 
 import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
 import javax.xml.soap.*;
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
+import java.lang.Object;
 import java.lang.invoke.MethodHandles;
 
 @RestController
@@ -35,7 +34,16 @@ public class SoapController {
     private String response = "NOT IMPLEMENTED";
 
     @PostMapping(value = "/BeantwoordVraag", consumes = MediaType.TEXT_XML_VALUE, produces = MediaType.TEXT_XML_VALUE)
-    public String beantwoordVraag(@RequestBody String body) {
+    public String beantwoordVraag(@RequestHeader(name = "SOAPAction", required = true) String soapAction,@RequestBody String body) {
+
+        soapAction = soapAction.replace("\"", "");
+        Convertor convertor = null;
+        if (soapAction.contains("geefZaakdocumentLezen")) {
+            EdcLv01 edcLv01 = (EdcLv01) getStUFOject(body, EdcLv01.class);
+            convertor = ConvertorFactory.getConvertor(soapAction, edcLv01.stuurgegevens.zender.applicatie);
+            response = convertor.Convert(zaakService, edcLv01);
+        }
+
 
         var stufRequest = new StufRequest(XmlUtils.convertStringToDocument(body));
 
@@ -58,28 +66,16 @@ public class SoapController {
         return response;
     }
 
-    private ZakLk01_v2 getZakLka01(String body) {
-        ZakLk01_v2 zakLk01 = null;
+    private Object getStUFOject(String body, Class c) {
+        Object object = null;
         try {
-            zakLk01 = (ZakLk01_v2) JAXBContext.newInstance(ZakLk01_v2.class)
+            object = (Object) JAXBContext.newInstance(c)
                     .createUnmarshaller()
                     .unmarshal(MessageFactory.newInstance().createMessage(null, new ByteArrayInputStream(body.getBytes())).getSOAPBody().extractContentAsDocument());
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return zakLk01;
-    }
-
-    private EdcLk01 getZakLEdcLk01(String body) {
-        EdcLk01 edcLk01 = null;
-        try {
-            edcLk01 = (EdcLk01) JAXBContext.newInstance(EdcLk01.class)
-                    .createUnmarshaller()
-                    .unmarshal(MessageFactory.newInstance().createMessage(null, new ByteArrayInputStream(body.getBytes())).getSOAPBody().extractContentAsDocument());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return edcLk01;
+        return object;
     }
 
     @PostMapping(value = "/OntvangAsynchroon", consumes = MediaType.TEXT_XML_VALUE, produces = MediaType.TEXT_XML_VALUE)
@@ -87,12 +83,12 @@ public class SoapController {
         soapAction = soapAction.replace("\"", "");
         Convertor convertor = null;
         if (soapAction.contains("creeerZaak")) {
-            ZakLk01_v2 zakLk01_v2r = getZakLka01(body);
+            ZakLk01_v2 zakLk01_v2r = (ZakLk01_v2) getStUFOject(body,ZakLk01_v2.class);
             convertor = ConvertorFactory.getConvertor(soapAction, zakLk01_v2r.stuurgegevens.zender.applicatie);
             response = convertor.Convert(zaakService, zakLk01_v2r);
         }
         if (soapAction.contains("voegZaakdocumentToe")) {
-            EdcLk01 edcLk01 = getZakLEdcLk01(body);
+            EdcLk01 edcLk01 = (EdcLk01) getStUFOject(body,EdcLk01.class);
             convertor = ConvertorFactory.getConvertor(soapAction, edcLk01.stuurgegevens.zender.applicatie);
             response = convertor.Convert(zaakService, edcLk01);
         }
