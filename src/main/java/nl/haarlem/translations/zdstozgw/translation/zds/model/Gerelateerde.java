@@ -7,6 +7,9 @@ import static nl.haarlem.translations.zdstozgw.translation.zds.model.namespace.N
 import static nl.haarlem.translations.zdstozgw.translation.zds.model.namespace.Namespace.ZKN;
 
 public class Gerelateerde {
+    @XmlElement(namespace = ZKN)
+    public String identificatie;
+
     @XmlAttribute(namespace = STUF)
     public String verwerkingssoort;
 
@@ -30,4 +33,7 @@ public class Gerelateerde {
 
     @XmlElement(namespace = ZKN)
     public Medewerker medewerker;
+
+    @XmlElement(namespace = ZKN)
+    public NatuurlijkPersoon natuurlijkPersoon;
 }
