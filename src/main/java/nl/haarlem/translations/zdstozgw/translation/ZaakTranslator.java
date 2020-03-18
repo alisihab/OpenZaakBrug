@@ -6,11 +6,8 @@ import nl.haarlem.translations.zdstozgw.config.DocumentType;
 import nl.haarlem.translations.zdstozgw.config.Organisatie;
 import nl.haarlem.translations.zdstozgw.config.ZaakType;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.*;
-import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwEnkelvoudigInformatieObject;
+import nl.haarlem.translations.zdstozgw.translation.zgw.model.*;
 import nl.haarlem.translations.zdstozgw.utils.xpath.XpathDocument;
-import nl.haarlem.translations.zdstozgw.translation.zgw.model.BetrokkeneIdentificatieNPS;
-import nl.haarlem.translations.zdstozgw.translation.zgw.model.RolNPS;
-import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwZaak;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -218,7 +215,7 @@ public class ZaakTranslator {
         return null;
     }
 
-    private ZaakType getZaakTypeByZDSCode(String zaakTypeCode) {
+    public ZaakType getZaakTypeByZDSCode(String zaakTypeCode) {
         List<ZaakType> zaakTypes = configService.getConfiguratie().getZaakTypes();
         for (ZaakType zaakType : zaakTypes) {
             if (zaakType.getCode().equals(zaakTypeCode)) {
@@ -238,4 +235,16 @@ public class ZaakTranslator {
         return "";
     }
 
+
+    public ZgwStatus getZgwStatus() {
+
+        ZaakType zaakType = getZaakTypeByZDSCode(zakLk01.getObjects().get(1).isVan.gerelateerde.code);
+
+       ZgwStatus zgwStatus = new ZgwStatus();
+       zgwStatus.statustoelichting = zakLk01.getObjects().get(1).heeft.statustoelichting;
+       zgwStatus.datumStatusGezet = zakLk01.getObjects().get(1).heeft.datumStatusGezet;
+       zgwStatus.statustype = zaakType.statustypen[0];
+
+       return zgwStatus;
+    }
 }
