@@ -5,11 +5,9 @@ import nl.haarlem.translations.zdstozgw.config.ConfigService;
 import nl.haarlem.translations.zdstozgw.config.DocumentType;
 import nl.haarlem.translations.zdstozgw.config.Organisatie;
 import nl.haarlem.translations.zdstozgw.config.ZaakType;
-import nl.haarlem.translations.zdstozgw.translation.zds.model.HeeftRelevantEDC;
-import nl.haarlem.translations.zdstozgw.translation.zds.model.ZakLa01LijstZaakdocumenten;
+import nl.haarlem.translations.zdstozgw.translation.zds.model.*;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwEnkelvoudigInformatieObject;
 import nl.haarlem.translations.zdstozgw.utils.xpath.XpathDocument;
-import nl.haarlem.translations.zdstozgw.translation.zds.model.ZakLa01Zaakdetails;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.BetrokkeneIdentificatieNPS;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.RolNPS;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwZaak;
@@ -34,6 +32,8 @@ public class ZaakTranslator {
     private ZgwZaak zgwZaak;
     private ZgwEnkelvoudigInformatieObject zgwEnkelvoudigInformatieObject;
     private List<ZgwEnkelvoudigInformatieObject> zgwEnkelvoudigInformatieObjectList;
+    private ZakLk01_v2 zakLk01;
+    private EdcLk01 edcLk01;
 
     public ZaakTranslator() {
 
@@ -99,84 +99,62 @@ public class ZaakTranslator {
         zakLa01.addHeeftRelevant(heeftRelevantEDC);
     }
 
-
     public void zdsDocumentToZgwDocument(){
-        var xpath = new XpathDocument(document);
-        var identificatie = xpath.getNodeValue("//zkn:object/zkn:identificatie");
-        var bronOrganisatie = getRSIN(xpath.getNodeValue("//zkn:stuurgegevens/stuf:ontvanger/stuf:organisatie"));
-        var creatieDatum = getDateStringFromStufDate(xpath.getNodeValue("//zkn:object/zkn:creatiedatum"));
-        var titel = xpath.getNodeValue("//zkn:object/zkn:titel");
-        var vertrouwlijkheidaanduiding = xpath.getNodeValue("//zkn:object/zkn:vertrouwelijkAanduiding").toLowerCase();
-        var auteur = xpath.getNodeValue("//zkn:object/zkn:auteur");
-        var formaat = xpath.getNodeValue("//zkn:object/zkn:formaat");
-        var taal = xpath.getNodeValue("//zkn:object/zkn:taal");
-        var bestandsnaam = xpath.getAttributeValue("//zkn:object/zkn:inhoud","http://www.egem.nl/StUF/StUF0301","bestandsnaam");
-        var inhoud = xpath.getNodeValue("//zkn:object/zkn:inhoud");
         var informatieObjectType = configService.getConfiguratie().getDocumentTypes().get(0).getDocumentType();
 
+        var o = edcLk01.objects.get(0);
         var eio = new ZgwEnkelvoudigInformatieObject();
-        eio.setIdentificatie(identificatie);
-        eio.setBronorganisatie(bronOrganisatie);
-        eio.setCreatiedatum(creatieDatum);
-        eio.setTitel(titel);
-        eio.setVertrouwelijkheidaanduiding(vertrouwlijkheidaanduiding);
-        eio.setAuteur(auteur);
-        eio.setTaal(taal);
-        eio.setFormaat(formaat);
-        eio.setInhoud(inhoud);
+        eio.setIdentificatie(o.identificatie);
+        eio.setBronorganisatie(getRSIN(edcLk01.stuurgegevens.zender.organisatie));
+        eio.setCreatiedatum(getDateStringFromStufDate(o.creatiedatum));
+        eio.setTitel(o.titel);
+        eio.setVertrouwelijkheidaanduiding(o.vertrouwelijkAanduiding.toLowerCase());
+        eio.setAuteur(o.auteur);
+        eio.setTaal(o.taal);
+        eio.setFormaat(o.formaat);
+        eio.setInhoud(o.inhoud.value);
         eio.setInformatieobjecttype(informatieObjectType);
-        eio.setBestandsnaam(bestandsnaam);
+        eio.setBestandsnaam(o.inhoud.bestandsnaam);
 
         zgwEnkelvoudigInformatieObject = eio;
     }
 
     public void zdsZaakToZgwZaak() {
 
-        var xpath = new XpathDocument(document);
-
-        var identificatie = xpath.getNodeValue("//zkn:object/zkn:identificatie");
-        var bronOrganisatie = getRSIN(xpath.getNodeValue("//zkn:stuurgegevens/stuf:ontvanger/stuf:organisatie"));
-        var verantwoordelijkeOrganisatie = getRSIN(xpath.getNodeValue("//zkn:stuurgegevens/stuf:ontvanger/stuf:organisatie"));
-        var zaaktype = getZaakTypeByZDSCode(xpath.getNodeValue("//zkn:object/zkn:isVan/zkn:gerelateerde/zkn:code")).getZaakType();
-        var omschrijving = xpath.getNodeValue("//zkn:object/zkn:omschrijving");
-        var toelichting = xpath.getNodeValue("//zkn:object/zkn:toelichting");
-        var archiefNominatie = getZGWArchiefNominatie(getZGWArchiefNominatie(xpath.getNodeValue("//zkn:object/zkn:archiefnominatie")));
-        var startDatum = getDateStringFromStufDate(xpath.getNodeValue("//zkn:object/zkn:startdatum"));
-        var registratiedatum = getDateStringFromStufDate(xpath.getNodeValue("//zkn:object/zkn:registratiedatum"));
-        var einddatumGepland = getDateStringFromStufDate(xpath.getNodeValue("//zkn:object/zkn:einddatumGepland"));
-
         var zaak = new ZgwZaak();
-        zaak.setIdentificatie(identificatie)
-                .setBronorganisatie(bronOrganisatie)
-                .setOmschrijving(omschrijving)
-                .setToelichting(toelichting)
-                .setZaaktype(zaaktype)
-                .setRegistratiedatum(registratiedatum)
-                .setVerantwoordelijkeOrganisatie(verantwoordelijkeOrganisatie)
-                .setStartdatum(startDatum)
-                .setEinddatumGepland(einddatumGepland)
-                .setArchiefnominatie(archiefNominatie);
+        var z = zakLk01.objects.get(0);
+        zaak.setIdentificatie(z.identificatie)
+                .setOmschrijving(z.omschrijving)
+                .setToelichting(z.toelichting)
+                .setZaaktype(getZaakTypeByZDSCode(z.isVan.gerelateerde.code).zaakType)
+                .setRegistratiedatum(getDateStringFromStufDate(z.registratiedatum))
+                .setVerantwoordelijkeOrganisatie(getRSIN(zakLk01.stuurgegevens.zender.organisatie))
+                .setBronorganisatie(getRSIN(zakLk01.stuurgegevens.ontvanger.organisatie))
+                .setStartdatum(getDateStringFromStufDate(z.startdatum))
+                .setEinddatumGepland(getDateStringFromStufDate(z.einddatumGepland))
+                .setArchiefnominatie(getZGWArchiefNominatie(z.archiefnominatie));
 
         this.zgwZaak = zaak;
     }
 
     public RolNPS getRolInitiator() {
-        var nodes = document.getElementsByTagNameNS("http://www.egem.nl/StUF/sector/zkn/0310", "heeftAlsInitiator");
-        if (nodes.getLength() > 0) {
-            var xpath = new XpathDocument(document);
+        var z = zakLk01.objects.get(0);
+
+        if (z.heeftAlsInitiator != null) {
+            var natuurlijkPersoon = z.heeftAlsInitiator.gerelateerde.natuurlijkPersoon;
             BetrokkeneIdentificatieNPS nps = new BetrokkeneIdentificatieNPS();
-            nps.setInpBsn(xpath.getNodeValue("//zkn:object/zkn:heeftAlsInitiator/zkn:gerelateerde/zkn:natuurlijkPersoon/bg:inp.bsn"));
-            nps.setGeslachtsnaam(xpath.getNodeValue("//zkn:object/zkn:heeftAlsInitiator/zkn:gerelateerde/zkn:natuurlijkPersoon/bg:geslachtsnaam"));
-            nps.setVoorvoegselGeslachtsnaam(xpath.getNodeValue("//zkn:object/zkn:heeftAlsInitiator/zkn:gerelateerde/zkn:natuurlijkPersoon/bg:voorvoegselGeslachtsnaam"));
-            nps.setVoornamen(xpath.getNodeValue("//zkn:object/zkn:heeftAlsInitiator/zkn:gerelateerde/zkn:natuurlijkPersoon/bg:voornamen"));
-            nps.setGeboortedatum(getDateStringFromStufDate(xpath.getNodeValue("//zkn:object/zkn:heeftAlsInitiator/zkn:gerelateerde/zkn:natuurlijkPersoon/bg:geboortedatum")));
-            nps.setGeslachtsaanduiding(xpath.getNodeValue("//zkn:object/zkn:heeftAlsInitiator/zkn:gerelateerde/zkn:natuurlijkPersoon/bg:geslachtsaanduiding").toLowerCase());
+            nps.setInpBsn(natuurlijkPersoon.bsn);
+            nps.setGeslachtsnaam(natuurlijkPersoon.geslachtsnaam);
+            nps.setVoorvoegselGeslachtsnaam(natuurlijkPersoon.voorvoegselGeslachtsnaam);
+            nps.setVoornamen(natuurlijkPersoon.voornamen);
+            nps.setGeboortedatum(getDateStringFromStufDate(natuurlijkPersoon.geboortedatum));
+            nps.setGeslachtsaanduiding(natuurlijkPersoon.geslachtsaanduiding.toLowerCase());
 
             var rol = new RolNPS();
             rol.setBetrokkeneIdentificatieNPS(nps);
             rol.setBetrokkeneType("natuurlijk_persoon");
             rol.setRoltoelichting("Inititator");
-            rol.setRoltype(getZaakTypeByZDSCode(xpath.getNodeValue(xpath.getNodeValue("//zkn:object/zkn:isVan/zkn:gerelateerde/zkn:code"))).getInitiatorRolTypeUrl());
+            rol.setRoltype(getZaakTypeByZDSCode(z.isVan.gerelateerde.code).initiatorRolTypeUrl);
 
             return rol;
         } else {

@@ -50,16 +50,16 @@ public class StufRequest {
         return new ZakLv01(xmlNodesToDocument(nodes, "geefLijstZaakdocumenten_ZakLa01"));
     }
 
-    public ZakLk01 getZakLk01() {
-        var nodes = body.getElementsByTagNameNS("http://www.stufstandaarden.nl/koppelvlak/zds0120", "creeerZaak_ZakLk01").item(0).getChildNodes();
+//    public ZakLk01 getZakLk01() {
+//        var nodes = body.getElementsByTagNameNS("http://www.egem.nl/StUF/sector/zkn/0310", "zakLk01").item(0).getChildNodes();
+//
+//        return new ZakLk01(xmlNodesToDocument(nodes, "creeerZaak_ZakLk01"));
+//    }
 
-        return new ZakLk01(xmlNodesToDocument(nodes, "creeerZaak_ZakLk01"));
-    }
-
-    public EdcLk01 getEdcLk01() {
-        var nodes = body.getElementsByTagNameNS("http://www.stufstandaarden.nl/koppelvlak/zds0120", "voegZaakdocumentToe_EdcLk01").item(0).getChildNodes();
-
-        return new EdcLk01(xmlNodesToDocument(nodes, "voegZaakdocumentToe_EdcLk01"));
-    }
+//    public EdcLk01 getEdcLk01() {
+//        var nodes = body.getElementsByTagNameNS("http://www.stufstandaarden.nl/koppelvlak/zds0120", "voegZaakdocumentToe_EdcLk01").item(0).getChildNodes();
+//
+//        return new EdcLk01(xmlNodesToDocument(nodes, "voegZaakdocumentToe_EdcLk01"));
+//    }
 
 }
