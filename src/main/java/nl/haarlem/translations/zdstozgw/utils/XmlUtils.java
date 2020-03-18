@@ -104,4 +104,18 @@ public class XmlUtils {
         }
         return result;
     }
+
+	public static Document getDocument(String template) {
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        factory.setNamespaceAware(true);
+        DocumentBuilder builder;
+        try {
+            builder = factory.newDocumentBuilder();
+            File f = new File(template);
+            return builder.parse(f);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
+        return null;
+	}
 }

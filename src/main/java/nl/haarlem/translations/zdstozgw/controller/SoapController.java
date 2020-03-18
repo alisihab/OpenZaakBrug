@@ -33,7 +33,16 @@ public class SoapController {
     private ZaakService zaakService;
 
     private String response = "NOT IMPLEMENTED";
-
+   
+    @PostMapping(value = "/VrijBerichtService", consumes = MediaType.TEXT_XML_VALUE, produces = MediaType.TEXT_XML_VALUE)
+    public String vrijBerichtService(@RequestHeader(name = "SOAPAction", required = true) String soapAction, @RequestBody String body) {
+        var convertor = ConvertorFactory.getConvertor(soapAction.replace("\"", ""), body);        
+        if (convertor != null) {
+        	this.response = convertor.Convert(zaakService, new StufRequest(XmlUtils.convertStringToDocument(body)));        	
+        }
+        return this.response;        
+    }    
+    
     @PostMapping(value = "/BeantwoordVraag", consumes = MediaType.TEXT_XML_VALUE, produces = MediaType.TEXT_XML_VALUE)
     public String beantwoordVraag(@RequestBody String body) {
 

@@ -17,4 +17,7 @@ public class Configuratie {
     @SerializedName("documentTypes")
     @Expose
     public List<DocumentType> documentTypes = null;
+    @SerializedName("translations")
+    @Expose    
+    public List<Translation> translations = null;
 }
