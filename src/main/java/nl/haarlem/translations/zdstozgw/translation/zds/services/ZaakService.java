@@ -94,12 +94,13 @@ public class ZaakService {
     public ZgwZaakInformatieObject voegZaakDocumentToe(EdcLk01 edcLk01) throws Exception {
         ZgwZaakInformatieObject result = null;
 
-        zaakTranslator.setDocument(edcLk01.getDocument()).zdsDocumentToZgwDocument();
+        zaakTranslator.setEdcLk01(edcLk01).zdsDocumentToZgwDocument();
 
         ZgwEnkelvoudigInformatieObject zgwEnkelvoudigInformatieObject = zgwClient.addDocument(zaakTranslator.getZgwEnkelvoudigInformatieObject());
 
         if (zgwEnkelvoudigInformatieObject.getUrl() != null) {
-            String zaakUrl = getZaakUrl(getZaakIdentificatie(edcLk01));
+            //String zaakUrl = getZaakUrl(getZaakIdentificatie(edcLk01));
+            String zaakUrl = "test";
             result = addZaakInformatieObject(zgwEnkelvoudigInformatieObject, zaakUrl);
         } else {
             throw new Exception("Document not added");
@@ -107,9 +108,7 @@ public class ZaakService {
         return result;
     }
 
-    private String getZaakIdentificatie(EdcLk01 edcLk01) {
-        return edcLk01.getXpathDocument().getNodeValue("//zkn:object/zkn:isRelevantVoor/zkn:gerelateerde/zkn:identificatie");
-    }
+
 
     private ZgwZaakInformatieObject addZaakInformatieObject(ZgwEnkelvoudigInformatieObject doc, String zaakUrl) throws Exception {
         ZgwZaakInformatieObject result = null;

@@ -61,34 +61,42 @@ public class SoapController {
     private ZakLk01_v2 getZakLka01(String body) {
         ZakLk01_v2 zakLk01 = null;
         try {
-            zakLk01 =  (ZakLk01_v2) JAXBContext.newInstance(ZakLk01_v2.class)
+            zakLk01 = (ZakLk01_v2) JAXBContext.newInstance(ZakLk01_v2.class)
                     .createUnmarshaller()
                     .unmarshal(MessageFactory.newInstance().createMessage(null, new ByteArrayInputStream(body.getBytes())).getSOAPBody().extractContentAsDocument());
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return  zakLk01;
+        return zakLk01;
+    }
+
+    private EdcLk01 getZakLEdcLk01(String body) {
+        EdcLk01 edcLk01 = null;
+        try {
+            edcLk01 = (EdcLk01) JAXBContext.newInstance(EdcLk01.class)
+                    .createUnmarshaller()
+                    .unmarshal(MessageFactory.newInstance().createMessage(null, new ByteArrayInputStream(body.getBytes())).getSOAPBody().extractContentAsDocument());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return edcLk01;
     }
 
     @PostMapping(value = "/OntvangAsynchroon", consumes = MediaType.TEXT_XML_VALUE, produces = MediaType.TEXT_XML_VALUE)
     public String ontvangAsynchroon(@RequestHeader(name = "SOAPAction", required = true) String soapAction, @RequestBody String body) {
         soapAction = soapAction.replace("\"", "");
-
         Convertor convertor = null;
-        ZakLk01_v2 zakLk01_v2r = getZakLka01(body);
-        convertor = ConvertorFactory.getConvertor(soapAction, zakLk01_v2r.stuurgegevens.zender.applicatie);
-
-        var stufRequest = new StufRequest(XmlUtils.convertStringToDocument(body));
-
-        if (convertor != null) {
+        if (soapAction.contains("creeerZaak")) {
+            ZakLk01_v2 zakLk01_v2r = getZakLka01(body);
+            convertor = ConvertorFactory.getConvertor(soapAction, zakLk01_v2r.stuurgegevens.zender.applicatie);
             response = convertor.Convert(zaakService, zakLk01_v2r);
-        } else {
-            response = "Soap action: " + soapAction + " is niet geimplementeerd (soapaction niet gevonden in ConversieFactory)";
+        }
+        if (soapAction.contains("voegZaakdocumentToe")) {
+            EdcLk01 edcLk01 = getZakLEdcLk01(body);
+            convertor = ConvertorFactory.getConvertor(soapAction, edcLk01.stuurgegevens.zender.applicatie);
+            response = convertor.Convert(zaakService, edcLk01);
         }
 
-        if (stufRequest.isVoegZaakdocumentToe()) {
-            voegZaakDocumentToe(stufRequest);
-        }
 
         try {
             SOAPPart soapPart = MessageFactory.newInstance()
@@ -121,16 +129,16 @@ public class SoapController {
         return "";
     }
 
-    private void voegZaakDocumentToe(StufRequest stufRequest) {
-        EdcLk01 edcLk01 = stufRequest.getEdcLk01();
-        try {
-            ZgwZaakInformatieObject zgwZaakInformatieObject = zaakService.voegZaakDocumentToe(edcLk01);
-            setResponseToDocumentBv03(zgwZaakInformatieObject);
-        } catch (Exception e) {
-            handleAddZaakException(e);
-        }
-
-    }
+//    private void voegZaakDocumentToe(StufRequest stufRequest) {
+//        EdcLk01 edcLk01 = stufRequest.getEdcLk01();
+//        try {
+//            ZgwZaakInformatieObject zgwZaakInformatieObject = zaakService.voegZaakDocumentToe(edcLk01);
+//            setResponseToDocumentBv03(zgwZaakInformatieObject);
+//        } catch (Exception e) {
+//            handleAddZaakException(e);
+//        }
+//
+//    }
 
     private void setResponseToZaakBv03(ZgwZaak createdZaak) {
         var bv03 = new Bv03();

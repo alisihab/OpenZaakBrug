@@ -5,12 +5,9 @@ import nl.haarlem.translations.zdstozgw.config.ConfigService;
 import nl.haarlem.translations.zdstozgw.config.DocumentType;
 import nl.haarlem.translations.zdstozgw.config.Organisatie;
 import nl.haarlem.translations.zdstozgw.config.ZaakType;
-import nl.haarlem.translations.zdstozgw.translation.zds.model.HeeftRelevantEDC;
-import nl.haarlem.translations.zdstozgw.translation.zds.model.ZakLa01LijstZaakdocumenten;
-import nl.haarlem.translations.zdstozgw.translation.zds.model.ZakLk01_v2;
+import nl.haarlem.translations.zdstozgw.translation.zds.model.*;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwEnkelvoudigInformatieObject;
 import nl.haarlem.translations.zdstozgw.utils.xpath.XpathDocument;
-import nl.haarlem.translations.zdstozgw.translation.zds.model.ZakLa01Zaakdetails;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.BetrokkeneIdentificatieNPS;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.RolNPS;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwZaak;
@@ -36,6 +33,7 @@ public class ZaakTranslator {
     private ZgwEnkelvoudigInformatieObject zgwEnkelvoudigInformatieObject;
     private List<ZgwEnkelvoudigInformatieObject> zgwEnkelvoudigInformatieObjectList;
     private ZakLk01_v2 zakLk01;
+    private EdcLk01 edcLk01;
 
     public ZaakTranslator() {
 
@@ -102,31 +100,21 @@ public class ZaakTranslator {
     }
 
     public void zdsDocumentToZgwDocument(){
-        var xpath = new XpathDocument(document);
-        var identificatie = xpath.getNodeValue("//zkn:object/zkn:identificatie");
-        var bronOrganisatie = getRSIN(xpath.getNodeValue("//zkn:stuurgegevens/stuf:ontvanger/stuf:organisatie"));
-        var creatieDatum = getDateStringFromStufDate(xpath.getNodeValue("//zkn:object/zkn:creatiedatum"));
-        var titel = xpath.getNodeValue("//zkn:object/zkn:titel");
-        var vertrouwlijkheidaanduiding = xpath.getNodeValue("//zkn:object/zkn:vertrouwelijkAanduiding").toLowerCase();
-        var auteur = xpath.getNodeValue("//zkn:object/zkn:auteur");
-        var formaat = xpath.getNodeValue("//zkn:object/zkn:formaat");
-        var taal = xpath.getNodeValue("//zkn:object/zkn:taal");
-        var bestandsnaam = xpath.getAttributeValue("//zkn:object/zkn:inhoud","http://www.egem.nl/StUF/StUF0301","bestandsnaam");
-        var inhoud = xpath.getNodeValue("//zkn:object/zkn:inhoud");
         var informatieObjectType = configService.getConfiguratie().getDocumentTypes().get(0).getDocumentType();
 
+        var o = edcLk01.objects.get(0);
         var eio = new ZgwEnkelvoudigInformatieObject();
-        eio.setIdentificatie(identificatie);
-        eio.setBronorganisatie(bronOrganisatie);
-        eio.setCreatiedatum(creatieDatum);
-        eio.setTitel(titel);
-        eio.setVertrouwelijkheidaanduiding(vertrouwlijkheidaanduiding);
-        eio.setAuteur(auteur);
-        eio.setTaal(taal);
-        eio.setFormaat(formaat);
-        eio.setInhoud(inhoud);
+        eio.setIdentificatie(o.identificatie);
+        eio.setBronorganisatie(edcLk01.stuurgegevens.zender.organisatie);
+        eio.setCreatiedatum(getDateStringFromStufDate(o.creatiedatum));
+        eio.setTitel(o.titel);
+        eio.setVertrouwelijkheidaanduiding(o.vertrouwelijkAanduiding.toLowerCase());
+        eio.setAuteur(o.auteur);
+        eio.setTaal(o.taal);
+        eio.setFormaat(o.formaat);
+        eio.setInhoud(o.inhoudValue);
         eio.setInformatieobjecttype(informatieObjectType);
-        eio.setBestandsnaam(bestandsnaam);
+        eio.setBestandsnaam(o.inhoud.bestandsnaam);
 
         zgwEnkelvoudigInformatieObject = eio;
     }

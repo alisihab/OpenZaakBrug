@@ -48,42 +48,6 @@ public class ZakLk01_v2 {
     }
 
 
-    @XmlAccessorType(XmlAccessType.FIELD)
-    public static class Stuurgegevens{
-
-        @XmlElement(namespace = STUF)
-        public Zender zender;
-
-        @XmlElement(namespace = STUF)
-        public Ontvanger ontvanger;
-
-    }
-
-    @XmlAccessorType(XmlAccessType.FIELD)
-    public static class Zender{
-
-        @XmlElement(namespace = STUF)
-        public String organisatie;
-
-        @XmlElement(namespace = STUF)
-        public String applicatie;
-
-        @XmlElement(namespace = STUF)
-        public String gebruiker;
-    }
-
-    @XmlAccessorType(XmlAccessType.FIELD)
-    public static class Ontvanger{
-
-        @XmlElement(namespace = STUF)
-        public String organisatie;
-
-        @XmlElement(namespace = STUF)
-        public String applicatie;
-
-        @XmlElement(namespace = STUF)
-        public String gebruiker;
-    }
 
     @XmlElement(namespace = ZKN, name="object")
     public List<Object> objects;
