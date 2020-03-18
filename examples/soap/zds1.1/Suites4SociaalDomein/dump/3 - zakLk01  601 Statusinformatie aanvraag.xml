@@ -1,0 +1,21 @@
+<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
+   <s:Body>
+      <StUF:Bv03Bericht xmlns:StUF="http://www.egem.nl/StUF/StUF0301">
+         <StUF:stuurgegevens>
+            <StUF:berichtcode>Bv03</StUF:berichtcode>
+            <StUF:zender>
+               <StUF:organisatie>1900</StUF:organisatie>
+               <StUF:applicatie>CDR</StUF:applicatie>
+            </StUF:zender>
+            <StUF:ontvanger>
+               <StUF:organisatie>1900</StUF:organisatie>
+               <StUF:applicatie>GWS4all</StUF:applicatie>
+               <StUF:gebruiker>Gebruiker</StUF:gebruiker>
+            </StUF:ontvanger>
+            <StUF:referentienummer>7dc0c7e0-6653-4f65-8ef8-08cb317d0ddf</StUF:referentienummer>
+            <StUF:tijdstipBericht>20200318123707477</StUF:tijdstipBericht>
+            <StUF:crossRefnummer>db1d7139-781e-4509-af51-3e01d6c8d04d</StUF:crossRefnummer>
+         </StUF:stuurgegevens>
+      </StUF:Bv03Bericht>
+   </s:Body>
+</s:Envelope>
