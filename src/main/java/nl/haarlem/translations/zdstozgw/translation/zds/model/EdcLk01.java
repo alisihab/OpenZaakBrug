@@ -10,20 +10,9 @@ import java.util.List;
 
 import static nl.haarlem.translations.zdstozgw.translation.zds.model.namespace.Namespace.*;
 
-@Data
 @XmlRootElement(namespace = ZKN, name="edcLk01")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class EdcLk01 {
-
-    @XmlAccessorType(XmlAccessType.FIELD)
-    public static class Inhoud{
-        @XmlAttribute(namespace = STUF)
-        public String bestandsnaam;
-
-        @XmlAttribute(namespace = MIME)
-        public String contentType;
-    }
-
 
     @XmlAccessorType(XmlAccessType.FIELD)
     public static class Object{
@@ -43,14 +32,12 @@ public class EdcLk01 {
         public String taal;
 
         @XmlElement(namespace = ZKN)
-        public EdcLk01.Inhoud inhoud;
-
-        @XmlElement(namespace = ZKN)
-        public String inhoudValue;
+        public Inhoud inhoud;
 
         @XmlElement(namespace = ZKN)
         public String auteur;
 
+        @XmlElement(namespace = ZKN)
         public String creatiedatum;
 
         @XmlElement(namespace = ZKN)
@@ -59,6 +46,8 @@ public class EdcLk01 {
         @XmlElement(namespace = ZKN)
         public String vertrouwelijkAanduiding;
 
+        @XmlElement(namespace = ZKN, name="isRelevantVoor")
+        public GerelateerdeWrapper isRelevantVoor;
 
         @XmlElement(namespace = ZKN, name="isVan")
         public GerelateerdeWrapper isVan;

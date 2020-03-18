@@ -99,15 +99,13 @@ public class ZaakService {
         ZgwEnkelvoudigInformatieObject zgwEnkelvoudigInformatieObject = zgwClient.addDocument(zaakTranslator.getZgwEnkelvoudigInformatieObject());
 
         if (zgwEnkelvoudigInformatieObject.getUrl() != null) {
-            //String zaakUrl = getZaakUrl(getZaakIdentificatie(edcLk01));
-            String zaakUrl = "test";
+            String zaakUrl = getZaakUrl(edcLk01.objects.get(0).isRelevantVoor.gerelateerde.identificatie);
             result = addZaakInformatieObject(zgwEnkelvoudigInformatieObject, zaakUrl);
         } else {
             throw new Exception("Document not added");
         }
         return result;
     }
-
 
 
     private ZgwZaakInformatieObject addZaakInformatieObject(ZgwEnkelvoudigInformatieObject doc, String zaakUrl) throws Exception {

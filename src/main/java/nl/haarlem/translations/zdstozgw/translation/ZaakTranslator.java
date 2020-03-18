@@ -105,14 +105,14 @@ public class ZaakTranslator {
         var o = edcLk01.objects.get(0);
         var eio = new ZgwEnkelvoudigInformatieObject();
         eio.setIdentificatie(o.identificatie);
-        eio.setBronorganisatie(edcLk01.stuurgegevens.zender.organisatie);
+        eio.setBronorganisatie(getRSIN(edcLk01.stuurgegevens.zender.organisatie));
         eio.setCreatiedatum(getDateStringFromStufDate(o.creatiedatum));
         eio.setTitel(o.titel);
         eio.setVertrouwelijkheidaanduiding(o.vertrouwelijkAanduiding.toLowerCase());
         eio.setAuteur(o.auteur);
         eio.setTaal(o.taal);
         eio.setFormaat(o.formaat);
-        eio.setInhoud(o.inhoudValue);
+        eio.setInhoud(o.inhoud.value);
         eio.setInformatieobjecttype(informatieObjectType);
         eio.setBestandsnaam(o.inhoud.bestandsnaam);
 
