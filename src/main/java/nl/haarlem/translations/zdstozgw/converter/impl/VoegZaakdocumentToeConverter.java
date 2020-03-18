@@ -1,13 +1,14 @@
-package nl.haarlem.translations.zdstozgw.convertor.impl;
+package nl.haarlem.translations.zdstozgw.converter.impl;
 
-import nl.haarlem.translations.zdstozgw.convertor.Convertor;
-import nl.haarlem.translations.zdstozgw.translation.zds.model.ZakLk01_v2;
+import nl.haarlem.translations.zdstozgw.converter.Convertor;
+import nl.haarlem.translations.zdstozgw.translation.zds.model.EdcLk01;
 import nl.haarlem.translations.zdstozgw.translation.zds.services.ZaakService;
+import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwZaakInformatieObject;
 
-public class CreeerZaak implements Convertor {
+public class VoegZaakdocumentToeConverter implements Convertor {
     protected String templatePath;
 
-    public CreeerZaak(String templatePath) {
+    public VoegZaakdocumentToeConverter(String templatePath) {
         this.templatePath = templatePath;
     }
 
@@ -15,9 +16,9 @@ public class CreeerZaak implements Convertor {
     public String Convert(ZaakService zaakService, Object object) {
         try {
 
-            var zaak = zaakService.creeerZaak((ZakLk01_v2) object);
+            ZgwZaakInformatieObject zgwZaakInformatieObject = zaakService.voegZaakDocumentToe((EdcLk01) object);
             var bv03 = new nl.haarlem.translations.zdstozgw.translation.zds.model.Bv03();
-            bv03.setReferentienummer(zaak.getUuid());
+            bv03.setReferentienummer(zgwZaakInformatieObject.getUuid());
             return bv03.getSoapMessageAsString();
 
         } catch (Exception ex) {

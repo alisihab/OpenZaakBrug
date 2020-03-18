@@ -1,7 +1,7 @@
 package nl.haarlem.translations.zdstozgw.controller;
 
-import nl.haarlem.translations.zdstozgw.convertor.ConvertorFactory;
-import nl.haarlem.translations.zdstozgw.convertor.Convertor;
+import nl.haarlem.translations.zdstozgw.converter.ConvertorFactory;
+import nl.haarlem.translations.zdstozgw.converter.Convertor;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.*;
 import nl.haarlem.translations.zdstozgw.translation.zds.services.ZaakService;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwZaak;
@@ -39,7 +39,7 @@ public class SoapController {
         soapAction = soapAction.replace("\"", "");
         Convertor convertor = null;
         if (soapAction.contains("geefZaakdocumentLezen")) {
-            EdcLv01 edcLv01 = (EdcLv01) getStUFOject(body, EdcLv01.class);
+            EdcLv01 edcLv01 = (EdcLv01) getStUFObject(body, EdcLv01.class);
             convertor = ConvertorFactory.getConvertor(soapAction, edcLv01.stuurgegevens.zender.applicatie);
             response = convertor.Convert(zaakService, edcLv01);
         }
@@ -66,7 +66,7 @@ public class SoapController {
         return response;
     }
 
-    private Object getStUFOject(String body, Class c) {
+    private Object getStUFObject(String body, Class c) {
         Object object = null;
         try {
             object = (Object) JAXBContext.newInstance(c)
@@ -83,12 +83,12 @@ public class SoapController {
         soapAction = soapAction.replace("\"", "");
         Convertor convertor = null;
         if (soapAction.contains("creeerZaak")) {
-            ZakLk01_v2 zakLk01_v2r = (ZakLk01_v2) getStUFOject(body,ZakLk01_v2.class);
+            ZakLk01_v2 zakLk01_v2r = (ZakLk01_v2) getStUFObject(body,ZakLk01_v2.class);
             convertor = ConvertorFactory.getConvertor(soapAction, zakLk01_v2r.stuurgegevens.zender.applicatie);
             response = convertor.Convert(zaakService, zakLk01_v2r);
         }
         if (soapAction.contains("voegZaakdocumentToe")) {
-            EdcLk01 edcLk01 = (EdcLk01) getStUFOject(body,EdcLk01.class);
+            EdcLk01 edcLk01 = (EdcLk01) getStUFObject(body,EdcLk01.class);
             convertor = ConvertorFactory.getConvertor(soapAction, edcLk01.stuurgegevens.zender.applicatie);
             response = convertor.Convert(zaakService, edcLk01);
         }

@@ -1,7 +1,7 @@
-package nl.haarlem.translations.zdstozgw.convertor;
+package nl.haarlem.translations.zdstozgw.converter;
 
-import nl.haarlem.translations.zdstozgw.convertor.impl.CreeerZaak;
-import nl.haarlem.translations.zdstozgw.convertor.impl.VoegZaakdocumentToe;
+import nl.haarlem.translations.zdstozgw.converter.impl.CreeerZaakConverter;
+import nl.haarlem.translations.zdstozgw.converter.impl.VoegZaakdocumentToeConverter;
 
 public class ConvertorFactory {
 
@@ -19,11 +19,11 @@ public class ConvertorFactory {
         		break;
         	case "http://www.egem.nl/StUF/sector/zkn/0310/creeerZaak_Lk01":    			
         	case "creeerZaak_ZakLk01":
-        		classname = CreeerZaak.class.getName();
+        		classname = CreeerZaakConverter.class.getName();
         		templatepath = "--template-zit-in-de-code--";
         		break;
         	case "http://www.egem.nl/StUF/sector/zkn/0310/voegZaakdocumentToe_Lk01":
-        		classname = VoegZaakdocumentToe.class.getName();
+        		classname = VoegZaakdocumentToeConverter.class.getName();
         		templatepath = "--template-zit-in-de-code--";
         		break;
         	default: 
