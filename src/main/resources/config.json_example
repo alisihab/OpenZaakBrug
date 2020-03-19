@@ -52,6 +52,13 @@
 	        "requestcontains": "",	        
 	        "template": "--template-zit-in-de-code--",
 	        "implementation": "nl.haarlem.translations.zdstozgw.convertor.impl.VoegZaakdocumentToe"
-	    }
+	    },
+		{	
+			"translation": "ZDS 1.1 GWS4all genereerDocumentIdentificatie_Di02",
+	        "soapaction": "http://www.egem.nl/StUF/sector/zkn/0310/genereerDocumentIdentificatie_Di02",
+	        "requestcontains": "<StUF:applicatie>GWS4all</StUF:applicatie>",
+	        "template": "src/main/java/nl/haarlem/translations/zdstozgw/convertor/impl/genereerDocumentIdentificatie_Du02.xml",
+	        "implementation": "nl.haarlem.translations.zdstozgw.convertor.impl.GenereerDocumentIdentificatie"
+	    }	    
 	]    
 }

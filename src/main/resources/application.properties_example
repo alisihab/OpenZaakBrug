@@ -7,3 +7,14 @@ openzaak.baseUrl = https://openzaak.local
 nl.haarlem.translations.zdstozgw.trustAllCerts = false
 
 nl.haarlem.translations.zdstozgw.enableJWTEntpoint = false
+
+#spring.datasource.initialize=true
+spring.datasource.url=jdbc:h2:./zdstozgw.db
+spring.datasource.driverClassName=org.h2.Driver
+spring.datasource.username=sa
+spring.datasource.password=
+spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
+# Enabling H2 Console on http://localhost:8080/h2-console
+spring.h2.console.enabled=true
+spring.h2.console.path=/h2-console
+spring.h2.console.settings.web-allow-others=false

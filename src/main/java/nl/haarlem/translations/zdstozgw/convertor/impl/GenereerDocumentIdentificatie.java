@@ -22,25 +22,25 @@ import nl.haarlem.translations.zdstozgw.translation.zds.services.ZaakService;
 
 import nl.haarlem.translations.zdstozgw.jpa.model.ApplicationParameter;
 
-public class GenereerZaakIdentificatie implements Convertor {
+public class GenereerDocumentIdentificatie implements Convertor {
 
 	@Data
-	private class GenereerZaakIdentificatie_Di02 {
+	private class GenereerDocumentIdentificatie_Di02 {
 	    final XpathDocument xpathDocument;
 	    Document document;
 	    
-		public GenereerZaakIdentificatie_Di02(StufRequest stufRequest) {
+		public GenereerDocumentIdentificatie_Di02(StufRequest stufRequest) {
 	        this.document = stufRequest.body;
 	        this.xpathDocument  = new XpathDocument(document);			
 		}
 	}
 	
 	@Data
-	private class GenereerZaakIdentificatie_Du02 {
+	private class GenereerDocumentIdentificatie_Du02 {
 	    final XpathDocument xpathDocument;
 	    Document document;
 
-		public GenereerZaakIdentificatie_Du02(String template) {
+		public GenereerDocumentIdentificatie_Du02(String template) {
 			this.document = nl.haarlem.translations.zdstozgw.utils.XmlUtils.getDocument(template);			
 			this.xpathDocument  = new XpathDocument(document);
 		}
@@ -49,7 +49,7 @@ public class GenereerZaakIdentificatie implements Convertor {
     private static final Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());	
 	protected String template;
 	
-    public GenereerZaakIdentificatie(String template) {
+    public GenereerDocumentIdentificatie(String template) {
         this.template = template;
     }
 
@@ -58,14 +58,14 @@ public class GenereerZaakIdentificatie implements Convertor {
     	var stufRequest = (StufRequest) object;
     	DateFormat tijdstipformat = new SimpleDateFormat("yyyyMMddHHmmss");   	    
     	
-    	var prefixparam  = repository.getOne("ZaakIdentificatiePrefix");
-    	var idparam= repository.getOne("ZaakIdentificatieHuidige");    	
+    	var prefixparam  = repository.getOne("DocumentIdentificatiePrefix");
+    	var idparam= repository.getOne("DocumentIdentificatieHuidige");    	
     	var identificatie = Long.parseLong(idparam.getParameterValue()) + 1;	
     	idparam.setParameterValue(Long.toString(identificatie));
     	repository.save(idparam);
     	    	
-    	var di02 = new GenereerZaakIdentificatie_Di02(stufRequest);
-    	var du02 = new GenereerZaakIdentificatie_Du02(this.template); 	    	    	
+    	var di02 = new GenereerDocumentIdentificatie_Di02(stufRequest);
+    	var du02 = new GenereerDocumentIdentificatie_Du02(this.template); 	    	    	
     	du02.xpathDocument.setNodeValue(".//stuf:zender//stuf:organisatie", di02.xpathDocument.getNodeValue(".//stuf:ontvanger//stuf:organisatie"));
     	du02.xpathDocument.setNodeValue(".//stuf:zender//stuf:applicatie", di02.xpathDocument.getNodeValue(".//stuf:ontvanger//stuf:applicatie"));
     	du02.xpathDocument.setNodeValue(".//stuf:zender//stuf:gebruiker", di02.xpathDocument.getNodeValue(".//stuf:ontvanger//stuf:gebruiker"));

@@ -1,6 +1,7 @@
 package nl.haarlem.translations.zdstozgw.convertor.impl;
 
 import nl.haarlem.translations.zdstozgw.convertor.Convertor;
+import nl.haarlem.translations.zdstozgw.jpa.ApplicationParameterRepository;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZakLk01_v2;
 import nl.haarlem.translations.zdstozgw.translation.zds.services.ZaakService;
 
@@ -12,7 +13,7 @@ public class CreeerZaak implements Convertor {
     }
 
     @Override
-    public String Convert(ZaakService zaakService, Object object) {
+    public String Convert(ZaakService zaakService, ApplicationParameterRepository repository, Object object) {
         try {
 
             var zaak = zaakService.creeerZaak((ZakLk01_v2) object);

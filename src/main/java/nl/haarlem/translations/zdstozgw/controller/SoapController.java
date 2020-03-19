@@ -1,6 +1,7 @@
 package nl.haarlem.translations.zdstozgw.controller;
 
 import nl.haarlem.translations.zdstozgw.convertor.ConvertorFactory;
+import nl.haarlem.translations.zdstozgw.jpa.ApplicationParameterRepository;
 import nl.haarlem.translations.zdstozgw.convertor.Convertor;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.*;
 import nl.haarlem.translations.zdstozgw.translation.zds.services.ZaakService;
@@ -31,6 +32,8 @@ public class SoapController {
 
     @Autowired
     private ZaakService zaakService;
+	@Autowired	
+	protected ApplicationParameterRepository repository;
 
     private String response = "NOT IMPLEMENTED";
    
@@ -38,7 +41,7 @@ public class SoapController {
     public String vrijBerichtService(@RequestHeader(name = "SOAPAction", required = true) String soapAction, @RequestBody String body) {
         var convertor = ConvertorFactory.getConvertor(soapAction.replace("\"", ""), body);        
         if (convertor != null) {
-        	this.response = convertor.Convert(zaakService, new StufRequest(XmlUtils.convertStringToDocument(body)));        	
+        	this.response = convertor.Convert(zaakService, repository, new StufRequest(XmlUtils.convertStringToDocument(body)));        	
         }
         return this.response;        
     }    
@@ -98,12 +101,12 @@ public class SoapController {
         if (soapAction.contains("creeerZaak")) {
             ZakLk01_v2 zakLk01_v2r = getZakLka01(body);
             convertor = ConvertorFactory.getConvertor(soapAction, zakLk01_v2r.stuurgegevens.zender.applicatie);
-            response = convertor.Convert(zaakService, zakLk01_v2r);
+            response = convertor.Convert(zaakService, repository, zakLk01_v2r);
         }
         if (soapAction.contains("voegZaakdocumentToe")) {
             EdcLk01 edcLk01 = getZakLEdcLk01(body);
             convertor = ConvertorFactory.getConvertor(soapAction, edcLk01.stuurgegevens.zender.applicatie);
-            response = convertor.Convert(zaakService, edcLk01);
+            response = convertor.Convert(zaakService, repository, edcLk01);
         }
 
 
