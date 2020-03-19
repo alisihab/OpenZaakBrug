@@ -1,5 +1,6 @@
 package nl.haarlem.translations.zdstozgw.converter;
 
+import nl.haarlem.translations.zdstozgw.converter.impl.ActualiseerZaakStatusConverter;
 import nl.haarlem.translations.zdstozgw.converter.impl.CreeerZaakConverter;
 import nl.haarlem.translations.zdstozgw.converter.impl.GeefZaakDocumentLezenConverter;
 import nl.haarlem.translations.zdstozgw.converter.impl.VoegZaakdocumentToeConverter;
@@ -28,6 +29,10 @@ public class ConvertorFactory {
 			case "http://www.egem.nl/StUF/sector/zkn/0310/geefZaakdocumentLezen_Lv01":
 				classname = GeefZaakDocumentLezenConverter.class.getName();
 				break;
+			case "http://www.egem.nl/StUF/sector/zkn/0310/actualiseerZaakstatus_Lk01":
+				classname = ActualiseerZaakStatusConverter.class.getName();
+				break;
+
         	default: 
             	return null;
         }

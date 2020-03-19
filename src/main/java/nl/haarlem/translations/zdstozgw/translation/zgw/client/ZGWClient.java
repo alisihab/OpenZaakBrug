@@ -245,23 +245,17 @@ public class ZGWClient {
         return informatieObject;
     }
 
-    public ZgwSatusType getStatusType(Map<String, String> parameters) {
-
-        ZgwSatusType result = null;
+    public List<ZgwStatusType> getStatusTypes(Map<String, String> parameters) {
         var statusTypeJson = get(baseUrl + "/catalogi/api/v1/statustypen", parameters);
         try {
-            Type type = new TypeToken<QueryResult<ZgwSatusType>>(){}.getType();
+            Type type = new TypeToken<QueryResult<ZgwStatusType>>(){}.getType();
             Gson gson = new Gson();
-            QueryResult<ZgwSatusType> queryResult = gson.fromJson(statusTypeJson, type);
-            if (queryResult.getResults().size() == 1) {
-                result = queryResult.getResults().get(0);
-            }
+            QueryResult<ZgwStatusType> queryResult = gson.fromJson(statusTypeJson, type);
+            return queryResult.getResults();
         } catch (Exception ex) {
-            log.error("Exception in getStatusType: " + ex.getMessage());
+            log.error("Exception in getStatusTypes: " + ex.getMessage());
             throw ex;
         }
-
-        return result;
     }
 
     public ZgwStatus actualiseerZaakStatus(ZgwStatus zgwSatus) {

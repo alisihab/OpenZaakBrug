@@ -69,7 +69,7 @@ public class SoapController {
     private Object getStUFObject(String body, Class c) {
         Object object = null;
         try {
-            object = (Object) JAXBContext.newInstance(c)
+            object = JAXBContext.newInstance(c)
                     .createUnmarshaller()
                     .unmarshal(MessageFactory.newInstance().createMessage(null, new ByteArrayInputStream(body.getBytes())).getSOAPBody().extractContentAsDocument());
         } catch (Exception e) {
@@ -92,18 +92,10 @@ public class SoapController {
             converter = ConvertorFactory.getConvertor(soapAction, edcLk01.stuurgegevens.zender.applicatie);
             response = converter.Convert(zaakService, edcLk01);
         }
-
         if(soapAction.contains("actualiseerZaakstatus")){
-            ZakLk01_v2 zakLk01 = null;
-            try {
-                zakLk01 = (ZakLk01_v2) JAXBContext.newInstance(ZakLk01_v2.class)
-                        .createUnmarshaller()
-                        .unmarshal(MessageFactory.newInstance()
-                                .createMessage(null, new ByteArrayInputStream(body.getBytes())).getSOAPBody().extractContentAsDocument());
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            actualiseerZaakstatus(zakLk01);
+            ZakLk01_v2 zakLk01 = (ZakLk01_v2) getStUFObject(body, ZakLk01_v2.class);
+            converter = ConvertorFactory.getConvertor(soapAction, zakLk01.stuurgegevens.zender.applicatie);
+            response = converter.Convert(zaakService, zakLk01);
         }
 
         return response;
@@ -117,12 +109,6 @@ public class SoapController {
         } catch (Exception e) {
             handleAddZaakException(e);
         }
-    }
-
-    private String getActionFromSoapHeader(SOAPPart soapPart) throws SOAPException {
-        NodeList nodeList = soapPart.getEnvelope().getHeader().getElementsByTagNameNS("http://www.w3.org/2005/08/addressing", "Action");
-        if (nodeList.getLength() > 0) return nodeList.item(0).getFirstChild().getNodeValue();
-        return "";
     }
 
 //    private void voegZaakDocumentToe(StufRequest stufRequest) {
