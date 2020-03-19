@@ -70,6 +70,24 @@ public class ZGWClient {
         return url;
     }
 
+    public ZgwEnkelvoudigInformatieObject getZgwEnkelvoudigInformatieObject(String identificatie){
+        ZgwEnkelvoudigInformatieObject result = null;
+        var documentJson = get(baseUrl+"/documenten/api/v1/enkelvoudiginformatieobjecten?identificatie="+identificatie,null);
+        try {
+            Type type = new TypeToken<QueryResult<ZgwEnkelvoudigInformatieObject>>(){}.getType();
+            Gson gson = new Gson();
+            QueryResult<ZgwEnkelvoudigInformatieObject> queryResult = gson.fromJson(documentJson, type);
+
+            if (queryResult.getResults().size() == 1) {
+                result = queryResult.getResults().get(0);
+            }
+        } catch (Exception ex) {
+            log.error("ZgwEnkelvoudigInformatieObject: " + ex.getMessage());
+            throw ex;
+        }
+        return  result;
+    }
+
     public ZgwZaak getZaakDetails(Map<String, String> parameters) {
 
         ZgwZaak result = null;

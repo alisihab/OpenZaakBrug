@@ -1,10 +1,7 @@
 package nl.haarlem.translations.zdstozgw.translation.zds.services;
 
 import nl.haarlem.translations.zdstozgw.translation.ZaakTranslator;
-import nl.haarlem.translations.zdstozgw.translation.zds.model.EdcLk01;
-import nl.haarlem.translations.zdstozgw.translation.zds.model.ZakLk01;
-import nl.haarlem.translations.zdstozgw.translation.zds.model.ZakLk01_v2;
-import nl.haarlem.translations.zdstozgw.translation.zds.model.ZakLv01;
+import nl.haarlem.translations.zdstozgw.translation.zds.model.*;
 import nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.*;
 import org.slf4j.Logger;
@@ -13,8 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.w3c.dom.Document;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.Marshaller;
 import java.lang.invoke.MethodHandles;
 import java.util.HashMap;
 import java.util.Map;
@@ -128,6 +123,16 @@ public class ZaakService {
 
         ZgwZaak zgwZaak = zgwClient.getZaakDetails(parameters);
         return zgwZaak.getUrl();
+    }
+
+    public EdcLa01 getZaakDoumentLezen(EdcLv01 edcLv01) {
+        EdcLa01 edcLa01 = new EdcLa01();
+
+        ZgwEnkelvoudigInformatieObject zgwEnkelvoudigInformatieObject = zgwClient.getZgwEnkelvoudigInformatieObject(edcLv01.gelijk.identificatie);
+
+        edcLa01 = zaakTranslator.getEdcLa01FromZgwEnkelvoudigInformatieObject(zgwEnkelvoudigInformatieObject);
+
+        return edcLa01;
     }
 
     private String getStatusTypeUrl(String zaakTypeUrl, String statusTypeVolgnummer){

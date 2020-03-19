@@ -1,11 +1,12 @@
-package nl.haarlem.translations.zdstozgw.convertor;
+package nl.haarlem.translations.zdstozgw.converter;
 
-import nl.haarlem.translations.zdstozgw.convertor.impl.CreeerZaak;
-import nl.haarlem.translations.zdstozgw.convertor.impl.VoegZaakdocumentToe;
+import nl.haarlem.translations.zdstozgw.converter.impl.CreeerZaakConverter;
+import nl.haarlem.translations.zdstozgw.converter.impl.GeefZaakDocumentLezenConverter;
+import nl.haarlem.translations.zdstozgw.converter.impl.VoegZaakdocumentToeConverter;
 
 public class ConvertorFactory {
 
-  	public static Convertor getConvertor(String soapAction, String application) {
+  	public static Converter getConvertor(String soapAction, String application) {
 
 		String classname = null;
 		String templatepath = null;
@@ -19,13 +20,14 @@ public class ConvertorFactory {
         		break;
         	case "http://www.egem.nl/StUF/sector/zkn/0310/creeerZaak_Lk01":    			
         	case "creeerZaak_ZakLk01":
-        		classname = CreeerZaak.class.getName();
-        		templatepath = "--template-zit-in-de-code--";
+        		classname = CreeerZaakConverter.class.getName();
         		break;
         	case "http://www.egem.nl/StUF/sector/zkn/0310/voegZaakdocumentToe_Lk01":
-        		classname = VoegZaakdocumentToe.class.getName();
-        		templatepath = "--template-zit-in-de-code--";
+        		classname = VoegZaakdocumentToeConverter.class.getName();
         		break;
+			case "http://www.egem.nl/StUF/sector/zkn/0310/geefZaakdocumentLezen_Lv01":
+				classname = GeefZaakDocumentLezenConverter.class.getName();
+				break;
         	default: 
             	return null;
         }
@@ -33,7 +35,7 @@ public class ConvertorFactory {
 			Class<?> c = Class.forName(classname);
 			java.lang.reflect.Constructor<?> ctor = c.getConstructor(String.class);
 			Object object = ctor.newInstance(new Object[] { templatepath });
-			return  (Convertor) object;
+			return  (Converter) object;
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;

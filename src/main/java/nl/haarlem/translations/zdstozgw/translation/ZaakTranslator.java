@@ -77,6 +77,26 @@ public class ZaakTranslator {
         document =  zakLa01.getDocument();
     }
 
+    public EdcLa01  getEdcLa01FromZgwEnkelvoudigInformatieObject(ZgwEnkelvoudigInformatieObject document){
+        EdcLa01 edcLa01 = new EdcLa01();
+        edcLa01.antwoord = new EdcLa01.Antwoord();
+        edcLa01.antwoord.object = new EdcLa01.Object();
+        edcLa01.antwoord.object.auteur = document.auteur;
+        edcLa01.antwoord.object.creatiedatum = document.creatiedatum;
+        edcLa01.antwoord.object.dctCategorie = document.beschrijving;
+        edcLa01.antwoord.object.dctOmschrijving = document.beschrijving;
+        edcLa01.antwoord.object.identificatie = document.identificatie;
+        edcLa01.antwoord.object.inhoud = document.inhoud;
+        edcLa01.antwoord.object.link = document.url;
+        edcLa01.antwoord.object.ontvangstdatum = document.ontvangstdatum;
+        edcLa01.antwoord.object.status = document.status;
+        edcLa01.antwoord.object.taal = document.taal;
+        edcLa01.antwoord.object.titel = document.titel;
+        edcLa01.antwoord.object.versie = document.versie;
+
+        return  edcLa01;
+    }
+
     private void zgwDocumentToZgwDocument(ZakLa01LijstZaakdocumenten zakLa01, ZgwEnkelvoudigInformatieObject document) {
         HeeftRelevantEDC heeftRelevantEDC = new HeeftRelevantEDC();
         heeftRelevantEDC.setIdentificatie(document.getIdentificatie());

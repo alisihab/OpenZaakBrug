@@ -8,11 +8,13 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.soap.MessageFactory;
-import javax.xml.soap.SOAPMessage;
+import javax.xml.soap.*;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
@@ -49,19 +51,18 @@ public class XmlUtils {
         return soapMessage;
     }
 
-    public static String soapMessageToSTring(SOAPMessage soapMessage) {
-        String stringMessage = "";
-        try {
-            ByteArrayOutputStream stream = new ByteArrayOutputStream();
-            soapMessage.writeTo(stream);
-            stringMessage = new String(stream.toByteArray(), StandardCharsets.UTF_8);
-
-        } catch (Exception e) {
-            log.error(e.getMessage());
-        }
-
-        return stringMessage;
-    }
+//    public static String soapMessageToSTring(SOAPMessage soapMessage) {
+//        String stringMessage = "";
+//        try {
+//            ByteArrayOutputStream stream = getStringFromSOAP(soapMessage);
+//            stringMessage = new String(stream.toByteArray(), StandardCharsets.UTF_8);
+//
+//        } catch (Exception e) {
+//            log.error(e.getMessage());
+//        }
+//
+//        return stringMessage;
+//    }
 
     public static String xmlToString(Document xml) {
         String result = "";
@@ -86,7 +87,7 @@ public class XmlUtils {
     }
 
 
-    public static Document xmlNodesToDocument(NodeList nodes, String rootName){
+    public static Document xmlNodesToDocument(NodeList nodes, String rootName) {
         Document result = null;
         try {
             result = DocumentBuilderFactory.newInstance()
@@ -103,5 +104,53 @@ public class XmlUtils {
             root.appendChild(copyNode);
         }
         return result;
+    }
+
+
+    public static String getSOAPMessageFromObject(Object object) {
+
+        String result = "";
+        try {
+            Document document = marshalJAXBToXMLDocument(object);
+            SOAPMessage message = getSoapMessage(document);
+            result = getStringFromSOAP(message);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    private static String getStringFromSOAP(SOAPMessage message) throws SOAPException, IOException {
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        message.writeTo(out);
+        return new String(out.toByteArray());
+    }
+
+    private static Document marshalJAXBToXMLDocument(Object object) throws JAXBException, ParserConfigurationException {
+        Document document = getNewDocument();
+        JAXBContext context = JAXBContext.newInstance(object.getClass());
+        Marshaller marshaller = context.createMarshaller();
+        marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+        marshaller.marshal(object, document);
+        return document;
+    }
+
+    private static Document getNewDocument() throws ParserConfigurationException {
+        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+        DocumentBuilder db = null;
+
+        db = dbf.newDocumentBuilder();
+        return db.newDocument();
+    }
+
+    private static SOAPMessage getSoapMessage(Document document) throws SOAPException {
+        //SOAP
+        MessageFactory mf = MessageFactory.newInstance();
+        SOAPMessage message = mf.createMessage();
+        SOAPPart part = message.getSOAPPart();
+        SOAPEnvelope env = part.getEnvelope();
+        SOAPBody body = env.getBody();
+        body.addDocument(document);
+        return message;
     }
 }
