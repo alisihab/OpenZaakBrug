@@ -231,7 +231,6 @@ public class ZGWClient {
         try {
             Gson gson = new Gson();
             String json = gson.toJson(zgwSatus);
-            System.out.println(json);
             String response = this.post(baseUrl + "/zaken/api/v1/statussen", json);
             result = gson.fromJson(response, ZgwStatus.class);
         } catch (HttpStatusCodeException ex) {
