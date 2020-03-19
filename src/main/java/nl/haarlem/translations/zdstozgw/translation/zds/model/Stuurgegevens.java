@@ -10,6 +10,9 @@ import static nl.haarlem.translations.zdstozgw.translation.zds.model.namespace.N
 public class Stuurgegevens{
 
     @XmlElement(namespace = STUF)
+    public String berichtcode;
+
+    @XmlElement(namespace = STUF)
     public Zender zender;
 
     @XmlElement(namespace = STUF)

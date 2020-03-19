@@ -3,9 +3,7 @@ package nl.haarlem.translations.zdstozgw.translation.zds.services;
 import nl.haarlem.translations.zdstozgw.translation.ZaakTranslator;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.*;
 import nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient;
-import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwEnkelvoudigInformatieObject;
-import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwZaak;
-import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwZaakInformatieObject;
+import nl.haarlem.translations.zdstozgw.translation.zgw.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -132,7 +130,27 @@ public class ZaakService {
 
         ZgwEnkelvoudigInformatieObject zgwEnkelvoudigInformatieObject = zgwClient.getZgwEnkelvoudigInformatieObject(edcLv01.gelijk.identificatie);
 
+        edcLa01 = zaakTranslator.getEdcLa01FromZgwEnkelvoudigInformatieObject(zgwEnkelvoudigInformatieObject);
+
         return edcLa01;
+    }
+
+    private String getStatusTypeUrl(String zaakTypeUrl, String statusTypeVolgnummer){
+        Map<String, String> parameters = new HashMap();
+        parameters.put("zaaktype", zaakTypeUrl);
+        parameters.put("volgnummer", statusTypeVolgnummer);
+
+        ZgwSatusType zgwSatusType= zgwClient.getStatusType(parameters);
+        return zgwSatusType.url;
+
+    }
+
+    public void actualiseerZaakstatus(ZakLk01_v2 zakLk01) {
+        zaakTranslator.setZakLk01(zakLk01);
+        ZgwStatus zgwSatus = zaakTranslator.getZgwStatus();
+        zgwSatus.zaak = getZaakUrl(zakLk01.getObjects().get(1).identificatie);
+
+        zgwClient.actualiseerZaakStatus(zgwSatus);
     }
 }
 

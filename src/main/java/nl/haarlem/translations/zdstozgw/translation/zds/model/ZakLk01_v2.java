@@ -37,16 +37,15 @@ public class ZakLk01_v2 {
         @XmlElement(namespace = ZKN)
         public String registratiedatum;
 
-        @XmlElement(namespace = ZKN, name="isVan")
+        @XmlElement(namespace = ZKN)
         public GerelateerdeWrapper isVan;
 
-        @XmlElement(namespace = ZKN, name="heeft")
-        public GerelateerdeWrapper heeft;
+        @XmlElement(namespace = ZKN)
+        public Heeft heeft;
 
         @XmlElement(namespace = ZKN, name="heeftAlsInitiator")
         public HeeftAlsInitiator heeftAlsInitiator;
     }
-
 
 
     @XmlElement(namespace = ZKN, name="object")

@@ -6,11 +6,8 @@ import nl.haarlem.translations.zdstozgw.config.DocumentType;
 import nl.haarlem.translations.zdstozgw.config.Organisatie;
 import nl.haarlem.translations.zdstozgw.config.ZaakType;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.*;
-import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwEnkelvoudigInformatieObject;
+import nl.haarlem.translations.zdstozgw.translation.zgw.model.*;
 import nl.haarlem.translations.zdstozgw.utils.xpath.XpathDocument;
-import nl.haarlem.translations.zdstozgw.translation.zgw.model.BetrokkeneIdentificatieNPS;
-import nl.haarlem.translations.zdstozgw.translation.zgw.model.RolNPS;
-import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwZaak;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,6 +75,26 @@ public class ZaakTranslator {
         });
 
         document =  zakLa01.getDocument();
+    }
+
+    public EdcLa01  getEdcLa01FromZgwEnkelvoudigInformatieObject(ZgwEnkelvoudigInformatieObject document){
+        EdcLa01 edcLa01 = new EdcLa01();
+        edcLa01.antwoord = new EdcLa01.Antwoord();
+        edcLa01.antwoord.object = new EdcLa01.Object();
+        edcLa01.antwoord.object.auteur = document.auteur;
+        edcLa01.antwoord.object.creatiedatum = document.creatiedatum;
+        edcLa01.antwoord.object.dctCategorie = document.beschrijving;
+        edcLa01.antwoord.object.dctOmschrijving = document.beschrijving;
+        edcLa01.antwoord.object.identificatie = document.identificatie;
+        edcLa01.antwoord.object.inhoud = document.inhoud;
+        edcLa01.antwoord.object.link = document.url;
+        edcLa01.antwoord.object.ontvangstdatum = document.ontvangstdatum;
+        edcLa01.antwoord.object.status = document.status;
+        edcLa01.antwoord.object.taal = document.taal;
+        edcLa01.antwoord.object.titel = document.titel;
+        edcLa01.antwoord.object.versie = document.versie;
+
+        return  edcLa01;
     }
 
     private void zgwDocumentToZgwDocument(ZakLa01LijstZaakdocumenten zakLa01, ZgwEnkelvoudigInformatieObject document) {
@@ -218,7 +235,7 @@ public class ZaakTranslator {
         return null;
     }
 
-    private ZaakType getZaakTypeByZDSCode(String zaakTypeCode) {
+    public ZaakType getZaakTypeByZDSCode(String zaakTypeCode) {
         List<ZaakType> zaakTypes = configService.getConfiguratie().getZaakTypes();
         for (ZaakType zaakType : zaakTypes) {
             if (zaakType.getCode().equals(zaakTypeCode)) {
@@ -238,4 +255,16 @@ public class ZaakTranslator {
         return "";
     }
 
+
+    public ZgwStatus getZgwStatus() {
+
+        ZaakType zaakType = getZaakTypeByZDSCode(zakLk01.getObjects().get(1).isVan.gerelateerde.code);
+
+       ZgwStatus zgwStatus = new ZgwStatus();
+       zgwStatus.statustoelichting = zakLk01.getObjects().get(1).heeft.statustoelichting;
+       zgwStatus.datumStatusGezet = zakLk01.getObjects().get(1).heeft.datumStatusGezet;
+       zgwStatus.statustype = zaakType.statustypen[0];
+
+       return zgwStatus;
+    }
 }

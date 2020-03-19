@@ -93,23 +93,17 @@ public class SoapController {
             response = converter.Convert(zaakService, edcLk01);
         }
 
-
-        try {
-            SOAPPart soapPart = MessageFactory.newInstance()
-                    .createMessage(null, new ByteArrayInputStream(body.getBytes())).getSOAPPart();
-
-            switch (getActionFromSoapHeader(soapPart)) {
-                case "http://www.egem.nl/StUF/sector/zkn/0310/actualiseerZaakstatus_Lk01": {
-                    ZakLk01_v2 zakLk01 = (ZakLk01_v2) JAXBContext.newInstance(ZakLk01_v2.class)
-                            .createUnmarshaller()
-                            .unmarshal(soapPart.getEnvelope().getBody().extractContentAsDocument());
-                    actualiseerZaakstatus(zakLk01);
-                    break;
-                }
+        if(soapAction.contains("actualiseerZaakstatus")){
+            ZakLk01_v2 zakLk01 = null;
+            try {
+                zakLk01 = (ZakLk01_v2) JAXBContext.newInstance(ZakLk01_v2.class)
+                        .createUnmarshaller()
+                        .unmarshal(MessageFactory.newInstance()
+                                .createMessage(null, new ByteArrayInputStream(body.getBytes())).getSOAPBody().extractContentAsDocument());
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-
-        } catch (Exception e) {
-            e.printStackTrace();
+            actualiseerZaakstatus(zakLk01);
         }
 
         return response;
@@ -117,6 +111,12 @@ public class SoapController {
 
     private void actualiseerZaakstatus(ZakLk01_v2 zakLk01) {
         // TODO: call ZGW api
+        try {
+            zaakService.actualiseerZaakstatus(zakLk01);
+//            setResponseToDocumentBv03(zgwZaakInformatieObject);
+        } catch (Exception e) {
+            handleAddZaakException(e);
+        }
     }
 
     private String getActionFromSoapHeader(SOAPPart soapPart) throws SOAPException {

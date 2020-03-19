@@ -72,12 +72,14 @@ public class ZGWClient {
 
     public ZgwEnkelvoudigInformatieObject getZgwEnkelvoudigInformatieObject(String identificatie){
         ZgwEnkelvoudigInformatieObject result = null;
-        var zgwEnkelvoudigInformatieObject = get(baseUrl+"/documenten/api/v1/enkelvoudiginformatieobjecten?identificatie="+identificatie,null);
+        var documentJson = get(baseUrl+"/documenten/api/v1/enkelvoudiginformatieobjecten?identificatie="+identificatie,null);
         try {
+            Type type = new TypeToken<QueryResult<ZgwEnkelvoudigInformatieObject>>(){}.getType();
             Gson gson = new Gson();
-            QueryResult queryResult = gson.fromJson(zgwEnkelvoudigInformatieObject, QueryResult.class);
+            QueryResult<ZgwEnkelvoudigInformatieObject> queryResult = gson.fromJson(documentJson, type);
+
             if (queryResult.getResults().size() == 1) {
- //               result = queryResult.getResults().get(0);
+                result = queryResult.getResults().get(0);
             }
         } catch (Exception ex) {
             log.error("ZgwEnkelvoudigInformatieObject: " + ex.getMessage());
@@ -91,8 +93,9 @@ public class ZGWClient {
         ZgwZaak result = null;
         var zaakJson = get(baseUrl + "/zaken/api/v1/zaken", parameters);
         try {
+            Type type = new TypeToken<QueryResult<ZgwZaak>>(){}.getType();
             Gson gson = new Gson();
-            QueryResult queryResult = gson.fromJson(zaakJson, QueryResult.class);
+            QueryResult<ZgwZaak> queryResult = gson.fromJson(zaakJson, type);
             if (queryResult.getResults().size() == 1) {
                 result = queryResult.getResults().get(0);
             }
@@ -208,5 +211,39 @@ public class ZGWClient {
         informatieObject = gson.fromJson(zaakInformatieObjectJson, ZgwEnkelvoudigInformatieObject.class);
 
         return informatieObject;
+    }
+
+    public ZgwSatusType getStatusType(Map<String, String> parameters) {
+
+        ZgwSatusType result = null;
+        var statusTypeJson = get(baseUrl + "/catalogi/api/v1/statustypen", parameters);
+        try {
+            Type type = new TypeToken<QueryResult<ZgwSatusType>>(){}.getType();
+            Gson gson = new Gson();
+            QueryResult<ZgwSatusType> queryResult = gson.fromJson(statusTypeJson, type);
+            if (queryResult.getResults().size() == 1) {
+                result = queryResult.getResults().get(0);
+            }
+        } catch (Exception ex) {
+            log.error("Exception in getStatusType: " + ex.getMessage());
+            throw ex;
+        }
+
+        return result;
+    }
+
+    public ZgwStatus actualiseerZaakStatus(ZgwStatus zgwSatus) {
+        ZgwStatus result = null;
+        try {
+            Gson gson = new Gson();
+            String json = gson.toJson(zgwSatus);
+            String response = this.post(baseUrl + "/zaken/api/v1/statussen", json);
+            result = gson.fromJson(response, ZgwStatus.class);
+        } catch (HttpStatusCodeException ex) {
+            log.error("Exception in actualiseerZaakStatus: " + ex.getMessage());
+            throw ex;
+        }
+
+        return result;
     }
 }
