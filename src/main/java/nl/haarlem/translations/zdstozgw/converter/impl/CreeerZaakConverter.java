@@ -1,10 +1,10 @@
 package nl.haarlem.translations.zdstozgw.converter.impl;
 
-import nl.haarlem.translations.zdstozgw.converter.Convertor;
+import nl.haarlem.translations.zdstozgw.converter.Converter;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZakLk01_v2;
 import nl.haarlem.translations.zdstozgw.translation.zds.services.ZaakService;
 
-public class CreeerZaakConverter implements Convertor {
+public class CreeerZaakConverter implements Converter {
     protected String templatePath;
 
     public CreeerZaakConverter(String templatePath) {

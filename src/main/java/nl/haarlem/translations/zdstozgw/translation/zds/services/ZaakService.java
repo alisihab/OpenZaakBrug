@@ -1,10 +1,7 @@
 package nl.haarlem.translations.zdstozgw.translation.zds.services;
 
 import nl.haarlem.translations.zdstozgw.translation.ZaakTranslator;
-import nl.haarlem.translations.zdstozgw.translation.zds.model.EdcLk01;
-import nl.haarlem.translations.zdstozgw.translation.zds.model.ZakLk01;
-import nl.haarlem.translations.zdstozgw.translation.zds.model.ZakLk01_v2;
-import nl.haarlem.translations.zdstozgw.translation.zds.model.ZakLv01;
+import nl.haarlem.translations.zdstozgw.translation.zds.model.*;
 import nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwEnkelvoudigInformatieObject;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwZaak;
@@ -131,5 +128,9 @@ public class ZaakService {
         ZgwZaak zgwZaak = zgwClient.getZaakDetails(parameters);
         return zgwZaak.getUrl();
     }
- }
+
+    public void getZaakDoumentLezen(EdcLv01 object) {
+
+    }
+}
 

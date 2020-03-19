@@ -1,11 +1,11 @@
 package nl.haarlem.translations.zdstozgw.converter.impl;
 
-import nl.haarlem.translations.zdstozgw.converter.Convertor;
+import nl.haarlem.translations.zdstozgw.converter.Converter;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.EdcLk01;
 import nl.haarlem.translations.zdstozgw.translation.zds.services.ZaakService;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwZaakInformatieObject;
 
-public class VoegZaakdocumentToeConverter implements Convertor {
+public class VoegZaakdocumentToeConverter implements Converter {
     protected String templatePath;
 
     public VoegZaakdocumentToeConverter(String templatePath) {
