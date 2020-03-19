@@ -94,7 +94,8 @@ public class SoapController {
         }
         if(soapAction.contains("actualiseerZaakstatus")){
             ZakLk01_v2 zakLk01 = (ZakLk01_v2) getStUFObject(body, ZakLk01_v2.class);
-            actualiseerZaakstatus(zakLk01);
+            converter = ConvertorFactory.getConvertor(soapAction, zakLk01.stuurgegevens.zender.applicatie);
+            response = converter.Convert(zaakService, zakLk01);
         }
 
         return response;

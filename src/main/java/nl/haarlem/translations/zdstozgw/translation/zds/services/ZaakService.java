@@ -137,7 +137,7 @@ public class ZaakService {
                 .orElse(null);
     }
 
-    public void actualiseerZaakstatus(ZakLk01_v2 zakLk01) {
+    public ZgwZaak actualiseerZaakstatus(ZakLk01_v2 zakLk01) {
         ZakLk01_v2.Object object = zakLk01.objects.get(1);
         ZgwZaak zgwZaak = getZaak(object.identificatie);
 
@@ -147,7 +147,7 @@ public class ZaakService {
         zgwStatus.statustype = getStatusTypeByZaakTypeAndVolgnummer(zgwZaak.zaaktype, Integer.valueOf(object.heeft.gerelateerde.volgnummer)).url;
 
         zgwClient.actualiseerZaakStatus(zgwStatus);
-        //todo: response
+        return zgwZaak;
     }
 }
 
