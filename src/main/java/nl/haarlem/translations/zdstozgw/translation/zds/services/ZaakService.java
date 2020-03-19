@@ -12,6 +12,7 @@ import org.w3c.dom.Document;
 
 import java.lang.invoke.MethodHandles;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -125,12 +126,25 @@ public class ZaakService {
         return zgwZaak.getUrl();
     }
 
+
     public EdcLa01 getZaakDoumentLezen(EdcLv01 edcLv01) {
         EdcLa01 edcLa01 = new EdcLa01();
 
         ZgwEnkelvoudigInformatieObject zgwEnkelvoudigInformatieObject = zgwClient.getZgwEnkelvoudigInformatieObject(edcLv01.gelijk.identificatie);
+        Map<String, String> parameters = new HashMap();
+        parameters.put("informatieobject", zgwEnkelvoudigInformatieObject.getUrl());
+        ZgwZaakInformatieObject zgwZaakInformatieObject = zgwClient.getZgwZaakInformatieObjects(parameters).get(0);
 
+
+        ZgwZaak zgwZaak = zgwClient.getZaakByUrl(zgwZaakInformatieObject.getZaak());
         edcLa01 = zaakTranslator.getEdcLa01FromZgwEnkelvoudigInformatieObject(zgwEnkelvoudigInformatieObject);
+
+        edcLa01.isRelevantVoor = new IsRelevantVoor();
+        edcLa01.isRelevantVoor.gerelateerde = new Gerelateerde();
+        edcLa01.isRelevantVoor.entiteittype = "EDCZAK";
+        edcLa01.isRelevantVoor.gerelateerde.entiteittype = "ZAK";
+        edcLa01.isRelevantVoor.gerelateerde.identificatie = zgwZaak.getIdentificatie();
+
 
         return edcLa01;
     }

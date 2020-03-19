@@ -15,9 +15,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.soap.*;
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.*;
@@ -112,7 +110,7 @@ public class XmlUtils {
         String result = "";
         try {
             Document document = marshalJAXBToXMLDocument(object);
-            SOAPMessage message = getSoapMessage(document);
+             SOAPMessage message = getSoapMessage(document);
             result = getStringFromSOAP(message);
         } catch (Exception e) {
             e.printStackTrace();
@@ -126,12 +124,22 @@ public class XmlUtils {
         return new String(out.toByteArray());
     }
 
-    private static Document marshalJAXBToXMLDocument(Object object) throws JAXBException, ParserConfigurationException {
+    private static Document marshalJAXBToXMLDocument(Object object) throws JAXBException, ParserConfigurationException, TransformerException {
         Document document = getNewDocument();
         JAXBContext context = JAXBContext.newInstance(object.getClass());
         Marshaller marshaller = context.createMarshaller();
         marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+        marshaller.setProperty(Marshaller.JAXB_FRAGMENT, true);
         marshaller.marshal(object, document);
+
+        TransformerFactory tf = TransformerFactory.newInstance();
+        Transformer transformer = tf.newTransformer();
+        transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
+        StringWriter writer = new StringWriter();
+        transformer.transform(new DOMSource(document), new StreamResult(writer));
+        String output = writer.getBuffer().toString().replaceAll("\n|\r", "");
+        log.debug(output);
+
         return document;
     }
 

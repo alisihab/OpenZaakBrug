@@ -12,6 +12,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpStatusCodeException;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Type;
@@ -87,6 +88,22 @@ public class ZGWClient {
         }
         return  result;
     }
+
+    public ZgwZaak getZaakByUrl(String url){
+        ZgwZaak result = null;
+        var zaakJson = get(url, null);
+        try {
+            Gson gson = new Gson();
+            result = gson.fromJson(zaakJson, ZgwZaak.class);
+
+        } catch (Exception ex) {
+            log.error("Exception in getZaakDetails: " + ex.getMessage());
+            throw ex;
+        }
+
+        return result;
+    }
+
 
     public ZgwZaak getZaakDetails(Map<String, String> parameters) {
 
@@ -193,7 +210,7 @@ public class ZGWClient {
         return tempResult;
     }
 
-    private List<ZgwZaakInformatieObject> getZgwZaakInformatieObjects(Map<String, String> parameters) {
+    public List<ZgwZaakInformatieObject> getZgwZaakInformatieObjects(Map<String, String> parameters) {
         //Fetch EnkelvoudigInformatieObjects
         var zaakInformatieObjectJson = get(baseUrl + "/zaken/api/v1/zaakinformatieobjecten", parameters);
 
@@ -246,4 +263,5 @@ public class ZGWClient {
 
         return result;
     }
+
 }
