@@ -2,7 +2,7 @@ package nl.haarlem.translations.zdstozgw.translation.zgw.model;
 
 import com.google.gson.annotations.Expose;
 
-public class ZgwSatusType {
+public class ZgwStatusType {
 
     @Expose
     public String url;
@@ -20,7 +20,7 @@ public class ZgwSatusType {
     public String zaaktype;
 
     @Expose
-    public String volgnummer;
+    public int volgnummer;
 
     @Expose
     public String isEindstatus;
