@@ -2,6 +2,9 @@ package nl.haarlem.translations.zdstozgw.converter.impl;
 
 import nl.haarlem.translations.zdstozgw.converter.Converter;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.EdcLa01;
+import nl.haarlem.translations.zdstozgw.translation.zds.model.EdcLv01;
+import nl.haarlem.translations.zdstozgw.translation.zds.model.ZakLk01_v2;
+import nl.haarlem.translations.zdstozgw.translation.zds.model.ZakLv01;
 import nl.haarlem.translations.zdstozgw.translation.zds.services.ZaakService;
 import nl.haarlem.translations.zdstozgw.utils.XmlUtils;
 import org.w3c.dom.Document;
@@ -24,9 +27,11 @@ public class GeefZaakDocumentLezenConverter implements Converter {
     public String Convert(ZaakService zaakService, Object object) {
         String result = "";
         try {
-        EdcLa01 edcLa01 = new EdcLa01();
+            EdcLa01 edcLa01 = zaakService.getZaakDoumentLezen((EdcLv01) object);
+            //var zaak = zaakService.creeerZaak((ZakLk01_v2) object);
 
-        return XmlUtils.getSOAPMessageFromObject(edcLa01);
+
+            return XmlUtils.getSOAPMessageFromObject(edcLa01);
 
         } catch (Exception ex) {
             ex.printStackTrace();

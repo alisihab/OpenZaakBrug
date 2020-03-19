@@ -12,8 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.w3c.dom.Document;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.Marshaller;
 import java.lang.invoke.MethodHandles;
 import java.util.HashMap;
 import java.util.Map;
@@ -129,8 +127,12 @@ public class ZaakService {
         return zgwZaak.getUrl();
     }
 
-    public void getZaakDoumentLezen(EdcLv01 object) {
+    public EdcLa01 getZaakDoumentLezen(EdcLv01 edcLv01) {
+        EdcLa01 edcLa01 = new EdcLa01();
 
+        ZgwEnkelvoudigInformatieObject zgwEnkelvoudigInformatieObject = zgwClient.getZgwEnkelvoudigInformatieObject(edcLv01.gelijk.identificatie);
+
+        return edcLa01;
     }
 }
 

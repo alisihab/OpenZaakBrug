@@ -34,7 +34,7 @@ public class SoapController {
     private String response = "NOT IMPLEMENTED";
 
     @PostMapping(value = "/BeantwoordVraag", consumes = MediaType.TEXT_XML_VALUE, produces = MediaType.TEXT_XML_VALUE)
-    public String beantwoordVraag(@RequestHeader(name = "SOAPAction", required = true) String soapAction,@RequestBody String body) {
+    public String beantwoordVraag(@RequestHeader(name = "SOAPAction", required = true) String soapAction, @RequestBody String body) {
 
         soapAction = soapAction.replace("\"", "");
         Converter converter = null;
@@ -83,12 +83,12 @@ public class SoapController {
         soapAction = soapAction.replace("\"", "");
         Converter converter = null;
         if (soapAction.contains("creeerZaak")) {
-            ZakLk01_v2 zakLk01_v2r = (ZakLk01_v2) getStUFObject(body,ZakLk01_v2.class);
+            ZakLk01_v2 zakLk01_v2r = (ZakLk01_v2) getStUFObject(body, ZakLk01_v2.class);
             converter = ConvertorFactory.getConvertor(soapAction, zakLk01_v2r.stuurgegevens.zender.applicatie);
             response = converter.Convert(zaakService, zakLk01_v2r);
         }
         if (soapAction.contains("voegZaakdocumentToe")) {
-            EdcLk01 edcLk01 = (EdcLk01) getStUFObject(body,EdcLk01.class);
+            EdcLk01 edcLk01 = (EdcLk01) getStUFObject(body, EdcLk01.class);
             converter = ConvertorFactory.getConvertor(soapAction, edcLk01.stuurgegevens.zender.applicatie);
             response = converter.Convert(zaakService, edcLk01);
         }
