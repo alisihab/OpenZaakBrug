@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName;
 import lombok.Data;
 
 @Data
-public class QueryResult {
+public class QueryResult<T> {
 
     @SerializedName("count")
     @Expose
@@ -19,6 +19,6 @@ public class QueryResult {
     public Object previous;
     @SerializedName("results")
     @Expose
-    public List<ZgwZaak> results = null;
+    public List<T> results = null;
 
 }

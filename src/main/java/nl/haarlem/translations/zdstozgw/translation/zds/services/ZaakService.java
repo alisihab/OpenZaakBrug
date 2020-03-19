@@ -1,24 +1,18 @@
 package nl.haarlem.translations.zdstozgw.translation.zds.services;
 
 import nl.haarlem.translations.zdstozgw.translation.ZaakTranslator;
-import nl.haarlem.translations.zdstozgw.translation.zds.model.EdcLk01;
-import nl.haarlem.translations.zdstozgw.translation.zds.model.ZakLk01;
-import nl.haarlem.translations.zdstozgw.translation.zds.model.ZakLk01_v2;
-import nl.haarlem.translations.zdstozgw.translation.zds.model.ZakLv01;
+import nl.haarlem.translations.zdstozgw.translation.zds.model.*;
 import nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient;
-import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwEnkelvoudigInformatieObject;
-import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwZaak;
-import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwZaakInformatieObject;
+import nl.haarlem.translations.zdstozgw.translation.zgw.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.w3c.dom.Document;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.Marshaller;
 import java.lang.invoke.MethodHandles;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -58,11 +52,7 @@ public class ZaakService {
     }
 
     public Document getZaakDetails(ZakLv01 zakLv01) throws Exception {
-
-        Map<String, String> parameters = new HashMap();
-        parameters.put("identificatie", zakLv01.getIdentificatie());
-
-        ZgwZaak zgwZaak = zgwClient.getZaakDetails(parameters);
+        ZgwZaak zgwZaak = getZaak(zakLv01.getIdentificatie());
 
         zaakTranslator.setZgwZaak(zgwZaak);
         zaakTranslator.zgwZaakToZakLa01();
@@ -72,13 +62,9 @@ public class ZaakService {
     }
 
     public Document getLijstZaakdocumenten(ZakLv01 zakLv01) throws Exception {
+        ZgwZaak zgwZaak = getZaak(zakLv01.getIdentificatie());
 
         Map<String, String> parameters = new HashMap();
-        parameters.put("identificatie", zakLv01.getIdentificatie());
-
-        ZgwZaak zgwZaak = zgwClient.getZaakDetails(parameters);
-
-        parameters = new HashMap();
         parameters.put("zaak", zgwZaak.getUrl());
 
         var zaakInformatieObjecten = zgwClient.getLijstZaakDocumenten(parameters);
@@ -99,7 +85,7 @@ public class ZaakService {
         ZgwEnkelvoudigInformatieObject zgwEnkelvoudigInformatieObject = zgwClient.addDocument(zaakTranslator.getZgwEnkelvoudigInformatieObject());
 
         if (zgwEnkelvoudigInformatieObject.getUrl() != null) {
-            String zaakUrl = getZaakUrl(edcLk01.objects.get(0).isRelevantVoor.gerelateerde.identificatie);
+            String zaakUrl = getZaak(edcLk01.objects.get(0).isRelevantVoor.gerelateerde.identificatie).url;
             result = addZaakInformatieObject(zgwEnkelvoudigInformatieObject, zaakUrl);
         } else {
             throw new Exception("Document not added");
@@ -123,13 +109,45 @@ public class ZaakService {
         return result;
     }
 
-    private String getZaakUrl(String zaakIdentificatie) {
-        Map<String, String> options = new HashMap();
+    private ZgwZaak getZaak(String zaakIdentificatie) {
         Map<String, String> parameters = new HashMap();
         parameters.put("identificatie", zaakIdentificatie);
 
-        ZgwZaak zgwZaak = zgwClient.getZaakDetails(parameters);
-        return zgwZaak.getUrl();
+        return zgwClient.getZaakDetails(parameters);
     }
- }
+
+    public EdcLa01 getZaakDoumentLezen(EdcLv01 edcLv01) {
+        EdcLa01 edcLa01 = new EdcLa01();
+
+        ZgwEnkelvoudigInformatieObject zgwEnkelvoudigInformatieObject = zgwClient.getZgwEnkelvoudigInformatieObject(edcLv01.gelijk.identificatie);
+
+        edcLa01 = zaakTranslator.getEdcLa01FromZgwEnkelvoudigInformatieObject(zgwEnkelvoudigInformatieObject);
+
+        return edcLa01;
+    }
+
+    private ZgwStatusType getStatusTypeByZaakTypeAndVolgnummer(String zaakTypeUrl, int volgnummer){
+        Map<String, String> parameters = new HashMap();
+        parameters.put("zaaktype", zaakTypeUrl);
+
+        return zgwClient.getStatusTypes(parameters)
+                .stream()
+                .filter(zgwStatusType -> zgwStatusType.volgnummer == volgnummer)
+                .findFirst()
+                .orElse(null);
+    }
+
+    public ZgwZaak actualiseerZaakstatus(ZakLk01_v2 zakLk01) {
+        ZakLk01_v2.Object object = zakLk01.objects.get(1);
+        ZgwZaak zgwZaak = getZaak(object.identificatie);
+
+        zaakTranslator.setZakLk01(zakLk01);
+        ZgwStatus zgwStatus = zaakTranslator.getZgwStatus();
+        zgwStatus.zaak = zgwZaak.url;
+        zgwStatus.statustype = getStatusTypeByZaakTypeAndVolgnummer(zgwZaak.zaaktype, Integer.valueOf(object.heeft.gerelateerde.volgnummer)).url;
+
+        zgwClient.actualiseerZaakStatus(zgwStatus);
+        return zgwZaak;
+    }
+}
 

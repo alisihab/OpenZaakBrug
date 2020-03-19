@@ -1,15 +1,14 @@
-package nl.haarlem.translations.zdstozgw.convertor.impl;
+package nl.haarlem.translations.zdstozgw.converter.impl;
 
-import nl.haarlem.translations.zdstozgw.convertor.Convertor;
+import nl.haarlem.translations.zdstozgw.converter.Converter;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.EdcLk01;
-import nl.haarlem.translations.zdstozgw.translation.zds.model.ZakLk01_v2;
 import nl.haarlem.translations.zdstozgw.translation.zds.services.ZaakService;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwZaakInformatieObject;
 
-public class VoegZaakdocumentToe implements Convertor {
+public class VoegZaakdocumentToeConverter implements Converter {
     protected String templatePath;
 
-    public VoegZaakdocumentToe(String templatePath) {
+    public VoegZaakdocumentToeConverter(String templatePath) {
         this.templatePath = templatePath;
     }
 
