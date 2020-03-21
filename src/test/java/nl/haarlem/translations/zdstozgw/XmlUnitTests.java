@@ -10,7 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.io.IOException;
 
 @SpringBootTest
-public class ApplicationTests {
+public class XmlUnitTests {
 
 	@Test
 	public void contextLoads() {}
@@ -36,7 +36,4 @@ public class ApplicationTests {
 			e.printStackTrace();
 		}
 	}
-
-
-
 }
