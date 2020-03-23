@@ -39,7 +39,7 @@ public class SoapController {
         soapAction = soapAction.replace("\"", "");
         Converter converter = null;
         if (soapAction.contains("geefZaakdocumentLezen")) {
-            EdcLv01 edcLv01 = (EdcLv01) getStUFObject(body, EdcLv01.class);
+            EdcLv01 edcLv01 = (EdcLv01) XmlUtils.getStUFObject(body, EdcLv01.class);
             converter = ConvertorFactory.getConvertor(soapAction, edcLv01.stuurgegevens.zender.applicatie);
             response = converter.Convert(zaakService, edcLv01);
         }
@@ -66,34 +66,22 @@ public class SoapController {
         return response;
     }
 
-    private Object getStUFObject(String body, Class c) {
-        Object object = null;
-        try {
-            object = JAXBContext.newInstance(c)
-                    .createUnmarshaller()
-                    .unmarshal(MessageFactory.newInstance().createMessage(null, new ByteArrayInputStream(body.getBytes())).getSOAPBody().extractContentAsDocument());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return object;
-    }
-
     @PostMapping(value = "/OntvangAsynchroon", consumes = MediaType.TEXT_XML_VALUE, produces = MediaType.TEXT_XML_VALUE)
     public String ontvangAsynchroon(@RequestHeader(name = "SOAPAction", required = true) String soapAction, @RequestBody String body) {
         soapAction = soapAction.replace("\"", "");
         Converter converter = null;
         if (soapAction.contains("creeerZaak")) {
-            ZakLk01_v2 zakLk01_v2r = (ZakLk01_v2) getStUFObject(body, ZakLk01_v2.class);
+            ZakLk01_v2 zakLk01_v2r = (ZakLk01_v2) XmlUtils.getStUFObject(body, ZakLk01_v2.class);
             converter = ConvertorFactory.getConvertor(soapAction, zakLk01_v2r.stuurgegevens.zender.applicatie);
             response = converter.Convert(zaakService, zakLk01_v2r);
         }
         if (soapAction.contains("voegZaakdocumentToe")) {
-            EdcLk01 edcLk01 = (EdcLk01) getStUFObject(body, EdcLk01.class);
+            EdcLk01 edcLk01 = (EdcLk01) XmlUtils.getStUFObject(body, EdcLk01.class);
             converter = ConvertorFactory.getConvertor(soapAction, edcLk01.stuurgegevens.zender.applicatie);
             response = converter.Convert(zaakService, edcLk01);
         }
         if(soapAction.contains("actualiseerZaakstatus")){
-            ZakLk01_v2 zakLk01 = (ZakLk01_v2) getStUFObject(body, ZakLk01_v2.class);
+            ZakLk01_v2 zakLk01 = (ZakLk01_v2) XmlUtils.getStUFObject(body, ZakLk01_v2.class);
             converter = ConvertorFactory.getConvertor(soapAction, zakLk01.stuurgegevens.zender.applicatie);
             response = converter.Convert(zaakService, zakLk01);
         }

@@ -153,4 +153,16 @@ public class XmlUtils {
         body.addDocument(document);
         return message;
     }
+
+    public static Object getStUFObject(String body, Class c) {
+        Object object = null;
+        try {
+            object = JAXBContext.newInstance(c)
+                    .createUnmarshaller()
+                    .unmarshal(MessageFactory.newInstance().createMessage(null, new ByteArrayInputStream(body.getBytes())).getSOAPBody().extractContentAsDocument());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return object;
+    }
 }
