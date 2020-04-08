@@ -38,6 +38,21 @@ import java.time.Instant;
 public class SoapController {
 	private static final Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
+	/*
+	TODO: move to config
+	# Replication modus:
+	# 	USE_ZDS						: Pass through the lecagacy ZDS zaaksysteem
+	# 	USE_ZDS_AND_REPLICATE_2_ZWG	: Use the lecagacy ZDS zaaksysteem and store the information also in the new ZGW zaakregistratie (for compatible check and datamigration)
+	# 	USE_ZWG_AND_REPLICATE_2_ZDS	: Use the new ZGW zaakregistratie and store the information also in the lecagacy ZDS zaaksysteem (for backup purpose)
+	# 	USE_ZWG						: Use the new ZGW zaakregistratie
+	# nl.haarlem.translations.zdstozgw.zds.replicationModus = USE_ZWG
+	nl.haarlem.translations.zdstozgw.zds.replicationModus = USE_ZDS
+	# our SoapUI MockServer runs on htto://localhost:8181/
+	nl.haarlem.translations.zdstozgw.zds.vrijBerichtService = http://localhost:8181/zds/VrijBericht
+	nl.haarlem.translations.zdstozgw.zds.beantwoordVraagService = http://localhost:8181/zds/BeantwoordVraag
+	nl.haarlem.translations.zdstozgw.zds.ontvangAsynchroonService = http://localhost:8181/zds/OntvangAsynchroon
+	nl.haarlem.translations.zdstozgw.stufzkn.ontvangAsynchroonService = http://localhost:8181/stufzkn/OntvangAsynchroon	
+ 	*/	
 	enum ReplicationModus {
 		USE_ZDS, USE_ZDS_AND_REPLICATE_2_ZWG, USE_ZWG_AND_REPLICATE_2_ZDS, USE_ZWG
 	}
