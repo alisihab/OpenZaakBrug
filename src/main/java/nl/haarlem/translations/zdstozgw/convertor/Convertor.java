@@ -3,8 +3,10 @@ import nl.haarlem.translations.zdstozgw.jpa.ApplicationParameterRepository;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.StufRequest;
 import nl.haarlem.translations.zdstozgw.translation.zds.services.ZaakService;
 
-public interface Convertor {
+public abstract class Convertor {
 
-	String Convert(ZaakService zaakService, ApplicationParameterRepository repository, Object object);
-
+	
+	public abstract String Convert(ZaakService zaakService, ApplicationParameterRepository repository, Object object);
+	public abstract String getImplementation();
+	public abstract String getTemplate();
 }

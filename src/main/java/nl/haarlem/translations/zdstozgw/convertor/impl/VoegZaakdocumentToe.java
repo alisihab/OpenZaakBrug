@@ -7,7 +7,7 @@ import nl.haarlem.translations.zdstozgw.translation.zds.model.ZakLk01_v2;
 import nl.haarlem.translations.zdstozgw.translation.zds.services.ZaakService;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwZaakInformatieObject;
 
-public class VoegZaakdocumentToe implements Convertor {
+public class VoegZaakdocumentToe extends Convertor {
     protected String templatePath;
 
     public VoegZaakdocumentToe(String templatePath) {
@@ -33,4 +33,14 @@ public class VoegZaakdocumentToe implements Convertor {
             return f03.getSoapMessageAsString();
         }
     }
+
+	@Override
+	public String getImplementation() {
+		return this.getClass().getCanonicalName();
+	}
+
+	@Override
+	public String getTemplate() {
+		return this.templatePath;
+	}
 }

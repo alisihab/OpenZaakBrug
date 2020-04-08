@@ -5,7 +5,7 @@ import nl.haarlem.translations.zdstozgw.jpa.ApplicationParameterRepository;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZakLk01_v2;
 import nl.haarlem.translations.zdstozgw.translation.zds.services.ZaakService;
 
-public class CreeerZaak implements Convertor {
+public class CreeerZaak extends Convertor {
     protected String templatePath;
 
     public CreeerZaak(String templatePath) {
@@ -31,4 +31,14 @@ public class CreeerZaak implements Convertor {
             return f03.getSoapMessageAsString();
         }
     }
+
+	@Override
+	public String getImplementation() {
+		return this.getClass().getCanonicalName();
+	}
+
+	@Override
+	public String getTemplate() {
+		return this.templatePath;
+	}
 }

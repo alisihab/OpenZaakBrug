@@ -22,7 +22,7 @@ import nl.haarlem.translations.zdstozgw.translation.zds.services.ZaakService;
 
 import nl.haarlem.translations.zdstozgw.jpa.model.ApplicationParameter;
 
-public class GenereerZaakIdentificatie implements Convertor {
+public class GenereerZaakIdentificatie extends Convertor {
 
 	@Data
 	private class GenereerZaakIdentificatie_Di02 {
@@ -78,4 +78,14 @@ public class GenereerZaakIdentificatie implements Convertor {
     	
     	return XmlUtils.xmlToString(du02.document);
     }
+
+	@Override
+	public String getImplementation() {
+		return this.getClass().getCanonicalName();
+	}
+
+	@Override
+	public String getTemplate() {
+		return this.template;
+	}
 }
