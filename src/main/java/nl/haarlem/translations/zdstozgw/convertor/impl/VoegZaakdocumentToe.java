@@ -11,7 +11,7 @@ public class VoegZaakdocumentToe extends Convertor {
     protected String templatePath;
 
     public VoegZaakdocumentToe(String templatePath) {
-        this.templatePath = templatePath;
+        super(templatePath);
     }
 
     @Override
@@ -33,14 +33,4 @@ public class VoegZaakdocumentToe extends Convertor {
             return f03.getSoapMessageAsString();
         }
     }
-
-	@Override
-	public String getImplementation() {
-		return this.getClass().getCanonicalName();
-	}
-
-	@Override
-	public String getTemplate() {
-		return this.templatePath;
-	}
 }

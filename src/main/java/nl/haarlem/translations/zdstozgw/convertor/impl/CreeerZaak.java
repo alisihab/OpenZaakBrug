@@ -9,7 +9,7 @@ public class CreeerZaak extends Convertor {
     protected String templatePath;
 
     public CreeerZaak(String templatePath) {
-        this.templatePath = templatePath;
+        super(templatePath);
     }
 
     @Override
@@ -31,14 +31,4 @@ public class CreeerZaak extends Convertor {
             return f03.getSoapMessageAsString();
         }
     }
-
-	@Override
-	public String getImplementation() {
-		return this.getClass().getCanonicalName();
-	}
-
-	@Override
-	public String getTemplate() {
-		return this.templatePath;
-	}
 }

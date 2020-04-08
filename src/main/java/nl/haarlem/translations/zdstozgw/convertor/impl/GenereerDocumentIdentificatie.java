@@ -50,7 +50,7 @@ public class GenereerDocumentIdentificatie extends Convertor {
 	protected String template;
 	
     public GenereerDocumentIdentificatie(String template) {
-        this.template = template;
+    	super(template);
     }
 
     @Override
@@ -78,14 +78,4 @@ public class GenereerDocumentIdentificatie extends Convertor {
     	
     	return XmlUtils.xmlToString(du02.document);
     }
-
-	@Override
-	public String getImplementation() {
-		return this.getClass().getCanonicalName();
-	}
-
-	@Override
-	public String getTemplate() {
-		return this.template;
-	}
 }

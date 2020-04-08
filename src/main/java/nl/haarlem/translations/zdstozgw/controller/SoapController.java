@@ -49,7 +49,7 @@ public class SoapController {
 	@Autowired
 	protected RequestResponseCycleRepository sessions;
 
-	ReplicationModus replicationModus = ReplicationModus.USE_ZWG;
+	ReplicationModus replicationModus = ReplicationModus.USE_ZDS;
 
 	@PostMapping(value = "/VrijBerichtService", consumes = MediaType.TEXT_XML_VALUE, produces = MediaType.TEXT_XML_VALUE)
 	public ResponseEntity<?> vrijBerichtService(@RequestHeader(name = "SOAPAction", required = true) String soapAction, @RequestBody String body) {
@@ -63,7 +63,7 @@ public class SoapController {
 		var responseCode = HttpStatus.OK;
 
 		try {
-			// get the right convertor
+			// from this lexical level, errors have less impact on the continuity / tracibility
 			var convertor = ConvertorFactory.getConvertor(soapAction.replace("\"", ""), body);
 			if (convertor != null) {
 				// session.setConverter(convertor.getClass().getCanonicalName());
@@ -71,11 +71,15 @@ public class SoapController {
 				session.setConverterTemplate(convertor.getTemplate());
 				sessions.save(session);
 			} else {
-				throw new RuntimeException("no convertor found for soapaction:" + soapAction);
+				throw new RuntimeException("no convertor found for action:" + soapAction);
 			}
+			
 			// do the correct action
 			switch (replicationModus) {
 				case USE_ZDS:
+					var zdsUrl = "http://localhost:8181/";
+					var zdsAction = soapAction; 
+					responseBody = convertor.passThrough(zdsUrl, zdsAction, session, repository, body);					
 					break;
 				case USE_ZDS_AND_REPLICATE_2_ZWG:
 					break;
@@ -89,22 +93,26 @@ public class SoapController {
 			}
 		}
 		catch(Exception ex) {
-			// handle the error nice 
-			
-		    Document document = nl.haarlem.translations.zdstozgw.utils.XmlUtils.getDocument("nl/haarlem/translations/controller/Fault_F0.xml");
-		    XpathDocument xpathDocument = new XpathDocument(document);
-		    		    
-		    xpathDocument.setNodeValue(".//faultstring", ex.toString());
-		    xpathDocument.setNodeValue(".//stuf:omschrijving", ex.toString());
+			// get the stacktrace and store it
 		    var swriter = new java.io.StringWriter();
-		    var pwriter = new java.io.PrintWriter(swriter);
+		    var pwriter = new java.io.PrintWriter(swriter);		    
+		    ex.printStackTrace(pwriter);
 		    var stackTrace = swriter.toString();
 		    session.setStackTrace(stackTrace);
-		    xpathDocument.setNodeValue(".//stuf:details", stackTrace);		    
-		    xpathDocument.setNodeValue(".//stuf:detailsXML", body);
-    	
-		    responseBody =  XmlUtils.xmlToString(document);
-			responseCode = HttpStatus.INTERNAL_SERVER_ERROR;
+
+		    // we don't have a resonse yet, create an error message
+		    if(responseBody == null) {
+			    Document document = nl.haarlem.translations.zdstozgw.utils.XmlUtils.getDocument("src/main/java/nl/haarlem/translations/zdstozgw/controller/Fault_Fo02.xml");
+			    XpathDocument xpathDocument = new XpathDocument(document);
+			    		    
+			    xpathDocument.setNodeValue(".//faultstring", ex.toString());
+			    xpathDocument.setNodeValue(".//stuf:omschrijving", ex.toString());
+			    xpathDocument.setNodeValue(".//stuf:details", stackTrace);		    
+			    xpathDocument.setNodeValue(".//stuf:detailsXML", body);
+	    	
+			    responseBody =  XmlUtils.xmlToString(document);
+				responseCode = HttpStatus.INTERNAL_SERVER_ERROR;
+		    }
 		}
 			
 		// after all the work
