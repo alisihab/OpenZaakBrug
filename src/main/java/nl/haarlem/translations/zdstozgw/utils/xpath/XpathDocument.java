@@ -85,16 +85,6 @@ public class XpathDocument {
         node.setTextContent(value);
     }
 
-    public void setNodeXml(String expression, String xml) {
-        Node node = null;
-        try {
-            node = (Node) xPath.compile(expression).evaluate(document, XPathConstants.NODE);
-        } catch (XPathExpressionException e) {
-            log.error(e.getMessage());
-        }
-        node.setTextContent(value);
-    }    
-    
     public void setNodeEmpty(String expression) {
         Node node = null;
         try {
