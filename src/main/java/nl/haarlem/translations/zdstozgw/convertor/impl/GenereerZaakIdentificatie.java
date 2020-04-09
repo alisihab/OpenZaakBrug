@@ -47,15 +47,14 @@ public class GenereerZaakIdentificatie extends Convertor {
 	}	
 	
     private static final Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());	
-	protected String template;
 	
     public GenereerZaakIdentificatie(String template) {
         super(template);
     }
 
     @Override
-    public String Convert(ZaakService zaakService, ApplicationParameterRepository repository, Object object) {
-    	var stufRequest = (StufRequest) object;
+    public String Convert(ZaakService zaakService, ApplicationParameterRepository repository, String  requestbody) {
+    	var stufRequest = new StufRequest(XmlUtils.convertStringToDocument(requestbody));
     	DateFormat tijdstipformat = new SimpleDateFormat("yyyyMMddHHmmss");   	    
     	
     	var prefixparam  = repository.getOne("ZaakIdentificatiePrefix");

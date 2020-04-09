@@ -8,16 +8,15 @@ import nl.haarlem.translations.zdstozgw.translation.zds.services.ZaakService;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwZaakInformatieObject;
 
 public class VoegZaakdocumentToe extends Convertor {
-    protected String templatePath;
 
-    public VoegZaakdocumentToe(String templatePath) {
-        super(templatePath);
+    public VoegZaakdocumentToe(String template) {
+        super(template);
     }
 
     @Override
-    public String Convert(ZaakService zaakService, ApplicationParameterRepository repository, Object object) {
+    public String Convert(ZaakService zaakService, ApplicationParameterRepository repository, String requestBody) {
         try {
-
+        	EdcLk01 object = nl.haarlem.translations.zdstozgw.controller.SoapController.getZakLEdcLk01(requestBody);
             ZgwZaakInformatieObject zgwZaakInformatieObject = zaakService.voegZaakDocumentToe((EdcLk01) object);
             var bv03 = new nl.haarlem.translations.zdstozgw.translation.zds.model.Bv03();
             bv03.setReferentienummer(zgwZaakInformatieObject.getUuid());

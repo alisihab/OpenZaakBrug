@@ -1,5 +1,6 @@
 package nl.haarlem.translations.zdstozgw.convertor.impl;
 
+import nl.haarlem.translations.zdstozgw.controller.SoapController;
 import nl.haarlem.translations.zdstozgw.convertor.Convertor;
 import nl.haarlem.translations.zdstozgw.jpa.ApplicationParameterRepository;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZakLk01_v2;
@@ -13,9 +14,9 @@ public class CreeerZaak extends Convertor {
     }
 
     @Override
-    public String Convert(ZaakService zaakService, ApplicationParameterRepository repository, Object object) {
+    public String Convert(ZaakService zaakService, ApplicationParameterRepository repository, String requestBody) {
         try {
-
+        	ZakLk01_v2 object = SoapController.getZakLka01(requestBody);
             var zaak = zaakService.creeerZaak((ZakLk01_v2) object);
             var bv03 = new nl.haarlem.translations.zdstozgw.translation.zds.model.Bv03();
             bv03.setReferentienummer(zaak.getUuid());

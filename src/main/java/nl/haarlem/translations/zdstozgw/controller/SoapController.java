@@ -1,16 +1,14 @@
 package nl.haarlem.translations.zdstozgw.controller;
 
-import nl.haarlem.translations.zdstozgw.convertor.ConvertorFactory;
-import nl.haarlem.translations.zdstozgw.jpa.ApplicationParameterRepository;
-import nl.haarlem.translations.zdstozgw.jpa.RequestResponseCycleRepository;
-import nl.haarlem.translations.zdstozgw.jpa.model.RequestResponseCycle;
-import nl.haarlem.translations.zdstozgw.convertor.Convertor;
-import nl.haarlem.translations.zdstozgw.translation.zds.model.*;
-import nl.haarlem.translations.zdstozgw.translation.zds.services.ZaakService;
-import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwZaak;
-import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwZaakInformatieObject;
-import nl.haarlem.translations.zdstozgw.utils.XmlUtils;
-import nl.haarlem.translations.zdstozgw.utils.xpath.XpathDocument;
+import java.io.ByteArrayInputStream;
+import java.lang.invoke.MethodHandles;
+import java.time.Duration;
+import java.time.Instant;
+
+import javax.xml.bind.JAXBContext;
+import javax.xml.soap.MessageFactory;
+import javax.xml.soap.SOAPException;
+import javax.xml.soap.SOAPPart;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -25,38 +24,43 @@ import org.springframework.web.bind.annotation.RestController;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.soap.*;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.lang.invoke.MethodHandles;
-import java.time.Duration;
-import java.time.Instant;
+import nl.haarlem.translations.zdstozgw.convertor.Convertor;
+import nl.haarlem.translations.zdstozgw.convertor.ConvertorFactory;
+import nl.haarlem.translations.zdstozgw.jpa.ApplicationParameterRepository;
+import nl.haarlem.translations.zdstozgw.jpa.RequestResponseCycleRepository;
+import nl.haarlem.translations.zdstozgw.jpa.model.RequestResponseCycle;
+import nl.haarlem.translations.zdstozgw.translation.zds.model.EdcLk01;
+import nl.haarlem.translations.zdstozgw.translation.zds.model.F03;
+import nl.haarlem.translations.zdstozgw.translation.zds.model.StufRequest;
+import nl.haarlem.translations.zdstozgw.translation.zds.model.ZakLk01_v2;
+import nl.haarlem.translations.zdstozgw.translation.zds.services.ZaakService;
+import nl.haarlem.translations.zdstozgw.utils.XmlUtils;
+import nl.haarlem.translations.zdstozgw.utils.xpath.XpathDocument;
 
 @RestController
 public class SoapController {
 	private static final Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
-	/*
-	TODO: move to config
-	# Replication modus:
-	# 	USE_ZDS						: Pass through the lecagacy ZDS zaaksysteem
-	# 	USE_ZDS_AND_REPLICATE_2_ZWG	: Use the lecagacy ZDS zaaksysteem and store the information also in the new ZGW zaakregistratie (for compatible check and datamigration)
-	# 	USE_ZWG_AND_REPLICATE_2_ZDS	: Use the new ZGW zaakregistratie and store the information also in the lecagacy ZDS zaaksysteem (for backup purpose)
-	# 	USE_ZWG						: Use the new ZGW zaakregistratie
-	# nl.haarlem.translations.zdstozgw.zds.replicationModus = USE_ZWG
-	nl.haarlem.translations.zdstozgw.zds.replicationModus = USE_ZDS
-	# our SoapUI MockServer runs on htto://localhost:8181/
-	nl.haarlem.translations.zdstozgw.zds.vrijBerichtService = http://localhost:8181/zds/VrijBericht
-	nl.haarlem.translations.zdstozgw.zds.beantwoordVraagService = http://localhost:8181/zds/BeantwoordVraag
-	nl.haarlem.translations.zdstozgw.zds.ontvangAsynchroonService = http://localhost:8181/zds/OntvangAsynchroon
-	nl.haarlem.translations.zdstozgw.stufzkn.ontvangAsynchroonService = http://localhost:8181/stufzkn/OntvangAsynchroon	
- 	*/	
 	enum ReplicationModus {
 		USE_ZDS, USE_ZDS_AND_REPLICATE_2_ZWG, USE_ZWG_AND_REPLICATE_2_ZDS, USE_ZWG
 	}
 
+
+	//	Replication modus:
+	//		USE_ZDS						: Pass through the lecagacy ZDS zaaksysteem
+	//		USE_ZDS_AND_REPLICATE_2_ZWG	: Use the lecagacy ZDS zaaksysteem and store the information also in the new ZGW zaakregistratie (for compatible check and datamigration)
+	//		USE_ZWG_AND_REPLICATE_2_ZDS	: Use the new ZGW zaakregistratie and store the information also in the lecagacy ZDS zaaksysteem (for backup purpose)
+	//		USE_ZWG						: Use the new ZGW zaakregistratie
+	//
+	//	TODO: move to config	
+	// static ReplicationModus REPLICATION_MODUS = ReplicationModus.USE_ZDS;
+	static ReplicationModus REPLICATION_MODUS = ReplicationModus.USE_ZWG;
+	
+	static String SERVICE_ZDS_VRIJ_BERICHT = "http://localhost:8181/zds/VrijBericht";
+	static String SERVICE_ZDS_BEANTWOORD_VRAAG = "http://localhost:8181/zds/BeantwoordVraag";
+	static String SERVICE_ZDS_ONTVANG_ASYNCHROON = "http://localhost:8181/zds/OntvangAsynchroon";
+	static String SERVICE_STUFZKN_ONTVANG_ASYNCHROON = "http://localhost:8181/stufzkn/OntvangAsynchroon";
+	
 	@Autowired
 	private ZaakService zaakService;
 	@Autowired
@@ -64,13 +68,13 @@ public class SoapController {
 	@Autowired
 	protected RequestResponseCycleRepository sessions;
 
-	ReplicationModus replicationModus = ReplicationModus.USE_ZDS;
-
-	@PostMapping(value = "/VrijBerichtService", consumes = MediaType.TEXT_XML_VALUE, produces = MediaType.TEXT_XML_VALUE)
-	public ResponseEntity<?> vrijBerichtService(@RequestHeader(name = "SOAPAction", required = true) String soapAction, @RequestBody String body) {
+//	@PostMapping(value = "/VrijBerichtService", consumes = MediaType.TEXT_XML_VALUE, produces = MediaType.TEXT_XML_VALUE)
+//	public ResponseEntity<?> vrijBerichtService(@RequestHeader(name = "SOAPAction", required = true) String soapAction, @RequestBody String body) {
+	@PostMapping(value = "/{path}", consumes = MediaType.TEXT_XML_VALUE, produces = MediaType.TEXT_XML_VALUE)
+	public ResponseEntity<?> HandleRequest(@PathVariable("path") String path, @RequestHeader(name = "SOAPAction", required = true) String soapAction, @RequestBody String body) {	
 		// store our information as fast as possible
 		var beginTime = Instant.now();
-		var session = new RequestResponseCycle("VrijBerichtService", soapAction.replace("\"", ""), body);
+		var session = new RequestResponseCycle(path, soapAction.replace("\"", ""), body);
 		sessions.save(session);
 
 		// what we will return
@@ -90,9 +94,9 @@ public class SoapController {
 			}
 			
 			// do the correct action
-			switch (replicationModus) {
+			switch (REPLICATION_MODUS) {
 				case USE_ZDS:
-					var zdsUrl = "http://localhost:8181/";
+					var zdsUrl = SERVICE_ZDS_VRIJ_BERICHT;
 					var zdsAction = soapAction; 
 					responseBody = convertor.passThrough(zdsUrl, zdsAction, session, repository, body);					
 					break;
@@ -101,7 +105,7 @@ public class SoapController {
 				case USE_ZWG_AND_REPLICATE_2_ZDS:	
 					break;
 				case USE_ZWG:
-					responseBody = convertor.Convert(zaakService, repository, new StufRequest(XmlUtils.convertStringToDocument(body)));
+					responseBody = convertor.Convert(zaakService, repository, body);
 					session.setZgwResponeBody(responseBody);
 					break;
 				default:
@@ -117,6 +121,7 @@ public class SoapController {
 
 		    // we don't have a resonse yet, create an error message
 		    if(responseBody == null) {
+		    	// TODO: https://www.gemmaonline.nl/images/gemmaonline/4/4f/Stuf0301_-_ONV0347_%28zonder_renvooi%29.pdf
 			    Document document = nl.haarlem.translations.zdstozgw.utils.XmlUtils.getDocument("src/main/java/nl/haarlem/translations/zdstozgw/controller/Fault_Fo02.xml");
 			    XpathDocument xpathDocument = new XpathDocument(document);
 			    		    
@@ -138,7 +143,7 @@ public class SoapController {
 		return new ResponseEntity<>(responseBody, responseCode);
 	}
 
-	@PostMapping(value = "/BeantwoordVraag", consumes = MediaType.TEXT_XML_VALUE, produces = MediaType.TEXT_XML_VALUE)
+	@PostMapping(value = "/BeantwoordVraagHaarlem", consumes = MediaType.TEXT_XML_VALUE, produces = MediaType.TEXT_XML_VALUE)
 	public String beantwoordVraag(@RequestHeader(name = "SOAPAction", required = true) String soapAction, @RequestBody String body) {
 		var stufRequest = new StufRequest(XmlUtils.convertStringToDocument(body));
 		String response = "NOT IMPLEMENTED! (" + soapAction + ")";
@@ -163,7 +168,7 @@ public class SoapController {
 		return response;
 	}
 
-	private ZakLk01_v2 getZakLka01(String body) {
+	public static ZakLk01_v2 getZakLka01(String body) {
 		ZakLk01_v2 zakLk01 = null;
 		try {
 			zakLk01 = (ZakLk01_v2) JAXBContext.newInstance(ZakLk01_v2.class).createUnmarshaller().unmarshal(
@@ -175,7 +180,7 @@ public class SoapController {
 		return zakLk01;
 	}
 
-	private EdcLk01 getZakLEdcLk01(String body) {
+	public static EdcLk01 getZakLEdcLk01(String body) {
 		EdcLk01 edcLk01 = null;
 		try {
 			edcLk01 = (EdcLk01) JAXBContext.newInstance(EdcLk01.class).createUnmarshaller().unmarshal(
@@ -187,7 +192,7 @@ public class SoapController {
 		return edcLk01;
 	}
 
-	@PostMapping(value = "/OntvangAsynchroon", consumes = MediaType.TEXT_XML_VALUE, produces = MediaType.TEXT_XML_VALUE)
+	@PostMapping(value = "/OntvangAsynchroonHaarlem", consumes = MediaType.TEXT_XML_VALUE, produces = MediaType.TEXT_XML_VALUE)
 	public String ontvangAsynchroon(@RequestHeader(name = "SOAPAction", required = true) String soapAction,
 			@RequestBody String body) {
 		soapAction = soapAction.replace("\"", "");
@@ -195,14 +200,18 @@ public class SoapController {
 		String response = "NOT IMPLEMENTED! (" + soapAction + ")";
 
 		if (soapAction.contains("creeerZaak")) {
-			ZakLk01_v2 zakLk01_v2r = getZakLka01(body);
-			convertor = ConvertorFactory.getConvertor(soapAction, zakLk01_v2r.stuurgegevens.zender.applicatie);
-			response = convertor.Convert(zaakService, repository, zakLk01_v2r);
+			//ZakLk01_v2 zakLk01_v2r = getZakLka01(body);
+			//convertor = ConvertorFactory.getConvertor(soapAction, zakLk01_v2r.stuurgegevens.zender.applicatie);
+			//response = convertor.Convert(zaakService, repository, zakLk01_v2r);
+			convertor = ConvertorFactory.getConvertor(soapAction, body);
+			response = convertor.Convert(zaakService, repository, body);			
 		}
 		if (soapAction.contains("voegZaakdocumentToe")) {
-			EdcLk01 edcLk01 = getZakLEdcLk01(body);
-			convertor = ConvertorFactory.getConvertor(soapAction, edcLk01.stuurgegevens.zender.applicatie);
-			response = convertor.Convert(zaakService, repository, edcLk01);
+			//EdcLk01 edcLk01 = getZakLEdcLk01(body);
+			//convertor = ConvertorFactory.getConvertor(soapAction, edcLk01.stuurgegevens.zender.applicatie);
+			//response = convertor.Convert(zaakService, repository, edcLk01);
+			convertor = ConvertorFactory.getConvertor(soapAction, body);
+			response = convertor.Convert(zaakService, repository, body);			
 		}
 
 		try {

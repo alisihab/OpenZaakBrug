@@ -8,7 +8,9 @@ import org.slf4j.LoggerFactory;
 
 import nl.haarlem.translations.zdstozgw.jpa.ApplicationParameterRepository;
 import nl.haarlem.translations.zdstozgw.jpa.model.RequestResponseCycle;
+import nl.haarlem.translations.zdstozgw.translation.zds.model.StufRequest;
 import nl.haarlem.translations.zdstozgw.translation.zds.services.ZaakService;
+import nl.haarlem.translations.zdstozgw.utils.XmlUtils;
 
 public abstract class Convertor {
 
@@ -19,7 +21,7 @@ public abstract class Convertor {
         this.template = template;
     }
     
-	public abstract String Convert(ZaakService zaakService, ApplicationParameterRepository repository, Object object);
+	public abstract String Convert(ZaakService zaakService, ApplicationParameterRepository repository, String requestBody);
 
 	public String getImplementation() {
 		return this.getClass().getCanonicalName();
