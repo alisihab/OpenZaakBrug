@@ -9,8 +9,8 @@ import nl.haarlem.translations.zdstozgw.translation.zds.services.ZaakService;
 public class CreeerZaak extends Convertor {
     protected String templatePath;
 
-    public CreeerZaak(String templatePath) {
-        super(templatePath);
+    public CreeerZaak(String templatePath, String legacyService) {
+        super(templatePath, legacyService);
     }
 
     @Override

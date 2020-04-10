@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 
+import nl.haarlem.translations.zdstozgw.config.ConfigService;
 import nl.haarlem.translations.zdstozgw.convertor.Convertor;
 import nl.haarlem.translations.zdstozgw.convertor.ConvertorFactory;
 import nl.haarlem.translations.zdstozgw.jpa.ApplicationParameterRepository;
@@ -39,27 +40,37 @@ import nl.haarlem.translations.zdstozgw.utils.xpath.XpathDocument;
 
 @RestController
 public class SoapController {
+	enum ReplicationModus { USE_ZDS, USE_ZDS_AND_REPLICATE_2_ZGW, USE_ZGW_AND_REPLICATE_2_ZDS, USE_ZGW	}
+
 	private static final Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
-
-	enum ReplicationModus {
-		USE_ZDS, USE_ZDS_AND_REPLICATE_2_ZWG, USE_ZWG_AND_REPLICATE_2_ZDS, USE_ZWG
-	}
-
-
-	//	Replication modus:
-	//		USE_ZDS						: Pass through the lecagacy ZDS zaaksysteem
-	//		USE_ZDS_AND_REPLICATE_2_ZWG	: Use the lecagacy ZDS zaaksysteem and store the information also in the new ZGW zaakregistratie (for compatible check and datamigration)
-	//		USE_ZWG_AND_REPLICATE_2_ZDS	: Use the new ZGW zaakregistratie and store the information also in the lecagacy ZDS zaaksysteem (for backup purpose)
-	//		USE_ZWG						: Use the new ZGW zaakregistratie
-	//
-	//	TODO: move to config	
-	// static ReplicationModus REPLICATION_MODUS = ReplicationModus.USE_ZDS;
-	static ReplicationModus REPLICATION_MODUS = ReplicationModus.USE_ZWG;
 	
-	static String SERVICE_ZDS_VRIJ_BERICHT = "http://localhost:8181/zds/VrijBericht";
-	static String SERVICE_ZDS_BEANTWOORD_VRAAG = "http://localhost:8181/zds/BeantwoordVraag";
-	static String SERVICE_ZDS_ONTVANG_ASYNCHROON = "http://localhost:8181/zds/OntvangAsynchroon";
-	static String SERVICE_STUFZKN_ONTVANG_ASYNCHROON = "http://localhost:8181/stufzkn/OntvangAsynchroon";
+	static ReplicationModus REPLICATION_MODUS;
+    static ConfigService config = null;     
+    static{
+		try {
+			config = new ConfigService();
+			log.info("REPLICATION MODUS : " + config.getConfiguratie().replicationModus);
+			switch(config.getConfiguratie().replicationModus) {
+				case "USE_ZDS" : 
+					REPLICATION_MODUS = ReplicationModus.USE_ZDS;
+					break;
+				case "USE_ZDS_AND_REPLICATE_2_ZGW" : 
+					REPLICATION_MODUS = ReplicationModus.USE_ZDS_AND_REPLICATE_2_ZGW;
+					break;
+				case "USE_ZGW_AND_REPLICATE_2_ZDS" : 
+					REPLICATION_MODUS = ReplicationModus.USE_ZGW_AND_REPLICATE_2_ZDS;
+					break;
+				case "USE_ZGW" : 
+					REPLICATION_MODUS = ReplicationModus.USE_ZGW;
+					break;
+				default:
+					throw new Exception("unkown replicationModus:" + config.getConfiguratie().replicationModus + ", valid options (USE_ZDS, USE_ZDS_AND_REPLICATE_2_ZWG, USE_ZWG_AND_REPLICATE_2_ZDS, USE_ZWG)");				
+			}
+		} 
+		catch (Exception ex) {
+			log.error("Could not load the configuration", ex);
+		}    	
+    }	
 	
 	@Autowired
 	private ZaakService zaakService;
@@ -70,11 +81,11 @@ public class SoapController {
 
 //	@PostMapping(value = "/VrijBerichtService", consumes = MediaType.TEXT_XML_VALUE, produces = MediaType.TEXT_XML_VALUE)
 //	public ResponseEntity<?> vrijBerichtService(@RequestHeader(name = "SOAPAction", required = true) String soapAction, @RequestBody String body) {
-	@PostMapping(value = "/{path}", consumes = MediaType.TEXT_XML_VALUE, produces = MediaType.TEXT_XML_VALUE)
-	public ResponseEntity<?> HandleRequest(@PathVariable("path") String path, @RequestHeader(name = "SOAPAction", required = true) String soapAction, @RequestBody String body) {	
+	@PostMapping(value = "/{requestUrl}", consumes = MediaType.TEXT_XML_VALUE, produces = MediaType.TEXT_XML_VALUE)
+	public ResponseEntity<?> HandleRequest(@PathVariable("requestUrl") String requestUrl, @RequestHeader(name = "SOAPAction", required = true) String soapAction, @RequestBody String body) {	
 		// store our information as fast as possible
 		var beginTime = Instant.now();
-		var session = new RequestResponseCycle(path, soapAction.replace("\"", ""), body);
+		var session = new RequestResponseCycle(requestUrl, soapAction.replace("\"", ""), body);
 		sessions.save(session);
 
 		// what we will return
@@ -96,15 +107,13 @@ public class SoapController {
 			// do the correct action
 			switch (REPLICATION_MODUS) {
 				case USE_ZDS:
-					var zdsUrl = SERVICE_ZDS_VRIJ_BERICHT;
-					var zdsAction = soapAction; 
-					responseBody = convertor.passThrough(zdsUrl, zdsAction, session, repository, body);					
+					responseBody = convertor.passThrough(soapAction, session, repository, body);					
 					break;
-				case USE_ZDS_AND_REPLICATE_2_ZWG:
+				case USE_ZDS_AND_REPLICATE_2_ZGW:
 					break;
-				case USE_ZWG_AND_REPLICATE_2_ZDS:	
+				case USE_ZGW_AND_REPLICATE_2_ZDS:	
 					break;
-				case USE_ZWG:
+				case USE_ZGW:
 					responseBody = convertor.Convert(zaakService, repository, body);
 					session.setZgwResponeBody(responseBody);
 					break;
@@ -119,7 +128,7 @@ public class SoapController {
 		    var stackTrace = swriter.toString();
 		    session.setStackTrace(stackTrace);
 
-		    // we don't have a resonse yet, create an error message
+		    // we don't have a response yet, create an error message
 		    if(responseBody == null) {
 		    	// TODO: https://www.gemmaonline.nl/images/gemmaonline/4/4f/Stuf0301_-_ONV0347_%28zonder_renvooi%29.pdf
 			    Document document = nl.haarlem.translations.zdstozgw.utils.XmlUtils.getDocument("src/main/java/nl/haarlem/translations/zdstozgw/controller/Fault_Fo02.xml");

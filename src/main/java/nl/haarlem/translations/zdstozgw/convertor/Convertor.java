@@ -16,10 +16,13 @@ public abstract class Convertor {
 
 	private static final Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 	
-	protected String template;	
-    public Convertor(String template) {
-        this.template = template;
-    }
+	protected String template;
+	protected String zdsUrl;
+    
+	public Convertor(String template, String legacyService) {
+		this.template = template;
+        this.zdsUrl = legacyService;        
+	}
     
 	public abstract String Convert(ZaakService zaakService, ApplicationParameterRepository repository, String requestBody);
 
@@ -31,10 +34,10 @@ public abstract class Convertor {
 		return this.template;
 	}
 
-	public String passThrough(String zdsUrl, String zdsSoapAction, RequestResponseCycle session, ApplicationParameterRepository repository, String zdsRequest) throws Exception 
+	public String passThrough(String zdsSoapAction, RequestResponseCycle session, ApplicationParameterRepository repository, String zdsRequest) throws Exception 
 	{ 
         // what are we going to do?
-		session.setZdsSoapAction(zdsUrl);
+		session.setZdsUrl(zdsUrl);
         session.setZdsRequest(zdsRequest);
         session.setZdsSoapAction(zdsSoapAction);
 
@@ -51,7 +54,10 @@ public abstract class Convertor {
 	        int responsecode = httpclient.executeMethod(post);
 	        String zdsResponeCode = "" + responsecode;
 	        String zdsResponeBody = post.getResponseBodyAsString(); 
-	        
+
+	        if(responsecode != 200) {
+	        	log.warn("Receive the responsecode status "  + responsecode + "  from: " + zdsUrl + " (dus geen status=200  van het ouwe zaaksysteem)");	        	
+	        }
 	        session.setZdsResponeCode(zdsResponeCode);
 	        session.setZdsResponeBody(zdsResponeBody);
 	        

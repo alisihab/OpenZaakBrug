@@ -48,8 +48,8 @@ public class GenereerZaakIdentificatie extends Convertor {
 	
     private static final Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());	
 	
-    public GenereerZaakIdentificatie(String template) {
-        super(template);
+    public GenereerZaakIdentificatie(String template, String legacyService) {
+        super(template, legacyService);
     }
 
     @Override

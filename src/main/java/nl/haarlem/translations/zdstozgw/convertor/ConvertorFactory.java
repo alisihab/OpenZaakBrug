@@ -28,12 +28,14 @@ public class ConvertorFactory {
 
 		String classname = null;
 		String templatepath = null;
+		String legacyservice = null;
 	
 		for (Translation translation : config.getConfiguratie().getTranslations() ){
 			if(translation.soapaction.equals(soapAction) && application.contains(translation.requestcontains)) {
         		classname = translation.implementation;
         		templatepath = translation.template;	
-        		log.info("Using translation: '" + translation.translation + "' for soapaction:" + soapAction);
+        		legacyservice = translation.legacyservice;
+        		log.info("Using translation: '" + translation.translation + "' for soapaction:" + soapAction + " (legacy url:" + legacyservice + ")");
         		break;
 			}
 		}
@@ -67,9 +69,10 @@ public class ConvertorFactory {
 			return null;
 		}		
 		try {
+			log.info("Loading class:" + classname);			
 			Class<?> c = Class.forName(classname);
-			java.lang.reflect.Constructor<?> ctor = c.getConstructor(String.class);
-			Object object = ctor.newInstance(new Object[] { templatepath });
+			java.lang.reflect.Constructor<?> ctor = c.getConstructor(String.class, String.class);			
+			Object object = ctor.newInstance(new Object[] { templatepath, legacyservice });
 			return  (Convertor) object;
 		} catch (Exception e) {
 			e.printStackTrace();

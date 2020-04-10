@@ -9,8 +9,8 @@ import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwZaakInformatieO
 
 public class VoegZaakdocumentToe extends Convertor {
 
-    public VoegZaakdocumentToe(String template) {
-        super(template);
+    public VoegZaakdocumentToe(String template, String legacyService) {
+        super(template, legacyService);
     }
 
     @Override

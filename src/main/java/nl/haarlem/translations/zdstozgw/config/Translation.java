@@ -21,4 +21,7 @@ public class Translation {
     @SerializedName("implementation")
     @Expose
     public String implementation;
+    @SerializedName("legacyservice")
+    @Expose
+    public String legacyservice;
 }

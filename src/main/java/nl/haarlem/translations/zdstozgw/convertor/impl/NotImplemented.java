@@ -6,8 +6,8 @@ import nl.haarlem.translations.zdstozgw.translation.zds.services.ZaakService;
 
 public class NotImplemented extends Convertor {
 
-    public NotImplemented(String template) {
-        super(template);
+    public NotImplemented(String template, String legacyService) {
+        super(template, legacyService);
     }
 
     @Override
