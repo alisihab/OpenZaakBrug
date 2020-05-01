@@ -23,7 +23,7 @@ Dit door het volgende proces te doorlopen:
 
 6. Wanneer alle zaken en documenten in het zaaksysteem staan, dan moeten in de database de ZaakIdentificatieHuidige en DocumentIdentificatieHuidige aangepast worden naar de laatst uitgegevens nummers (en de betreffende prefix), waarna de replicatie-modus gezet kan worden op: **USE_ZGW**. De OpenZaakBrug draait daamee volledig op OpenZaak het het "oude"-zaaksysteem kan worden uitgezet.
 
-![image-20200430235424144](D:\git\OpenZaakBrug\media\openzaakbrug-replication.png)
+![openzaakbrug-replication](media/openzaakbrug-replication.png)
 
 Op dit moment wordt AL het berichtenverkeer in de database gelogd met de eventuele fouten voor nadere inspectie, zodra de koppeling robuust werkt kan dit worden aangepast.
 
