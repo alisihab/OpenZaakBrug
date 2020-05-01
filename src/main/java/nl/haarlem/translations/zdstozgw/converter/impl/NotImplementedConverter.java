@@ -4,9 +4,9 @@ import nl.haarlem.translations.zdstozgw.converter.Converter;
 import nl.haarlem.translations.zdstozgw.jpa.ApplicationParameterRepository;
 import nl.haarlem.translations.zdstozgw.translation.zds.services.ZaakService;
 
-public class NotImplemented extends Converter {
+public class NotImplementedConverter extends Converter {
 
-    public NotImplemented(String template, String legacyService) {
+    public NotImplementedConverter(String template, String legacyService) {
         super(template, legacyService);
     }
 
