@@ -1,74 +1,38 @@
-# StUF ZDS to ZGW API translator #
+# OpenZaakBrug #
 
-This project is a proof of concept of a service that can translate StUF ZDS 1.2 SOAP messages to their corresponding ZGW 1.0 API calls.
+## Over OpenZaakBrug
 
-The service can be used to connect legacy applications that do not yet support ZGW 1.0 to an ZGW 1.0 ZRC. This makes it possible for organisations to migrate to
-ZGW 1.0 without having to wait until all vendors support it.
+De API-standaarden voor zaakgericht werken stellen gemeenten in staat om de informatievoorziening rondom zaakgericht werken in te richten volgens de informatiekundige visie Common Ground. Hiermee zetten ze een eerste stap in de richting van een modernisering van het ICT-landschap. Dit helpt bij het (ont)koppelen van processystemen en de opslagcomponenten waar documenten en overige informatie in zijn opgeslagen.
 
-### Prerequisites
+Wij willen niet meer investeren in de oude koppelingen van het zaaksgericht werken (ZDS standaard) en willen zo snel mogelijk de nieuwe Zaakgericht Werken-api&#39;s gebruiken. Daarom willen we zo snel mogelijk de nieuwe opslaginfrastructuur op basis van deze standaard aanbieden. Daarna kunnen alle nieuwe applicaties via deze nieuwe standaard aansluiten.
 
-### Java
-Java 11 or higher is needed to run the project. The project is tested with OpenJDK 11
+Omdat de bestaande applicaties niet de nieuwe standaard ondersteunen kunnen deze niet aangesloten worden op het nieuwe zaaksysteem. Door een component te ontwikkelen welke de communicatie omzet van de oude standaard (ZDS) naar de nieuwe (ZGW) hoeven de bestaande applicaties niet op hetzelfde moment te worden aangepast.
 
-### Lombok 
-This project uses [Lombok](https://projectlombok.org/). No setup is required to run the application after building with Maven.
-If compilation in an IDE is needed, setup may me applicable. 
-Lombok plugins are available for all major Java IDE's ([examples](https://www.baeldung.com/lombok-ide))
+Het uiteindelijke doel is om alle applicaties op de nieuwe Zaakgericht Werken-api&#39;s te krijgen, met deze aanpak ontstaat er tijd om beheerst en onder regie dit uit te voeren.
 
-### Installation ###
+Wij willen hiervoor een vertaal component maken die ervoor zorgt dat de bestaande ZDS- applicaties kunnen aansluiten op de nieuwe zaak en document opslagcomponenten.
 
-Clone the repo and build and run the service with Maven
+Hierbij hebben we de volgende uitgangspunten:
 
-```
-$ git clone https://github.com/Haarlem/zds-stuf-to-zgw-api-translator/
-$ cd zds-stuf-to-zgw-api-translator 
-```
+- Het doel is het aansluiten van de bestaande ZDS-applicaties
+- De oplossing hoeft niet aan de volledige ZDS-standaard te voldoen (minimaal vereiste functionele ondersteuning)
+- De programmatuur moet makkelijk herbruikbaar zijn
+- De broncode moet overdraagbaar zijn en naar wens aanpasbaar zijn door gemeenten
+- Het betreft een tijdelijke oplossing, de leveranciers moeten over naar ZGW
 
-Use configuration from examples or provide local settings
-```
-$ mv src/main/resources/application.properties_example src/main/resources/application.properties
-$ mv src/main/resources/config.json_example src/main/resources/config.json
-```
-Start the service
-```
-$ mvn spring-boot:run
-```
-The service is now available on port 8080 or the port provided in application.properties
+## Technische informatie
 
-#### Setup ZRC
-This services depends on an implementation of [API standaard zaakgericht werken](https://www.vngrealisatie.nl/producten/api-standaarden-zaakgericht-werken)
-The current version of this service is (partially) tested with [OpenZaak](https://github.com/open-zaak/open-zaak) as backend.
+informatie over de installatie kijk in : [INSTALL.md]()  
 
-### Configuration
-The application uses two configuration files, located in the resources folder. Examples are provided.
+infomatie over de replicatie kijk in : [REPLICATION.md]()  
 
-| File        | Usage          | 
-| ------------- | ------------- | 
-| application.properties | Server settings like portnumbers and ZGW api url | 
-| config.json | Runtime configuration like zaaktypes, organisaties etc |
+## Volwassenheid van het product
 
-### Using the service
-The service can receive and translate StUF ZDS 1.2 SOAP messages.
- 
-Currenlty these SOAP actions and operations are partly implemented. Some properties are set with default values and are 
-not (yet) mapped from ZDS to ZGW.
+Deze applicatie is een proof-of-concept en wordt verder uitgewerkt zodat dit als voorbeeld kan dienen voor een software-leveranier.
+Op deze manier is het duidelijk welke functionaliteiten de gemeente nodig heeft
 
-|SOAP action |Operation| Endpoint |
-| ----- | ----- |------ |
-| BeantwoordVraag | geefZaakDetails | http://localhost:8080/BeantwoordVraag | 
-| |geefLijstZaakdocumenten  |
-| OntvangAsynchroon | creeerZaak | http://localhost:8080/OntvangAsynchroon |
-| | voegZaakdocumentToe | |
-
-Example SOAP messages are provied in the /examples/soap folder
- 
- 
- 
-### JWT enpoint
-The project contains an enpoint that emits a valid JWT based on the secret provided in the properties file.
-This can be used when using the ZGW API in tools like Postman. Only use this in test environments.
-The enpoint is dissabled by default and can be enabled by setting:
-
-```
-nl.haarlem.translations.zdstozgw.enableJWTEntpoint = true
-``` 
+Onderdelen en de stand van zaken:
+- **USE_ZDS** : Beta en logt berichtenverkeer en fouten naar de tabel: RequestResponseCycle
+- **USE_ZDS_AND_REPLICATE_2_ZGW** : Nog niet geimplementeerd
+- **USE_ZGW_AND_REPLICATE_2_ZDS**:  Nog niet geimplementeerd
+- **USE_ZGW**  : Berichtenverkeer vanuit SoapUI getest, work in progress
