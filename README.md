@@ -22,9 +22,9 @@ Hierbij hebben we de volgende uitgangspunten:
 
 ## Technische informatie
 
-informatie over de installatie kijk in : [INSTALL.md]()  
+informatie over de installatie kijk in : [INSTALL.md](INSTALL.md)  
 
-infomatie over de replicatie kijk in : [REPLICATION.md]()  
+infomatie over de replicatie kijk in : [REPLICATION.md](REPLICATION.md)  
 
 ## Volwassenheid van het product
 
