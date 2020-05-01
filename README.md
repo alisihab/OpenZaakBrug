@@ -1,5 +1,7 @@
 # OpenZaakBrug #
 
+Deze applicatie is een proof-of-concept van een service die een vertaling kan doen van StUF-ZDS Soap-berichten naar de corrosponderende ZGW API-calls. Het doe is dat dit prototype verder uitgewerkt kan worden zodat dit als voorbeeld kan dienen voor een software-leveranier. Op deze manier is het duidelijk welke functionaliteiten de gemeente nodig heeft
+
 ## Over OpenZaakBrug
 
 De API-standaarden voor zaakgericht werken stellen gemeenten in staat om de informatievoorziening rondom zaakgericht werken in te richten volgens de informatiekundige visie Common Ground. Hiermee zetten ze een eerste stap in de richting van een modernisering van het ICT-landschap. Dit helpt bij het (ont)koppelen van processystemen en de opslagcomponenten waar documenten en overige informatie in zijn opgeslagen.
