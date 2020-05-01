@@ -22,4 +22,6 @@ public class ZaakType {
     @SerializedName("initiatorRolTypeUrl")
     @Expose
     public String initiatorRolTypeUrl;
+    @Expose
+    public String[] statustypen;
 }

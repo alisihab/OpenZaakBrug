@@ -10,6 +10,14 @@ import javax.xml.soap.MessageFactory;
 import javax.xml.soap.SOAPException;
 import javax.xml.soap.SOAPPart;
 
+import nl.haarlem.translations.zdstozgw.converter.ConverterFactory;
+import nl.haarlem.translations.zdstozgw.converter.Converter;
+import nl.haarlem.translations.zdstozgw.converter.ConverterFactory;
+import nl.haarlem.translations.zdstozgw.translation.zds.model.*;
+import nl.haarlem.translations.zdstozgw.translation.zds.services.ZaakService;
+import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwZaak;
+import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwZaakInformatieObject;
+import nl.haarlem.translations.zdstozgw.utils.XmlUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,18 +33,19 @@ import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 
 import nl.haarlem.translations.zdstozgw.config.ConfigService;
-import nl.haarlem.translations.zdstozgw.convertor.Convertor;
-import nl.haarlem.translations.zdstozgw.convertor.ConvertorFactory;
+import nl.haarlem.translations.zdstozgw.converter.Converter;
+import nl.haarlem.translations.zdstozgw.converter.ConverterFactory;
 import nl.haarlem.translations.zdstozgw.jpa.ApplicationParameterRepository;
 import nl.haarlem.translations.zdstozgw.jpa.RequestResponseCycleRepository;
 import nl.haarlem.translations.zdstozgw.jpa.model.RequestResponseCycle;
-import nl.haarlem.translations.zdstozgw.translation.zds.model.EdcLk01;
-import nl.haarlem.translations.zdstozgw.translation.zds.model.F03;
-import nl.haarlem.translations.zdstozgw.translation.zds.model.StufRequest;
-import nl.haarlem.translations.zdstozgw.translation.zds.model.ZakLk01_v2;
 import nl.haarlem.translations.zdstozgw.translation.zds.services.ZaakService;
 import nl.haarlem.translations.zdstozgw.utils.XmlUtils;
 import nl.haarlem.translations.zdstozgw.utils.xpath.XpathDocument;
+import javax.xml.bind.JAXBContext;
+import javax.xml.soap.*;
+import java.io.ByteArrayInputStream;
+import java.lang.Object;
+import java.lang.invoke.MethodHandles;
 
 @RestController
 public class SoapController {
@@ -87,18 +96,21 @@ public class SoapController {
 		var beginTime = Instant.now();
 		var session = new RequestResponseCycle(requestUrl, soapAction.replace("\"", ""), body);
 		sessions.save(session);
-
+/*
+    @PostMapping(value = "/BeantwoordVraag", consumes = MediaType.TEXT_XML_VALUE, produces = MediaType.TEXT_XML_VALUE)
+    public String beantwoordVraag(@RequestHeader(name = "SOAPAction", required = true) String soapAction, @RequestBody String body) {
+*/
 		// what we will return
 		String responseBody = null;
 		var responseCode = HttpStatus.OK;
-
+        
 		try {
 			// from this lexical level, errors have less impact on the continuity / tracibility
-			var convertor = ConvertorFactory.getConvertor(soapAction.replace("\"", ""), body);
-			if (convertor != null) {
+			var converter = ConverterFactory.getConverter(soapAction.replace("\"", ""), body);
+			if (converter != null) {
 				// session.setConverter(convertor.getClass().getCanonicalName());
-				session.setConverterImplementation(convertor.getImplementation());
-				session.setConverterTemplate(convertor.getTemplate());
+				session.setConverterImplementation(converter.getImplementation());
+				session.setConverterTemplate(converter.getTemplate());
 				sessions.save(session);
 			} else {
 				throw new RuntimeException("no convertor found for action:" + soapAction);
@@ -107,14 +119,14 @@ public class SoapController {
 			// do the correct action
 			switch (REPLICATION_MODUS) {
 				case USE_ZDS:
-					responseBody = convertor.passThrough(soapAction, session, repository, body);					
+					responseBody = converter.passThrough(soapAction, session, repository, body);					
 					break;
 				case USE_ZDS_AND_REPLICATE_2_ZGW:
 					break;
 				case USE_ZGW_AND_REPLICATE_2_ZDS:	
 					break;
 				case USE_ZGW:
-					responseBody = convertor.Convert(zaakService, repository, body);
+					responseBody = converter.Convert(zaakService, repository, body);
 					session.setZgwResponeBody(responseBody);
 					break;
 				default:
@@ -151,7 +163,7 @@ public class SoapController {
 		sessions.save(session);
 		return new ResponseEntity<>(responseBody, responseCode);
 	}
-
+/*
 	@PostMapping(value = "/BeantwoordVraagHaarlem", consumes = MediaType.TEXT_XML_VALUE, produces = MediaType.TEXT_XML_VALUE)
 	public String beantwoordVraag(@RequestHeader(name = "SOAPAction", required = true) String soapAction, @RequestBody String body) {
 		var stufRequest = new StufRequest(XmlUtils.convertStringToDocument(body));
@@ -176,7 +188,11 @@ public class SoapController {
 
 		return response;
 	}
-
+*/
+	
+//TODO: migrate the next functions to the implemnation classes?
+	
+/*	
 	public static ZakLk01_v2 getZakLka01(String body) {
 		ZakLk01_v2 zakLk01 = null;
 		try {
@@ -188,7 +204,8 @@ public class SoapController {
 		}
 		return zakLk01;
 	}
-
+*/
+/*
 	public static EdcLk01 getZakLEdcLk01(String body) {
 		EdcLk01 edcLk01 = null;
 		try {
@@ -200,28 +217,43 @@ public class SoapController {
 		}
 		return edcLk01;
 	}
-
+	
+*/	
+/*	
 	@PostMapping(value = "/OntvangAsynchroonHaarlem", consumes = MediaType.TEXT_XML_VALUE, produces = MediaType.TEXT_XML_VALUE)
 	public String ontvangAsynchroon(@RequestHeader(name = "SOAPAction", required = true) String soapAction,
 			@RequestBody String body) {
 		soapAction = soapAction.replace("\"", "");
-		Convertor convertor = null;
+        Converter converter = null;
 		String response = "NOT IMPLEMENTED! (" + soapAction + ")";
 
 		if (soapAction.contains("creeerZaak")) {
+            //ZakLk01_v2 zakLk01_v2r = (ZakLk01_v2) XmlUtils.getStUFObject(body, ZakLk01_v2.class);
+            converter = ConverterFactory.getConverter(soapAction, body);
+            //response = converter.Convert(zaakService, zakLk01_v2r);
+            response = converter.Convert(zaakService, repository, body);
 			//ZakLk01_v2 zakLk01_v2r = getZakLka01(body);
 			//convertor = ConvertorFactory.getConvertor(soapAction, zakLk01_v2r.stuurgegevens.zender.applicatie);
 			//response = convertor.Convert(zaakService, repository, zakLk01_v2r);
-			convertor = ConvertorFactory.getConvertor(soapAction, body);
-			response = convertor.Convert(zaakService, repository, body);			
+			//converter = ConverterFactory.getConvertor(zaakService, repository, body);
+			//response = converter.Convert(zaakService, repository, body);			
 		}
 		if (soapAction.contains("voegZaakdocumentToe")) {
 			//EdcLk01 edcLk01 = getZakLEdcLk01(body);
 			//convertor = ConvertorFactory.getConvertor(soapAction, edcLk01.stuurgegevens.zender.applicatie);
 			//response = convertor.Convert(zaakService, repository, edcLk01);
-			convertor = ConvertorFactory.getConvertor(soapAction, body);
-			response = convertor.Convert(zaakService, repository, body);			
+			//converter = ConverterFactory.getConvertor(soapAction, body);
+            converter = ConverterFactory.getConverter(soapAction, body);
+			//response = convertor.Convert(zaakService, repository, body);			
+			response = converter.Convert(zaakService, repository, body);			
 		}
+        if(soapAction.contains("actualiseerZaakstatus")){
+            //ZakLk01_v2 zakLk01 = (ZakLk01_v2) XmlUtils.getStUFObject(body, ZakLk01_v2.class);
+            //converter = ConvertorFactory.getConvertor(soapAction, zakLk01.stuurgegevens.zender.applicatie);            
+            converter = ConverterFactory.getConverter(soapAction, body);
+			response = converter.Convert(zaakService, repository, body);			        	
+        	//response = converter.Convert(zaakService, zakLk01);
+        }
 
 		try {
 			SOAPPart soapPart = MessageFactory.newInstance()
@@ -234,19 +266,23 @@ public class SoapController {
 				actualiseerZaakstatus(zakLk01);
 				break;
 			}
-			}
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 
 		return response;
 	}
-
+	*/		
+/*	
 	private void actualiseerZaakstatus(ZakLk01_v2 zakLk01) {
 		// TODO: call ZGW api
+        try {
+            zaakService.actualiseerZaakstatus(zakLk01);
+//            setResponseToDocumentBv03(zgwZaakInformatieObject);
+        } catch (Exception e) {
+            handleAddZaakException(e);
+        }
 	}
-
+*/
+	
+/*	
 	private String getActionFromSoapHeader(SOAPPart soapPart) throws SOAPException {
 		NodeList nodeList = soapPart.getEnvelope().getHeader()
 				.getElementsByTagNameNS("http://www.w3.org/2005/08/addressing", "Action");
@@ -254,7 +290,7 @@ public class SoapController {
 			return nodeList.item(0).getFirstChild().getNodeValue();
 		return "";
 	}
-
+*/
 //    private void voegZaakDocumentToe(StufRequest stufRequest) {
 //        EdcLk01 edcLk01 = stufRequest.getEdcLk01();
 //        try {
@@ -286,7 +322,7 @@ public class SoapController {
 //		f03.setDetails(e.getMessage());
 //		return f03.getSoapMessageAsString();
 //	}
-
+/*
 	private String handleFetchZaakException(Exception e) {
 		var f03 = new F03();
 		f03.setFaultString("Object was not found");
@@ -295,4 +331,5 @@ public class SoapController {
 		f03.setDetails(e.getMessage());
 		return f03.getSoapMessageAsString();
 	}
+	*/
 }

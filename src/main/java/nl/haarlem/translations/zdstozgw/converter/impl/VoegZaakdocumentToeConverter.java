@@ -1,22 +1,23 @@
-package nl.haarlem.translations.zdstozgw.convertor.impl;
+package nl.haarlem.translations.zdstozgw.converter.impl;
 
-import nl.haarlem.translations.zdstozgw.convertor.Convertor;
+import nl.haarlem.translations.zdstozgw.converter.Converter;
+import nl.haarlem.translations.zdstozgw.converter.ConverterFactory;
 import nl.haarlem.translations.zdstozgw.jpa.ApplicationParameterRepository;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.EdcLk01;
-import nl.haarlem.translations.zdstozgw.translation.zds.model.ZakLk01_v2;
 import nl.haarlem.translations.zdstozgw.translation.zds.services.ZaakService;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwZaakInformatieObject;
+import nl.haarlem.translations.zdstozgw.utils.XmlUtils;
 
-public class VoegZaakdocumentToe extends Convertor {
-
-    public VoegZaakdocumentToe(String template, String legacyService) {
-        super(template, legacyService);
-    }
-
+public class VoegZaakdocumentToeConverter extends Converter {
+    public VoegZaakdocumentToeConverter(String templatePath, String legacyService) {
+        super(templatePath, legacyService);
+    }    
+    
     @Override
-    public String Convert(ZaakService zaakService, ApplicationParameterRepository repository, String requestBody) {
+    public String Convert(ZaakService zaakService, ApplicationParameterRepository repository, String requestbody) {
         try {
-        	EdcLk01 object = nl.haarlem.translations.zdstozgw.controller.SoapController.getZakLEdcLk01(requestBody);
+        	
+            EdcLk01 object = (EdcLk01) XmlUtils.getStUFObject(requestbody, EdcLk01.class);
             ZgwZaakInformatieObject zgwZaakInformatieObject = zaakService.voegZaakDocumentToe((EdcLk01) object);
             var bv03 = new nl.haarlem.translations.zdstozgw.translation.zds.model.Bv03();
             bv03.setReferentienummer(zgwZaakInformatieObject.getUuid());

@@ -1,4 +1,4 @@
-package nl.haarlem.translations.zdstozgw.convertor;
+package nl.haarlem.translations.zdstozgw.converter;
 import java.lang.invoke.MethodHandles;
 
 import org.apache.commons.httpclient.methods.PostMethod;
@@ -12,14 +12,14 @@ import nl.haarlem.translations.zdstozgw.translation.zds.model.StufRequest;
 import nl.haarlem.translations.zdstozgw.translation.zds.services.ZaakService;
 import nl.haarlem.translations.zdstozgw.utils.XmlUtils;
 
-public abstract class Convertor {
+public abstract class Converter {
 
 	private static final Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 	
 	protected String template;
 	protected String zdsUrl;
     
-	public Convertor(String template, String legacyService) {
+	public Converter(String template, String legacyService) {
 		this.template = template;
         this.zdsUrl = legacyService;        
 	}

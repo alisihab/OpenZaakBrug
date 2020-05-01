@@ -1,4 +1,4 @@
-package nl.haarlem.translations.zdstozgw.convertor;
+package nl.haarlem.translations.zdstozgw.converter;
 
 import java.lang.invoke.MethodHandles;
 import org.slf4j.Logger;
@@ -6,10 +6,15 @@ import org.slf4j.LoggerFactory;
 
 import nl.haarlem.translations.zdstozgw.config.ConfigService;
 import nl.haarlem.translations.zdstozgw.config.Translation;
-import nl.haarlem.translations.zdstozgw.convertor.impl.CreeerZaak;
-import nl.haarlem.translations.zdstozgw.convertor.impl.VoegZaakdocumentToe;
 
-public class ConvertorFactory {
+import nl.haarlem.translations.zdstozgw.converter.impl.CreeerZaakConverter;
+import nl.haarlem.translations.zdstozgw.converter.impl.VoegZaakdocumentToeConverter;
+import nl.haarlem.translations.zdstozgw.converter.impl.ActualiseerZaakStatusConverter;
+import nl.haarlem.translations.zdstozgw.converter.impl.CreeerZaakConverter;
+import nl.haarlem.translations.zdstozgw.converter.impl.GeefZaakDocumentLezenConverter;
+import nl.haarlem.translations.zdstozgw.converter.impl.VoegZaakdocumentToeConverter;
+
+public class ConverterFactory {
 
     private static final Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
     private static ConfigService config = null; 
@@ -23,15 +28,14 @@ public class ConvertorFactory {
 			log.error("Could not load the configuration", ex);
 		}    	
     }    
-    
-  	public static Convertor getConvertor(String soapAction, String application) {
+  	public static Converter getConverter(String soapAction, String requestbody) {
 
 		String classname = null;
 		String templatepath = null;
 		String legacyservice = null;
 	
 		for (Translation translation : config.getConfiguratie().getTranslations() ){
-			if(translation.soapaction.equals(soapAction) && application.contains(translation.requestcontains)) {
+			if(translation.soapaction.equals(soapAction) && requestbody.contains(translation.requestcontains)) {
         		classname = translation.implementation;
         		templatepath = translation.template;	
         		legacyservice = translation.legacyservice;
@@ -41,7 +45,7 @@ public class ConvertorFactory {
 		}
 		// START-FALLBACK-OBSOLETE: the old code from getConvertor()		
 		if(classname == null) {
-			log.warn("Fallback for soapaction:" + soapAction + " with application:" + application);
+			log.warn("Fallback for soapaction:" + soapAction + " with application:" + requestbody);
 
 			switch(soapAction) 
 	        {  
@@ -52,13 +56,18 @@ public class ConvertorFactory {
         		break;
 	        	case "http://www.egem.nl/StUF/sector/zkn/0310/creeerZaak_Lk01":    			
 	        	case "creeerZaak_ZakLk01":
-	        		classname = CreeerZaak.class.getName();
-	        		templatepath = "--template-zit-in-de-code--";
+        		classname = CreeerZaakConverter.class.getName();
 	        		break;
 	        	case "http://www.egem.nl/StUF/sector/zkn/0310/voegZaakdocumentToe_Lk01":
-	        		classname = VoegZaakdocumentToe.class.getName();
-	        		templatepath = "--template-zit-in-de-code--";
+        		classname = VoegZaakdocumentToeConverter.class.getName();
 	        		break;
+			case "http://www.egem.nl/StUF/sector/zkn/0310/geefZaakdocumentLezen_Lv01":
+				classname = GeefZaakDocumentLezenConverter.class.getName();
+				break;
+			case "http://www.egem.nl/StUF/sector/zkn/0310/actualiseerZaakstatus_Lk01":
+				classname = ActualiseerZaakStatusConverter.class.getName();
+				break;
+
 	        	default: 
 	            	return null;
         }
@@ -73,7 +82,7 @@ public class ConvertorFactory {
 			Class<?> c = Class.forName(classname);
 			java.lang.reflect.Constructor<?> ctor = c.getConstructor(String.class, String.class);			
 			Object object = ctor.newInstance(new Object[] { templatepath, legacyservice });
-			return  (Convertor) object;
+			return  (Converter) object;
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;

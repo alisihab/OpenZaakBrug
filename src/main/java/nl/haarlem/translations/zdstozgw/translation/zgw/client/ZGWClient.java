@@ -70,13 +70,32 @@ public class ZGWClient {
         return url;
     }
 
+    public ZgwEnkelvoudigInformatieObject getZgwEnkelvoudigInformatieObject(String identificatie){
+        ZgwEnkelvoudigInformatieObject result = null;
+        var documentJson = get(baseUrl+"/documenten/api/v1/enkelvoudiginformatieobjecten?identificatie="+identificatie,null);
+        try {
+            Type type = new TypeToken<QueryResult<ZgwEnkelvoudigInformatieObject>>(){}.getType();
+            Gson gson = new Gson();
+            QueryResult<ZgwEnkelvoudigInformatieObject> queryResult = gson.fromJson(documentJson, type);
+
+            if (queryResult.getResults().size() == 1) {
+                result = queryResult.getResults().get(0);
+            }
+        } catch (Exception ex) {
+            log.error("ZgwEnkelvoudigInformatieObject: " + ex.getMessage());
+            throw ex;
+        }
+        return  result;
+    }
+
     public ZgwZaak getZaakDetails(Map<String, String> parameters) {
 
         ZgwZaak result = null;
         var zaakJson = get(baseUrl + "/zaken/api/v1/zaken", parameters);
         try {
+            Type type = new TypeToken<QueryResult<ZgwZaak>>(){}.getType();
             Gson gson = new Gson();
-            QueryResult queryResult = gson.fromJson(zaakJson, QueryResult.class);
+            QueryResult<ZgwZaak> queryResult = gson.fromJson(zaakJson, type);
             if (queryResult.getResults().size() == 1) {
                 result = queryResult.getResults().get(0);
             }
@@ -192,5 +211,33 @@ public class ZGWClient {
         informatieObject = gson.fromJson(zaakInformatieObjectJson, ZgwEnkelvoudigInformatieObject.class);
 
         return informatieObject;
+    }
+
+    public List<ZgwStatusType> getStatusTypes(Map<String, String> parameters) {
+        var statusTypeJson = get(baseUrl + "/catalogi/api/v1/statustypen", parameters);
+        try {
+            Type type = new TypeToken<QueryResult<ZgwStatusType>>(){}.getType();
+            Gson gson = new Gson();
+            QueryResult<ZgwStatusType> queryResult = gson.fromJson(statusTypeJson, type);
+            return queryResult.getResults();
+        } catch (Exception ex) {
+            log.error("Exception in getStatusTypes: " + ex.getMessage());
+            throw ex;
+        }
+    }
+
+    public ZgwStatus actualiseerZaakStatus(ZgwStatus zgwSatus) {
+        ZgwStatus result = null;
+        try {
+            Gson gson = new Gson();
+            String json = gson.toJson(zgwSatus);
+            String response = this.post(baseUrl + "/zaken/api/v1/statussen", json);
+            result = gson.fromJson(response, ZgwStatus.class);
+        } catch (HttpStatusCodeException ex) {
+            log.error("Exception in actualiseerZaakStatus: " + ex.getMessage());
+            throw ex;
+        }
+
+        return result;
     }
 }

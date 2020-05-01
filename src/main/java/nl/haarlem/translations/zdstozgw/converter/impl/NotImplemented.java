@@ -1,10 +1,10 @@
-package nl.haarlem.translations.zdstozgw.convertor.impl;
+package nl.haarlem.translations.zdstozgw.converter.impl;
 
-import nl.haarlem.translations.zdstozgw.convertor.Convertor;
+import nl.haarlem.translations.zdstozgw.converter.Converter;
 import nl.haarlem.translations.zdstozgw.jpa.ApplicationParameterRepository;
 import nl.haarlem.translations.zdstozgw.translation.zds.services.ZaakService;
 
-public class NotImplemented extends Convertor {
+public class NotImplemented extends Converter {
 
     public NotImplemented(String template, String legacyService) {
         super(template, legacyService);
