@@ -74,7 +74,7 @@ Example SOAP messages are provided in the /examples/soap folder
 
 Eerst met alleen de OpenZaakBrug ertussen, later met OpenZaak eraan gekoppeld.
 
-![image-20200430233935965](D:\git\OpenZaakBrug\media\openzaakbrug-infra.png)
+![openzaakbrug-infra](media/openzaakbrug-infra.png)
 
 ### Minimale configuratie OpenZaakBrug
 
@@ -148,7 +148,7 @@ De H2 (database) console is te bereiken op:
 
 [http://localhost:8080/h2-console/login.jsp](http://localhost:8080/h2-console/login.jsp)
 
-![image-20200430234859569](D:\git\OpenZaakBrug\media\openzaakbrug-h2.png)
+![openzaakbrug-h2](media/openzaakbrug-h2.png)
 
 ### Gebruik vanuit een backoffice applicatie
 
