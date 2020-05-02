@@ -37,3 +37,6 @@ build/
 ### Config files from OpenZaakBrug ###
 src/main/resources/application.properties
 src/main/resources/config.json
+
+### H2 Database-files
+/*.db
