@@ -7,5 +7,4 @@ import nl.haarlem.translations.zdstozgw.jpa.model.RequestResponseCycle;
 
 @Repository
 public interface RequestResponseCycleRepository extends JpaRepository<RequestResponseCycle, Long> {
- 	
 }

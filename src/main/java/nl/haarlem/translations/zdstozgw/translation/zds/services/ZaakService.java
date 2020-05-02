@@ -1,13 +1,16 @@
 package nl.haarlem.translations.zdstozgw.translation.zds.services;
 
 import nl.haarlem.translations.zdstozgw.translation.ZaakTranslator;
+import nl.haarlem.translations.zdstozgw.translation.ZaakTranslator.ZaakTranslatorException;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.*;
 import nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient;
+import nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient.ZGWClientException;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpStatusCodeException;
 import org.w3c.dom.Document;
 
 import java.lang.invoke.MethodHandles;
@@ -26,27 +29,22 @@ public class ZaakService {
     @Autowired
     private ZaakTranslator zaakTranslator;
 
-    public ZgwZaak creeerZaak(ZakLk01_v2 zakLk01) throws Exception {
-
-
+    public ZgwZaak creeerZaak(ZakLk01_v2 zakLk01) throws ZGWClientException, ZaakTranslatorException  {
         //zaakTranslator.setDocument((Document) zakLk01).zdsZaakToZgwZaak();
         zaakTranslator.setZakLk01(zakLk01).zdsZaakToZgwZaak();
 
         ZgwZaak zaak = zaakTranslator.getZgwZaak();
 
-        try {
-            var createdZaak = zgwClient.addZaak(zaak);
-            if (createdZaak.getUrl() != null) {
-                log.info("Created a ZGW Zaak with UUID: " + createdZaak.getUuid());
-                var rol = zaakTranslator.getRolInitiator();
-                if(rol != null){
-                    rol.setZaak(createdZaak.getUrl());
-                    zgwClient.addRolNPS(rol);
-                }
-                return createdZaak;
+        var createdZaak = zgwClient.addZaak(zaak);
+        // ?? das toch altijd zo?
+        if (createdZaak.getUrl() != null) {
+            log.info("Created a ZGW Zaak with UUID: " + createdZaak.getUuid());
+            var rol = zaakTranslator.getRolInitiator();
+            if(rol != null){
+                rol.setZaak(createdZaak.getUrl());
+                zgwClient.addRolNPS(rol);
             }
-        } catch (Exception e) {
-            throw e;
+            return createdZaak;
         }
         return null;
     }
@@ -109,14 +107,14 @@ public class ZaakService {
         return result;
     }
 
-    private ZgwZaak getZaak(String zaakIdentificatie) {
+    private ZgwZaak getZaak(String zaakIdentificatie) throws ZGWClientException  {
         Map<String, String> parameters = new HashMap();
         parameters.put("identificatie", zaakIdentificatie);
 
         return zgwClient.getZaakDetails(parameters);
     }
 
-    public EdcLa01 getZaakDoumentLezen(EdcLv01 edcLv01) {
+    public EdcLa01 getZaakDoumentLezen(EdcLv01 edcLv01) throws ZGWClientException  {
         EdcLa01 edcLa01 = new EdcLa01();
 
         ZgwEnkelvoudigInformatieObject zgwEnkelvoudigInformatieObject = zgwClient.getZgwEnkelvoudigInformatieObject(edcLv01.gelijk.identificatie);
@@ -126,7 +124,7 @@ public class ZaakService {
         return edcLa01;
     }
 
-    private ZgwStatusType getStatusTypeByZaakTypeAndVolgnummer(String zaakTypeUrl, int volgnummer){
+    private ZgwStatusType getStatusTypeByZaakTypeAndVolgnummer(String zaakTypeUrl, int volgnummer) throws ZGWClientException{
         Map<String, String> parameters = new HashMap();
         parameters.put("zaaktype", zaakTypeUrl);
 
@@ -137,7 +135,7 @@ public class ZaakService {
                 .orElse(null);
     }
 
-    public ZgwZaak actualiseerZaakstatus(ZakLk01_v2 zakLk01) {
+    public ZgwZaak actualiseerZaakstatus(ZakLk01_v2 zakLk01) throws ZGWClientException {
         ZakLk01_v2.Object object = zakLk01.objects.get(1);
         ZgwZaak zgwZaak = getZaak(object.identificatie);
 

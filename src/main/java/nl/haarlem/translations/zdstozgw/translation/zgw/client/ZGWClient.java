@@ -2,6 +2,8 @@ package nl.haarlem.translations.zdstozgw.translation.zgw.client;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+
+import nl.haarlem.translations.zdstozgw.converter.Converter;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,6 +24,17 @@ import java.util.Map;
 @Service
 public class ZGWClient {
 
+	@SuppressWarnings("serial")
+	public class ZGWClientException extends Exception {
+		protected String details;
+		public ZGWClientException(String message, String details, Throwable err) {
+			super(message, err);
+			this.details = details;
+		}
+		public String getDetails() {
+			return this.details;
+		}
+	}
     private static final Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
     @Value("${openzaak.baseUrl}")
@@ -30,16 +43,46 @@ public class ZGWClient {
     @Autowired
     RestTemplateService restTemplateService;
 
-    private String post(String url, String json) throws HttpStatusCodeException {
+    private String post(String url, String json)  throws ZGWClientException {
         log.debug("POST: " + url + ", json: " + json);
         HttpEntity<String> request = new HttpEntity<String>(json, restTemplateService.getHeaders());
         String zgwResponse = null;
-        zgwResponse = restTemplateService.getRestTemplate().postForObject(url, request, String.class);
+        try {
+            zgwResponse = restTemplateService.getRestTemplate().postForObject(url, request, String.class);        	
+        }
+        catch(HttpStatusCodeException hsce) {
+        	
+        	/*
+        	public class ZgwFout {
+        		public class ZgwFoutInvalidParams {
+        			public String name;
+        			public String code;
+        			public String reason;
+        			
+        		}		
+        		public String type;
+        		public String code;
+        		public String title;
+        		public String status;		
+        		public String detail;
+        		public String instance;   
+        		public ZgwFoutInvalidParams[] invalidParams;		
+        	}
+        	ZgwFout fout = g.fromJson(hsce.getResponseBodyAsString(), ZgwFout.class);        	        	
+        	 */
+        	// more robust than fromJson 
+        	log.warn("fout met verzendende-json:" + json + "\n" + hsce.getResponseBodyAsString().replace("{", "{\n").replace("\",", "\",\n").replace("\"}", "\"\n}"));
+        	
+        	throw new ZGWClientException("POST naar OpenZaak: " + url + " gaf foutmelding:" +  hsce.getMessage() , json, hsce);
+        }
+        catch(org.springframework.web.client.ResourceAccessException rae) {
+        	throw new ZGWClientException("POST naar OpenZaak: " + url + " niet geslaagd", json, rae);        	
+        }
         log.debug("POST response: " + zgwResponse);
         return zgwResponse;
     }
 
-    private String get(String url, Map<String, String> parameters) throws HttpStatusCodeException {
+    private String get(String url, Map<String, String> parameters) throws ZGWClientException {
         log.debug("GET: " + url);
 
         if (parameters != null) {
@@ -47,9 +90,18 @@ public class ZGWClient {
         }
 
         HttpEntity entity = new HttpEntity(restTemplateService.getHeaders());
-
-        ResponseEntity<String> response = restTemplateService.getRestTemplate().exchange(
-                url, HttpMethod.GET, entity, String.class);
+        ResponseEntity<String> response = null;
+        
+        try {        
+        	response = restTemplateService.getRestTemplate().exchange(url, HttpMethod.GET, entity, String.class);
+        }
+        catch(HttpStatusCodeException hsce) {
+        	throw new ZGWClientException("GET naar OpenZaak: " + url + " gaf foutmelding" +  hsce.getStatusText(), url, hsce);
+        }
+        catch(org.springframework.web.client.ResourceAccessException rae) {
+        	throw new ZGWClientException("GET naar OpenZaak: " + url + " niet geslaagd", url, rae);        	
+        }        	
+        	
         log.debug("GET response: " + response.getBody());
 
         return response.getBody();
@@ -70,7 +122,7 @@ public class ZGWClient {
         return url;
     }
 
-    public ZgwEnkelvoudigInformatieObject getZgwEnkelvoudigInformatieObject(String identificatie){
+    public ZgwEnkelvoudigInformatieObject getZgwEnkelvoudigInformatieObject(String identificatie) throws ZGWClientException {
         ZgwEnkelvoudigInformatieObject result = null;
         var documentJson = get(baseUrl+"/documenten/api/v1/enkelvoudiginformatieobjecten?identificatie="+identificatie,null);
         try {
@@ -88,7 +140,7 @@ public class ZGWClient {
         return  result;
     }
 
-    public ZgwZaak getZaakDetails(Map<String, String> parameters) {
+    public ZgwZaak getZaakDetails(Map<String, String> parameters) throws ZGWClientException {
 
         ZgwZaak result = null;
         var zaakJson = get(baseUrl + "/zaken/api/v1/zaken", parameters);
@@ -107,22 +159,14 @@ public class ZGWClient {
         return result;
     }
 
-    public ZgwZaak addZaak(ZgwZaak zgwZaak) throws HttpStatusCodeException {
-        ZgwZaak result = null;
-        try {
-            Gson gson = new Gson();
-            String json = gson.toJson(zgwZaak);
-            String response = this.post(baseUrl + "/zaken/api/v1/zaken", json);
-            result = gson.fromJson(response, ZgwZaak.class);
-        } catch (HttpStatusCodeException ex) {
-            log.error("Exception in addZaak: " + ex.getMessage());
-            throw ex;
-        }
-
-        return result;
+    public ZgwZaak addZaak(ZgwZaak zgwZaak) throws ZGWClientException {
+        Gson gson = new Gson();
+        String json = gson.toJson(zgwZaak);
+        String response = this.post(baseUrl + "/zaken/api/v1/zaken", json);
+        return  gson.fromJson(response, ZgwZaak.class);
     }
 
-    public RolNPS addRolNPS(RolNPS rolNPS) {
+    public RolNPS addRolNPS(RolNPS rolNPS) throws ZGWClientException {
         RolNPS result = null;
         try {
             Gson gson = new Gson();
@@ -137,7 +181,7 @@ public class ZGWClient {
         return result;
     }
 
-    public ZgwEnkelvoudigInformatieObject addDocument(ZgwEnkelvoudigInformatieObject zgwEnkelvoudigInformatieObject) {
+    public ZgwEnkelvoudigInformatieObject addDocument(ZgwEnkelvoudigInformatieObject zgwEnkelvoudigInformatieObject) throws ZGWClientException {
         ZgwEnkelvoudigInformatieObject result = null;
         try {
             Gson gson = new Gson();
@@ -152,7 +196,7 @@ public class ZGWClient {
         return result;
     }
 
-    public ZgwZaakInformatieObject addDocumentToZaak(ZgwZaakInformatieObject zgwZaakInformatieObject) {
+    public ZgwZaakInformatieObject addDocumentToZaak(ZgwZaakInformatieObject zgwZaakInformatieObject) throws ZGWClientException {
         ZgwZaakInformatieObject result = null;
         try {
             Gson gson = new Gson();
@@ -168,7 +212,7 @@ public class ZGWClient {
 
     }
 
-    public List<ZgwEnkelvoudigInformatieObject> getLijstZaakDocumenten(Map<String, String> parameters) {
+    public List<ZgwEnkelvoudigInformatieObject> getLijstZaakDocumenten(Map<String, String> parameters) throws ZGWClientException {
         var result = new ArrayList();
 
         try {
@@ -183,17 +227,21 @@ public class ZGWClient {
         return result;
     }
 
-    private List<ZgwEnkelvoudigInformatieObject> getZgwEnkelvoudigInformatieObjectList(List<ZgwEnkelvoudigInformatieObject> tempResult, List<ZgwZaakInformatieObject> zaakInformatieObjects) {
+    private List<ZgwEnkelvoudigInformatieObject> getZgwEnkelvoudigInformatieObjectList(
+    	List<ZgwEnkelvoudigInformatieObject> tempResult, 
+    	List<ZgwZaakInformatieObject> zaakInformatieObjects)
+    			throws ZGWClientException
+    {
         var result = tempResult;
-        zaakInformatieObjects.forEach(zaakInformatieObject -> {
-            result.add(getZaakDocument(zaakInformatieObject.getInformatieobject()));
-        });
-
+        for (ZgwZaakInformatieObject zaakInformatieObject: zaakInformatieObjects) 
+        {        		
+        	result.add(getZaakDocument(zaakInformatieObject.getInformatieobject()));
+        }
         tempResult = result;
         return tempResult;
     }
 
-    private List<ZgwZaakInformatieObject> getZgwZaakInformatieObjects(Map<String, String> parameters) {
+    private List<ZgwZaakInformatieObject> getZgwZaakInformatieObjects(Map<String, String> parameters) throws ZGWClientException {
         //Fetch EnkelvoudigInformatieObjects
         var zaakInformatieObjectJson = get(baseUrl + "/zaken/api/v1/zaakinformatieobjecten", parameters);
 
@@ -203,7 +251,7 @@ public class ZGWClient {
         return gson.fromJson(zaakInformatieObjectJson, documentList);
     }
 
-    private ZgwEnkelvoudigInformatieObject getZaakDocument(String url) {
+    private ZgwEnkelvoudigInformatieObject getZaakDocument(String url) throws ZGWClientException {
         ZgwEnkelvoudigInformatieObject informatieObject = null;
 
         var zaakInformatieObjectJson = get(url, null);
@@ -213,7 +261,7 @@ public class ZGWClient {
         return informatieObject;
     }
 
-    public List<ZgwStatusType> getStatusTypes(Map<String, String> parameters) {
+    public List<ZgwStatusType> getStatusTypes(Map<String, String> parameters) throws ZGWClientException {
         var statusTypeJson = get(baseUrl + "/catalogi/api/v1/statustypen", parameters);
         try {
             Type type = new TypeToken<QueryResult<ZgwStatusType>>(){}.getType();
@@ -226,7 +274,7 @@ public class ZGWClient {
         }
     }
 
-    public ZgwStatus actualiseerZaakStatus(ZgwStatus zgwSatus) {
+    public ZgwStatus actualiseerZaakStatus(ZgwStatus zgwSatus) throws ZGWClientException {
         ZgwStatus result = null;
         try {
             Gson gson = new Gson();

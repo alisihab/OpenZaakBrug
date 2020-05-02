@@ -9,6 +9,8 @@ import org.w3c.dom.Document;
 
 import java.lang.invoke.MethodHandles;
 
+// Voor nu depricated, misschien later nog eens gebruiken, maar de createBaseDocument gebruikt een harde string
+@Deprecated
 public class F03 {
     private static final Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 

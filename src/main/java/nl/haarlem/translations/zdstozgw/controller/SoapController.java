@@ -11,6 +11,7 @@ import javax.xml.soap.SOAPException;
 import javax.xml.soap.SOAPPart;
 
 import nl.haarlem.translations.zdstozgw.converter.ConverterFactory;
+import nl.haarlem.translations.zdstozgw.converter.Converter.ConverterException;
 import nl.haarlem.translations.zdstozgw.converter.Converter;
 import nl.haarlem.translations.zdstozgw.converter.ConverterFactory;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.*;
@@ -132,7 +133,41 @@ public class SoapController {
 				default:
 			}
 		}
-		catch(Exception ex) {
+		catch(ConverterException ce) {
+			// Show in de logs
+			log.warn(ce.getMessage());
+			log.warn(ce.getStacktrace());
+			
+			// save the Stacktrace
+		    session.setStackTrace(ce.getStacktrace());
+
+		    // When we don't have a response ready, we need to send an error
+		    if(responseBody == null) {
+		    	/*
+		    	TODO:  we kunnen de foutmelding ook op de volgende manier versturen:
+		            var f03 = new nl.haarlem.translations.zdstozgw.translation.zds.model.F03();
+		            f03.setFaultString("Object was not saved");
+		            f03.setCode("StUF046");
+		            f03.setOmschrijving("Object niet opgeslagen");
+		            f03.setDetails(ex.getMessage());
+		            return f03.getSoapMessageAsString();
+		    	 */
+		    	
+			    Document document = nl.haarlem.translations.zdstozgw.utils.XmlUtils.getDocument("src/main/java/nl/haarlem/translations/zdstozgw/controller/Fault_Fo02.xml");
+			    XpathDocument xpathDocument = new XpathDocument(document);
+		    	// TODO: https://www.gemmaonline.nl/images/gemmaonline/4/4f/Stuf0301_-_ONV0347_%28zonder_renvooi%29.pdf			    		    
+			    xpathDocument.setNodeValue(".//faultstring", ce.getFaultString());
+			    xpathDocument.setNodeValue(".//stuf:omschrijving", ce.getOmschrijving());
+			    xpathDocument.setNodeValue(".//stuf:details", ce.getDetails());		    
+			    xpathDocument.setNodeValue(".//stuf:detailsXML", ce.getDetailsXml());
+			    responseBody =  XmlUtils.xmlToString(document);
+				responseCode = ce.getHttpStatus();						
+		    }
+		}
+		catch(Exception ex) {		    
+			// Show in the logs
+			log.error("performing action:" + soapAction, ex);
+		    
 			// get the stacktrace and store it
 		    var swriter = new java.io.StringWriter();
 		    var pwriter = new java.io.PrintWriter(swriter);		    
@@ -140,7 +175,7 @@ public class SoapController {
 		    var stackTrace = swriter.toString();
 		    session.setStackTrace(stackTrace);
 
-		    // we don't have a response yet, create an error message
+		    // When we don't have a response ready, we need to send an error
 		    if(responseBody == null) {
 		    	// TODO: https://www.gemmaonline.nl/images/gemmaonline/4/4f/Stuf0301_-_ONV0347_%28zonder_renvooi%29.pdf
 			    Document document = nl.haarlem.translations.zdstozgw.utils.XmlUtils.getDocument("src/main/java/nl/haarlem/translations/zdstozgw/controller/Fault_Fo02.xml");

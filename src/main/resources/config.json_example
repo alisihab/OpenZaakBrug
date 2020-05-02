@@ -112,16 +112,30 @@
 			"zaakTypeOmschrijving": "Test",
 			"ingangsdatumObject": "20170901",
 			"initiatorRolTypeUrl": "https://openzaak.local/catalogi/api/v1/roltypen/c8d9bd56-2abb-4ef1-bbd6-bf404b31869e"
-		}
+		},
+		{
+			"code": "B1026",
+			"zaakType": "https://openzaak.local/catalogi/api/v1/zaaktypen/8a0ecb65-c3fd-4110-8599-297f84236ae5",
+			"zaakTypeOmschrijving": "Minimaregeling aanvraag",
+			"ingangsdatumObject": "17 maart 20200317",
+			"initiatorRolTypeUrl": "https://openzaak.local/catalogi/api/v1/roltypen/c8d9bd56-2abb-4ef1-bbd6-bf404b31869e"
+		}		
 	],
 	"organisaties": [
 		{
+			"gemeenteNaam": "Haarlem",	
 			"gemeenteCode": "0392",
 			"RSIN": "001005650"
 		},
 		{
+			"gemeenteNaam": "Zeevang",
 			"gemeenteCode": "0478",
 			"RSIN": "001509962"
+		},
+		{
+			"gemeenteNaam": "Súdwest-Fryslân",
+			"gemeenteCode": "1900",
+			"RSIN": "823288444"
 		}
 	],
 	"documentTypes": [

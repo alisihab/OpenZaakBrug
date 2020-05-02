@@ -1,11 +1,19 @@
 logging.level.nl.haarlem=INFO
 
-openzaak.jwt.secret=test
-openzaak.jwt.issuer=test
+### Lokale installatie
 openzaak.baseUrl = https://openzaak.local
+openzaak.jwt.issuer=test
+openzaak.jwt.secret=test
+
+### Gehoste referentie implementatie
+#openzaak.baseUrl = https://zaken-api.vng.cloud/
+#openzaak.jwt.issuer=test
+#openzaak.jwt.secret=test
+
+### De linkjes naar het legacy-zaaksystem staan in: config.json.
+### Default verwijzen deze naar http://localhost:8181, het endpoint waarop de SoapUI MockService van OpenZaakBrug draait
 
 nl.haarlem.translations.zdstozgw.trustAllCerts = false
-
 nl.haarlem.translations.zdstozgw.enableJWTEntpoint = false
 
 #spring.datasource.initialize=true
