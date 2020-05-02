@@ -7,5 +7,5 @@ import nl.haarlem.translations.zdstozgw.jpa.model.ApplicationParameter;
 
 @Repository
 public interface ApplicationParameterRepository extends JpaRepository<ApplicationParameter, String> {
- 	
+
 }

@@ -6,12 +6,12 @@ import nl.haarlem.translations.zdstozgw.translation.zds.services.ZaakService;
 
 public class NotImplementedConverter extends Converter {
 
-    public NotImplementedConverter(String template, String legacyService) {
-        super(template, legacyService);
-    }
+	public NotImplementedConverter(String template, String legacyService) {
+		super(template, legacyService);
+	}
 
-    @Override
-    public String Convert(ZaakService zaakService, ApplicationParameterRepository repository, String requestbody) {
-    	throw new RuntimeException("Not implemented");
-    }
+	@Override
+	public String Convert(ZaakService zaakService, ApplicationParameterRepository repository, String requestbody) {
+		throw new RuntimeException("Not implemented");
+	}
 }

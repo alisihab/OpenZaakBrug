@@ -4,27 +4,27 @@ import com.google.gson.annotations.Expose;
 
 public class ZgwStatusType {
 
-    @Expose
-    public String url;
+	@Expose
+	public String url;
 
-    @Expose
-    public String omschrijving;
+	@Expose
+	public String omschrijving;
 
-    @Expose
-    public String omschrijvingGeneriek;
+	@Expose
+	public String omschrijvingGeneriek;
 
-    @Expose
-    public String statustekst;
+	@Expose
+	public String statustekst;
 
-    @Expose
-    public String zaaktype;
+	@Expose
+	public String zaaktype;
 
-    @Expose
-    public int volgnummer;
+	@Expose
+	public int volgnummer;
 
-    @Expose
-    public String isEindstatus;
+	@Expose
+	public String isEindstatus;
 
-    @Expose
-    public String informeren;
+	@Expose
+	public String informeren;
 }

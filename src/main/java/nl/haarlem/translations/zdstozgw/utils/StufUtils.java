@@ -5,9 +5,9 @@ import java.time.format.DateTimeFormatter;
 
 public class StufUtils {
 
-    public static String getTijdstipBericht(){
-        LocalDateTime now = LocalDateTime.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("YYYYMMddHHmmss");
-        return now.format(formatter);
-    }
+	public static String getTijdstipBericht() {
+		LocalDateTime now = LocalDateTime.now();
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("YYYYMMddHHmmss");
+		return now.format(formatter);
+	}
 }
