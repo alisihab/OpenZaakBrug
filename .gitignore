@@ -30,6 +30,10 @@ build/
 ### VS Code ###
 .vscode/
 
-src/main/resources/application.properties
+### Eclipse ###
+/bin/
+/target/
 
+### Config files from OpenZaakBrug ###
+src/main/resources/application.properties
 src/main/resources/config.json
