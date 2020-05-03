@@ -43,14 +43,26 @@ public class ZaakService {
 		ZgwZaak zaak = this.zaakTranslator.getZgwZaak();
 
 		var createdZaak = this.zgwClient.addZaak(zaak);
-		// ?? das toch altijd zo?
-		if (createdZaak.getUrl() != null) {
+		// hij heeft toch altijd een object, anders exception
+		if (createdZaak.getUrl() != null) {			
+		    //<ZKN:heeftBetrekkingOp StUF:entiteittype="ZAKOBJ" StUF:verwerkingssoort="T">
+		    //<ZKN:heeftAlsBelanghebbende StUF:entiteittype="ZAKBTRBLH" StUF:verwerkingssoort="T">
+			//<ZKN:heeftAlsInitiator StUF:entiteittype="ZAKBTRINI" StUF:verwerkingssoort="T">        
+			//<ZKN:heeftAlsUitvoerende StUF:entiteittype="ZAKBTRUTV" StUF:verwerkingssoort="T">
+		    //<ZKN:heeftAlsVerantwoordelijke StUF:entiteittype="ZAKBTRVRA" StUF:verwerkingssoort="T">	
+					
 			log.info("Created a ZGW Zaak with UUID: " + createdZaak.getUuid());
 			var rol = this.zaakTranslator.getRolInitiator();
 			if (rol != null) {
 				rol.setZaak(createdZaak.getUrl());
-				this.zgwClient.addRolNPS(rol);
+				this.zgwClient.addRolNPS("heeftAlsInitiator", rol);
 			}
+			rol = this.zaakTranslator.getRolUitvoerende();
+			if (rol != null) {
+				rol.setZaak(createdZaak.getUrl());
+				this.zgwClient.addRolNPS("heeftAlsUitvoerende", rol);
+			}
+			
 			return createdZaak;
 		}
 		return null;

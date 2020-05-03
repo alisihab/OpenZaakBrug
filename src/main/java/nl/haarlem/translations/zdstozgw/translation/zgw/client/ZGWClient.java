@@ -169,7 +169,7 @@ public class ZGWClient {
 		return gson.fromJson(response, ZgwZaak.class);
 	}
 
-	public RolNPS addRolNPS(RolNPS rolNPS) throws ZGWClientException {
+	public RolNPS addRolNPS(String roltype, RolNPS rolNPS) throws ZGWClientException {
 		RolNPS result = null;
 		try {
 			Gson gson = new Gson();

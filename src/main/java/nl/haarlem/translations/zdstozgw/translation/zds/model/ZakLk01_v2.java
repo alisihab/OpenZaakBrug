@@ -50,8 +50,17 @@ public class ZakLk01_v2 {
 		@XmlElement(namespace = ZKN)
 		public Heeft heeft;
 
+		@XmlElement(namespace = ZKN, name = "heeftAlsBelanghebbende")
+		public HeeftAlsBelanghebbende heeftAlsBelanghebbende;
+		
 		@XmlElement(namespace = ZKN, name = "heeftAlsInitiator")
 		public HeeftAlsInitiator heeftAlsInitiator;
+		
+		@XmlElement(namespace = ZKN, name = "heeftAlsUitvoerende")
+		public HeeftAlsUitvoerende heeftAlsUitvoerende;
+
+		@XmlElement(namespace = ZKN, name = "heeftAlsAanspreekpunt")
+		public HeeftAlsAanspreekpunt heeftAlsAanspreekpunt;		
 	}
 
 	@XmlElement(namespace = ZKN, name = "object")

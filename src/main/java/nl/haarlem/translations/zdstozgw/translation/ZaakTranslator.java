@@ -1,7 +1,9 @@
 package nl.haarlem.translations.zdstozgw.translation;
 
+
 import java.lang.invoke.MethodHandles;
 import java.util.List;
+
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,10 +18,16 @@ import nl.haarlem.translations.zdstozgw.config.Organisatie;
 import nl.haarlem.translations.zdstozgw.config.ZaakType;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.EdcLa01;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.EdcLk01;
+import nl.haarlem.translations.zdstozgw.translation.zds.model.HeeftAlsAanspreekpunt;
+import nl.haarlem.translations.zdstozgw.translation.zds.model.HeeftAlsBelanghebbende;
+import nl.haarlem.translations.zdstozgw.translation.zds.model.HeeftAlsInitiator;
+import nl.haarlem.translations.zdstozgw.translation.zds.model.HeeftAlsUitvoerende;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.HeeftRelevantEDC;
+import nl.haarlem.translations.zdstozgw.translation.zds.model.NatuurlijkPersoon;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZakLa01LijstZaakdocumenten;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZakLa01Zaakdetails;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZakLk01_v2;
+
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.BetrokkeneIdentificatieNPS;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.RolNPS;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwEnkelvoudigInformatieObject;
@@ -184,17 +192,8 @@ public class ZaakTranslator {
 
 	public RolNPS getRolInitiator() throws ZaakTranslatorException {
 		var z = this.zakLk01.objects.get(0);
-
 		if (z.heeftAlsInitiator != null) {
-			var natuurlijkPersoon = z.heeftAlsInitiator.gerelateerde.natuurlijkPersoon;
-			BetrokkeneIdentificatieNPS nps = new BetrokkeneIdentificatieNPS();
-			nps.setInpBsn(natuurlijkPersoon.bsn);
-			nps.setGeslachtsnaam(natuurlijkPersoon.geslachtsnaam);
-			nps.setVoorvoegselGeslachtsnaam(natuurlijkPersoon.voorvoegselGeslachtsnaam);
-			nps.setVoornamen(natuurlijkPersoon.voornamen);
-			nps.setGeboortedatum(getDateStringFromStufDate(natuurlijkPersoon.geboortedatum));
-			nps.setGeslachtsaanduiding(natuurlijkPersoon.geslachtsaanduiding.toLowerCase());
-
+			var nps =  getBetrokkeneIdentificatieNPS(z.heeftAlsInitiator.gerelateerde.natuurlijkPersoon);
 			var rol = new RolNPS();
 			rol.setBetrokkeneIdentificatieNPS(nps);
 			rol.setBetrokkeneType("natuurlijk_persoon");
@@ -202,12 +201,43 @@ public class ZaakTranslator {
 			rol.setRoltype(getZaakTypeByZDSCode(z.isVan.gerelateerde.code).initiatorRolTypeUrl);
 
 			return rol;
-		} else {
+		} 
+		else 
+		{
 			return null;
 		}
-
 	}
+	
+	public RolNPS getRolUitvoerende() throws ZaakTranslatorException {
+		var z = this.zakLk01.objects.get(0);
+		if (z.heeftAlsUitvoerende != null) {			
+			var nps =  getBetrokkeneIdentificatieNPS(z.heeftAlsUitvoerende.gerelateerde.natuurlijkPersoon);
+			var rol = new RolNPS();
+			rol.setBetrokkeneIdentificatieNPS(nps);
+			rol.setBetrokkeneType("natuurlijk_persoon");
+			rol.setRoltoelichting("Inititator");
+			if(true) throw new ZaakTranslatorException("wat is de gedacht hier achter?");
+			rol.setRoltype(getZaakTypeByZDSCode(z.isVan.gerelateerde.code).initiatorRolTypeUrl);
+			return rol;
+		} 
+		else 
+		{
+			return null;
+		}
+	}	
+	
 
+	private BetrokkeneIdentificatieNPS getBetrokkeneIdentificatieNPS(NatuurlijkPersoon natuurlijkPersoon)  {
+			BetrokkeneIdentificatieNPS nps = new BetrokkeneIdentificatieNPS();
+			nps.setInpBsn(natuurlijkPersoon.bsn);
+			nps.setGeslachtsnaam(natuurlijkPersoon.geslachtsnaam);
+			nps.setVoorvoegselGeslachtsnaam(natuurlijkPersoon.voorvoegselGeslachtsnaam);
+			nps.setVoornamen(natuurlijkPersoon.voornamen);
+			nps.setGeboortedatum(getDateStringFromStufDate(natuurlijkPersoon.geboortedatum));
+			nps.setGeslachtsaanduiding(natuurlijkPersoon.geslachtsaanduiding.toLowerCase());
+			return nps;
+	}
+		
 	private String getStufDateFromDateString(String dateString) {
 		if (dateString == null) {
 			return null;
