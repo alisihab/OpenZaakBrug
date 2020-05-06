@@ -24,6 +24,7 @@ import nl.haarlem.translations.zdstozgw.jpa.ApplicationParameterRepository;
 import nl.haarlem.translations.zdstozgw.jpa.RequestResponseCycleRepository;
 import nl.haarlem.translations.zdstozgw.jpa.model.RequestResponseCycle;
 import nl.haarlem.translations.zdstozgw.translation.zds.services.ZaakService;
+import nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient;
 import nl.haarlem.translations.zdstozgw.utils.XmlUtils;
 import nl.haarlem.translations.zdstozgw.utils.xpath.XpathDocument;
 
@@ -64,14 +65,12 @@ public class SoapController {
 	}
 
 	@Autowired
-	private ZaakService zaakService;
+	private ZGWClient zgwClient;
 	@Autowired
 	protected ApplicationParameterRepository repository;
 	@Autowired
 	protected RequestResponseCycleRepository sessions;
 
-//	@PostMapping(value = "/VrijBerichtService", consumes = MediaType.TEXT_XML_VALUE, produces = MediaType.TEXT_XML_VALUE)
-//	public ResponseEntity<?> vrijBerichtService(@RequestHeader(name = "SOAPAction", required = true) String soapAction, @RequestBody String body) {
 	@PostMapping(value = "/{requestUrl}", consumes = MediaType.TEXT_XML_VALUE, produces = MediaType.TEXT_XML_VALUE)
 	public ResponseEntity<?> HandleRequest(@PathVariable("requestUrl") String requestUrl,
 			@RequestHeader(name = "SOAPAction", required = true) String soapAction, @RequestBody String body) {
@@ -79,19 +78,13 @@ public class SoapController {
 		var beginTime = Instant.now();
 		var session = new RequestResponseCycle(requestUrl, soapAction.replace("\"", ""), body);
 		this.sessions.save(session);
-		/*
-		 * @PostMapping(value = "/BeantwoordVraag", consumes = MediaType.TEXT_XML_VALUE,
-		 * produces = MediaType.TEXT_XML_VALUE) public String
-		 * beantwoordVraag(@RequestHeader(name = "SOAPAction", required = true) String
-		 * soapAction, @RequestBody String body) {
-		 */
+
 		// what we will return
 		String responseBody = null;
 		var responseCode = HttpStatus.OK;
 
 		try {
-			// from this lexical level, errors have less impact on the continuity /
-			// tracibility
+			// from this lexical level, errors have less impact on the continuity / trace
 			var converter = ConverterFactory.getConverter(soapAction.replace("\"", ""), body);
 			if (converter != null) {
 				// session.setConverter(convertor.getClass().getCanonicalName());
@@ -112,7 +105,7 @@ public class SoapController {
 			case USE_ZGW_AND_REPLICATE_2_ZDS:
 				break;
 			case USE_ZGW:
-				responseBody = converter.Convert(this.zaakService, this.repository, body);
+				responseBody = converter.Convert(this.zgwClient, this.config, this.repository, body);
 				session.setZgwResponeBody(responseBody);
 				break;
 			default:

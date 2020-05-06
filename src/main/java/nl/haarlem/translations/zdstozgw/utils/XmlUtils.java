@@ -179,9 +179,9 @@ public class XmlUtils {
 	public static Object getStUFObject(String body, Class c) {
 		Object object = null;
 		try {
-			object = JAXBContext.newInstance(c).createUnmarshaller().unmarshal(
-					MessageFactory.newInstance().createMessage(null, new ByteArrayInputStream(body.getBytes()))
-							.getSOAPBody().extractContentAsDocument());
+			var unmarshaller = JAXBContext.newInstance(c).createUnmarshaller();
+			var document = MessageFactory.newInstance().createMessage(null, new ByteArrayInputStream(body.getBytes())).getSOAPBody().extractContentAsDocument();
+			object = unmarshaller.unmarshal(document);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

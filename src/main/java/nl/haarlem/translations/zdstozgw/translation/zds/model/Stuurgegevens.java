@@ -17,5 +17,7 @@ public class Stuurgegevens {
 
 	@XmlElement(namespace = STUF)
 	public Ontvanger ontvanger;
-
+	
+	@XmlElement(namespace = STUF)
+	public String referentienummer;
 }

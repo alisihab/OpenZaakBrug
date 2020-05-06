@@ -8,9 +8,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 
+import nl.haarlem.translations.zdstozgw.config.ConfigService;
 import nl.haarlem.translations.zdstozgw.jpa.ApplicationParameterRepository;
 import nl.haarlem.translations.zdstozgw.jpa.model.RequestResponseCycle;
 import nl.haarlem.translations.zdstozgw.translation.zds.services.ZaakService;
+import nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient;
 
 public abstract class Converter {
 
@@ -67,8 +69,7 @@ public abstract class Converter {
 		this.zdsUrl = legacyService;
 	}
 
-	public abstract String Convert(ZaakService zaakService, ApplicationParameterRepository repository,
-			String requestBody);
+	public abstract String Convert(ZGWClient zaakService, ConfigService configService, ApplicationParameterRepository repository, String requestBody);
 
 	public String getImplementation() {
 		return this.getClass().getCanonicalName();

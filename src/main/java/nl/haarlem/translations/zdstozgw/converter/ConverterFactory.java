@@ -24,7 +24,7 @@ public class ConverterFactory {
 		} catch (Exception ex) {
 			log.error("Could not load the configuration", ex);
 		}
-	}
+	}	
 
 	public static Converter getConverter(String soapAction, String requestbody) {
 
@@ -37,8 +37,8 @@ public class ConverterFactory {
 				classname = translation.implementation;
 				templatepath = translation.template;
 				legacyservice = translation.legacyservice;
-				log.info("Using translation: '" + translation.translation + "' for soapaction:" + soapAction
-						+ " (legacy url:" + legacyservice + ")");
+				log.info("Using translation: '" + translation.translation + "' for soapaction:" + soapAction);
+				log.info("Legacy url:" + legacyservice);
 				break;
 			}
 		}

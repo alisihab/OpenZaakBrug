@@ -10,10 +10,12 @@ import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 
 import lombok.Data;
+import nl.haarlem.translations.zdstozgw.config.ConfigService;
 import nl.haarlem.translations.zdstozgw.converter.Converter;
 import nl.haarlem.translations.zdstozgw.jpa.ApplicationParameterRepository;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.StufRequest;
 import nl.haarlem.translations.zdstozgw.translation.zds.services.ZaakService;
+import nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient;
 import nl.haarlem.translations.zdstozgw.utils.XmlUtils;
 import nl.haarlem.translations.zdstozgw.utils.xpath.XpathDocument;
 
@@ -48,7 +50,7 @@ public class GenereerZaakIdentificatieConverter extends Converter {
 	}
 
 	@Override
-	public String Convert(ZaakService zaakService, ApplicationParameterRepository repository, String requestbody) {
+	public String Convert(ZGWClient zgwClient, ConfigService configService, ApplicationParameterRepository repository, String requestbody) {
 		var stufRequest = new StufRequest(XmlUtils.convertStringToDocument(requestbody));
 		DateFormat tijdstipformat = new SimpleDateFormat("yyyyMMddHHmmss");
 
@@ -60,20 +62,14 @@ public class GenereerZaakIdentificatieConverter extends Converter {
 
 		var di02 = new GenereerZaakIdentificatie_Di02(stufRequest);
 		var du02 = new GenereerZaakIdentificatie_Du02(this.template);
-		du02.xpathDocument.setNodeValue(".//stuf:zender//stuf:organisatie",
-				di02.xpathDocument.getNodeValue(".//stuf:ontvanger//stuf:organisatie"));
-		du02.xpathDocument.setNodeValue(".//stuf:zender//stuf:applicatie",
-				di02.xpathDocument.getNodeValue(".//stuf:ontvanger//stuf:applicatie"));
-		du02.xpathDocument.setNodeValue(".//stuf:zender//stuf:gebruiker",
-				di02.xpathDocument.getNodeValue(".//stuf:ontvanger//stuf:gebruiker"));
-		du02.xpathDocument.setNodeValue(".//stuf:ontvanger//stuf:organisatie",
-				di02.xpathDocument.getNodeValue(".//stuf:zender//stuf:organisatie"));
-		du02.xpathDocument.setNodeValue(".//stuf:ontvanger//stuf:applicatie",
-				di02.xpathDocument.getNodeValue(".//stuf:zender//stuf:applicatie"));
-		du02.xpathDocument.setNodeValue(".//stuf:ontvanger//stuf:gebruiker",
-				di02.xpathDocument.getNodeValue(".//stuf:zender//stuf:gebruiker"));
-		du02.xpathDocument.setNodeValue(".//stuf:referentienummer",
-				di02.xpathDocument.getNodeValue(".//stuf:referentienummer"));
+		du02.xpathDocument.setNodeValue(".//stuf:zender//stuf:organisatie", di02.xpathDocument.getNodeValue(".//stuf:ontvanger//stuf:organisatie"));
+		du02.xpathDocument.setNodeValue(".//stuf:zender//stuf:applicatie", di02.xpathDocument.getNodeValue(".//stuf:ontvanger//stuf:applicatie"));
+		du02.xpathDocument.setNodeValue(".//stuf:zender//stuf:gebruiker", di02.xpathDocument.getNodeValue(".//stuf:ontvanger//stuf:gebruiker"));
+		du02.xpathDocument.setNodeValue(".//stuf:ontvanger//stuf:organisatie", di02.xpathDocument.getNodeValue(".//stuf:zender//stuf:organisatie"));
+		du02.xpathDocument.setNodeValue(".//stuf:ontvanger//stuf:applicatie", di02.xpathDocument.getNodeValue(".//stuf:zender//stuf:applicatie"));
+		du02.xpathDocument.setNodeValue(".//stuf:ontvanger//stuf:gebruiker", di02.xpathDocument.getNodeValue(".//stuf:zender//stuf:gebruiker"));
+		du02.xpathDocument.setNodeValue(".//stuf:referentienummer", di02.xpathDocument.getNodeValue(".//stuf:referentienummer"));
+		du02.xpathDocument.setNodeValue(".//stuf:crossRefnummer", di02.xpathDocument.getNodeValue(".//stuf:referentienummer"));
 		du02.xpathDocument.setNodeValue(".//stuf:tijdstipBericht", tijdstipformat.format(new Date()));
 		du02.xpathDocument.setNodeValue(".//zkn:identificatie", prefixparam.getParameterValue() + identificatie);
 

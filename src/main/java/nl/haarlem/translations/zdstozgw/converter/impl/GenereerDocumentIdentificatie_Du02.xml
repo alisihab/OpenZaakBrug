@@ -14,6 +14,7 @@
 				<StUF:gebruiker>${ontvangerGebruiker}</StUF:gebruiker>
 			</StUF:ontvanger>
 			<StUF:referentienummer>${referentienummer}</StUF:referentienummer>
+			<StUF:crossRefnummer>${crossrefnummer}</StUF:crossRefnummer>				
 			<StUF:tijdstipBericht>${tijdstipbericht}</StUF:tijdstipBericht>
 			<StUF:functie>genereerDocumentidentificatie</StUF:functie>
 		</ZKN:stuurgegevens>

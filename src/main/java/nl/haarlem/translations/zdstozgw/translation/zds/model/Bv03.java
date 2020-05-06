@@ -2,6 +2,7 @@ package nl.haarlem.translations.zdstozgw.translation.zds.model;
 
 import java.lang.invoke.MethodHandles;
 
+import org.apache.http.annotation.Obsolete;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
@@ -11,6 +12,7 @@ import nl.haarlem.translations.zdstozgw.utils.StufUtils;
 import nl.haarlem.translations.zdstozgw.utils.XmlUtils;
 import nl.haarlem.translations.zdstozgw.utils.xpath.XpathDocument;
 
+@Obsolete
 @Data
 public class Bv03 {
 

@@ -32,8 +32,8 @@ public class Gerelateerde {
 	public String volgnummer;
 
 	@XmlElement(namespace = ZKN)
-	public Medewerker medewerker;
+	public ZdsMedewerker medewerker;
 
 	@XmlElement(namespace = ZKN)
-	public NatuurlijkPersoon natuurlijkPersoon;
+	public ZdsNatuurlijkPersoon natuurlijkPersoon;
 }

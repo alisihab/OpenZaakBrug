@@ -10,8 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.w3c.dom.Document;
 
-import nl.haarlem.translations.zdstozgw.translation.ZaakTranslator;
-import nl.haarlem.translations.zdstozgw.translation.ZaakTranslator.ZaakTranslatorException;
+import nl.haarlem.translations.zdstozgw.translation.ZaakTranslatorObsolete;
+import nl.haarlem.translations.zdstozgw.translation.ZaakTranslatorObsolete.ZaakTranslatorException;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.EdcLa01;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.EdcLk01;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.EdcLv01;
@@ -32,10 +32,8 @@ public class ZaakService {
 
 	@Autowired
 	private ZGWClient zgwClient;
-
-	@Autowired
-	private ZaakTranslator zaakTranslator;
-
+	
+	/*
 	public ZgwZaak creeerZaak(ZakLk01_v2 zakLk01) throws ZGWClientException, ZaakTranslatorException {
 		// zaakTranslator.setDocument((Document) zakLk01).zdsZaakToZgwZaak();
 		this.zaakTranslator.setZakLk01(zakLk01).zdsZaakToZgwZaak();
@@ -67,7 +65,8 @@ public class ZaakService {
 		}
 		return null;
 	}
-
+	*/
+	/*
 	public Document getZaakDetails(ZakLv01 zakLv01) throws Exception {
 		ZgwZaak zgwZaak = getZaak(zakLv01.getIdentificatie());
 
@@ -77,7 +76,8 @@ public class ZaakService {
 		return this.zaakTranslator.getDocument();
 
 	}
-
+	*/
+	/*
 	public Document getLijstZaakdocumenten(ZakLv01 zakLv01) throws Exception {
 		ZgwZaak zgwZaak = getZaak(zakLv01.getIdentificatie());
 
@@ -92,7 +92,8 @@ public class ZaakService {
 		return this.zaakTranslator.getDocument();
 
 	}
-
+	*/
+	/*
 	public ZgwZaakInformatieObject voegZaakDocumentToe(EdcLk01 edcLk01) throws Exception {
 		ZgwZaakInformatieObject result = null;
 
@@ -109,7 +110,8 @@ public class ZaakService {
 		}
 		return result;
 	}
-
+	*/
+	/*
 	private ZgwZaakInformatieObject addZaakInformatieObject(ZgwEnkelvoudigInformatieObject doc, String zaakUrl)
 			throws Exception {
 		ZgwZaakInformatieObject result = null;
@@ -125,14 +127,16 @@ public class ZaakService {
 		}
 		return result;
 	}
-
+	*/
+	/*
 	private ZgwZaak getZaak(String zaakIdentificatie) throws ZGWClientException {
 		Map<String, String> parameters = new HashMap();
 		parameters.put("identificatie", zaakIdentificatie);
 
 		return this.zgwClient.getZaakDetails(parameters);
 	}
-
+	*/
+	/*
 	public EdcLa01 getZaakDoumentLezen(EdcLv01 edcLv01) throws ZGWClientException {
 		EdcLa01 edcLa01 = new EdcLa01();
 
@@ -143,7 +147,8 @@ public class ZaakService {
 
 		return edcLa01;
 	}
-
+	*/
+	/*
 	private ZgwStatusType getStatusTypeByZaakTypeAndVolgnummer(String zaakTypeUrl, int volgnummer)
 			throws ZGWClientException {
 		Map<String, String> parameters = new HashMap();
@@ -152,9 +157,10 @@ public class ZaakService {
 		return this.zgwClient.getStatusTypes(parameters).stream()
 				.filter(zgwStatusType -> zgwStatusType.volgnummer == volgnummer).findFirst().orElse(null);
 	}
-
+	*/
+	/*
 	public ZgwZaak actualiseerZaakstatus(ZakLk01_v2 zakLk01) throws ZGWClientException {
-		ZakLk01_v2.Object object = zakLk01.objects.get(1);
+		ZakLk01_v2.Object object = zakLk01.object.get(1);
 		ZgwZaak zgwZaak = getZaak(object.identificatie);
 
 		this.zaakTranslator.setZakLk01(zakLk01);
@@ -166,4 +172,5 @@ public class ZaakService {
 		this.zgwClient.actualiseerZaakStatus(zgwStatus);
 		return zgwZaak;
 	}
+	*/
 }

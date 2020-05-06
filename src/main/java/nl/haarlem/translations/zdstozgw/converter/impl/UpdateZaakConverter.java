@@ -18,31 +18,32 @@ import nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient;
 import nl.haarlem.translations.zdstozgw.utils.XmlUtils;
 import nl.haarlem.translations.zdstozgw.utils.xpath.XpathDocument;
 
-public class CreeerZaakConverter extends Converter {
+public class UpdateZaakConverter extends Converter {
 	@Data
-	private class CreeerZaak_Bv03 {
+	private class UpdateZaak_Bv03 {
 		final XpathDocument xpathDocument;
 		Document document;
 
-		public CreeerZaak_Bv03(String template) {
+		public UpdateZaak_Bv03(String template) {
 			this.document = nl.haarlem.translations.zdstozgw.utils.XmlUtils.getDocument(template);
 			this.xpathDocument = new XpathDocument(this.document);
 		}
 	}	
 	
-	public CreeerZaakConverter(String templatePath, String legacyService) {
+	public UpdateZaakConverter(String templatePath, String legacyService) {
 		super(templatePath, legacyService);
 	}
 
 	@Override
 	public String Convert(ZGWClient zgwClient, ConfigService configService, ApplicationParameterRepository repository, String requestBody) {
+		throw new ConverterException(this, "Not yet implemented", "Not yet implemented",  new Exception());
+		/*
 		try {
-			
 			ZakLk01_v2 zakLk01 = (ZakLk01_v2) XmlUtils.getStUFObject(requestBody, ZakLk01_v2.class);					
 			var translator = new ZaakTranslator(zgwClient, configService);			
 			var zgwZaak = translator.creeerZaak(zakLk01);
 			
-			var bv03 = new CreeerZaak_Bv03(this.template);
+			var bv03 = new UpdateZaakConverter(this.template);
 			bv03.xpathDocument.setNodeValue(".//stuf:zender//stuf:organisatie", zakLk01.stuurgegevens.ontvanger.organisatie);
 			bv03.xpathDocument.setNodeValue(".//stuf:zender//stuf:applicatie", zakLk01.stuurgegevens.ontvanger.applicatie);
 			bv03.xpathDocument.setNodeValue(".//stuf:zender//stuf:gebruiker", zakLk01.stuurgegevens.ontvanger.gebruiker);
@@ -59,5 +60,6 @@ public class CreeerZaakConverter extends Converter {
 		} catch (ZaakTranslator.ZaakTranslatorException zte) {
 			throw new ConverterException(this, zte.getMessage(), requestBody, zte);
 		}
+		*/
 	}
 }

@@ -19,7 +19,7 @@ import lombok.Data;
 public class ZakLk01_v2 {
 
 	@XmlAccessorType(XmlAccessType.FIELD)
-	public static class Object {
+	public static class ZdsZaak {
 		@XmlAttribute(namespace = STUF)
 		public String entiteittype;
 
@@ -50,23 +50,22 @@ public class ZakLk01_v2 {
 		@XmlElement(namespace = ZKN)
 		public Heeft heeft;
 
-		//@XmlElement(namespace = ZKN, name = "heeftAlsBelanghebbende")
-		//public HeeftAlsBelanghebbende heeftAlsBelanghebbende;
+		@XmlElement(namespace = ZKN, name = "heeftAlsBelanghebbende")
+		public ZdsRol heeftAlsBelanghebbende;
 		
 		@XmlElement(namespace = ZKN, name = "heeftAlsInitiator")
-		public HeeftAlsInitiator heeftAlsInitiator;
+		public ZdsRol heeftAlsInitiator;
 		
 		@XmlElement(namespace = ZKN, name = "heeftAlsUitvoerende")
-		public HeeftAlsUitvoerende heeftAlsUitvoerende;
+		public ZdsRol heeftAlsUitvoerende;
 
-		//@XmlElement(namespace = ZKN, name = "heeftAlsAanspreekpunt")
-		//public HeeftAlsAanspreekpunt heeftAlsAanspreekpunt;		
+		@XmlElement(namespace = ZKN, name = "heeftAlsAanspreekpunt")
+		public ZdsRol heeftAlsAanspreekpunt;		
 	}
 
 	@XmlElement(namespace = ZKN, name = "object")
-	public List<Object> objects;
+	public List<ZdsZaak> object;
 
 	@XmlElement(namespace = ZKN, name = "stuurgegevens")
 	public Stuurgegevens stuurgegevens;
-
 }

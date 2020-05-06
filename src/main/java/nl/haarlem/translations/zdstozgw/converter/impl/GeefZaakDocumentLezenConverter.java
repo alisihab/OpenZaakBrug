@@ -1,13 +1,16 @@
 package nl.haarlem.translations.zdstozgw.converter.impl;
 
+import nl.haarlem.translations.zdstozgw.config.ConfigService;
 import nl.haarlem.translations.zdstozgw.converter.Converter;
 import nl.haarlem.translations.zdstozgw.jpa.ApplicationParameterRepository;
+import nl.haarlem.translations.zdstozgw.translation.ZaakTranslator;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.EdcLa01;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.EdcLv01;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.Ontvanger;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.Stuurgegevens;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.Zender;
 import nl.haarlem.translations.zdstozgw.translation.zds.services.ZaakService;
+import nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient;
 import nl.haarlem.translations.zdstozgw.utils.XmlUtils;
 
 public class GeefZaakDocumentLezenConverter extends Converter {
@@ -17,12 +20,13 @@ public class GeefZaakDocumentLezenConverter extends Converter {
 	}
 
 	@Override
-	public String Convert(ZaakService zaakService, ApplicationParameterRepository repository, String requestBody) {
+	public String Convert(ZGWClient zgwClient, ConfigService configService, ApplicationParameterRepository repository, String requestBody) {
 		String result = "";
 		try {
 
 			EdcLv01 object = (EdcLv01) XmlUtils.getStUFObject(requestBody, EdcLv01.class);
-			EdcLa01 edcLa01 = zaakService.getZaakDoumentLezen((EdcLv01) object);
+			var translator = new ZaakTranslator(zgwClient, configService);
+			EdcLa01 edcLa01 = translator.getZaakDoumentLezen((EdcLv01) object);
 
 			edcLa01.stuurgegevens = new Stuurgegevens();
 			edcLa01.stuurgegevens.zender = new Zender();

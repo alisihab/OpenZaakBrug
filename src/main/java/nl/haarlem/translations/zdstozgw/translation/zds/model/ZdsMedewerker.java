@@ -4,7 +4,7 @@ import static nl.haarlem.translations.zdstozgw.translation.zds.model.namespace.N
 
 import javax.xml.bind.annotation.XmlElement;
 
-public class Medewerker {
+public class ZdsMedewerker {
 	@XmlElement(namespace = ZKN)
 	public String identificatie;
 

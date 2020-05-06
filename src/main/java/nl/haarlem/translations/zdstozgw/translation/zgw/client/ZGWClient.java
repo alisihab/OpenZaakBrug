@@ -3,6 +3,7 @@ package nl.haarlem.translations.zdstozgw.translation.zgw.client;
 import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -19,13 +20,16 @@ import org.springframework.web.client.HttpStatusCodeException;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import nl.haarlem.translations.zdstozgw.config.ZaakType;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.QueryResult;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.RolNPS;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwEnkelvoudigInformatieObject;
+import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwRolType;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwStatus;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwStatusType;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwZaak;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwZaakInformatieObject;
+import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwZaakType;
 
 @Service
 public class ZGWClient {
@@ -142,6 +146,60 @@ public class ZGWClient {
 		return result;
 	}
 
+	public ZgwZaakType getZaakTypeByIdentiticatie(String identificatie) throws ZGWClientException {
+        // url = self.config.GEMMA_ZAKEN_ZTC + 'zaaktypen?status=alles&identificatie=' + str(zaaktypecode) + '&catalogus=' + catalogus.url
+        // url = self.config.GEMMA_ZAKEN_ZTC + 'zaaktypen?status=alles&identificatie=' + str(zaaktypecode)
+		Map<String, String> parameters = new HashMap();
+		parameters.put("identificatie", identificatie);
+
+		var zaakTypeJson = get(this.baseUrl + "/catalogi/api/v1/zaaktypen", parameters);
+		ZgwZaakType result = null;
+		try {
+			Type type = new TypeToken<QueryResult<ZgwZaakType>>() {
+			}.getType();
+			Gson gson = new Gson();
+			QueryResult<ZgwZaakType> queryResult = gson.fromJson(zaakTypeJson, type);
+			if (queryResult.getResults().size() == 1) {
+				result = queryResult.getResults().get(0);
+			}
+		} catch (Exception ex) {
+			log.error("Exception in getZaakTypeByIdentiticatie: " + ex.getMessage());
+			throw ex;
+		}
+		return result;
+	}		
+
+
+	public ZgwRolType getRolTypeByOmschrijving(String zaaktype, String omschrijving) throws ZGWClientException {
+		Map<String, String> parameters = new HashMap();
+		//parameters.put("identificatie", identificatie);
+
+		var rolTypeJson = get(this.baseUrl + "/catalogi/api/v1/roltypen", parameters);
+		ZgwRolType result = null;
+		try {
+			Type type = new TypeToken<QueryResult<ZgwRolType>>() {
+			}.getType();
+			Gson gson = new Gson();
+			QueryResult<ZgwRolType> queryResult = gson.fromJson(rolTypeJson, type);
+			for(ZgwRolType found : queryResult.getResults()) {
+				if(found.zaaktype.equals(zaaktype) &&  found.omschrijving.equals(omschrijving)) {
+					result = found;
+				}
+			}
+		} catch (Exception ex) {
+			log.error("Exception in getRolTypeByIdentiticatie: " + ex.getMessage());
+			throw ex;
+		}
+		return result;
+	}	
+	
+	
+	private ZgwZaak getZaak(String zaakIdentificatie) throws ZGWClientException {
+		Map<String, String> parameters = new HashMap();
+		parameters.put("identificatie", zaakIdentificatie);
+		return getZaakDetails(parameters);
+	}		
+	
 	public ZgwZaak getZaakDetails(Map<String, String> parameters) throws ZGWClientException {
 
 		ZgwZaak result = null;
@@ -155,7 +213,7 @@ public class ZGWClient {
 				result = queryResult.getResults().get(0);
 			}
 		} catch (Exception ex) {
-			log.error("Exception in getZaakDetails: " + ex.getMessage());
+			log.error("Exception in getZaak: " + ex.getMessage());
 			throw ex;
 		}
 
@@ -169,7 +227,7 @@ public class ZGWClient {
 		return gson.fromJson(response, ZgwZaak.class);
 	}
 
-	public RolNPS addRolNPS(String roltype, RolNPS rolNPS) throws ZGWClientException {
+	public RolNPS addRolNPS(RolNPS rolNPS) throws ZGWClientException {
 		RolNPS result = null;
 		try {
 			Gson gson = new Gson();
@@ -292,5 +350,26 @@ public class ZGWClient {
 		}
 
 		return result;
+	}
+	private ZgwZaakInformatieObject addZaakInformatieObject(ZgwEnkelvoudigInformatieObject doc, String zaakUrl) throws Exception {
+		ZgwZaakInformatieObject result = null;
+		try {
+			var zgwZaakInformatieObject = new ZgwZaakInformatieObject();
+			zgwZaakInformatieObject.setZaak(zaakUrl);
+			zgwZaakInformatieObject.setInformatieobject(doc.getUrl());
+			zgwZaakInformatieObject.setTitel(doc.getTitel());
+			result = addDocumentToZaak(zgwZaakInformatieObject);
+
+		} catch (Exception e) {
+			throw e;
+		}
+		return result;
+	}
+	private ZgwStatusType getStatusTypeByZaakTypeAndVolgnummer(String zaakTypeUrl, int volgnummer) throws ZGWClientException {
+		Map<String, String> parameters = new HashMap();
+		parameters.put("zaaktype", zaakTypeUrl);
+
+		return getStatusTypes(parameters).stream()
+				.filter(zgwStatusType -> zgwStatusType.volgnummer == volgnummer).findFirst().orElse(null);
 	}
 }
