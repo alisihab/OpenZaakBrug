@@ -12,12 +12,12 @@
                <StUF:applicatie>GWS4all</StUF:applicatie>
                <StUF:gebruiker>Gebruiker</StUF:gebruiker>
             </StUF:ontvanger>
-            <StUF:referentienummer>54fa0532-094c-4c28-bfda-4931c0c78beb</StUF:referentienummer>
-            <StUF:tijdstipBericht>20200318123707118</StUF:tijdstipBericht>
+            <StUF:referentienummer>8d820e7c-14ca-4374-a025-59354b377161</StUF:referentienummer>
+            <StUF:tijdstipBericht>20200507075603223</StUF:tijdstipBericht>
             <StUF:functie>genereerZaakidentificatie</StUF:functie>
          </ZKN:stuurgegevens>
          <ZKN:zaak StUF:entiteittype="ZAK" StUF:functie="entiteit">
-            <ZKN:identificatie>1900207669</ZKN:identificatie>
+            <ZKN:identificatie>1900208938</ZKN:identificatie>
          </ZKN:zaak>
       </ZKN:genereerZaakIdentificatie_Du02>
    </s:Body>

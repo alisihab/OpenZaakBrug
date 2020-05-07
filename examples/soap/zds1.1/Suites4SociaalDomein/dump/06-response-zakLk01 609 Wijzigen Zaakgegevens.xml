@@ -12,9 +12,9 @@
                <StUF:applicatie>GWS4all</StUF:applicatie>
                <StUF:gebruiker>Gebruiker</StUF:gebruiker>
             </StUF:ontvanger>
-            <StUF:referentienummer>a73ce16d-f797-493f-823b-4500de21af0b</StUF:referentienummer>
-            <StUF:tijdstipBericht>20200318123708195</StUF:tijdstipBericht>
-            <StUF:crossRefnummer>5252702e-362c-4302-b0d4-92d3d914bd5a</StUF:crossRefnummer>
+            <StUF:referentienummer>c3b5fdcc-c93c-48c7-9ebc-5c25c7946c57</StUF:referentienummer>
+            <StUF:tijdstipBericht>20200507075603816</StUF:tijdstipBericht>
+            <StUF:crossRefnummer>0822b0b5-464a-43bb-a24a-24057ea3abeb</StUF:crossRefnummer>
          </StUF:stuurgegevens>
       </StUF:Bv03Bericht>
    </s:Body>

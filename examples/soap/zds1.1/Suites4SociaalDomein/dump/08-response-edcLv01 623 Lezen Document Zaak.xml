@@ -1,6 +1,6 @@
 <s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
    <s:Body>
-      <zakLa01 xmlns="http://www.egem.nl/StUF/sector/zkn/0310" xmlns:StUF="http://www.egem.nl/StUF/StUF0301" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:BG="http://www.egem.nl/StUF/sector/bg/0310">
+      <edcLa01 xmlns="http://www.egem.nl/StUF/sector/zkn/0310" xmlns:StUF="http://www.egem.nl/StUF/StUF0301" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
          <stuurgegevens>
             <StUF:berichtcode>La01</StUF:berichtcode>
             <StUF:zender>
@@ -12,14 +12,14 @@
                <StUF:applicatie>GWS4all</StUF:applicatie>
                <StUF:gebruiker>Gebruiker</StUF:gebruiker>
             </StUF:ontvanger>
-            <StUF:referentienummer>c04fa205-3ebd-489a-8212-6ff0cb7db5d1</StUF:referentienummer>
-            <StUF:tijdstipBericht>20200318123707789</StUF:tijdstipBericht>
-            <StUF:crossRefnummer>f6fc71c1-e450-4bf3-a93b-e95433d3e42b</StUF:crossRefnummer>
-            <StUF:entiteittype>ZAK</StUF:entiteittype>
+            <StUF:referentienummer>438039a6-3b23-47df-82f9-1921b7e27781</StUF:referentienummer>
+            <StUF:tijdstipBericht>20200507075604097</StUF:tijdstipBericht>
+            <StUF:crossRefnummer>b84e08ea-b406-4fcb-842d-6397e78da8b2</StUF:crossRefnummer>
+            <StUF:entiteittype>EDC</StUF:entiteittype>
          </stuurgegevens>
          <parameters>
             <StUF:indicatorVervolgvraag>false</StUF:indicatorVervolgvraag>
          </parameters>
-      </zakLa01>
+      </edcLa01>
    </s:Body>
 </s:Envelope>
