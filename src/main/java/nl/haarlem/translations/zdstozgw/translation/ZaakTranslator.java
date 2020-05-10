@@ -39,7 +39,8 @@ import nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient;
 import nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient.ZGWClientException;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.BetrokkeneIdentificatieMedewerker;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.BetrokkeneIdentificatieNPS;
-import nl.haarlem.translations.zdstozgw.translation.zgw.model.RolNPS;
+import nl.haarlem.translations.zdstozgw.translation.zgw.model.Rol;
+import nl.haarlem.translations.zdstozgw.translation.zgw.model.Rol;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwEnkelvoudigInformatieObject;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwStatus;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwZaak;
@@ -84,7 +85,7 @@ public class ZaakTranslator {
 
 		// zaaktype
 		var zgwZaaktype = zgwClient.getZaakTypeByIdentiticatie(zdsZaak.isVan.gerelateerde.code);
-		if(zgwZaaktype == null) throw new ZaakTranslatorException("Geen zaaktype niet gevonden ZTC voor identificatie: '" + zdsZaak.isVan.gerelateerde.code);
+		if(zgwZaaktype == null) throw new ZaakTranslatorException("Geen zaaktype niet gevonden ZTC voor identificatie: '" + zdsZaak.isVan.gerelateerde.code + "'");
 		zgwZaak.setZaaktype(zgwZaaktype.getUrl());
 				
 		// verplichte velden
@@ -96,13 +97,15 @@ public class ZaakTranslator {
 		zgwZaak = this.zgwClient.addZaak(zgwZaak);					
 		log.info("Created a ZGW Zaak with UUID: " + zgwZaak.getUuid() + " (" + zdsZaak.identificatie + ")");
 		
-		var rollen = new java.util.ArrayList<RolNPS>();
-		if (zdsZaak.heeftAlsBelanghebbende != null) rollen.add(getRol(zgwZaak, zdsZaak.heeftAlsBelanghebbende, "heeftAlsBelanghebbende"));
-		if (zdsZaak.heeftAlsInitiator != null) rollen.add(getRol(zgwZaak, zdsZaak.heeftAlsInitiator, "heeftAlsInitiator"));
-		if (zdsZaak.heeftAlsUitvoerende != null) rollen.add(getRol(zgwZaak, zdsZaak.heeftAlsUitvoerende, "heeftAlsUitvoerende"));
-		if (zdsZaak.heeftAlsAanspreekpunt != null) rollen.add(getRol(zgwZaak, zdsZaak.heeftAlsAanspreekpunt, "heeftAlsAanspreekpunt"));
+		var rollen = new java.util.ArrayList<Rol>();
 		
-		for(RolNPS rol : rollen) {
+		if (zdsZaak.heeftBetrekkingOp != null) rollen.add(getRol(zgwZaak, zdsZaak.heeftBetrekkingOp, "Betrekking"));
+		if (zdsZaak.heeftAlsBelanghebbende != null) rollen.add(getRol(zgwZaak, zdsZaak.heeftAlsBelanghebbende, "Belanghebbende"));
+		if (zdsZaak.heeftAlsInitiator != null) rollen.add(getRol(zgwZaak, zdsZaak.heeftAlsInitiator, "Initiator"));
+		if (zdsZaak.heeftAlsUitvoerende != null) rollen.add(getRol(zgwZaak, zdsZaak.heeftAlsUitvoerende, "Uitvoerende"));
+		if (zdsZaak.heeftAlsVerantwoordelijke != null) rollen.add(getRol(zgwZaak, zdsZaak.heeftAlsVerantwoordelijke, "Verantwoordelijke"));
+		
+		for(Rol rol : rollen) {
 			rol.setZaak(zgwZaak.getUrl());
 			zgwClient.addRolNPS(rol);
 		}	
@@ -127,17 +130,18 @@ public class ZaakTranslator {
 		return zgwZaak;
 	}
 
-	public RolNPS getRol(ZgwZaak zgwzaak, ZdsRol zdsRol, String rolname) throws ZaakTranslatorException,  ZGWClientException {
-		var rol = new RolNPS();		
+	public Rol getRol(ZgwZaak zgwzaak, ZdsRol zdsRol, String rolname) throws ZaakTranslatorException,  ZGWClientException {
+		var rol = new Rol();
 		if(zdsRol.gerelateerde.natuurlijkPersoon != null) {		
 			var nps = getBetrokkeneIdentificatieNPS(zdsRol.gerelateerde.natuurlijkPersoon);
-			rol.setBetrokkeneIdentificatieNPS(nps);
+			rol.setBetrokkeneIdentificatie(nps);
 			rol.setBetrokkeneType("natuurlijk_persoon");
 		}
 		else if(zdsRol.gerelateerde.medewerker != null) {
+			rol = new Rol();
 			var zdsMedewerker = getBetrokkeneIdentificatieMedewerker(zdsRol.gerelateerde.medewerker);
-			//rol.setBetrokkeneIdentificatieMedewerker(zdsMedewerker);
-			//rol.setBetrokkeneType("medewerker_???");
+			rol.setBetrokkeneIdentificatie(zdsMedewerker);
+			rol.setBetrokkeneType("medewerker");
 			log.error("TODO: implement getRol voor medewerker");
 		}
 		else {
@@ -207,14 +211,8 @@ public class ZaakTranslator {
 	}
 
 	private BetrokkeneIdentificatieMedewerker getBetrokkeneIdentificatieMedewerker(ZdsMedewerker zdsMedewerker)  {
-		//TODO:
 		BetrokkeneIdentificatieMedewerker zgwMedewerker = new BetrokkeneIdentificatieMedewerker();
-		//nps.setInpBsn(natuurlijkPersoon.bsn);
-		//nps.setGeslachtsnaam(natuurlijkPersoon.geslachtsnaam);
-		//nps.setVoorvoegselGeslachtsnaam(natuurlijkPersoon.voorvoegselGeslachtsnaam);
-		//nps.setVoornamen(natuurlijkPersoon.voornamen);
-		//nps.setGeboortedatum(getDateStringFromStufDate(natuurlijkPersoon.geboortedatum));
-		//nps.setGeslachtsaanduiding(natuurlijkPersoon.geslachtsaanduiding.toLowerCase());
+		zgwMedewerker.identificatie = zdsMedewerker.identificatie;
 		return zgwMedewerker;
 	}
 		

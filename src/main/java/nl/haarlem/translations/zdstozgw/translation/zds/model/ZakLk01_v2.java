@@ -60,7 +60,13 @@ public class ZakLk01_v2 {
 		public ZdsRol heeftAlsUitvoerende;
 
 		@XmlElement(namespace = ZKN, name = "heeftAlsAanspreekpunt")
-		public ZdsRol heeftAlsAanspreekpunt;		
+		public ZdsRol heeftAlsAanspreekpunt;
+
+		@XmlElement(namespace = ZKN, name = "heeftBetrekkingOp")
+		public ZdsRol heeftBetrekkingOp;
+
+		@XmlElement(namespace = ZKN, name = "heeftAlsVerantwoordelijke")
+		public ZdsRol heeftAlsVerantwoordelijke;
 	}
 
 	@XmlElement(namespace = ZKN, name = "object")

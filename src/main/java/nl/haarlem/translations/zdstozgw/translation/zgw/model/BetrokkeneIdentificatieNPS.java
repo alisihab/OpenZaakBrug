@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName;
 import lombok.Data;
 
 @Data
-public class BetrokkeneIdentificatieNPS {
+public class BetrokkeneIdentificatieNPS extends BetrokkeneIdentificatie {
 
 	@SerializedName("inpBsn")
 	@Expose

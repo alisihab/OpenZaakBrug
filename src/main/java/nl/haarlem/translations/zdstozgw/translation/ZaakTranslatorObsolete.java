@@ -29,7 +29,7 @@ import nl.haarlem.translations.zdstozgw.translation.zds.model.ZakLa01Zaakdetails
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZakLk01_v2;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZakLk01_v2.ZdsZaak;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.BetrokkeneIdentificatieNPS;
-import nl.haarlem.translations.zdstozgw.translation.zgw.model.RolNPS;
+import nl.haarlem.translations.zdstozgw.translation.zgw.model.Rol;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwEnkelvoudigInformatieObject;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwStatus;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwZaak;
@@ -295,12 +295,12 @@ public class ZaakTranslatorObsolete {
 
 		this.zgwZaak = zaak;
 	}
-
-	public RolNPS getRolInitiator() throws ZaakTranslatorException {
+/*
+	public Rol getRolInitiator() throws ZaakTranslatorException {
 		var z = this.zakLk01.object.get(0);
 		if (z.heeftAlsInitiator != null) {
 			var nps =  getBetrokkeneIdentificatieNPS(z.heeftAlsInitiator.gerelateerde.natuurlijkPersoon);
-			var rol = new RolNPS();
+			var rol = new Rol();
 			rol.setBetrokkeneIdentificatieNPS(nps);
 			rol.setBetrokkeneType("natuurlijk_persoon");
 			rol.setRoltoelichting("Inititator");
@@ -313,12 +313,13 @@ public class ZaakTranslatorObsolete {
 			return null;
 		}
 	}
-	
-	public RolNPS getRolUitvoerende() throws ZaakTranslatorException {
+	*/
+	/*
+	public Rol getRolUitvoerende() throws ZaakTranslatorException {
 		var z = this.zakLk01.object.get(0);
 		if (z.heeftAlsUitvoerende != null) {			
 			var nps =  getBetrokkeneIdentificatieNPS(z.heeftAlsUitvoerende.gerelateerde.natuurlijkPersoon);
-			var rol = new RolNPS();
+			var rol = new Rol();
 			rol.setBetrokkeneIdentificatieNPS(nps);
 			rol.setBetrokkeneType("natuurlijk_persoon");
 			rol.setRoltoelichting("Inititator");
@@ -331,7 +332,7 @@ public class ZaakTranslatorObsolete {
 			return null;
 		}
 	}	
-	
+	*/
 
 	private BetrokkeneIdentificatieNPS getBetrokkeneIdentificatieNPS(ZdsNatuurlijkPersoon natuurlijkPersoon)  {
 			BetrokkeneIdentificatieNPS nps = new BetrokkeneIdentificatieNPS();

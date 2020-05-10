@@ -1,5 +1,6 @@
 package nl.haarlem.translations.zdstozgw.translation.zgw.client;
 
+import java.lang.invoke.MethodHandles;
 import java.security.cert.X509Certificate;
 
 import javax.net.ssl.SSLContext;
@@ -8,6 +9,8 @@ import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.conn.ssl.TrustStrategy;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
@@ -21,22 +24,24 @@ import lombok.Data;
 @Service
 @Data
 public class RestTemplateService {
+	private static final Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
 	@Autowired
 	private JWTService jwtService;
 
 	private RestTemplate restTemplate;
 
-	public RestTemplateService(
-			@Value("${nl.haarlem.translations.zdstozgw.trustAllCerts:false}") boolean trustAllCerts) {
+	public RestTemplateService(@Value("${nl.haarlem.translations.zdstozgw.trustAllCerts:false}") boolean trustAllCerts) {
 		if (trustAllCerts) {
+			log.info("zwg-api-client is trusting ALL certificates");
 			this.restTemplate = new RestTemplate(this.getAllCertsTrustingRequestFactory());
 		} else {
+			log.info("zwg-api-client are trusting ALL certificates");
 			this.restTemplate = new RestTemplate();
 		}
 	}
 
-	private HttpComponentsClientHttpRequestFactory getAllCertsTrustingRequestFactory() {
+	public HttpComponentsClientHttpRequestFactory getAllCertsTrustingRequestFactory() {
 		TrustStrategy acceptingTrustStrategy = (X509Certificate[] chain, String authType) -> true;
 
 		SSLContext sslContext = null;

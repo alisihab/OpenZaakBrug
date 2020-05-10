@@ -6,9 +6,5 @@ import com.google.gson.annotations.SerializedName;
 import lombok.Data;
 
 @Data
-public class BetrokkeneIdentificatieMedewerker extends BetrokkeneIdentificatie {
-
-	@SerializedName("identificatie")
-	@Expose
-	public String identificatie;
+public class BetrokkeneIdentificatie {
 }

@@ -6,13 +6,14 @@ import com.google.gson.annotations.SerializedName;
 import lombok.Data;
 
 @Data
-public class RolNPS {
+public class Rol {
 
 	@SerializedName("zaak")
 	@Expose
 	public String zaak;
 	@SerializedName("betrokkeneType")
 	@Expose
+	// Enum:"natuurlijk_persoon" "niet_natuurlijk_persoon" "vestiging" "organisatorische_eenheid" "medewerker"
 	public String betrokkeneType;
 	@SerializedName("roltype")
 	@Expose
@@ -22,6 +23,6 @@ public class RolNPS {
 	public String roltoelichting;
 	@SerializedName("betrokkeneIdentificatie")
 	@Expose
-	public BetrokkeneIdentificatieNPS betrokkeneIdentificatieNPS;
+	public BetrokkeneIdentificatie betrokkeneIdentificatie;
 
 }

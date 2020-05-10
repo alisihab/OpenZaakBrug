@@ -16,13 +16,14 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpStatusCodeException;
+import org.springframework.web.client.RestTemplate;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import nl.haarlem.translations.zdstozgw.config.ZaakType;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.QueryResult;
-import nl.haarlem.translations.zdstozgw.translation.zgw.model.RolNPS;
+import nl.haarlem.translations.zdstozgw.translation.zgw.model.Rol;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwEnkelvoudigInformatieObject;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwRolType;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwStatus;
@@ -55,7 +56,7 @@ public class ZGWClient {
 
 	@Autowired
 	RestTemplateService restTemplateService;
-
+	
 	private String post(String url, String json) throws ZGWClientException {
 		log.debug("POST: " + url + ", json: " + json);
 		HttpEntity<String> request = new HttpEntity<String>(json, this.restTemplateService.getHeaders());
@@ -64,21 +65,8 @@ public class ZGWClient {
 			zgwResponse = this.restTemplateService.getRestTemplate().postForObject(url, request, String.class);
 		} catch (HttpStatusCodeException hsce) {
 
-			/*
-			 * public class ZgwFout { public class ZgwFoutInvalidParams { public String
-			 * name; public String code; public String reason;
-			 * 
-			 * } public String type; public String code; public String title; public String
-			 * status; public String detail; public String instance; public
-			 * ZgwFoutInvalidParams[] invalidParams; } ZgwFout fout =
-			 * g.fromJson(hsce.getResponseBodyAsString(), ZgwFout.class);
-			 */
-			// more robust than fromJson
-			log.warn("fout met verzendende-json:" + json + "\n" + hsce.getResponseBodyAsString().replace("{", "{\n")
-					.replace("\",", "\",\n").replace("\"}", "\"\n}"));
-
-			throw new ZGWClientException("POST naar OpenZaak: " + url + " gaf foutmelding:" + hsce.getMessage(), json,
-					hsce);
+			log.warn("fout met verzendende-json:" + json + "\n" + hsce.getResponseBodyAsString().replace("{", "{\n").replace("\",", "\",\n").replace("\"}", "\"\n}"));
+			throw new ZGWClientException("POST naar OpenZaak: " + url + " gaf foutmelding:" + hsce.getMessage(), json,hsce);
 		} catch (org.springframework.web.client.ResourceAccessException rae) {
 			throw new ZGWClientException("POST naar OpenZaak: " + url + " niet geslaagd", json, rae);
 		}
@@ -95,7 +83,7 @@ public class ZGWClient {
 
 		HttpEntity entity = new HttpEntity(this.restTemplateService.getHeaders());
 		ResponseEntity<String> response = null;
-
+		
 		try {
 			response = this.restTemplateService.getRestTemplate().exchange(url, HttpMethod.GET, entity, String.class);
 		} catch (HttpStatusCodeException hsce) {
@@ -227,13 +215,13 @@ public class ZGWClient {
 		return gson.fromJson(response, ZgwZaak.class);
 	}
 
-	public RolNPS addRolNPS(RolNPS rolNPS) throws ZGWClientException {
-		RolNPS result = null;
+	public Rol addRolNPS(Rol rolNPS) throws ZGWClientException {
+		Rol result = null;
 		try {
 			Gson gson = new Gson();
 			String json = gson.toJson(rolNPS);
 			String response = this.post(this.baseUrl + "/zaken/api/v1/rollen", json);
-			result = gson.fromJson(response, RolNPS.class);
+			result = gson.fromJson(response, Rol.class);
 		} catch (HttpStatusCodeException ex) {
 			log.error("Exception in addRolNPS: " + ex.getMessage());
 			throw ex;
