@@ -10,7 +10,7 @@ https://github.com/open-zaak/open-zaak/blob/1e5e4ac092b5b18376ce14115800e79b650c
 	100 GB disk
 
 2 - ubuntu-20.04-desktop-amd64.iso
-	hostname: openzaak
+	hostname: open-zaak
 
 3 - login:
 	username: openzaak
@@ -92,10 +92,10 @@ https://github.com/open-zaak/open-zaak/blob/1e5e4ac092b5b18376ce14115800e79b650c
 
 18 - 
 	(env) # /srv/sites/open-zaak/env/bin/uwsgi --http :8000  --module openzaak.wsgi  --chdir /srv/sites/open-zaak/src  --processes 2  --threads 2  --buffer-size 32768
-	#uit te proberen op poort https:8000
+	
 	
 19 - 
-	(env) # python src/manage.py runserver
+	uit te proberen op poort https://localhost/8000
 
 ## Inrichten front-proxy
 
@@ -114,25 +114,25 @@ https://github.com/open-zaak/open-zaak/blob/1e5e4ac092b5b18376ce14115800e79b650c
 	$ sudo ln -s /srv/sites/open-zaak/docs/installation/code/nginx-vhost.conf /etc/nginx/sites-available/openzaak
 	# of moeten we dit anders toch maar op /srv/sites/open-zaak/docs/installation/code/nginx-vhost.conf doen?
 ​	$ sudo sed -i 's|/sites/production/|/sites/open-zaak//|g' /etc/nginx/sites-available/openzaak
-​	$ sudo sed -i 's|open-zaak.gemeente.nl|openzaak|g' /etc/nginx/sites-available/openzaak
+​	$ sudo sed -i 's|open-zaak.gemeente.nl|open-zaak|g' /etc/nginx/sites-available/openzaak
 ​	$ sudo rm /etc/nginx/sites-enabled/default
-​	$ sudo ln -s /etc/nginx/sites-available/openzaak /etc/nginx/sites-enabled/openzaak
+​	$ sudo ln -s /etc/nginx/sites-available/open-zaak /etc/nginx/sites-enabled/open-zaak
 ​	
 23 - 
 ​	$ sudo nginx -t
 ​	$ sudo /etc/init.d/nginx restart
 
 24 - 
-	Ga naar https://openzaak/
+	Ga naar https://open-zaak.local/
 	Login met openzaak / openzaak
 	Klik door naar "bekijk configuratie" om te kijken of overal groene vinkjes staan
 	
 25 - 
-	Aanpassen van example.com bij https://openzaak/admin/sites/site/ 
-		naar: openzaak
+	Aanpassen van example.com bij https://open-zaak.local/admin/sites/site/ 
+		naar: open-zaak.local
 		
 26 - 
-	Applicatie toevoegen op https://openzaak/admin/authorizations/applicatie
+	Applicatie toevoegen op https://open-zaak.local/admin/authorizations/applicatie
 	Bearer dan copieren naar de applicatie die deze openzaak gaat gebruiken
 
 ## Gewoon draaien nadat al het bovenstaande is gedaan

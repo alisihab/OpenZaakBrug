@@ -353,11 +353,15 @@ public class ZGWClient {
 		}
 		return result;
 	}
-	private ZgwStatusType getStatusTypeByZaakTypeAndVolgnummer(String zaakTypeUrl, int volgnummer) throws ZGWClientException {
+	public ZgwStatusType getStatusTypeByZaakTypeAndVolgnummer(String zaakTypeUrl, int volgnummer) throws ZGWClientException {
 		Map<String, String> parameters = new HashMap();
 		parameters.put("zaaktype", zaakTypeUrl);
 
 		return getStatusTypes(parameters).stream()
 				.filter(zgwStatusType -> zgwStatusType.volgnummer == volgnummer).findFirst().orElse(null);
+	}
+
+	public ZgwZaak getZaakByIdentificatie(String identificatie) {
+		return null;
 	}
 }
