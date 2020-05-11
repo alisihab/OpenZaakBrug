@@ -182,7 +182,7 @@ public class ZGWClient {
 	}	
 	
 	
-	private ZgwZaak getZaak(String zaakIdentificatie) throws ZGWClientException {
+	public ZgwZaak getZaakByIdentificatie(String zaakIdentificatie) throws ZGWClientException {
 		Map<String, String> parameters = new HashMap();
 		parameters.put("identificatie", zaakIdentificatie);
 		return getZaakDetails(parameters);
@@ -359,9 +359,5 @@ public class ZGWClient {
 
 		return getStatusTypes(parameters).stream()
 				.filter(zgwStatusType -> zgwStatusType.volgnummer == volgnummer).findFirst().orElse(null);
-	}
-
-	public ZgwZaak getZaakByIdentificatie(String identificatie) {
-		return null;
 	}
 }

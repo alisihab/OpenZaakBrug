@@ -1,14 +1,18 @@
 package nl.haarlem.translations.zdstozgw.converter.impl;
 
+import java.lang.invoke.MethodHandles;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 
 import lombok.Data;
 import nl.haarlem.translations.zdstozgw.config.ConfigService;
 import nl.haarlem.translations.zdstozgw.converter.Converter;
+import nl.haarlem.translations.zdstozgw.converter.Converter.ConverterException;
 import nl.haarlem.translations.zdstozgw.jpa.ApplicationParameterRepository;
 import nl.haarlem.translations.zdstozgw.translation.ZaakTranslator;
 import nl.haarlem.translations.zdstozgw.translation.ZaakTranslator.ZaakTranslatorException;
@@ -29,6 +33,8 @@ public class UpdateZaakConverter extends Converter {
 			this.xpathDocument = new XpathDocument(this.document);
 		}
 	}	
+
+	private static final Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 	
 	public UpdateZaakConverter(String templatePath, String legacyService) {
 		super(templatePath, legacyService);
@@ -36,14 +42,14 @@ public class UpdateZaakConverter extends Converter {
 
 	@Override
 	public String Convert(ZGWClient zgwClient, ConfigService configService, ApplicationParameterRepository repository, String requestBody) {
-		throw new ConverterException(this, "Not yet implemented", "Not yet implemented",  new Exception());
-		/*
 		try {
+			
 			ZakLk01_v2 zakLk01 = (ZakLk01_v2) XmlUtils.getStUFObject(requestBody, ZakLk01_v2.class);					
 			var translator = new ZaakTranslator(zgwClient, configService);			
-			var zgwZaak = translator.creeerZaak(zakLk01);
+			var zgwZaak = translator.updateZaak(zakLk01);
+			log.info("update zaak:" + zgwZaak.url);
 			
-			var bv03 = new UpdateZaakConverter(this.template);
+			var bv03 = new UpdateZaak_Bv03(this.template);
 			bv03.xpathDocument.setNodeValue(".//stuf:zender//stuf:organisatie", zakLk01.stuurgegevens.ontvanger.organisatie);
 			bv03.xpathDocument.setNodeValue(".//stuf:zender//stuf:applicatie", zakLk01.stuurgegevens.ontvanger.applicatie);
 			bv03.xpathDocument.setNodeValue(".//stuf:zender//stuf:gebruiker", zakLk01.stuurgegevens.ontvanger.gebruiker);
@@ -60,6 +66,5 @@ public class UpdateZaakConverter extends Converter {
 		} catch (ZaakTranslator.ZaakTranslatorException zte) {
 			throw new ConverterException(this, zte.getMessage(), requestBody, zte);
 		}
-		*/
 	}
 }

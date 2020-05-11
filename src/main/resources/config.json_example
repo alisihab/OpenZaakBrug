@@ -13,7 +13,7 @@
 			"translation": "ZDS 1.1 Generic creeerZaak_Lk01",
 			"soapaction": "http://www.egem.nl/StUF/sector/zkn/0310/creeerZaak_Lk01",
 			"requestcontains": "",
-			"template": "--template-zit-in-de-code--",
+			"template": "src/main/java/nl/haarlem/translations/zdstozgw/converter/impl/CreeerZaak_Bv03.xml",
 			"implementation": "nl.haarlem.translations.zdstozgw.converter.impl.CreeerZaakConverter",
 			"legacyservice" : "http://localhost:8181/zds/OntvangAsynchroon"		
 		},
@@ -45,8 +45,8 @@
 			"translation": "ZDS 1.1 Generic UpdateZaak_Lk01",
 			"soapaction": "http://www.egem.nl/StUF/sector/zkn/0310/updateZaak_Lk01",
 			"requestcontains": "",
-			"template": "nvt.",
-			"implementation": "nl.haarlem.translations.zdstozgw.converter.impl.NotImplementedConverter",
+			"template": "src/main/java/nl/haarlem/translations/zdstozgw/converter/impl/UpdateZaak_Bv03.xml",
+			"implementation": "nl.haarlem.translations.zdstozgw.converter.impl.UpdateZaakConverter",
 			"legacyservice" : "http://localhost:8181/zds/OntvangAsynchroon"		
 		},
 		{
@@ -114,12 +114,12 @@
 			"initiatorRolTypeUrl": "https://openzaak.local/catalogi/api/v1/roltypen/c8d9bd56-2abb-4ef1-bbd6-bf404b31869e"
 		},
 		{
-			"code": "B1026",
-			"zaakType": "https://openzaak.local/catalogi/api/v1/zaaktypen/8a0ecb65-c3fd-4110-8599-297f84236ae5",
+			"code": "B1026-niet-meer",
+			"zaakType": "https://fieldlab.westeurope.cloudapp.azure.com/catalogi/api/v1/zaaktypen/8a0ecb65-c3fd-4110-8599-297f84236ae5",
 			"zaakTypeOmschrijving": "Minimaregeling aanvraag",
 			"ingangsdatumObject": "17 maart 20200317",
 			"initiatorRolTypeUrl": "https://openzaak.local/catalogi/api/v1/roltypen/c8d9bd56-2abb-4ef1-bbd6-bf404b31869e"
-		}		
+		}	
 	],
 	"organisaties": [
 		{
@@ -133,7 +133,7 @@
 			"RSIN": "001509962"
 		},
 		{
-			"gemeenteNaam": "Súdwest-Fryslân",
+			"gemeenteNaam": "SÃºdwest-FryslÃ¢n",
 			"gemeenteCode": "1900",
 			"RSIN": "823288444"
 		}

@@ -1,11 +1,13 @@
 package nl.haarlem.translations.zdstozgw.translation;
 
 
+import static nl.haarlem.translations.zdstozgw.translation.zds.model.namespace.Namespace.STUF;
 import static nl.haarlem.translations.zdstozgw.translation.zds.model.namespace.Namespace.ZKN;
 
 import java.lang.invoke.MethodHandles;
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 
 import org.slf4j.Logger;
@@ -23,6 +25,8 @@ import nl.haarlem.translations.zdstozgw.translation.ZaakTranslator.ZaakTranslato
 import nl.haarlem.translations.zdstozgw.translation.zds.model.EdcLa01;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.EdcLk01;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.EdcLv01;
+import nl.haarlem.translations.zdstozgw.translation.zds.model.GerelateerdeWrapper;
+import nl.haarlem.translations.zdstozgw.translation.zds.model.Heeft;
 //import nl.haarlem.translations.zdstozgw.translation.zds.model.HeeftAlsAanspreekpunt;
 //import nl.haarlem.translations.zdstozgw.translation.zds.model.HeeftAlsBelanghebbende;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.HeeftAlsInitiator;
@@ -132,6 +136,37 @@ public class ZaakTranslator {
 		return zgwZaak;
 	}
 
+	public ZgwZaak updateZaak(ZakLk01_v2 zakLk01) throws ZGWClientException, ZaakTranslatorException {
+		var zdsWasZaak = zakLk01.object.get(0);
+		var zdsWordZaak = zakLk01.object.get(1);
+		var zgwZaak = zgwClient.getZaakByIdentificatie(zdsWasZaak.identificatie);
+		if(zgwZaak == null)throw new ZaakTranslatorException("zaak met identificatie: " + zdsWasZaak.identificatie + " niet gevonden");
+
+		// nu moeten we de verschillen vinden!
+		var dirty = false;
+		if(zdsWasZaak.entiteittype != zdsWordZaak.entiteittype) log.warn("entiteittype not implemented");
+		if(zdsWasZaak.identificatie != zdsWordZaak.identificatie) log.warn("identificatie not implemented");
+		if(zdsWasZaak.omschrijving != zdsWordZaak.omschrijving) log.warn("omschrijving not implemented");
+		if(zdsWasZaak.toelichting != zdsWordZaak.toelichting) log.warn("toelichting not implemented");
+		if(zdsWasZaak.startdatum != zdsWordZaak.startdatum) log.warn("startdatum not implemented");
+		if(zdsWasZaak.einddatumGepland != zdsWordZaak.einddatumGepland) log.warn("einddatumGepland not implemented");
+		if(zdsWasZaak.archiefnominatie != zdsWordZaak.archiefnominatie) log.warn("archiefnominatie not implemented");
+		if(zdsWasZaak.registratiedatum != zdsWordZaak.registratiedatum) log.warn("registratiedatum implemented");
+		if(zdsWasZaak.isVan != zdsWordZaak.isVan) log.warn("isVan not implemented");
+		if(zdsWasZaak.heeft != zdsWordZaak.heeft) log.warn("heeft implemented");
+
+
+		
+		if(zdsWasZaak.heeftAlsBelanghebbende != zdsWordZaak.heeftAlsBelanghebbende) log.warn("heeftAlsBelanghebbende not implemented");
+		if(zdsWasZaak.heeftAlsInitiator != zdsWordZaak.heeftAlsInitiator) log.warn("heeftAlsInitiator not implemented");
+		if(zdsWasZaak.heeftAlsUitvoerende != zdsWordZaak.heeftAlsUitvoerende) log.warn("heeftAlsUitvoerende not implemented");
+		if(zdsWasZaak.heeftAlsAanspreekpunt != zdsWordZaak.heeftAlsAanspreekpunt) log.warn("heeftAlsAanspreekpunt not implemented");
+		if(zdsWasZaak.heeftBetrekkingOp != zdsWordZaak.heeftBetrekkingOp) log.warn("heeftBetrekkingOp not implemented");
+		if(zdsWasZaak.heeftAlsVerantwoordelijke != zdsWordZaak.heeftAlsVerantwoordelijke) log.warn("heeftAlsVerantwoordelijke not implemented");
+
+		return zgwZaak;
+	}	
+	
 	public ZgwZaak zdsZaakToZgwZaak(ZdsZaak zdsZaak) throws ZaakTranslatorException {
 
 		var zgwZaak = new ZgwZaak();
