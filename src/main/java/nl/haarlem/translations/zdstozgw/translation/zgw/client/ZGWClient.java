@@ -3,6 +3,7 @@ package nl.haarlem.translations.zdstozgw.translation.zgw.client;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.*;
+import nl.haarlem.translations.zdstozgw.translation.zds.services.HttpService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpStatusCodeException;
 
+import java.io.IOException;
 import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -26,6 +28,9 @@ public class ZGWClient {
 
     @Value("${openzaak.baseUrl}")
     private String baseUrl;
+
+    @Autowired
+    HttpService httpService;
 
     @Autowired
     RestTemplateService restTemplateService;
@@ -87,6 +92,33 @@ public class ZGWClient {
         }
         return  result;
     }
+
+    public ZgwZaak getZaakByUrl(String url){
+        ZgwZaak result = null;
+        var zaakJson = get(url, null);
+        try {
+            Gson gson = new Gson();
+            result = gson.fromJson(zaakJson, ZgwZaak.class);
+
+        } catch (Exception ex) {
+            log.error("Exception in getZaakDetails: " + ex.getMessage());
+            throw ex;
+        }
+
+        return result;
+    }
+
+    public String getBas64Inhoud(String url){
+        String result = null;
+        try {
+            result  = httpService.downloadFile(url);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
 
     public ZgwZaak getZaakDetails(Map<String, String> parameters) {
 
@@ -193,7 +225,7 @@ public class ZGWClient {
         return tempResult;
     }
 
-    private List<ZgwZaakInformatieObject> getZgwZaakInformatieObjects(Map<String, String> parameters) {
+    public List<ZgwZaakInformatieObject> getZgwZaakInformatieObjects(Map<String, String> parameters) {
         //Fetch EnkelvoudigInformatieObjects
         var zaakInformatieObjectJson = get(baseUrl + "/zaken/api/v1/zaakinformatieobjecten", parameters);
 
@@ -240,4 +272,5 @@ public class ZGWClient {
 
         return result;
     }
+
 }

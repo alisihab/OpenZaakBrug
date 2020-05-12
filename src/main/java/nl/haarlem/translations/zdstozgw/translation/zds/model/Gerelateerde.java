@@ -7,6 +7,10 @@ import static nl.haarlem.translations.zdstozgw.translation.zds.model.namespace.N
 import static nl.haarlem.translations.zdstozgw.translation.zds.model.namespace.Namespace.ZKN;
 
 public class Gerelateerde {
+
+    @XmlAttribute(namespace = STUF)
+    public String entiteittype;
+
     @XmlElement(namespace = ZKN)
     public String identificatie;
 

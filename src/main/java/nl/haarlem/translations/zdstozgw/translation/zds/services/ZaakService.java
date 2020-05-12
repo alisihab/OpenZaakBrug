@@ -116,14 +116,36 @@ public class ZaakService {
         return zgwClient.getZaakDetails(parameters);
     }
 
-    public EdcLa01 getZaakDoumentLezen(EdcLv01 edcLv01) {
-        EdcLa01 edcLa01 = new EdcLa01();
 
+    public EdcLa01 getZaakDocumentLezen(EdcLv01 edcLv01) {
+
+        //Get Enkelvoudig informatie object. This contains document meta data and a link to the document
         ZgwEnkelvoudigInformatieObject zgwEnkelvoudigInformatieObject = zgwClient.getZgwEnkelvoudigInformatieObject(edcLv01.gelijk.identificatie);
+        var inhoud = zgwClient.getBas64Inhoud(zgwEnkelvoudigInformatieObject.getInhoud());
 
-        edcLa01 = zaakTranslator.getEdcLa01FromZgwEnkelvoudigInformatieObject(zgwEnkelvoudigInformatieObject);
+        //Get zaakinformatieobject, this contains the link to the zaak
+        var zgwZaakInformatieObject = getZgwZaakInformatieObject(zgwEnkelvoudigInformatieObject);
+        //Get the zaak, to get the zaakidentificatie
+        var zgwZaak = zgwClient.getZaakByUrl(zgwZaakInformatieObject.getZaak());
+
+        var edcLa01 = zaakTranslator.getEdcLa01FromZgwEnkelvoudigInformatieObject(zgwEnkelvoudigInformatieObject);
+
+        //Add Inhoud
+        edcLa01.isRelevantVoor = new IsRelevantVoor();
+        edcLa01.isRelevantVoor.gerelateerde = new Gerelateerde();
+        edcLa01.isRelevantVoor.entiteittype = "EDCZAK";
+        edcLa01.isRelevantVoor.gerelateerde.entiteittype = "ZAK";
+        edcLa01.isRelevantVoor.gerelateerde.identificatie = zgwZaak.getIdentificatie();
+        edcLa01.antwoord.object.inhoud = inhoud;
 
         return edcLa01;
+    }
+
+
+    private ZgwZaakInformatieObject getZgwZaakInformatieObject(ZgwEnkelvoudigInformatieObject zgwEnkelvoudigInformatieObject) {
+        Map<String, String> parameters = new HashMap();
+        parameters.put("informatieobject", zgwEnkelvoudigInformatieObject.getUrl());
+        return zgwClient.getZgwZaakInformatieObjects(parameters).get(0);
     }
 
     private ZgwStatusType getStatusTypeByZaakTypeAndVolgnummer(String zaakTypeUrl, int volgnummer){
