@@ -18,57 +18,62 @@ public class EdcLa01 {
 	@XmlElement(namespace = ZKN, name = "antwoord")
 	public Antwoord antwoord;
 
+    @XmlElement(namespace = ZKN, name="isRelevantVoor")
+    public IsRelevantVoor isRelevantVoor;
+
 	@XmlAccessorType(XmlAccessType.FIELD)
 	public static class Antwoord {
+
 		@XmlElement(namespace = ZKN)
 		public Object object;
 	}
 
 	@XmlAccessorType(XmlAccessType.FIELD)
 	public static class Object {
+
 		@XmlAttribute(namespace = STUF)
 		public String entiteittype;
 
-		@XmlElement(namespace = ZKN)
+        @XmlElement(namespace = ZKN, nillable =  true)
 		public String identificatie;
 
-		@XmlElement(namespace = ZKN, name = "dct.omschrijving")
+        @XmlElement(namespace = ZKN,name="dct.omschrijving", nillable = true)
 		public String dctOmschrijving;
 
-		@XmlElement(namespace = ZKN, name = "dct.categorie")
+        @XmlElement(namespace = ZKN,name="dct.categorie", nillable =  true)
 		public String dctCategorie;
 
-		@XmlElement(namespace = ZKN)
+        @XmlElement(namespace = ZKN, nillable =  true)
 		public String creatiedatum;
 
-		@XmlElement(namespace = ZKN)
+        @XmlElement(namespace = ZKN, nillable =  true)
 		public String ontvangstdatum;
 
-		@XmlElement(namespace = ZKN)
+        @XmlElement(namespace = ZKN, nillable =  true)
 		public String titel;
 
-		@XmlElement(namespace = ZKN)
+        @XmlElement(namespace = ZKN, nillable =  true)
 		public String taal;
 
-		@XmlElement(namespace = ZKN)
+        @XmlElement(namespace = ZKN, nillable =  true)
 		public String versie;
 
-		@XmlElement(namespace = ZKN)
+        @XmlElement(namespace = ZKN, nillable =  true)
 		public String status;
 
-		@XmlElement(namespace = ZKN)
+        @XmlElement(namespace = ZKN, nillable =  true)
 		public String vezenddatum;
 
-		@XmlElement(namespace = ZKN)
+        @XmlElement(namespace = ZKN, nillable =  true)
 		public String vertrouwelijkAanduiding;
 
-		@XmlElement(namespace = ZKN)
+        @XmlElement(namespace = ZKN,nillable = true)
 		public String auteur;
 
-		@XmlElement(namespace = ZKN)
+        @XmlElement(namespace = ZKN, nillable =  true)
 		public String link;
 
-		@XmlElement(namespace = ZKN)
+        @XmlElement(namespace = ZKN, nillable =  true)
 		public String inhoud;
 
 	}

@@ -388,7 +388,7 @@ public class ZaakTranslator {
 		EdcLa01 edcLa01 = new EdcLa01();
 		edcLa01.antwoord = new EdcLa01.Antwoord();
 		edcLa01.antwoord.object = new EdcLa01.Object();
-		edcLa01.antwoord.object.auteur = document.auteur;
+        edcLa01.antwoord.object.auteur = (document.auteur.equals("") ? null: document.auteur);
 		edcLa01.antwoord.object.creatiedatum = document.creatiedatum;
 		edcLa01.antwoord.object.dctCategorie = document.beschrijving;
 		edcLa01.antwoord.object.dctOmschrijving = document.beschrijving;
@@ -396,7 +396,9 @@ public class ZaakTranslator {
 		edcLa01.antwoord.object.inhoud = document.inhoud;
 		edcLa01.antwoord.object.link = document.url;
 		edcLa01.antwoord.object.ontvangstdatum = document.ontvangstdatum;
-		edcLa01.antwoord.object.status = document.status;
+        edcLa01.antwoord.object.status = (document.status.equals("")) ? null : document.status;
+
+
 		edcLa01.antwoord.object.taal = document.taal;
 		edcLa01.antwoord.object.titel = document.titel;
 		edcLa01.antwoord.object.versie = document.versie;

@@ -16,7 +16,7 @@
 			"template": "src/main/java/nl/haarlem/translations/zdstozgw/converter/impl/CreeerZaak_Bv03.xml",
 			"implementation": "nl.haarlem.translations.zdstozgw.converter.impl.CreeerZaakConverter",
 			"legacyservice" : "http://localhost:8181/zds/OntvangAsynchroon"		
-		},
+		},		
 		{
 			"translation": "ZDS 1.1 GWS4all genereerZaakIdentificatie_Di02",
 			"soapaction": "http://www.egem.nl/StUF/sector/zkn/0310/genereerZaakIdentificatie_Di02",
@@ -29,14 +29,6 @@
 			"translation": "ZDS 1.1 Generic genereerZaakIdentificatie_Di02",
 			"soapaction": "http://www.egem.nl/StUF/sector/zkn/0310/genereerZaakIdentificatie_Di02",
 			"requestcontains": "",
-			"template": "nvt.",
-			"implementation": "nl.haarlem.translations.zdstozgw.converter.impl.NotImplementedConverter",
-			"legacyservice" : "http://localhost:8181/zds/VrijBerichtService"
-		},		
-		{
-			"translation": "ZDS 1.1 Generic genereerDocumentIdentificatie_Di02",
-			"soapaction": "http://www.egem.nl/StUF/sector/zkn/0310/genereerDocumentIdentificatie_Di02",
-			"requestcontains": "<StUF:applicatie>GWS4all</StUF:applicatie>",
 			"template": "nvt.",
 			"implementation": "nl.haarlem.translations.zdstozgw.converter.impl.NotImplementedConverter",
 			"legacyservice" : "http://localhost:8181/zds/VrijBerichtService"
@@ -57,6 +49,14 @@
 			"implementation": "nl.haarlem.translations.zdstozgw.converter.impl.GenereerDocumentIdentificatieConverter",
 			"legacyservice" : "http://localhost:8181/zds/VrijBerichtService"
 		},
+		{
+			"translation": "ZDS 1.1 Generic genereerDocumentIdentificatie_Di02",
+			"soapaction": "http://www.egem.nl/StUF/sector/zkn/0310/genereerDocumentIdentificatie_Di02",
+			"requestcontains": "<StUF:applicatie>GWS4all</StUF:applicatie>",
+			"template": "nvt.",
+			"implementation": "nl.haarlem.translations.zdstozgw.converter.impl.NotImplementedConverter",
+			"legacyservice" : "http://localhost:8181/zds/VrijBerichtService"
+		},		
 		{
 			"translation": "ZDS 1.1 Generic voegZaakdocumentToe_Lk01",
 			"soapaction": "http://www.egem.nl/StUF/sector/zkn/0310/voegZaakdocumentToe_Lk01",

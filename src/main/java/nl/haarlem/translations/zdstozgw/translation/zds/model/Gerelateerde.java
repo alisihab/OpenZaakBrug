@@ -7,6 +7,10 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 
 public class Gerelateerde {
+
+    @XmlAttribute(namespace = STUF)
+    public String entiteittype;
+
 	@XmlElement(namespace = ZKN)
 	public String identificatie;
 
