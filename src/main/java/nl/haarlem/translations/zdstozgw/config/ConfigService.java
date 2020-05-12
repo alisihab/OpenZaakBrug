@@ -63,11 +63,11 @@ public class ConfigService {
 				organisatie.getGemeenteCode();
 				organisatie.getRSIN();
 			}
-			this.configuratie.getZaakTypes().size();
-			for (ZaakType zaakType : this.configuratie.getZaakTypes()) {
-				zaakType.getZaakType();
-				zaakType.getCode();
-			}
+			//this.configuratie.getZaakTypes().size();
+			//for (ZaakType zaakType : this.configuratie.getZaakTypes()) {
+			//	zaakType.getZaakType();
+			//	zaakType.getCode();
+			//}
 		} catch (Exception ex) {
 			throwException();
 		}

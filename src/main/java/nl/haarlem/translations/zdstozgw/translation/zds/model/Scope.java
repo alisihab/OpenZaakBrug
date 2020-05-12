@@ -11,5 +11,5 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Scope {
 	@XmlElement(namespace = ZKN, name = "object")
-	public EdcLk01.Object object;
+	public EdcLk01.ZdsDocument object;
 }

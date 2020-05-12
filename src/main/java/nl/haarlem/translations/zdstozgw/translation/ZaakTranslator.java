@@ -10,6 +10,7 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 
+import org.aspectj.weaver.Dump.INode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,7 @@ import nl.haarlem.translations.zdstozgw.config.ZaakType;
 import nl.haarlem.translations.zdstozgw.translation.ZaakTranslator.ZaakTranslatorException;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.EdcLa01;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.EdcLk01;
+import nl.haarlem.translations.zdstozgw.translation.zds.model.EdcLk01.ZdsDocument;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.EdcLv01;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.GerelateerdeWrapper;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.Heeft;
@@ -237,11 +239,6 @@ public class ZaakTranslator {
 		}
 	}
 
-	public ZgwZaakInformatieObject voegZaakDocumentToe(EdcLk01 object) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	public EdcLa01 getZaakDoumentLezen(EdcLv01 object) {
 		// TODO Auto-generated method stub
 		return null;
@@ -292,24 +289,25 @@ public class ZaakTranslator {
 
 	}
 	*/
-	/*
-	public ZgwZaakInformatieObject voegZaakDocumentToe(EdcLk01 edcLk01) throws Exception {
-		ZgwZaakInformatieObject result = null;
-
-		this.zaakTranslator.setEdcLk01(edcLk01).zdsDocumentToZgwDocument();
-
-		ZgwEnkelvoudigInformatieObject zgwEnkelvoudigInformatieObject = this.zgwClient
-				.addDocument(this.zaakTranslator.getZgwEnkelvoudigInformatieObject());
-
-		if (zgwEnkelvoudigInformatieObject.getUrl() != null) {
-			String zaakUrl = getZaak(edcLk01.objects.get(0).isRelevantVoor.gerelateerde.identificatie).url;
-			result = addZaakInformatieObject(zgwEnkelvoudigInformatieObject, zaakUrl);
-		} else {
-			throw new Exception("Document not added");
-		}
+	public ZgwZaakInformatieObject voegZaakDocumentToe(EdcLk01 edcLk01) throws ZaakTranslatorException, ZGWClientException  {
+		var zgwEnkelvoudigInformatieObject = zdsDocumentToZgwDocument(edcLk01);
+		zgwEnkelvoudigInformatieObject  = this.zgwClient.addDocument(zgwEnkelvoudigInformatieObject);
+		
+		var zgwZaak = this.zgwClient.getZaakByIdentificatie(edcLk01.objects.get(0).isRelevantVoor.gerelateerde.identificatie);
+		String zaakUrl = zgwZaak.url;
+		ZgwZaakInformatieObject result = addZaakInformatieObject(zgwEnkelvoudigInformatieObject, zaakUrl);
 		return result;
 	}
-	*/
+	
+	private ZgwZaakInformatieObject addZaakInformatieObject(ZgwEnkelvoudigInformatieObject doc, String zaakUrl) throws ZGWClientException {
+			var zgwZaakInformatieObject = new ZgwZaakInformatieObject();
+			zgwZaakInformatieObject.setZaak(zaakUrl);
+			zgwZaakInformatieObject.setInformatieobject(doc.getUrl());
+			zgwZaakInformatieObject.setTitel(doc.getTitel());
+			ZgwZaakInformatieObject result = this.zgwClient.addDocumentToZaak(zgwZaakInformatieObject);
+			return result;
+	}
+	
 	/*
 	public EdcLa01 getZaakDoumentLezen(EdcLv01 edcLv01) throws ZGWClientException {
 		EdcLa01 edcLa01 = new EdcLa01();
@@ -428,14 +426,24 @@ public class ZaakTranslator {
 	}
 	*/
 	
-	/*
-	public void zdsDocumentToZgwDocument() throws ZaakTranslatorException {
-		var informatieObjectType = this.configService.getConfiguratie().getDocumentTypes().get(0).getDocumentType();
-
-		var o = this.edcLk01.objects.get(0);
+	public ZgwEnkelvoudigInformatieObject zdsDocumentToZgwDocument(EdcLk01 edcLk01) throws ZaakTranslatorException, ZGWClientException {
+		/*
+		"documentTypes": [
+		          		{
+		          			"documentType": "https://openzaak.local/catalogi/api/v1/informatieobjecttypen/b380e35f-3b10-4d76-81b5-58f8013dca4a",
+		          			"omschrijving": "Overig stuk inkomend"
+		          		}
+		          	]		            		
+		*/
+		//var informatieObjectType = this.configService.getConfiguratie().getDocumentTypes().get(0).getDocumentType();
+		ZdsDocument document =  edcLk01.objects.get(0);
+		var informatieObjectType = this.zgwClient.getZgwInformatieObjectTypeByOmschrijving(document.omschrijving);
+		if(informatieObjectType == null) throw new ZaakTranslatorException("Geen informatieobjectype gevonden in  ZTC voor omschrijving: '" + document.omschrijving + "");
+	
+		var o = edcLk01.objects.get(0);
 		var eio = new ZgwEnkelvoudigInformatieObject();
 		eio.setIdentificatie(o.identificatie);
-		eio.setBronorganisatie(getRSIN(this.edcLk01.stuurgegevens.zender.organisatie));
+		eio.setBronorganisatie(getRSIN(edcLk01.stuurgegevens.zender.organisatie));
 		eio.setCreatiedatum(getDateStringFromStufDate(o.creatiedatum));
 		eio.setTitel(o.titel);
 		eio.setVertrouwelijkheidaanduiding(o.vertrouwelijkAanduiding.toLowerCase());
@@ -443,12 +451,11 @@ public class ZaakTranslator {
 		eio.setTaal(o.taal);
 		eio.setFormaat(o.formaat);
 		eio.setInhoud(o.inhoud.value);
-		eio.setInformatieobjecttype(informatieObjectType);
+		eio.setInformatieobjecttype(informatieObjectType.url);
 		eio.setBestandsnaam(o.inhoud.bestandsnaam);
 
-		this.zgwEnkelvoudigInformatieObject = eio;
+		return eio;
 	}
-	*/
 	
 	/*
 	*/

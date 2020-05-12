@@ -16,7 +16,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class EdcLk01 {
 
 	@XmlAccessorType(XmlAccessType.FIELD)
-	public static class Object {
+	public static class ZdsDocument {
 		@XmlAttribute(namespace = STUF)
 		public String entiteittype;
 
@@ -61,7 +61,7 @@ public class EdcLk01 {
 	}
 
 	@XmlElement(namespace = ZKN, name = "object")
-	public List<EdcLk01.Object> objects;
+	public List<EdcLk01.ZdsDocument> objects;
 
 	@XmlElement(namespace = ZKN, name = "stuurgegevens")
 	public Stuurgegevens stuurgegevens;

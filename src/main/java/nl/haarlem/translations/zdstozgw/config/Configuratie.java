@@ -15,13 +15,13 @@ public class Configuratie {
 	@SerializedName("translations")
 	@Expose
 	public List<Translation> translations = null;
-	@SerializedName("zaakTypes")
-	@Expose
-	public List<ZaakType> zaakTypes = null;
+	//@SerializedName("zaakTypes")
+	//@Expose
+	//public List<ZaakType> zaakTypes = null;
 	@SerializedName("organisaties")
 	@Expose
 	public List<Organisatie> organisaties = null;
-	@SerializedName("documentTypes")
-	@Expose
-	public List<DocumentType> documentTypes = null;
+	//@SerializedName("documentTypes")
+	//@Expose
+	//public List<DocumentType> documentTypes = null;
 }

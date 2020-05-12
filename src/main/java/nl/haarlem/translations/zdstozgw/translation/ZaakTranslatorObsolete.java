@@ -188,10 +188,10 @@ public class ZaakTranslatorObsolete {
 		zakLa01.setEinddatum(getStufDateFromDateString(this.zgwZaak.getEinddatum()));
 		zakLa01.setArchiefNominatie(getZDSArchiefNominatie(this.zgwZaak.getArchiefnominatie()));
 		zakLa01.setDatumVernietigingDossier(getStufDateFromDateString(this.zgwZaak.getArchiefactiedatum()));
-		var zaakType = getZaakTypeByZGWZaakType(this.zgwZaak.getZaaktype());
-		zakLa01.setZaakTypeOmschrijving(zaakType.getZaakTypeOmschrijving());
-		zakLa01.setZaakTypeCode(zaakType.getCode());
-		zakLa01.setZaakTypeIngangsDatumObject(zaakType.getIngangsdatumObject());
+//		var zaakType = getZaakTypeByZGWZaakType(this.zgwZaak.getZaaktype());
+//		zakLa01.setZaakTypeOmschrijving(zaakType.getZaakTypeOmschrijving());
+//		zakLa01.setZaakTypeCode(zaakType.getCode());
+//		zakLa01.setZaakTypeIngangsDatumObject(zaakType.getIngangsdatumObject());
 
 		this.document = zakLa01.getDocument();
 	}
@@ -229,7 +229,7 @@ public class ZaakTranslatorObsolete {
 	private void zgwDocumentToZgwDocument(ZakLa01LijstZaakdocumenten zakLa01, ZgwEnkelvoudigInformatieObject document) {
 		HeeftRelevantEDC heeftRelevantEDC = new HeeftRelevantEDC();
 		heeftRelevantEDC.setIdentificatie(document.getIdentificatie());
-		heeftRelevantEDC.setDctOmschrijving(getDocumentTypeOmschrijving(document.getInformatieobjecttype()));
+//		heeftRelevantEDC.setDctOmschrijving(getDocumentTypeOmschrijving(document.getInformatieobjecttype()));
 		heeftRelevantEDC.setCreatieDatum(getStufDateFromDateString(document.getCreatiedatum()));
 		heeftRelevantEDC.setOntvangstDatum(getStufDateFromDateString(document.getOntvangstdatum()));
 		heeftRelevantEDC.setTitel(document.getTitel());
@@ -244,7 +244,7 @@ public class ZaakTranslatorObsolete {
 		heeftRelevantEDC.setLink(document.getUrl());
 		zakLa01.addHeeftRelevant(heeftRelevantEDC);
 	}
-
+/*
 	public void zdsDocumentToZgwDocument() throws ZaakTranslatorException {
 		var informatieObjectType = this.configService.getConfiguratie().getDocumentTypes().get(0).getDocumentType();
 
@@ -264,7 +264,7 @@ public class ZaakTranslatorObsolete {
 
 		this.zgwEnkelvoudigInformatieObject = eio;
 	}
-
+*/
 	public void zdsZaakToZgwZaak() throws ZaakTranslatorException {
 
 		var zaak = new ZgwZaak();
@@ -285,8 +285,8 @@ public class ZaakTranslatorObsolete {
 		zaak.setToelichting(z.toelichting);
 
 		var zaaktypecode = z.isVan.gerelateerde.code;
-		var zaaktype = getZaakTypeByZDSCode(zaaktypecode).zaakType;
-		zaak.setZaaktype(zaaktype);
+//		var zaaktype = getZaakTypeByZDSCode(zaaktypecode).zaakType;
+//		zaak.setZaaktype(zaaktype);
 
 		zaak.setRegistratiedatum(getDateStringFromStufDate(z.registratiedatum));
 		zaak.setStartdatum(getDateStringFromStufDate(z.startdatum));
@@ -390,7 +390,7 @@ public class ZaakTranslatorObsolete {
 			return "N";
 		}
 	}
-
+/*
 	private ZaakType getZaakTypeByZGWZaakType(String zgwZaakType) {
 		List<ZaakType> zaakTypes = this.configService.getConfiguratie().getZaakTypes();
 		for (ZaakType zaakType : zaakTypes) {
@@ -400,7 +400,9 @@ public class ZaakTranslatorObsolete {
 		}
 		return null;
 	}
-
+*/
+	
+/*
 	private String getDocumentTypeOmschrijving(String documentType) {
 		List<DocumentType> documentTypes = this.configService.getConfiguratie().getDocumentTypes();
 		for (DocumentType type : documentTypes) {
@@ -410,7 +412,8 @@ public class ZaakTranslatorObsolete {
 		}
 		return null;
 	}
-
+*/
+	/*
 //    public ZaakType getZaakTypeByZDSCode(String catalogus, String zaakTypeCode) throws ZaakTranslatorException {
 	public ZaakType getZaakTypeByZDSCode(String zaakTypeCode) throws ZaakTranslatorException {
 		// TODO: request from OpenZaak!
@@ -425,7 +428,7 @@ public class ZaakTranslatorObsolete {
 		// zaakTypeCode + "' in catalogus:" + catalogus);
 		throw new ZaakTranslatorException("Geen zaaktypeurl voor zaaktype: '" + zaakTypeCode);
 	}
-
+*/
 	private String getRSIN(String gemeenteCode) throws ZaakTranslatorException {
 		List<Organisatie> organisaties = this.configService.getConfiguratie().getOrganisaties();
 		for (Organisatie organisatie : organisaties) {

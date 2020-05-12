@@ -29,9 +29,11 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import nl.haarlem.translations.zdstozgw.config.ZaakType;
+import nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient.ZGWClientException;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.QueryResult;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.Rol;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwEnkelvoudigInformatieObject;
+import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwInformatieObjectType;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwRolType;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwStatus;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwStatusType;
@@ -179,7 +181,7 @@ public class ZGWClient {
 
 		var zaakTypeJson = get(this.baseUrl + "/catalogi/api/v1/zaaktypen", parameters);
 		ZgwZaakType result = null;
-		try {
+//		try {
 			Type type = new TypeToken<QueryResult<ZgwZaakType>>() {
 			}.getType();
 			Gson gson = new Gson();
@@ -187,10 +189,10 @@ public class ZGWClient {
 			if (queryResult.getResults().size() == 1) {
 				result = queryResult.getResults().get(0);
 			}
-		} catch (Exception ex) {
-			log.error("Exception in getZaakTypeByIdentiticatie: " + ex.getMessage());
-			throw ex;
-		}
+//		} catch (Exception ex) {
+//			log.error("Exception in getZaakTypeByIdentiticatie: " + ex.getMessage());
+//			throw ex;
+//		}
 		return result;
 	}		
 
@@ -229,7 +231,7 @@ public class ZGWClient {
 
 		ZgwZaak result = null;
 		var zaakJson = get(this.baseUrl + "/zaken/api/v1/zaken", parameters);
-		try {
+		//try {
 			Type type = new TypeToken<QueryResult<ZgwZaak>>() {
 			}.getType();
 			Gson gson = new Gson();
@@ -237,11 +239,10 @@ public class ZGWClient {
 			if (queryResult.getResults().size() == 1) {
 				result = queryResult.getResults().get(0);
 			}
-		} catch (Exception ex) {
-			log.error("Exception in getZaak: " + ex.getMessage());
-			throw ex;
-		}
-
+		//} catch (Exception ex) {
+		//	log.error("Exception in getZaak: " + ex.getMessage());
+		//	throw ex;
+		//}
 		return result;
 	}
 
@@ -267,19 +268,17 @@ public class ZGWClient {
 		return result;
 	}
 
-	public ZgwEnkelvoudigInformatieObject addDocument(ZgwEnkelvoudigInformatieObject zgwEnkelvoudigInformatieObject)
-			throws ZGWClientException {
+	public ZgwEnkelvoudigInformatieObject addDocument(ZgwEnkelvoudigInformatieObject zgwEnkelvoudigInformatieObject) throws ZGWClientException {
 		ZgwEnkelvoudigInformatieObject result = null;
-		try {
+		//try {
 			Gson gson = new Gson();
 			String json = gson.toJson(zgwEnkelvoudigInformatieObject);
 			String response = this.post(this.baseUrl + "/documenten/api/v1/enkelvoudiginformatieobjecten", json);
 			result = gson.fromJson(response, ZgwEnkelvoudigInformatieObject.class);
-		} catch (HttpStatusCodeException ex) {
-			log.error("Exception in addDocument: " + ex.getMessage());
-			throw ex;
-		}
-
+		//} catch (HttpStatusCodeException ex) {
+		//	log.error("Exception in addDocument: " + ex.getMessage());
+		//	throw ex;
+		//}
 		return result;
 	}
 
@@ -396,7 +395,28 @@ public class ZGWClient {
 		Map<String, String> parameters = new HashMap();
 		parameters.put("zaaktype", zaakTypeUrl);
 
-		return getStatusTypes(parameters).stream()
-				.filter(zgwStatusType -> zgwStatusType.volgnummer == volgnummer).findFirst().orElse(null);
+		return getStatusTypes(parameters).stream().filter(zgwStatusType -> zgwStatusType.volgnummer == volgnummer).findFirst().orElse(null);
 	}
-}
+
+	public ZgwInformatieObjectType getZgwInformatieObjectTypeByOmschrijving(String omschrijving) throws ZGWClientException {
+		Map<String, String> parameters = new HashMap();
+		parameters.put("status", "definitief");
+
+		var zaakTypeJson = get(this.baseUrl + "/catalogi/api/v1/informatieobjecttypen", parameters);
+//		try {
+			Type type = new TypeToken<QueryResult<ZgwInformatieObjectType>>() {
+			}.getType();
+			Gson gson = new Gson();
+			QueryResult<ZgwInformatieObjectType> queryResult = gson.fromJson(zaakTypeJson, type);
+			for(ZgwInformatieObjectType current: queryResult.results) {
+				log.debug("gevonden ZgwInformatieObjectType met omschrijving: '" + current.omschrijving + "'");
+				if(omschrijving.equals(current.omschrijving)) {
+					return current;
+				}
+			}
+//		} catch (Exception ex) {
+//			log.error("Exception in getZaakTypeByIdentiticatie: " + ex.getMessage());
+//			throw ex;
+//		}
+		return null;
+	}}
