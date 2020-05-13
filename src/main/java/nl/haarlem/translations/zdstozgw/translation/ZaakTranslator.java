@@ -526,6 +526,10 @@ public class ZaakTranslator {
 		var milliseconds = stufDate.substring(14);
 		return year + "-" + month + "-" + day + "T" + hours + ":" + minutes + ":" + seconds + "." + milliseconds + "Z";
 	}
+
+	public EdcLa01 getZaakDetails(EdcLv01 object) {
+		throw new RuntimeException("Not implemented");
+	}
 	
 	/*
 	private String getZGWArchiefNominatie(String archiefNominatie) {

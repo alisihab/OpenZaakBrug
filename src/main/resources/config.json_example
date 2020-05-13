@@ -61,8 +61,8 @@
 			"translation": "ZDS 1.1 Generic voegZaakdocumentToe_Lk01",
 			"soapaction": "http://www.egem.nl/StUF/sector/zkn/0310/voegZaakdocumentToe_Lk01",
 			"requestcontains": "",
-			"template": "--template-zit-in-de-code--",
-			"implementation": "nl.haarlem.translations.zdstozgw.converter.impl.VoegZaakdocumentToe",
+			"template": "src/main/java/nl/haarlem/translations/zdstozgw/converter/impl/VoegZaakdocumentToeConverter_Bv3.xml",
+			"implementation": "nl.haarlem.translations.zdstozgw.converter.impl.VoegZaakdocumentToeConverter",
 			"legacyservice" : "http://localhost:8181/zds/OntvangAsynchroon"
 		},
 		{
@@ -86,7 +86,7 @@
 			"soapaction": "http://www.egem.nl/StUF/sector/zkn/0310/geefZaakdetails_Lv01",
 			"requestcontains": "",
 			"template": "nvt.",
-			"implementation": "nl.haarlem.translations.zdstozgw.converter.impl.NotImplementedConverter",
+			"implementation": "nl.haarlem.translations.zdstozgw.converter.impl.GeefZaakDetailsConverter",
 			"legacyservice" : "http://localhost:8181/zds/BeantwoordVraag"		
 		},
 		{
@@ -97,29 +97,6 @@
 			"implementation": "nl.haarlem.translations.zdstozgw.converter.impl.NotImplementedConverter",
 			"legacyservice" : "http://localhost:8181/stufzkn/OntvangAsynchroon"		
 		}				
-	],
-	"zaakTypes": [
-		{
-			"code": "1",
-			"zaakType": "https://openzaak.local/catalogi/api/v1/zaaktypen/cb47385c-d954-47fc-a696-14b694f648f1",
-			"zaakTypeOmschrijving": "Melding openbare ruimte",
-			"ingangsdatumObject": "20170901",
-			"initiatorRolTypeUrl": "https://openzaak.local/catalogi/api/v1/roltypen/c8d9bd56-2abb-4ef1-bbd6-bf404b31869e"
-		},
-		{
-			"code": "2",
-			"zaakType": "https://openzaak.local/catalogi/api/v1/zaaktypen/asdasdasd",
-			"zaakTypeOmschrijving": "Test",
-			"ingangsdatumObject": "20170901",
-			"initiatorRolTypeUrl": "https://openzaak.local/catalogi/api/v1/roltypen/c8d9bd56-2abb-4ef1-bbd6-bf404b31869e"
-		},
-		{
-			"code": "B1026-niet-meer",
-			"zaakType": "https://fieldlab.westeurope.cloudapp.azure.com/catalogi/api/v1/zaaktypen/8a0ecb65-c3fd-4110-8599-297f84236ae5",
-			"zaakTypeOmschrijving": "Minimaregeling aanvraag",
-			"ingangsdatumObject": "17 maart 20200317",
-			"initiatorRolTypeUrl": "https://openzaak.local/catalogi/api/v1/roltypen/c8d9bd56-2abb-4ef1-bbd6-bf404b31869e"
-		}	
 	],
 	"organisaties": [
 		{
@@ -136,12 +113,6 @@
 			"gemeenteNaam": "Súdwest-Fryslân",
 			"gemeenteCode": "1900",
 			"RSIN": "823288444"
-		}
-	],
-	"documentTypes": [
-		{
-			"documentType": "https://openzaak.local/catalogi/api/v1/informatieobjecttypen/b380e35f-3b10-4d76-81b5-58f8013dca4a",
-			"omschrijving": "Overig stuk inkomend"
 		}
 	]
 }
