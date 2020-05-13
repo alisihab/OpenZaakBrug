@@ -12,6 +12,9 @@ import java.lang.invoke.MethodHandles;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
+import javax.xml.bind.ValidationEvent;
+import javax.xml.bind.ValidationEventHandler;
+import javax.xml.bind.ValidationEventLocator;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -32,6 +35,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
+
 
 public class XmlUtils {
 	private static final Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
@@ -184,11 +188,13 @@ public class XmlUtils {
 		body.addDocument(document);
 		return message;
 	}
-
+	
 	public static Object getStUFObject(String body, Class c) {
 		Object object = null;
 		try {
-			var unmarshaller = JAXBContext.newInstance(c).createUnmarshaller();
+			var unmarshaller = JAXBContext.newInstance(c).createUnmarshaller();		
+			var handler = new XmlUtilsCustomEventHandler();
+			unmarshaller.setEventHandler(handler);
 			var document = MessageFactory.newInstance().createMessage(null, new ByteArrayInputStream(body.getBytes())).getSOAPBody().extractContentAsDocument();
 			object = unmarshaller.unmarshal(document);
 		} catch (Exception e) {
