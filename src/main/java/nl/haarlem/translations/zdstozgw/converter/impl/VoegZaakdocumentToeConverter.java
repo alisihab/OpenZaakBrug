@@ -11,6 +11,7 @@ import nl.haarlem.translations.zdstozgw.config.ConfigService;
 import nl.haarlem.translations.zdstozgw.converter.Converter;
 import nl.haarlem.translations.zdstozgw.converter.Converter.ConverterException;
 import nl.haarlem.translations.zdstozgw.jpa.ApplicationParameterRepository;
+import nl.haarlem.translations.zdstozgw.jpa.model.RequestResponseCycle;
 import nl.haarlem.translations.zdstozgw.translation.ZaakTranslator;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.EdcLk01;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZakLk01_v2;
@@ -37,9 +38,19 @@ public class VoegZaakdocumentToeConverter extends Converter {
 	}
 
 	@Override
-	public String Convert(ZGWClient zgwClient, ConfigService configService, ApplicationParameterRepository repository, String requestbody) {
+	public String passThroughAndConvert(String soapAction, RequestResponseCycle session, ZGWClient zgwClient, ConfigService config, ApplicationParameterRepository repository, String body) {
+		throw new ConverterException(this, "passThroughAndConvert not implemented in version", body, null);
+	}
+
+	@Override
+	public String convertAndPassThrough(String soapAction, RequestResponseCycle session, ZGWClient zgwClient, ConfigService config, ApplicationParameterRepository repository, String body) {
+		throw new ConverterException(this, "passThroughAndConvert not implemented in version", body, null);
+	}
+
+	@Override
+	public String convert(RequestResponseCycle session, ZGWClient zgwClient, ConfigService configService, ApplicationParameterRepository repository, String requestBody) {
 		try {
-			EdcLk01 edcLk01 = (EdcLk01) XmlUtils.getStUFObject(requestbody, EdcLk01.class);
+			EdcLk01 edcLk01 = (EdcLk01) XmlUtils.getStUFObject(requestBody, EdcLk01.class);
 			var translator = new ZaakTranslator(zgwClient, configService);
 			var zgwZaakInformatieObject = translator.voegZaakDocumentToe(edcLk01);
 //			var bv03 = new nl.haarlem.translations.zdstozgw.translation.zds.model.Bv03();
@@ -60,7 +71,7 @@ public class VoegZaakdocumentToeConverter extends Converter {
 		} catch (ZGWClient.ZGWClientException hsce) {
 			throw new ConverterException(this, hsce.getMessage(), hsce.getDetails(), hsce);
 		} catch (ZaakTranslator.ZaakTranslatorException zte) {
-			throw new ConverterException(this, zte.getMessage(), requestbody, zte);
+			throw new ConverterException(this, zte.getMessage(), requestBody, zte);
 		}
 /*		
 		try {

@@ -2,7 +2,9 @@ package nl.haarlem.translations.zdstozgw.converter.impl;
 
 import nl.haarlem.translations.zdstozgw.config.ConfigService;
 import nl.haarlem.translations.zdstozgw.converter.Converter;
+import nl.haarlem.translations.zdstozgw.converter.Converter.ConverterException;
 import nl.haarlem.translations.zdstozgw.jpa.ApplicationParameterRepository;
+import nl.haarlem.translations.zdstozgw.jpa.model.RequestResponseCycle;
 import nl.haarlem.translations.zdstozgw.translation.ZaakTranslator;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZakLk01_v2;
 import nl.haarlem.translations.zdstozgw.translation.zds.services.ZaakService;
@@ -15,7 +17,17 @@ public class ActualiseerZaakStatusConverter extends Converter {
 	}
 
 	@Override
-	public String Convert(ZGWClient zgwClient, ConfigService configService, ApplicationParameterRepository repository, String requestBody) {
+	public String passThroughAndConvert(String soapAction, RequestResponseCycle session, ZGWClient zgwClient, ConfigService config, ApplicationParameterRepository repository, String body) {
+		throw new ConverterException(this, "passThroughAndConvert not implemented in version", body, null);
+	}
+
+	@Override
+	public String convertAndPassThrough(String soapAction, RequestResponseCycle session, ZGWClient zgwClient, ConfigService config, ApplicationParameterRepository repository, String body) {
+		throw new ConverterException(this, "passThroughAndConvert not implemented in version", body, null);
+	}
+
+	@Override
+	public String convert(RequestResponseCycle session, ZGWClient zgwClient, ConfigService configService, ApplicationParameterRepository repository, String requestBody) {
 		try {
 			ZakLk01_v2 zakLk01 = (ZakLk01_v2) XmlUtils.getStUFObject(requestBody, ZakLk01_v2.class);
 			var translator = new ZaakTranslator(zgwClient, configService);			

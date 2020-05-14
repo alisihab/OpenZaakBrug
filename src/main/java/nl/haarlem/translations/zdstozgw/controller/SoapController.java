@@ -101,11 +101,13 @@ public class SoapController {
 				responseBody = converter.passThrough(soapAction, session, this.repository, body);
 				break;
 			case USE_ZDS_AND_REPLICATE_2_ZGW:
+				responseBody = converter.passThroughAndConvert(soapAction, session, this.zgwClient, config, this.repository, body);
 				break;
 			case USE_ZGW_AND_REPLICATE_2_ZDS:
+				responseBody = converter.convertAndPassThrough(soapAction, session, this.zgwClient, config, this.repository, body);
 				break;
 			case USE_ZGW:
-				responseBody = converter.Convert(this.zgwClient, this.config, this.repository, body);
+				responseBody = converter.convert(session, this.zgwClient, config, this.repository, body);
 				session.setZgwResponeBody(responseBody);
 				break;
 			default:

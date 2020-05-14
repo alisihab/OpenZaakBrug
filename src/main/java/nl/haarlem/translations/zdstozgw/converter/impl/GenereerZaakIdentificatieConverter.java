@@ -12,7 +12,9 @@ import org.w3c.dom.Document;
 import lombok.Data;
 import nl.haarlem.translations.zdstozgw.config.ConfigService;
 import nl.haarlem.translations.zdstozgw.converter.Converter;
+import nl.haarlem.translations.zdstozgw.converter.Converter.ConverterException;
 import nl.haarlem.translations.zdstozgw.jpa.ApplicationParameterRepository;
+import nl.haarlem.translations.zdstozgw.jpa.model.RequestResponseCycle;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.StufRequest;
 import nl.haarlem.translations.zdstozgw.translation.zds.services.ZaakService;
 import nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient;
@@ -50,8 +52,18 @@ public class GenereerZaakIdentificatieConverter extends Converter {
 	}
 
 	@Override
-	public String Convert(ZGWClient zgwClient, ConfigService configService, ApplicationParameterRepository repository, String requestbody) {
-		var stufRequest = new StufRequest(XmlUtils.convertStringToDocument(requestbody));
+	public String passThroughAndConvert(String soapAction, RequestResponseCycle session, ZGWClient zgwClient, ConfigService config, ApplicationParameterRepository repository, String body) {
+		throw new ConverterException(this, "passThroughAndConvert not implemented in version", body, null);
+	}
+
+	@Override
+	public String convertAndPassThrough(String soapAction, RequestResponseCycle session, ZGWClient zgwClient, ConfigService config, ApplicationParameterRepository repository, String body) {
+		throw new ConverterException(this, "passThroughAndConvert not implemented in version", body, null);
+	}
+
+	@Override
+	public String convert(RequestResponseCycle session, ZGWClient zgwClient, ConfigService configService, ApplicationParameterRepository repository, String requestBody) {
+		var stufRequest = new StufRequest(XmlUtils.convertStringToDocument(requestBody));
 		DateFormat tijdstipformat = new SimpleDateFormat("yyyyMMddHHmmss");
 
 		var prefixparam = repository.getOne("ZaakIdentificatiePrefix");

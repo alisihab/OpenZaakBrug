@@ -69,8 +69,6 @@ public abstract class Converter {
 		this.zdsUrl = legacyService;
 	}
 
-	public abstract String Convert(ZGWClient zaakService, ConfigService configService, ApplicationParameterRepository repository, String requestBody);
-
 	public String getImplementation() {
 		return this.getClass().getCanonicalName();
 	}
@@ -117,4 +115,8 @@ public abstract class Converter {
 			post.releaseConnection();
 		}
 	}
+	
+	public abstract String passThroughAndConvert(String soapAction, RequestResponseCycle session, ZGWClient zgwClient, ConfigService config, ApplicationParameterRepository repository, String body);	
+	public abstract String convertAndPassThrough(String soapAction, RequestResponseCycle session, ZGWClient zgwClient, ConfigService config, ApplicationParameterRepository repository, String body);	
+	public abstract String convert(RequestResponseCycle session, ZGWClient zaakService, ConfigService configService, ApplicationParameterRepository repository, String requestBody);
 }
