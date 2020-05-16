@@ -565,6 +565,8 @@ public class ZaakTranslator {
 			zdsZaak.isVan = new GerelateerdeWrapper();
 			zdsZaak.isVan.gerelateerde = new Gerelateerde(); 
 			zdsZaak.isVan.gerelateerde.code = zgwZaakType.identificatie;			
+			zdsZaak.isVan.gerelateerde.omschrijving = zgwZaakType.omschrijving;			
+
 			zdsZaak.registratiedatum = getDateStringFromZgwDate(zgwZaak.registratiedatum);
 			zdsZaak.startdatum = getDateStringFromZgwDate(zgwZaak.startdatum);
 			zdsZaak.einddatumGepland = getDateStringFromZgwDate(zgwZaak.einddatumGepland);
