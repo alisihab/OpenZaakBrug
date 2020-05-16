@@ -9,6 +9,8 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import nl.haarlem.translations.zdstozgw.translation.zds.model.ZakLk01_v2.ZdsZaak;
+
 @XmlRootElement(namespace = ZKN, name = "edcLa01")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class EdcLa01 {
@@ -25,7 +27,7 @@ public class EdcLa01 {
 	public static class Antwoord {
 
 		@XmlElement(namespace = ZKN)
-		public Object object;
+		public ZdsZaak object;
 	}
 
 	@XmlAccessorType(XmlAccessType.FIELD)

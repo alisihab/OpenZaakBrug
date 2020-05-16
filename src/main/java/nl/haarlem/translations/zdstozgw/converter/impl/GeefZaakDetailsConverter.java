@@ -13,6 +13,8 @@ import nl.haarlem.translations.zdstozgw.translation.zds.model.EdcLa01;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.EdcLv01;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.Ontvanger;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.Stuurgegevens;
+import nl.haarlem.translations.zdstozgw.translation.zds.model.ZakLk01_v2;
+import nl.haarlem.translations.zdstozgw.translation.zds.model.ZakLv01;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.Zender;
 import nl.haarlem.translations.zdstozgw.translation.zds.services.ZaakService;
 import nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient;
@@ -50,19 +52,18 @@ public class GeefZaakDetailsConverter extends Converter {
 		String result = "";
 		try {
 			
-			EdcLv01 object = (EdcLv01) XmlUtils.getStUFObject(requestBody, EdcLv01.class);
+			ZakLv01 zakLv01 = (ZakLv01) XmlUtils.getStUFObject(requestBody, ZakLv01.class);
 			var translator = new ZaakTranslator(zgwClient, configService);
-			EdcLa01 edcLa01 = translator.getZaakDetails((EdcLv01) object);
+			var zakLa01 = translator.getZaakDetails(zakLv01);
 
-			edcLa01.stuurgegevens = new Stuurgegevens();
-			edcLa01.stuurgegevens.zender = new Zender();
-			edcLa01.stuurgegevens.zender.applicatie = ((EdcLv01) object).stuurgegevens.ontvanger.applicatie;
-			edcLa01.stuurgegevens.zender.organisatie = ((EdcLv01) object).stuurgegevens.ontvanger.organisatie;
-			edcLa01.stuurgegevens.zender.gebruiker = ((EdcLv01) object).stuurgegevens.ontvanger.organisatie;
+			zakLa01.stuurgegevens = new Stuurgegevens();
+			zakLa01.stuurgegevens.zender = new Zender();
+			zakLa01.stuurgegevens.zender.applicatie = zakLv01.stuurgegevens.ontvanger.applicatie;
+			zakLa01.stuurgegevens.zender.organisatie = zakLv01.stuurgegevens.ontvanger.organisatie;
+			zakLa01.stuurgegevens.zender.gebruiker = zakLv01.stuurgegevens.ontvanger.organisatie;
+			zakLa01.stuurgegevens.berichtcode = "La01";
 
-			edcLa01.stuurgegevens.berichtcode = "La01";
-
-			return XmlUtils.getSOAPMessageFromObject(edcLa01);
+			return XmlUtils.getSOAPMessageFromObject(zakLa01);
 
 		} catch (Exception ex) {
 			ex.printStackTrace();

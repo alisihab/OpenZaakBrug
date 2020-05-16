@@ -6,39 +6,48 @@ import com.google.gson.annotations.SerializedName;
 import lombok.Data;
 
 @Data
-public class BetrokkeneIdentificatie {
-	
-	// medewerker
-	@Expose
-	public String identificatie;
-	@Expose
-	public String achternaam;
-	@Expose
-	public String voorletters;
-	@Expose
-	public String voorvoegselAchternaam;
-
-	// medewerker
+public class ZgwNatuurlijkPersoon {
+	@SerializedName("inpBsn")
 	@Expose
 	public String inpBsn;
+
+	@SerializedName("anpIdentificatie")
 	@Expose
 	public String anpIdentificatie;
+
+	@SerializedName("inpA")
 	@Expose
-	public String inpA_nummer;
-	@Expose
-	public String inpgeslachtsnaam;
+	public String inpA;
+	
+	@SerializedName("geslachtsnaam")
 	@Expose
 	public String geslachtsnaam;
+	
+	@SerializedName("voorvoegselGeslachtsnaam")
 	@Expose
 	public String voorvoegselGeslachtsnaam;
+	
+	@SerializedName("voorletters")
+	@Expose
+	public String voorletters;
+
+	@SerializedName("voornamen")
 	@Expose
 	public String voornamen;
+
+	@SerializedName("geslachtsaanduiding")
 	@Expose
 	public String geslachtsaanduiding;
+	
+	@SerializedName("geboortedatum")
 	@Expose
 	public String geboortedatum;
+	
+	@SerializedName("verblijfsadres")
 	@Expose
 	public String verblijfsadres;
+	
+	@SerializedName("sub")
 	@Expose
-	public String subVerblijfBuitenland;
+	public String sub;
 }

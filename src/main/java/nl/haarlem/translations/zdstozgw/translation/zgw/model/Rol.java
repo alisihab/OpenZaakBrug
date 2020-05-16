@@ -11,6 +11,9 @@ public class Rol {
 	@SerializedName("zaak")
 	@Expose
 	public String zaak;
+	@SerializedName("betrokkene")
+	@Expose
+	public String betrokkene;
 	@SerializedName("betrokkeneType")
 	@Expose
 	// Enum:"natuurlijk_persoon" "niet_natuurlijk_persoon" "vestiging" "organisatorische_eenheid" "medewerker"

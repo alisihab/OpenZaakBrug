@@ -44,6 +44,9 @@ public class ZakLk01_v2 {
 		@XmlElement(namespace = ZKN)
 		public String registratiedatum;
 
+		@XmlElement(namespace = ZKN)		
+		public String einddatum;
+		
 		@XmlElement(namespace = ZKN)
 		public GerelateerdeWrapper isVan;
 
@@ -67,11 +70,12 @@ public class ZakLk01_v2 {
 
 		@XmlElement(namespace = ZKN, name = "heeftAlsVerantwoordelijke")
 		public ZdsRol heeftAlsVerantwoordelijke;
-	}
 
-	@XmlElement(namespace = ZKN, name = "object")
-	public List<ZdsZaak> object;
+	}
 
 	@XmlElement(namespace = ZKN, name = "stuurgegevens")
 	public Stuurgegevens stuurgegevens;
+	
+	@XmlElement(namespace = ZKN, name = "object")
+	public List<ZdsZaak> object;
 }

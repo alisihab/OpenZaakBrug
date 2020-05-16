@@ -34,6 +34,8 @@ import nl.haarlem.translations.zdstozgw.translation.zgw.model.QueryResult;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.Rol;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwEnkelvoudigInformatieObject;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwInformatieObjectType;
+import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwMedewerker;
+import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwNatuurlijkPersoon;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwRolType;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwStatus;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwStatusType;
@@ -87,7 +89,7 @@ public class ZGWClient {
 	}
 
 	private String get(String url, Map<String, String> parameters) throws ZGWClientException {
-		log.debug("GET: " + url);
+		log.info("GET: " + url);
 
 		if (parameters != null) {
 			url = getUrlWithParameters(url, parameters);
@@ -105,7 +107,7 @@ public class ZGWClient {
 			throw new ZGWClientException("GET naar OpenZaak: " + url + " niet geslaagd", url, rae);
 		}
 
-		log.debug("GET response: " + response.getBody());
+		log.info("GET response:\n\t" + response.getBody());
 
 		return response.getBody();
 	}
@@ -148,18 +150,19 @@ public class ZGWClient {
     public ZgwZaak getZaakByUrl(String url) throws ZGWClientException {
         ZgwZaak result = null;
         var zaakJson = get(url, null);
-        try {
-            Gson gson = new Gson();
-            result = gson.fromJson(zaakJson, ZgwZaak.class);
-
-        } catch (Exception ex) {
-            log.error("Exception in getZaakDetails: " + ex.getMessage());
-            throw ex;
-        }
-
+        Gson gson = new Gson();
+        result = gson.fromJson(zaakJson, ZgwZaak.class);
         return result;
     }
 
+    public ZgwZaakType getZaakTypeByUrl(String url) throws ZGWClientException {
+    	ZgwZaakType result = null;
+        var zaakTypeJson = get(url, null);
+        Gson gson = new Gson();
+        result = gson.fromJson(zaakTypeJson, ZgwZaakType.class);
+        return result;
+    }
+    
     public String getBas64Inhoud(String url){
         String result = null;
         try {
@@ -379,16 +382,16 @@ public class ZGWClient {
 
 	private ZgwZaakInformatieObject addZaakInformatieObject(ZgwEnkelvoudigInformatieObject doc, String zaakUrl) throws Exception {
 		ZgwZaakInformatieObject result = null;
-		try {
+//		try {
 			var zgwZaakInformatieObject = new ZgwZaakInformatieObject();
 			zgwZaakInformatieObject.setZaak(zaakUrl);
 			zgwZaakInformatieObject.setInformatieobject(doc.getUrl());
 			zgwZaakInformatieObject.setTitel(doc.getTitel());
 			result = addDocumentToZaak(zgwZaakInformatieObject);
 
-		} catch (Exception e) {
-			throw e;
-		}
+//		} catch (Exception e) {
+//			throw e;
+//		}
 		return result;
 	}
 	public ZgwStatusType getStatusTypeByZaakTypeAndVolgnummer(String zaakTypeUrl, int volgnummer) throws ZGWClientException {
@@ -419,4 +422,44 @@ public class ZGWClient {
 //			throw ex;
 //		}
 		return null;
-	}}
+	}
+
+	public List<Rol> getRollenByZaak(String url) throws ZGWClientException {
+		Map<String, String> parameters = new HashMap();
+		parameters.put("zaak", url);
+
+		var zaakTypeJson = get(this.baseUrl + "/zaken/api/v1/rollen", parameters);
+//		try {
+			Type type = new TypeToken<QueryResult<Rol>>() {
+			}.getType();
+			Gson gson = new Gson();
+			QueryResult<Rol> queryResult = gson.fromJson(zaakTypeJson, type);
+			var result = new ArrayList<Rol>();
+			for(Rol current: queryResult.results) {
+				log.debug("gevonden rol met omschrijving: '" + current.roltoelichting + "'");
+				result.add(current);
+			}
+//		} catch (Exception ex) {
+//			log.error("Exception in getZaakTypeByIdentiticatie: " + ex.getMessage());
+//			throw ex;
+//		}
+		return result;
+	}
+
+    public ZgwNatuurlijkPersoon getNatuurlijkPersoonByUrl(String url) throws ZGWClientException {
+    	ZgwNatuurlijkPersoon result = null;
+        var json = get(url, null);
+        Gson gson = new Gson();
+        result = gson.fromJson(json, ZgwNatuurlijkPersoon.class);
+        return result;
+    }
+
+	public ZgwMedewerker getMedewerkerByUrl(String url) throws ZGWClientException {
+		ZgwMedewerker result = null;
+        var json = get(url, null);
+        Gson gson = new Gson();
+        result = gson.fromJson(json, ZgwMedewerker.class);
+        return result;
+	}
+}
+

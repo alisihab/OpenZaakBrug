@@ -193,7 +193,7 @@ public class XmlUtils {
 		Object object = null;
 		try {
 			var unmarshaller = JAXBContext.newInstance(c).createUnmarshaller();		
-			var handler = new XmlUtilsCustomEventHandler();
+			var handler = new XmlUtilsCustomEventHandler(body, c);
 			unmarshaller.setEventHandler(handler);
 			var document = MessageFactory.newInstance().createMessage(null, new ByteArrayInputStream(body.getBytes())).getSOAPBody().extractContentAsDocument();
 			object = unmarshaller.unmarshal(document);

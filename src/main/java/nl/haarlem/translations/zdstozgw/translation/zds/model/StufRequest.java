@@ -38,26 +38,22 @@ public class StufRequest {
 	}
 
 	public boolean isCreeerZaak() {
-		NodeList creeerZaakZakLk01Nodes = this.body
-				.getElementsByTagNameNS("http://www.stufstandaarden.nl/koppelvlak/zds0120", "creeerZaak_ZakLk01");
+		NodeList creeerZaakZakLk01Nodes = this.body.getElementsByTagNameNS("http://www.stufstandaarden.nl/koppelvlak/zds0120", "creeerZaak_ZakLk01");
 		return creeerZaakZakLk01Nodes.getLength() > 0;
 	}
 
-	public ZakLv01 getZakLv01ZaakDetails() {
-		NodeList nodes = this.body
-				.getElementsByTagNameNS("http://www.stufstandaarden.nl/koppelvlak/zds0120", "geefZaakdetails_ZakLv01")
-				.item(0).getChildNodes();
-
-		return new ZakLv01(xmlNodesToDocument(nodes, "geefZaakdetails_ZakLa01"));
+/*	
+	public ZakLk01_v2 getZakLv01ZaakDetails() {
+		NodeList nodes = this.body.getElementsByTagNameNS("http://www.stufstandaarden.nl/koppelvlak/zds0120", "geefZaakdetails_ZakLv01").item(0).getChildNodes();
+		return new ZakLk01_v2(xmlNodesToDocument(nodes, "geefZaakdetails_ZakLa01"));
 	}
-
-	public ZakLv01 getZakLv01LijstZaakdocumenten() {
-		NodeList nodes = this.body.getElementsByTagNameNS("http://www.stufstandaarden.nl/koppelvlak/zds0120",
-				"geefLijstZaakdocumenten_ZakLv01").item(0).getChildNodes();
-
-		return new ZakLv01(xmlNodesToDocument(nodes, "geefLijstZaakdocumenten_ZakLa01"));
+*/
+/*
+	public ZakLk01_v2 getZakLv01LijstZaakdocumenten() {
+		NodeList nodes = this.body.getElementsByTagNameNS("http://www.stufstandaarden.nl/koppelvlak/zds0120", "geefLijstZaakdocumenten_ZakLv01").item(0).getChildNodes();
+		return new ZakLk01_v2(xmlNodesToDocument(nodes, "geefLijstZaakdocumenten_ZakLa01"));
 	}
-
+*/
 //    public ZakLk01 getZakLk01() {
 //        var nodes = body.getElementsByTagNameNS("http://www.egem.nl/StUF/sector/zkn/0310", "zakLk01").item(0).getChildNodes();
 //

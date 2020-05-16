@@ -205,7 +205,7 @@ public class ZaakTranslatorObsolete {
 
 		this.document = zakLa01.getDocument();
 	}
-
+/*
 	public EdcLa01 getEdcLa01FromZgwEnkelvoudigInformatieObject(ZgwEnkelvoudigInformatieObject document) {
 		EdcLa01 edcLa01 = new EdcLa01();
 		edcLa01.antwoord = new EdcLa01.Antwoord();
@@ -225,7 +225,7 @@ public class ZaakTranslatorObsolete {
 
 		return edcLa01;
 	}
-
+*/
 	private void zgwDocumentToZgwDocument(ZakLa01LijstZaakdocumenten zakLa01, ZgwEnkelvoudigInformatieObject document) {
 		HeeftRelevantEDC heeftRelevantEDC = new HeeftRelevantEDC();
 		heeftRelevantEDC.setIdentificatie(document.getIdentificatie());
