@@ -108,7 +108,6 @@ public class SoapController {
 				break;
 			case USE_ZGW:
 				responseBody = converter.convert(session, this.zgwClient, config, this.repository, body);
-				session.setZgwResponeBody(responseBody);
 				break;
 			default:
 			}
@@ -130,8 +129,7 @@ public class SoapController {
 				 * f03.setDetails(ex.getMessage()); return f03.getSoapMessageAsString();
 				 */
 
-				Document document = nl.haarlem.translations.zdstozgw.utils.XmlUtils
-						.getDocument("src/main/java/nl/haarlem/translations/zdstozgw/controller/Fault_Fo02.xml");
+				Document document = nl.haarlem.translations.zdstozgw.utils.XmlUtils.getDocument("src/main/java/nl/haarlem/translations/zdstozgw/controller/Fault_Fo02.xml");
 				XpathDocument xpathDocument = new XpathDocument(document);
 				// TODO:
 				// https://www.gemmaonline.nl/images/gemmaonline/4/4f/Stuf0301_-_ONV0347_%28zonder_renvooi%29.pdf
@@ -157,8 +155,7 @@ public class SoapController {
 			if (responseBody == null) {
 				// TODO:
 				// https://www.gemmaonline.nl/images/gemmaonline/4/4f/Stuf0301_-_ONV0347_%28zonder_renvooi%29.pdf
-				Document document = nl.haarlem.translations.zdstozgw.utils.XmlUtils
-						.getDocument("src/main/java/nl/haarlem/translations/zdstozgw/controller/Fault_Fo02.xml");
+				Document document = nl.haarlem.translations.zdstozgw.utils.XmlUtils.getDocument("src/main/java/nl/haarlem/translations/zdstozgw/controller/Fault_Fo02.xml");
 				XpathDocument xpathDocument = new XpathDocument(document);
 
 				xpathDocument.setNodeValue(".//faultstring", ex.toString());
@@ -173,7 +170,7 @@ public class SoapController {
 
 		// after all the work
 		session.setClientResponseCode(responseCode.toString());
-		session.setClientRequestBody(responseBody);
+		session.setClientResponseBody(responseBody);
 		session.setDuration(Duration.between(beginTime, Instant.now()));
 		this.sessions.save(session);
 		return new ResponseEntity<>(responseBody, responseCode);

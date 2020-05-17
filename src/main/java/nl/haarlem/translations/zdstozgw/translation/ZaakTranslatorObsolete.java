@@ -26,8 +26,8 @@ import nl.haarlem.translations.zdstozgw.translation.zds.model.HeeftRelevantEDC;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsNatuurlijkPersoon;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZakLa01LijstZaakdocumenten;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZakLa01Zaakdetails;
-import nl.haarlem.translations.zdstozgw.translation.zds.model.ZakLk01_v2;
-import nl.haarlem.translations.zdstozgw.translation.zds.model.ZakLk01_v2.ZdsZaak;
+import nl.haarlem.translations.zdstozgw.translation.zds.model.ZakLk01;
+import nl.haarlem.translations.zdstozgw.translation.zds.model.ZakLk01.ZdsZaak;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.BetrokkeneIdentificatieNPS;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.Rol;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwEnkelvoudigInformatieObject;
@@ -52,7 +52,7 @@ public class ZaakTranslatorObsolete {
 	private ZgwZaak zgwZaak;
 	private ZgwEnkelvoudigInformatieObject zgwEnkelvoudigInformatieObject;
 	private List<ZgwEnkelvoudigInformatieObject> zgwEnkelvoudigInformatieObjectList;
-	private ZakLk01_v2 zakLk01;
+	private ZakLk01 zakLk01;
 	private EdcLk01 edcLk01;
 
 	public ZaakTranslatorObsolete() {
@@ -196,6 +196,7 @@ public class ZaakTranslatorObsolete {
 		this.document = zakLa01.getDocument();
 	}
 
+/*	
 	public void zgwEnkelvoudingInformatieObjectenToZSDLijstZaakDocumenten() {
 		var zakLa01 = new ZakLa01LijstZaakdocumenten();
 
@@ -205,6 +206,8 @@ public class ZaakTranslatorObsolete {
 
 		this.document = zakLa01.getDocument();
 	}
+*/
+	
 /*
 	public EdcLa01 getEdcLa01FromZgwEnkelvoudigInformatieObject(ZgwEnkelvoudigInformatieObject document) {
 		EdcLa01 edcLa01 = new EdcLa01();
@@ -226,6 +229,7 @@ public class ZaakTranslatorObsolete {
 		return edcLa01;
 	}
 */
+/*
 	private void zgwDocumentToZgwDocument(ZakLa01LijstZaakdocumenten zakLa01, ZgwEnkelvoudigInformatieObject document) {
 		HeeftRelevantEDC heeftRelevantEDC = new HeeftRelevantEDC();
 		heeftRelevantEDC.setIdentificatie(document.getIdentificatie());
@@ -244,6 +248,7 @@ public class ZaakTranslatorObsolete {
 		heeftRelevantEDC.setLink(document.getUrl());
 		zakLa01.addHeeftRelevant(heeftRelevantEDC);
 	}
+*/
 /*
 	public void zdsDocumentToZgwDocument() throws ZaakTranslatorException {
 		var informatieObjectType = this.configService.getConfiguratie().getDocumentTypes().get(0).getDocumentType();

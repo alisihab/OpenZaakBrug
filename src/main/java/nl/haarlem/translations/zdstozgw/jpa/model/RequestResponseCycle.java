@@ -97,7 +97,7 @@ public class RequestResponseCycle {
 		return this.clientResponeBody;
 	}
 
-	public void setClientResponeBody(String clientResponeBody) {
+	public void setClientResponseBody(String clientResponeBody) {
 		this.clientResponeBody = clientResponeBody;
 	}
 

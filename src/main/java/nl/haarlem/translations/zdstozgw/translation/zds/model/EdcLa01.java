@@ -9,7 +9,7 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import nl.haarlem.translations.zdstozgw.translation.zds.model.ZakLk01_v2.ZdsZaak;
+import nl.haarlem.translations.zdstozgw.translation.zds.model.ZakLk01.ZdsZaak;
 
 @XmlRootElement(namespace = ZKN, name = "edcLa01")
 @XmlAccessorType(XmlAccessType.FIELD)

@@ -16,7 +16,7 @@ import lombok.Data;
 @Data
 @XmlRootElement(namespace = ZKN, name = "zakLk01")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ZakLk01_v2 {
+public class ZakLk01 {
 
 	@XmlAccessorType(XmlAccessType.FIELD)
 	public static class ZdsZaak {

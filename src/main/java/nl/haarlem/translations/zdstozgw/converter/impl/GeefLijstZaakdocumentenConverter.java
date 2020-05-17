@@ -13,6 +13,7 @@ import nl.haarlem.translations.zdstozgw.translation.zds.model.EdcLa01;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.EdcLv01;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.Ontvanger;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.Stuurgegevens;
+import nl.haarlem.translations.zdstozgw.translation.zds.model.ZakLa01LijstZaakdocumenten;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZakLk01;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZakLv01;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.Zender;
@@ -21,7 +22,7 @@ import nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient;
 import nl.haarlem.translations.zdstozgw.utils.XmlUtils;
 import nl.haarlem.translations.zdstozgw.utils.xpath.XpathDocument;
 
-public class GeefZaakDetailsConverter extends Converter {
+public class GeefLijstZaakdocumentenConverter extends Converter {
 	@Data
 	private class GeefZaakDetails_Bv03 {
 		final XpathDocument xpathDocument;
@@ -33,7 +34,7 @@ public class GeefZaakDetailsConverter extends Converter {
 		}
 	}	
 	
-	public GeefZaakDetailsConverter(String templatePath, String legacyService) {
+	public GeefLijstZaakdocumentenConverter(String templatePath, String legacyService) {
 		super(templatePath, legacyService);
 	}
 
@@ -54,7 +55,7 @@ public class GeefZaakDetailsConverter extends Converter {
 			
 			ZakLv01 zakLv01 = (ZakLv01) XmlUtils.getStUFObject(requestBody, ZakLv01.class);
 			var translator = new ZaakTranslator(zgwClient, configService);
-			var zakLa01 = translator.getZaakDetails(zakLv01);
+			ZakLa01LijstZaakdocumenten zakLa01 = translator.geefLijstZaakdocumenten(zakLv01);
 
 			zakLa01.stuurgegevens = new Stuurgegevens();
 			zakLa01.stuurgegevens.zender = new Zender();
