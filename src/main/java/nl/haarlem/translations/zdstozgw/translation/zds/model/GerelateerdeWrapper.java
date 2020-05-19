@@ -10,6 +10,6 @@ import javax.xml.bind.annotation.XmlElement;
 public class GerelateerdeWrapper {
 
 	@XmlElement(namespace = ZKN)
-	public Gerelateerde gerelateerde;
+	public GerelateerdeRol gerelateerde;
 
 }

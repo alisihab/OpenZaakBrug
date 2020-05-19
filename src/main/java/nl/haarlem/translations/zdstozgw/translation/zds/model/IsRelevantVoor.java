@@ -13,5 +13,5 @@ public class IsRelevantVoor {
     public String entiteittype;
 
     @XmlElement(namespace = ZKN)
-    public Gerelateerde gerelateerde;
+    public GerelateerdeRol gerelateerde;
 }

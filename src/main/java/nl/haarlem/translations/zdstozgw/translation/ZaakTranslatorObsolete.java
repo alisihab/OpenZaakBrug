@@ -27,7 +27,7 @@ import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsNatuurlijkPerso
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZakLa01LijstZaakdocumenten;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZakLa01Zaakdetails;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZakLk01;
-import nl.haarlem.translations.zdstozgw.translation.zds.model.ZakLk01.ZdsZaak;
+import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsZaak;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.BetrokkeneIdentificatieNPS;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.Rol;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwEnkelvoudigInformatieObject;

@@ -12,5 +12,5 @@ import org.apache.http.annotation.Obsolete;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class HeeftAlsUitvoerende {
 	@XmlElement(namespace = ZKN)
-	public Gerelateerde gerelateerde;
+	public GerelateerdeRol gerelateerde;
 }

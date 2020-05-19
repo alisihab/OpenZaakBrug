@@ -9,6 +9,6 @@ import javax.xml.bind.annotation.XmlElement;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ZdsRol {
 	@XmlElement(namespace = ZKN)
-	public Gerelateerde gerelateerde;
+	public GerelateerdeRol gerelateerde;
 
 }

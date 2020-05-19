@@ -1,7 +1,7 @@
 package nl.haarlem.translations.zdstozgw;
 
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZakLk01;
-import nl.haarlem.translations.zdstozgw.translation.zds.model.ZakLk01.ZdsZaak;
+import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsZaak;
 import nl.haarlem.translations.zdstozgw.utils.XmlUtils;
 import org.apache.commons.io.IOUtils;
 import static org.junit.Assume.*;

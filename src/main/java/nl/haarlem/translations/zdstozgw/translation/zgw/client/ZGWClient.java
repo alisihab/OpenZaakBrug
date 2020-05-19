@@ -302,23 +302,7 @@ public class ZGWClient {
 		return result;
 
 	}
-
-	public List<ZgwEnkelvoudigInformatieObject> getLijstZaakDocumenten(Map<String, String> parameters)
-			throws ZGWClientException {
-		var result = new ArrayList();
-
-//		try {
-			var zaakInformatieObjects = getZgwZaakInformatieObjects(parameters);
-			result = (ArrayList) getZgwEnkelvoudigInformatieObjectList(result, zaakInformatieObjects);
-
-//		} catch (Exception ex) {
-//			log.error("Exception in getLijstZaakdocumenten: " + ex.getMessage());
-//			throw ex;
-//		}
-
-		return result;
-	}
-
+/*
 	private List<ZgwEnkelvoudigInformatieObject> getZgwEnkelvoudigInformatieObjectList(
 			List<ZgwEnkelvoudigInformatieObject> tempResult, List<ZgwZaakInformatieObject> zaakInformatieObjects)
 			throws ZGWClientException {
@@ -329,7 +313,7 @@ public class ZGWClient {
 		tempResult = result;
 		return tempResult;
 	}
-
+*/
     public List<ZgwZaakInformatieObject> getZgwZaakInformatieObjects(Map<String, String> parameters) throws ZGWClientException {
 	//private List<ZgwZaakInformatieObject> getZgwZaakInformatieObjects(Map<String, String> parameters)
 	//		throws ZGWClientException {
@@ -462,7 +446,24 @@ public class ZGWClient {
         result = gson.fromJson(json, ZgwMedewerker.class);
         return result;
 	}
+/*
 
+	public List<ZgwEnkelvoudigInformatieObject> getLijstZaakDocumenten(Map<String, String> parameters)
+			throws ZGWClientException {
+		var result = new ArrayList();
+
+//		try {
+			var zaakInformatieObjects = getZgwZaakInformatieObjects(parameters);
+			result = (ArrayList) getZgwEnkelvoudigInformatieObjectList(result, zaakInformatieObjects);
+
+//		} catch (Exception ex) {
+//			log.error("Exception in getLijstZaakdocumenten: " + ex.getMessage());
+//			throw ex;
+//		}
+
+		return result;
+	} */
+	
 	public List<ZwgZaakInformatieObject> getZaakInformatieObjectenByZaakUrl(String url) throws ZGWClientException {
 		Map<String, String> parameters = new HashMap();
 		parameters.put("zaak", url);

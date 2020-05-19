@@ -6,7 +6,7 @@ import static nl.haarlem.translations.zdstozgw.translation.zds.model.namespace.N
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 
-public class Gerelateerde {
+public class GerelateerdeRol {
 
     @XmlAttribute(namespace = STUF)
     public String entiteittype;
