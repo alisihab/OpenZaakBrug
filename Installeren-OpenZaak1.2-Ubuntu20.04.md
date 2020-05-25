@@ -2,6 +2,7 @@
 
 Als uitgangsunt is hiervoor het volgende gebruikt: 
 https://github.com/open-zaak/open-zaak/blob/1e5e4ac092b5b18376ce14115800e79b650cd4cc/docs/installation/linux.rst
+Een alternatieve beschrijving is ook te vinden op: https://open-zaak.readthedocs.io/en/latest/development/getting_started.html#installation
 
 ## Omgeving opzetten
 
