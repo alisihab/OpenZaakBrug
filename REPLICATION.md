@@ -4,7 +4,7 @@ Als je als gemeente wil over schakelen van huidige naar nieuwe wereld en wil ik 
 
 Dit door het volgende proces te doorlopen:
 
-1. Plaatst de OpenZaakBrug tussen het bestaande zaaksysteem en de TSA's (taak specifieke applicaties), waarbij de replicatie-modus staat op: **USE_ZGW**. 
+1. Plaatst de OpenZaakBrug tussen het bestaande zaaksysteem en de TSA's (taak specifieke applicaties), waarbij de replicatie-modus staat op: **USE_ZDS**. 
 
    Waarom: Hiermee wordt getest of het berichtenverkeer blijft lopen de OpenZaakBrug fungeert als een doorgeef luik.
 
