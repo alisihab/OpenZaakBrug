@@ -5,8 +5,9 @@ import com.google.gson.annotations.SerializedName;
 
 import lombok.Data;
 
+/*
 @Data
-public class BetrokkeneIdentificatieNPS extends BetrokkeneIdentificatie {
+public class BetrokkeneIdentificatieNPS extends ZgwBetrokkeneIdentificatie {
 
 	@SerializedName("inpBsn")
 	@Expose
@@ -31,3 +32,4 @@ public class BetrokkeneIdentificatieNPS extends BetrokkeneIdentificatie {
 	public String geboortedatum;
 
 }
+*/

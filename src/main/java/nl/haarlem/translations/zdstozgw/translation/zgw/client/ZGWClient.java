@@ -16,8 +16,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpMessageConverterExtractor;
 import org.springframework.web.client.HttpStatusCodeException;
+import org.springframework.web.client.RequestCallback;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
@@ -33,10 +37,10 @@ import nl.haarlem.translations.zdstozgw.config.ZaakType;
 import nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient.ZGWClientException;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.QueryResult;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.Rol;
+import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwBetrokkeneIdentificatie;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwEnkelvoudigInformatieObject;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwInformatieObject;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwInformatieObjectType;
-import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwMedewerker;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwNatuurlijkPersoon;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwRolType;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwStatus;
@@ -44,7 +48,6 @@ import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwStatusType;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwZaak;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwZaakInformatieObject;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwZaakType;
-import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZwgZaakInformatieObject;
 
 @Service
 public class ZGWClient {
@@ -75,7 +78,7 @@ public class ZGWClient {
 	RestTemplateService restTemplateService;
 	
 	private String post(String url, String json) throws ZGWClientException {
-		log.debug("POST: " + url + ", json: " + json);
+		log.info("POST: " + url + "\n\tjson: " + json);
 		HttpEntity<String> request = new HttpEntity<String>(json, this.restTemplateService.getHeaders());
 		String zgwResponse = null;
 		try {
@@ -87,10 +90,28 @@ public class ZGWClient {
 		} catch (org.springframework.web.client.ResourceAccessException rae) {
 			throw new ZGWClientException("POST naar OpenZaak: " + url + " niet geslaagd", json, rae);
 		}
-		log.debug("POST response: " + zgwResponse);
+		log.info("POST response: " + zgwResponse);
 		return zgwResponse;
 	}
 
+	private void put(String url, String json) throws ZGWClientException {
+		log.info("PUT: " + url + "\n\tjson: " + json);
+		HttpEntity<String> request = new HttpEntity<String>(json, this.restTemplateService.getHeaders());
+		String zgwResponse = null;
+		try {
+			//zgwResponse = this.restTemplateService.getRestTemplate().postForObject(url, request, String.class);
+			var template = this.restTemplateService.getRestTemplate();
+			template.put(url, json);
+		} catch (HttpStatusCodeException hsce) {
+			log.warn("fout met verzendende-json:" + json + "\n" + hsce.getResponseBodyAsString().replace("{", "{\n").replace("\",", "\",\n").replace("\"}", "\"\n}"));
+			throw new ZGWClientException("PUT naar OpenZaak: " + url + " gaf foutmelding:" + hsce.getMessage(), json,hsce);
+		} catch (org.springframework.web.client.ResourceAccessException rae) {
+			throw new ZGWClientException("PUT naar OpenZaak: " + url + " niet geslaagd", json, rae);
+		}
+		log.info("PUT response: " + zgwResponse);
+	}
+	
+	
 	private String get(String url, Map<String, String> parameters) throws ZGWClientException {
 		log.info("GET: " + url);
 
@@ -252,14 +273,21 @@ public class ZGWClient {
 		return result;
 	}
 
-	public ZgwZaak addZaak(ZgwZaak zgwZaak) throws ZGWClientException {
+	public ZgwZaak postZaak(ZgwZaak zgwZaak) throws ZGWClientException {
 		Gson gson = new Gson();
 		String json = gson.toJson(zgwZaak);
 		String response = this.post(this.baseUrl + "/zaken/api/v1/zaken", json);
 		return gson.fromJson(response, ZgwZaak.class);
 	}
 
-	public Rol addRolNPS(Rol rolNPS) throws ZGWClientException {
+	public void putZaak(ZgwZaak zgwZaak) throws ZGWClientException {
+		Gson gson = new Gson();
+		String json = gson.toJson(zgwZaak);
+		this.put(zgwZaak.url, json);
+	}
+	
+	
+	public Rol postRolNPS(Rol rolNPS) throws ZGWClientException {
 		Rol result = null;
 //		try {
 			Gson gson = new Gson();
@@ -439,11 +467,11 @@ public class ZGWClient {
         return result;
     }
 
-	public ZgwMedewerker getMedewerkerByUrl(String url) throws ZGWClientException {
-		ZgwMedewerker result = null;
+	public ZgwBetrokkeneIdentificatie getMedewerkerByUrl(String url) throws ZGWClientException {
+		ZgwBetrokkeneIdentificatie result = null;
         var json = get(url, null);
         Gson gson = new Gson();
-        result = gson.fromJson(json, ZgwMedewerker.class);
+        result = gson.fromJson(json, ZgwBetrokkeneIdentificatie.class);
         return result;
 	}
 /*
@@ -464,15 +492,15 @@ public class ZGWClient {
 		return result;
 	} */
 	
-	public List<ZwgZaakInformatieObject> getZaakInformatieObjectenByZaakUrl(String url) throws ZGWClientException {
+	public List<ZgwZaakInformatieObject> getZaakInformatieObjectenByZaakUrl(String url) throws ZGWClientException {
 		Map<String, String> parameters = new HashMap();
 		parameters.put("zaak", url);
 		var json = get(this.baseUrl + "zaken/api/v1/zaakinformatieobjecten", parameters);
-		Type type = new TypeToken<QueryResult<ZwgZaakInformatieObject>>() {}.getType();
+		Type type = new TypeToken<QueryResult<ZgwZaakInformatieObject>>() {}.getType();
 		Gson gson = new Gson();
 		
-		ZwgZaakInformatieObject[] objects = gson.fromJson(json, ZwgZaakInformatieObject[].class);
-		List<ZwgZaakInformatieObject> result = new  ArrayList<ZwgZaakInformatieObject>();		
+		ZgwZaakInformatieObject[] objects = gson.fromJson(json, ZgwZaakInformatieObject[].class);
+		List<ZgwZaakInformatieObject> result = new  ArrayList<ZgwZaakInformatieObject>();		
 		Collections.addAll(result, objects);
 		return result;
 	}

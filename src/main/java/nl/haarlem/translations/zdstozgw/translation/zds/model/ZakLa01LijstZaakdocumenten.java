@@ -12,8 +12,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsZaak;
-import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZwgZaakInformatieObject;
-
+ 
 @XmlRootElement(namespace = ZKN, name = "zakLa01")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ZakLa01LijstZaakdocumenten {

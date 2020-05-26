@@ -9,7 +9,7 @@ import nl.haarlem.translations.zdstozgw.config.ConfigService;
 import nl.haarlem.translations.zdstozgw.config.Translation;
 import nl.haarlem.translations.zdstozgw.converter.impl.ActualiseerZaakStatusConverter;
 import nl.haarlem.translations.zdstozgw.converter.impl.CreeerZaakConverter;
-import nl.haarlem.translations.zdstozgw.converter.impl.GeefZaakDocumentLezenConverter;
+import nl.haarlem.translations.zdstozgw.converter.impl.GeefZaakdocumentLezenConverter;
 import nl.haarlem.translations.zdstozgw.converter.impl.VoegZaakdocumentToeConverter;
 
 public class ConverterFactory {
@@ -60,7 +60,7 @@ public class ConverterFactory {
 				classname = VoegZaakdocumentToeConverter.class.getName();
 				break;
 			case "http://www.egem.nl/StUF/sector/zkn/0310/geefZaakdocumentLezen_Lv01":
-				classname = GeefZaakDocumentLezenConverter.class.getName();
+				classname = GeefZaakdocumentLezenConverter.class.getName();
 				break;
 			case "http://www.egem.nl/StUF/sector/zkn/0310/actualiseerZaakstatus_Lk01":
 				classname = ActualiseerZaakStatusConverter.class.getName();

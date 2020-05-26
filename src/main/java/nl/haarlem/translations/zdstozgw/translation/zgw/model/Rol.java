@@ -26,6 +26,6 @@ public class Rol {
 	public String roltoelichting;
 	@SerializedName("betrokkeneIdentificatie")
 	@Expose
-	public BetrokkeneIdentificatie betrokkeneIdentificatie;
+	public ZgwBetrokkeneIdentificatie betrokkeneIdentificatie;
 
 }
