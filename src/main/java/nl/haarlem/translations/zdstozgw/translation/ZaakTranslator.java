@@ -40,6 +40,7 @@ import nl.haarlem.translations.zdstozgw.translation.zds.model.Heeft;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.HeeftAlsInitiator;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.HeeftAlsUitvoerende;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.HeeftRelevantEDC;
+import nl.haarlem.translations.zdstozgw.translation.zds.model.ZakLa01;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsRol;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZakLa01LijstZaakdocumenten;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsZaakDocument;
@@ -60,7 +61,7 @@ import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwInformatieObjec
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwInformatieObjectType;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwNatuurlijkPersoon;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwStatus;
-import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwZaak;
+import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwCompleteZaak;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwZaakInformatieObject;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwZaakType;
 
@@ -93,12 +94,12 @@ public class ZaakTranslator {
 		this.configService = configService;
 	}
 
-	public ZgwZaak creeerZaak(ZakLk01 zakLk01) throws ZGWClientException, ZaakTranslatorException {
+	public ZgwCompleteZaak creeerZaak(ZakLk01 zakLk01) throws ZGWClientException, ZaakTranslatorException {
 		// zaakTranslator.setDocument((Document) zakLk01).zdsZaakToZgwZaak();
 		//this.zaakTranslator.setZakLk01(zakLk01).zdsZaakToZgwZaak();
 
 		var zdsZaak = zakLk01.object.get(0);
-		ZgwZaak zgwZaak = zdsZaakToZgwZaak(zdsZaak);		
+		ZgwCompleteZaak zgwZaak = zdsZaakToZgwZaak(zdsZaak);		
 
 		// zaaktype
 		var zgwZaakType = zgwClient.getZaakTypeByIdentiticatie(zdsZaak.isVan.gerelateerde.code);
@@ -149,7 +150,7 @@ public class ZaakTranslator {
 		return zgwZaak;
 	}
 
-	public ZgwZaak updateZaak(ZakLk01 zakLk01) throws ZGWClientException, ZaakTranslatorException {
+	public ZgwCompleteZaak updateZaak(ZakLk01 zakLk01) throws ZGWClientException, ZaakTranslatorException {
 		var zdsWasZaak = zakLk01.object.get(0);
 		var zdsWordZaak = zakLk01.object.get(1);
 		
@@ -178,9 +179,9 @@ public class ZaakTranslator {
 		return zgwZaak;
 	}	
 	
-	public ZgwZaak zdsZaakToZgwZaak(ZdsZaak zdsZaak) throws ZaakTranslatorException {
+	public ZgwCompleteZaak zdsZaakToZgwZaak(ZdsZaak zdsZaak) throws ZaakTranslatorException {
 
-		var zgwZaak = new ZgwZaak();
+		var zgwZaak = new ZgwCompleteZaak();
 		
 		if (zdsZaak.identificatie.length() == 0) throw new ZaakTranslatorException("zaak identificatie is verplicht");
 		zgwZaak.setIdentificatie(zdsZaak.identificatie);
@@ -196,7 +197,7 @@ public class ZaakTranslator {
 		return zgwZaak;
 	}
 
-	public List<Rol> getRollen(ZgwZaak zgwzaak, ZdsRol zdsRol, String rolname) throws ZaakTranslatorException,  ZGWClientException {
+	public List<Rol> getRollen(ZgwCompleteZaak zgwzaak, ZdsRol zdsRol, String rolname) throws ZaakTranslatorException,  ZGWClientException {
 		var zgwRoltype = zgwClient.getRolTypeByOmschrijving(zgwzaak.zaaktype, rolname);
 		if(zgwRoltype == null) throw new ZaakTranslatorException("Geen roltype niet gevonden ZTC voor identificatie: '" + rolname);
 				
@@ -263,13 +264,7 @@ public class ZaakTranslator {
 			return "N";
 		}
 	}
-
 	
-	public EdcLa01 getZaakDoumentLezen(EdcLv01 object) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	
 	private ZgwBetrokkeneIdentificatie getBetrokkeneIdentificatieNPS(ZdsNatuurlijkPersoon natuurlijkPersoon)  {
 		ZgwBetrokkeneIdentificatie nps = new ZgwBetrokkeneIdentificatie();
@@ -318,22 +313,34 @@ public class ZaakTranslator {
 			return result;
 	}
 	
-	/*
 	public EdcLa01 getZaakDoumentLezen(EdcLv01 edcLv01) throws ZGWClientException {
+		ZgwEnkelvoudigInformatieObject document = this.zgwClient.getZgwEnkelvoudigInformatieObject(edcLv01.gelijk.identificatie);
+
+		
 		EdcLa01 edcLa01 = new EdcLa01();
+		edcLa01.antwoord = new EdcLa01.Antwoord();
+		edcLa01.antwoord.object = new ZdsZaakDocument();
+        edcLa01.antwoord.object.auteur = (document.auteur.equals("") ? null: document.auteur);
+		edcLa01.antwoord.object.creatiedatum = document.creatiedatum;
+		edcLa01.antwoord.object.dctCategorie = document.beschrijving;
+		edcLa01.antwoord.object.dctOmschrijving = document.beschrijving;
+		edcLa01.antwoord.object.identificatie = document.identificatie;
+		edcLa01.antwoord.object.inhoud = document.inhoud;
+		edcLa01.antwoord.object.link = document.url;
+		edcLa01.antwoord.object.ontvangstdatum = document.ontvangstdatum;
+        edcLa01.antwoord.object.status = (document.status.equals("")) ? null : document.status;
 
-		ZgwEnkelvoudigInformatieObject zgwEnkelvoudigInformatieObject = this.zgwClient
-				.getZgwEnkelvoudigInformatieObject(edcLv01.gelijk.identificatie);
 
-		edcLa01 = this.zaakTranslator.getEdcLa01FromZgwEnkelvoudigInformatieObject(zgwEnkelvoudigInformatieObject);
+		edcLa01.antwoord.object.taal = document.taal;
+		edcLa01.antwoord.object.titel = document.titel;
+		edcLa01.antwoord.object.versie = document.versie;
 
 		return edcLa01;
 	}
-	*/
 
-	public ZgwZaak actualiseerZaakstatus(ZakLk01 zakLk01) throws ZGWClientException {
+	public ZgwCompleteZaak actualiseerZaakstatus(ZakLk01 zakLk01) throws ZGWClientException {
 		ZdsZaak zdsZaak = zakLk01.object.get(1);
-		ZgwZaak zgwZaak = zgwClient.getZaakByIdentificatie(zdsZaak.identificatie);
+		ZgwCompleteZaak zgwZaak = zgwClient.getZaakByIdentificatie(zdsZaak.identificatie);
 
 		//this.zaakTranslator.setZakLk01(zakLk01);
 		ZgwStatus zgwStatus = new ZgwStatus();
@@ -506,7 +513,7 @@ public class ZaakTranslator {
 		return year + "-" + month + "-" + day + "T" + hours + ":" + minutes + ":" + seconds + "." + milliseconds + "Z";
 	}
 
-	public EdcLa01 getZaakDetails(ZakLv01 zakLv01) throws ZaakTranslatorException, ZGWClientException {
+	public ZakLa01 getZaakDetails(ZakLv01 zakLv01) throws ZaakTranslatorException, ZGWClientException {
 		if (zakLv01.gelijk != null && zakLv01.gelijk.identificatie != null) {
 			var zgwZaak = zgwClient.getZaakByIdentificatie(zakLv01.gelijk.identificatie);
 			if(zgwZaak == null) throw new ZaakTranslatorException("Geen zaak niet gevonden voor identificatie: '" + zakLv01.gelijk.identificatie + "'");
@@ -604,8 +611,8 @@ public class ZaakTranslator {
 					  throw new ZaakTranslatorException("onbekende rol met omschrijving: '" + zgwRol.roltoelichting + "'");				
 				}
 			}
-			var result = new EdcLa01();
-			result.antwoord = new Antwoord();
+			var result = new ZakLa01();
+			result.antwoord = new ZakLa01.Antwoord();
 			result.antwoord.object = zdsZaak;
 			return result;
 		}

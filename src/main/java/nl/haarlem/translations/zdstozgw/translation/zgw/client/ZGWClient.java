@@ -34,9 +34,11 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import nl.haarlem.translations.zdstozgw.config.ZaakType;
+import nl.haarlem.translations.zdstozgw.jpa.model.RequestResponseCycle;
 import nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient.ZGWClientException;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.QueryResult;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.Rol;
+import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwBasicZaak;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwBetrokkeneIdentificatie;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwEnkelvoudigInformatieObject;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwInformatieObject;
@@ -45,7 +47,7 @@ import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwNatuurlijkPerso
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwRolType;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwStatus;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwStatusType;
-import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwZaak;
+import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwCompleteZaak;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwZaakInformatieObject;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwZaakType;
 
@@ -76,13 +78,18 @@ public class ZGWClient {
 
     @Autowired
 	RestTemplateService restTemplateService;
+
+	public RequestResponseCycle restLogging;
 	
 	private String post(String url, String json) throws ZGWClientException {
 		log.info("POST: " + url + "\n\tjson: " + json);
 		HttpEntity<String> request = new HttpEntity<String>(json, this.restTemplateService.getHeaders());
 		String zgwResponse = null;
 		try {
+			restLogging.addZgwRequest(url);
+			restLogging.addZgwRequest(request.toString());
 			zgwResponse = this.restTemplateService.getRestTemplate().postForObject(url, request, String.class);
+			restLogging.addZgwResponse(zgwResponse);
 		} catch (HttpStatusCodeException hsce) {
 
 			log.warn("fout met verzendende-json:" + json + "\n" + hsce.getResponseBodyAsString().replace("{", "{\n").replace("\",", "\",\n").replace("\"}", "\"\n}"));
@@ -94,13 +101,15 @@ public class ZGWClient {
 		return zgwResponse;
 	}
 
-	private void put(String url, String json) throws ZGWClientException {
+	private String put(String url, String json) throws ZGWClientException {
 		log.info("PUT: " + url + "\n\tjson: " + json);
 		HttpEntity<String> request = new HttpEntity<String>(json, this.restTemplateService.getHeaders());
 		String zgwResponse = null;
 		try {
 			//zgwResponse = this.restTemplateService.getRestTemplate().postForObject(url, request, String.class);
 			var template = this.restTemplateService.getRestTemplate();
+			restLogging.addZgwRequest(url);
+			restLogging.addZgwRequest(json);
 			template.put(url, json);
 		} catch (HttpStatusCodeException hsce) {
 			log.warn("fout met verzendende-json:" + json + "\n" + hsce.getResponseBodyAsString().replace("{", "{\n").replace("\",", "\",\n").replace("\"}", "\"\n}"));
@@ -109,6 +118,7 @@ public class ZGWClient {
 			throw new ZGWClientException("PUT naar OpenZaak: " + url + " niet geslaagd", json, rae);
 		}
 		log.info("PUT response: " + zgwResponse);
+		return null;
 	}
 	
 	
@@ -123,7 +133,9 @@ public class ZGWClient {
 		ResponseEntity<String> response = null;
 		
 		try {
+			restLogging.addZgwRequest(url);
 			response = this.restTemplateService.getRestTemplate().exchange(url, HttpMethod.GET, entity, String.class);
+			restLogging.addZgwResponse(response.toString());
 		} catch (HttpStatusCodeException hsce) {
 			throw new ZGWClientException("GET naar OpenZaak: " + url + " gaf foutmelding" + hsce.getStatusText(), url,
 					hsce);
@@ -183,11 +195,11 @@ public class ZGWClient {
 		return result;
 	}
 
-    public ZgwZaak getZaakByUrl(String url) throws ZGWClientException {
-        ZgwZaak result = null;
+    public ZgwCompleteZaak getZaakByUrl(String url) throws ZGWClientException {
+        ZgwCompleteZaak result = null;
         var zaakJson = get(url, null);
         Gson gson = new Gson();
-        result = gson.fromJson(zaakJson, ZgwZaak.class);
+        result = gson.fromJson(zaakJson, ZgwCompleteZaak.class);
         return result;
     }
 
@@ -248,21 +260,21 @@ public class ZGWClient {
 	}	
 	
 	
-	public ZgwZaak getZaakByIdentificatie(String zaakIdentificatie) throws ZGWClientException {
+	public ZgwCompleteZaak getZaakByIdentificatie(String zaakIdentificatie) throws ZGWClientException {
 		Map<String, String> parameters = new HashMap();
 		parameters.put("identificatie", zaakIdentificatie);
 		return getZaakDetails(parameters);
 	}		
 	
-	public ZgwZaak getZaakDetails(Map<String, String> parameters) throws ZGWClientException {
+	public ZgwCompleteZaak getZaakDetails(Map<String, String> parameters) throws ZGWClientException {
 
-		ZgwZaak result = null;
+		ZgwCompleteZaak result = null;
 		var zaakJson = get(this.baseUrl + "/zaken/api/v1/zaken", parameters);
 		//try {
-			Type type = new TypeToken<QueryResult<ZgwZaak>>() {
+			Type type = new TypeToken<QueryResult<ZgwCompleteZaak>>() {
 			}.getType();
 			Gson gson = new Gson();
-			QueryResult<ZgwZaak> queryResult = gson.fromJson(zaakJson, type);
+			QueryResult<ZgwCompleteZaak> queryResult = gson.fromJson(zaakJson, type);
 			if (queryResult.getResults().size() == 1) {
 				result = queryResult.getResults().get(0);
 			}
@@ -273,16 +285,16 @@ public class ZGWClient {
 		return result;
 	}
 
-	public ZgwZaak postZaak(ZgwZaak zgwZaak) throws ZGWClientException {
+	public ZgwCompleteZaak postZaak(ZgwCompleteZaak zgwZaak) throws ZGWClientException {
 		Gson gson = new Gson();
 		String json = gson.toJson(zgwZaak);
 		String response = this.post(this.baseUrl + "/zaken/api/v1/zaken", json);
-		return gson.fromJson(response, ZgwZaak.class);
+		return gson.fromJson(response, ZgwCompleteZaak.class);
 	}
 
-	public void putZaak(ZgwZaak zgwZaak) throws ZGWClientException {
+	public void putZaak(ZgwBasicZaak zgwZaak) throws ZGWClientException {
 		Gson gson = new Gson();
-		String json = gson.toJson(zgwZaak);
+		String json = gson.toJson(zgwZaak, ZgwBasicZaak.class);
 		this.put(zgwZaak.url, json);
 	}
 	

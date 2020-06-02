@@ -8,6 +8,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 
+import org.springframework.http.HttpEntity;
+
 @Entity
 public class RequestResponseCycle {
 	@Id
@@ -36,18 +38,20 @@ public class RequestResponseCycle {
 	@Lob
 	String zdsRequest;
 	@Lob
-	String zdsResponeBody;
-	String zdsResponeCode;
+	String zdsResponseBody;
+	String zdsResponseCode;
 
-	// Wat is er door zgw is bedacht
 	@Lob
-	String zgwResponeBody;
+	String zgwRequestBody;
+	@Lob
+	String zgwResponseBody;
 
 	// Wanneer we ergens in het proces een fout hebben, dan willen we die bewaren
 	@Lob
 	String stackTrace;
 
 	public RequestResponseCycle(String clientUrl, String clientSoapAction, String clientRequestBody) {
+		this.timestamp = new Date();
 		this.clientUrl = clientUrl;
 		this.clientSoapAction = clientSoapAction;
 		this.clientRequestBody = clientRequestBody;
@@ -158,27 +162,27 @@ public class RequestResponseCycle {
 	}
 
 	public String getZdsResponeBody() {
-		return this.zdsResponeBody;
+		return this.zdsResponseBody;
 	}
 
 	public void setZdsResponeBody(String zdsResponeBody) {
-		this.zdsResponeBody = zdsResponeBody;
+		this.zdsResponseBody = zdsResponeBody;
 	}
 
 	public String getZdsResponeCode() {
-		return this.zdsResponeCode;
+		return this.zdsResponseCode;
 	}
 
 	public void setZdsResponeCode(String zdsResponeCode) {
-		this.zdsResponeCode = zdsResponeCode;
+		this.zdsResponseCode = zdsResponeCode;
 	}
 
 	public String getZgwResponeBody() {
-		return this.zgwResponeBody;
+		return this.zgwResponseBody;
 	}
 
 	public void setZgwResponeBody(String zgwResponeBody) {
-		this.zgwResponeBody = zgwResponeBody;
+		this.zgwResponseBody = zgwResponeBody;
 	}
 
 	public String getStackTrace() {
@@ -193,4 +197,11 @@ public class RequestResponseCycle {
 		return this.id;
 	}
 
+	public void addZgwRequest(String request) {
+		this.zgwRequestBody += "\n---------------------\n" + request;
+	}
+
+	public void addZgwResponse(String response) {
+		this.zgwResponseBody += "\n---------------------\n" + response;
+	}
 }

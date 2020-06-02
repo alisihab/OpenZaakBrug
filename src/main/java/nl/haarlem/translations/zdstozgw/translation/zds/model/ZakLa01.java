@@ -13,7 +13,7 @@ import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsZaak;
 
 @XmlRootElement(namespace = ZKN, name = "edcLa01")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class EdcLa01 {
+public class ZakLa01 {
 	@XmlElement(namespace = ZKN, name = "stuurgegevens")
 	public Stuurgegevens stuurgegevens;
 
@@ -27,6 +27,6 @@ public class EdcLa01 {
 	public static class Antwoord {
 
 		@XmlElement(namespace = ZKN)
-		public ZdsZaakDocument object;
+		public ZdsZaak object;
 	}
 }

@@ -78,6 +78,7 @@ public class SoapController {
 		var beginTime = Instant.now();
 		var session = new RequestResponseCycle(requestUrl, soapAction.replace("\"", ""), body);
 		this.sessions.save(session);
+		zgwClient.restLogging = session;
 
 		// what we will return
 		String responseBody = null;

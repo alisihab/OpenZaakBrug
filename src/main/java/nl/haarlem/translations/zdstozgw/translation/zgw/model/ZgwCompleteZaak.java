@@ -8,53 +8,7 @@ import com.google.gson.annotations.SerializedName;
 import lombok.Data;
 
 @Data
-public class ZgwZaak {
-
-	@SerializedName("url")
-	@Expose
-	public String url;
-	@SerializedName("uuid")
-	@Expose
-	public String uuid;
-	@SerializedName("identificatie")
-	@Expose
-	public String identificatie;
-	@SerializedName("bronorganisatie")
-	@Expose
-	public String bronorganisatie;
-	@SerializedName("omschrijving")
-	@Expose
-	public String omschrijving;
-	@SerializedName("toelichting")
-	@Expose
-	public String toelichting;
-	@SerializedName("zaaktype")
-	@Expose
-	public String zaaktype;
-	@SerializedName("registratiedatum")
-	@Expose
-	public String registratiedatum;
-	@SerializedName("verantwoordelijkeOrganisatie")
-	@Expose
-	public String verantwoordelijkeOrganisatie;
-	@SerializedName("startdatum")
-	@Expose
-	public String startdatum;
-	@SerializedName("einddatum")
-	@Expose
-	public String einddatum;
-	@SerializedName("einddatumGepland")
-	@Expose
-	public String einddatumGepland;
-	@SerializedName("uiterlijkeEinddatumAfdoening")
-	@Expose
-	public String uiterlijkeEinddatumAfdoening;
-	@SerializedName("publicatiedatum")
-	@Expose
-	public String publicatiedatum;
-	@SerializedName("communicatiekanaal")
-	@Expose
-	public String communicatiekanaal;
+public class ZgwCompleteZaak extends ZgwBasicZaak {
 	@SerializedName("productenOfDiensten")
 	@Expose
 	public List<Object> productenOfDiensten = null;
@@ -84,13 +38,13 @@ public class ZgwZaak {
 	public String selectielijstklasse;
 	@SerializedName("hoofdzaak")
 	@Expose
-	public Object hoofdzaak;
+	public ZgwCompleteZaak hoofdzaak;
 	@SerializedName("deelzaken")
 	@Expose
-	public List<Object> deelzaken = null;
+	public List<ZgwCompleteZaak> deelzaken = null;
 	@SerializedName("relevanteAndereZaken")
 	@Expose
-	public List<Object> relevanteAndereZaken = null;
+	public List<ZgwCompleteZaak> relevanteAndereZaken = null;
 	@SerializedName("eigenschappen")
 	@Expose
 	public List<Object> eigenschappen = null;
@@ -112,5 +66,4 @@ public class ZgwZaak {
 	@SerializedName("resultaat")
 	@Expose
 	public Object resultaat;
-
 }
