@@ -89,8 +89,7 @@ public class SoapController {
 			var converter = ConverterFactory.getConverter(soapAction.replace("\"", ""), body);
 			if (converter != null) {
 				// session.setConverter(convertor.getClass().getCanonicalName());
-				session.setConverterImplementation(converter.getImplementation());
-				session.setConverterTemplate(converter.getTemplate());
+				session.setConverter(REPLICATION_MODUS.toString(), converter.getImplementation(), converter.getTemplate());
 				this.sessions.save(session);
 			} else {
 				throw new RuntimeException("no convertor found for action:" + soapAction);
@@ -170,8 +169,7 @@ public class SoapController {
 		}
 
 		// after all the work
-		session.setClientResponseCode(responseCode.toString());
-		session.setClientResponseBody(responseBody);
+		session.setClientResponse(responseCode, responseBody);
 		session.setDuration(Duration.between(beginTime, Instant.now()));
 		this.sessions.save(session);
 		return new ResponseEntity<>(responseBody, responseCode);

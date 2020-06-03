@@ -14,9 +14,12 @@ public class EdcLv01 {
 	@XmlElement(namespace = ZKN, name = "stuurgegevens")
 	public Stuurgegevens stuurgegevens;
 
-	@XmlElement(namespace = ZKN, name = "scope")
-	public Scope scope;
-
+	@XmlElement(namespace = ZKN, name = "parameters")
+	public Parameters parameters;	
+	
 	@XmlElement(namespace = ZKN, name = "gelijk")
 	public Gelijk gelijk;
+	
+	@XmlElement(namespace = ZKN, name = "scope")
+	public Scope scope;	
 }

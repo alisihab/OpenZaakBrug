@@ -80,9 +80,7 @@ public abstract class Converter {
 	public String passThrough(String zdsSoapAction, RequestResponseCycle session,
 			ApplicationParameterRepository repository, String zdsRequest) throws Exception {
 		// what are we going to do?
-		session.setZdsUrl(this.zdsUrl);
-		session.setZdsRequest(zdsRequest);
-		session.setZdsSoapAction(zdsSoapAction);
+		session.addZdsRequest(this.zdsUrl, zdsSoapAction, zdsRequest);
 
 		log.info("Performing ZDS request to: '" + this.zdsUrl + "' for soapaction:" + zdsSoapAction);
 
@@ -96,17 +94,16 @@ public abstract class Converter {
 
 			var httpclient = new org.apache.commons.httpclient.HttpClient();
 			int responsecode = httpclient.executeMethod(post);
-			String zdsResponeCode = "" + responsecode;
-			String zdsResponeBody = post.getResponseBodyAsString();
+			String zdsResponseCode = "" + responsecode;
+			String zdsResponseBody = post.getResponseBodyAsString();
 
 			if (responsecode != 200) {
 				log.warn("Receive the responsecode status " + responsecode + "  from: " + this.zdsUrl
 						+ " (dus geen status=200  van het ouwe zaaksysteem)");
 			}
-			session.setZdsResponeCode(zdsResponeCode);
-			session.setZdsResponeBody(zdsResponeBody);
+			session.addZdsRespone(zdsResponseCode, zdsResponseBody);
 
-			return zdsResponeBody;
+			return zdsResponseBody;
 		} catch (java.net.ConnectException ce) {
 			throw new ConverterException(this, "OpenZaakBrug kon geen geen verbinding maken met:" + this.zdsUrl, zdsRequest,
 					ce);

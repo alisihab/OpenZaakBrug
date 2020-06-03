@@ -86,8 +86,7 @@ public class ZGWClient {
 		HttpEntity<String> request = new HttpEntity<String>(json, this.restTemplateService.getHeaders());
 		String zgwResponse = null;
 		try {
-			restLogging.addZgwRequest(url);
-			restLogging.addZgwRequest(request.toString());
+			restLogging.addZgwRequest(url, "POST", request.toString());
 			zgwResponse = this.restTemplateService.getRestTemplate().postForObject(url, request, String.class);
 			restLogging.addZgwResponse(zgwResponse);
 		} catch (HttpStatusCodeException hsce) {
@@ -108,9 +107,9 @@ public class ZGWClient {
 		try {
 			//zgwResponse = this.restTemplateService.getRestTemplate().postForObject(url, request, String.class);
 			var template = this.restTemplateService.getRestTemplate();
-			restLogging.addZgwRequest(url);
-			restLogging.addZgwRequest(json);
-			template.put(url, json);
+			restLogging.addZgwRequest(url, "PUT", request.toString());
+			template.put(url, request);
+			restLogging.addZgwResponse("TODO: geen idee hoe de response in spring bij een put op te halen!");
 		} catch (HttpStatusCodeException hsce) {
 			log.warn("fout met verzendende-json:" + json + "\n" + hsce.getResponseBodyAsString().replace("{", "{\n").replace("\",", "\",\n").replace("\"}", "\"\n}"));
 			throw new ZGWClientException("PUT naar OpenZaak: " + url + " gaf foutmelding:" + hsce.getMessage(), json,hsce);
@@ -133,7 +132,8 @@ public class ZGWClient {
 		ResponseEntity<String> response = null;
 		
 		try {
-			restLogging.addZgwRequest(url);
+			restLogging.addZgwRequest(url, "GET", "");
+			
 			response = this.restTemplateService.getRestTemplate().exchange(url, HttpMethod.GET, entity, String.class);
 			restLogging.addZgwResponse(response.toString());
 		} catch (HttpStatusCodeException hsce) {

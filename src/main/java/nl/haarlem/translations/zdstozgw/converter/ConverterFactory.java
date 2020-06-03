@@ -38,7 +38,6 @@ public class ConverterFactory {
 				templatepath = translation.template;
 				legacyservice = translation.legacyservice;
 				log.info("Using translation: '" + translation.translation + "' for soapaction:" + soapAction);
-				log.info("Legacy url:" + legacyservice);
 				break;
 			}
 		}
@@ -76,7 +75,7 @@ public class ConverterFactory {
 			return null;
 		}
 		try {
-			log.info("Loading class:" + classname);
+			log.info("Loading class: '" + classname + "' with template path: '" + templatepath + "' and legacy url:'" + legacyservice + "'");
 			Class<?> c = Class.forName(classname);
 			java.lang.reflect.Constructor<?> ctor = c.getConstructor(String.class, String.class);
 			Object object = ctor.newInstance(new Object[] { templatepath, legacyservice });

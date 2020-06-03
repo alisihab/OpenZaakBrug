@@ -35,7 +35,12 @@ public class ActualiseerZaakStatusConverter extends Converter {
 			var bv03 = new nl.haarlem.translations.zdstozgw.translation.zds.model.Bv03();
 			bv03.setReferentienummer(zaak.getUuid());
 			return bv03.getSoapMessageAsString();
-
+		} catch (ZGWClient.ZGWClientException hsce) {
+			throw new ConverterException(this, hsce.getMessage(), hsce.getDetails(), hsce);
+		} catch (ZaakTranslator.ZaakTranslatorException zte) {
+			throw new ConverterException(this, zte.getMessage(), requestBody, zte);
+		}			
+/*
 		} catch (Exception ex) {
 			ex.printStackTrace();
 			var f03 = new nl.haarlem.translations.zdstozgw.translation.zds.model.F03();
@@ -45,5 +50,6 @@ public class ActualiseerZaakStatusConverter extends Converter {
 			f03.setDetails(ex.getMessage());
 			return f03.getSoapMessageAsString();
 		}
+*/		
 	}
 }

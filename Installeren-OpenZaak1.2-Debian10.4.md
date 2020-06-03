@@ -10,14 +10,13 @@ Bronnen:
 ### Debian on vmware
 
 Hoogst noodzakelijke informatie
-
-- [ ] 8 GB (8192 MB) RAM
-- [ ] 100 GB disk dynamic allocated
-- [ ] network bridged adapter
-- [ ] debian-10.4.0-amd64-netinst.iso
-- [ ] hostname: open-zaak
-- [ ] username: open-zaak
-- [ ] password: open-zaak
+- 8 GB (8192 MB) RAM
+- 100 GB disk dynamic allocated
+- network bridged adapter
+- debian-10.4.0-amd64-netinst.iso
+- hostname: ${HOSTNAME}
+- username: open-zaak
+- password: open-zaak
 
 ### Benaderen van de omgeving
 
@@ -33,7 +32,7 @@ $ ip a
 Pas het bestand C:\Windows\System32\drivers\etc\hosts aan en voeg de volgende regel toe:
 
 ```
-192.168.111.165 open-zaak.local
+192.168.111.165 ${HOSTNAME}.${DOMAIN}.local
 ```
 
 ## Database inrichten
@@ -74,7 +73,7 @@ $ source env/bin/activate
 ## Configuration
 ```
 (env) # cp .env-example .env 
-​(env) # vi .env 
+(env) # vi .env 
 ```
 
 ```
@@ -82,7 +81,9 @@ $ source env/bin/activate
 DJANGO_SETTINGS_MODULE=openzaak.conf.dev
 # generate with: https://miniwebtool.com/django-secret-key-generator/
 SECRET_KEY=28%w)*)jz6xzo^&$9aockmugxk*y5g-i&svxj=7nf7*jjbr#eg
+# TODO: remove next line when front-proxy is up and running
 ALLOWED_HOSTS=*
+#ALLOWED_HOSTS=${HOSTNAME}
 LOG_STDOUT=1
 
 DB_HOST=localhost
@@ -116,7 +117,7 @@ Bypass password validation and create user anyway? [y/N]: y
 ```
 (env) # /srv/sites/open-zaak/env/bin/uwsgi --http :8000  --module openzaak.wsgi  --chdir /srv/sites/open-zaak/src  --processes 2  --threads 2  --buffer-size 32768
 ```
-Probeer met de browser op url: http://open-zaak.local:8000/
+Probeer met de browser op url: http://${HOSTNAME}:8000/
 **Deze laten draaien, want deze wordt gebruikt door de front-proxy**
 
 ## Genereren van de certificaten
@@ -124,7 +125,7 @@ Probeer met de browser op url: http://open-zaak.local:8000/
 $ sudo openssl dhparam -dsaparam -out /etc/ssl/certs/dhparam.pem 4096
 $ sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/certs/private.key -out /etc/ssl/certs/public.cert
 ```
-**let erop dat de "Common Name (e.g. server FQDN or YOUR name) []:" de servernaam: 'open-zaak.local' is!**
+**let erop dat de "Common Name (e.g. server FQDN or YOUR name) []:" de servernaam: '${HOSTNAME}.${DOMAIN}.local' is!**
 
 ```	
 $ sudo mkdir /etc/ssl/sites
@@ -146,11 +147,11 @@ Diff (*deze moet nog wat liefde hebben*):
 <     rewrite ^ https://open-zaak.gemeente.nl$request_uri?;
 ---
 >     server_name open-zaak.local;
->     rewrite ^ https://open-zaak.local$request_uri?;
+>     rewrite ^ https://${HOSTNAME}.${DOMAIN}.local$request_uri?;
 17c17
 <     server_name open-zaak.gemeente.nl;
 ---
->     server_name open-zaak.local;
+>     server_name ${HOSTNAME}.${DOMAIN}.local;
 67,68c67,68
 <     access_log /srv/sites/production/log/nginx/access.log;
 <     error_log /srv/sites/production/log/nginx/error.log info;
@@ -171,27 +172,29 @@ Diff (*deze moet nog wat liefde hebben*):
 >         root /srv/sites/open-zaak/src/openzaak/templates/;
 ```
 
+
+
 ```
 $ sudo rm /etc/nginx/sites-enabled/default
-​$ sudo ln -s /etc/nginx/sites-available/open-zaak /etc/nginx/sites-enabled/open-zaak
-​$ sudo nginx -t
-​$ sudo /etc/init.d/nginx restart
+$ sudo ln -s /etc/nginx/sites-available/open-zaak /etc/nginx/sites-enabled/open-zaak
+$ sudo nginx -t
+$ sudo /etc/init.d/nginx restart
 ```
 
 
 ### Configureren Open-Zaak zelf
-Ga naar https://open-zaak.local/admin/
+Ga naar https://${HOSTNAME}.${DOMAIN}.local/admin/
 Login met open-zaak / open-zaak
 
-Ga naar https://open-zaak.local/admin/sites/site/
+Ga naar https://${HOSTNAME}.${DOMAIN}.local/admin/sites/site/
 
-En pas example.com aan naar: open-zaak.local
+En pas example.com aan naar: ${HOSTNAME}.${DOMAIN}.local
 
-Ga naar https://open-zaak.local/view-config/
+Ga naar https://${HOSTNAME}.${DOMAIN}.local/view-config/
 
 Klik door naar "bekijk configuratie" om te kijken of overal groene vinkjes staan
 
-Applicatie toevoegen op https://open-zaak.local/admin/authorizations/applicatie
+Applicatie toevoegen op https://${HOSTNAME}.${DOMAIN}.local/admin/authorizations/applicatie
 Bearer dan copieren naar de applicatie die deze openzaak gaat gebruiken
 
 ## Gewoon draaien nadat al het bovenstaande is gedaan

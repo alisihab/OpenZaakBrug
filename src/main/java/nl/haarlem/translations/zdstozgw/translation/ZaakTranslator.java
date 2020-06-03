@@ -313,19 +313,22 @@ public class ZaakTranslator {
 			return result;
 	}
 	
-	public EdcLa01 getZaakDoumentLezen(EdcLv01 edcLv01) throws ZGWClientException {
+	public EdcLa01 getZaakDoumentLezen(EdcLv01 edcLv01) throws ZGWClientException, ZaakTranslatorException {
 		ZgwEnkelvoudigInformatieObject document = this.zgwClient.getZgwEnkelvoudigInformatieObject(edcLv01.gelijk.identificatie);
-
+	
+		if(document == null) throw new ZaakTranslatorException("Geen zaakdocument niet gevonden voor identificatie: '" + edcLv01.gelijk.identificatie + "'");
 		
 		EdcLa01 edcLa01 = new EdcLa01();
 		edcLa01.antwoord = new EdcLa01.Antwoord();
 		edcLa01.antwoord.object = new ZdsZaakDocument();
-        edcLa01.antwoord.object.auteur = (document.auteur.equals("") ? null: document.auteur);
+        edcLa01.antwoord.object.auteur = (document.auteur == null || document.auteur.equals("") ? null: document.auteur);
 		edcLa01.antwoord.object.creatiedatum = document.creatiedatum;
 		edcLa01.antwoord.object.dctCategorie = document.beschrijving;
 		edcLa01.antwoord.object.dctOmschrijving = document.beschrijving;
 		edcLa01.antwoord.object.identificatie = document.identificatie;
-		edcLa01.antwoord.object.inhoud = document.inhoud;
+				
+		edcLa01.antwoord.object.inhoud = zgwClient.getBas64Inhoud(document.inhoud);
+		
 		edcLa01.antwoord.object.link = document.url;
 		edcLa01.antwoord.object.ontvangstdatum = document.ontvangstdatum;
         edcLa01.antwoord.object.status = (document.status.equals("")) ? null : document.status;
@@ -334,11 +337,10 @@ public class ZaakTranslator {
 		edcLa01.antwoord.object.taal = document.taal;
 		edcLa01.antwoord.object.titel = document.titel;
 		edcLa01.antwoord.object.versie = document.versie;
-
 		return edcLa01;
 	}
 
-	public ZgwCompleteZaak actualiseerZaakstatus(ZakLk01 zakLk01) throws ZGWClientException {
+	public ZgwCompleteZaak actualiseerZaakstatus(ZakLk01 zakLk01) throws ZGWClientException, ZaakTranslatorException {
 		ZdsZaak zdsZaak = zakLk01.object.get(1);
 		ZgwCompleteZaak zgwZaak = zgwClient.getZaakByIdentificatie(zdsZaak.identificatie);
 

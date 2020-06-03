@@ -27,6 +27,24 @@ public class EdcLk01 {
 		public String omschrijving;
 
 		@XmlElement(namespace = ZKN)
+		public String creatiedatum;
+		
+		@XmlElement(namespace = ZKN)
+		public String ontvangstdatum;
+		
+		@XmlElement(namespace = ZKN)
+		public String verzenddatum;
+		
+		@XmlElement(namespace = ZKN)
+		public String beschrijving;
+		
+		@XmlElement(namespace = ZKN)
+		public String versie;		
+
+		@XmlElement(namespace = ZKN)
+		public String status;				
+		
+		@XmlElement(namespace = ZKN)
 		public String formaat;
 
 		@XmlElement(namespace = ZKN)
@@ -39,7 +57,7 @@ public class EdcLk01 {
 		public String auteur;
 
 		@XmlElement(namespace = ZKN)
-		public String creatiedatum;
+		public String link;
 
 		@XmlElement(namespace = ZKN)
 		public String titel;

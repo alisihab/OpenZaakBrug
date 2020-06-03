@@ -8,47 +8,53 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 
-import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpStatus;
+
 
 @Entity
 public class RequestResponseCycle {
 	@Id
 	@GeneratedValue
-	long id;
+	private long id;
 
 	// Wat heeft de client gevraagd en gekregen
-	Date timestamp;
-	Duration duration;
-	String clientUrl;
-	String clientSoapAction;
+	private Date timestamp;
+	private Duration duration;
+	private String clientUrl;
+	private String clientSoapAction;
 	@Lob
-	String clientRequestBody;
+	private String clientRequestBody;
 	@Lob
-	String clientResponeBody;
-	String clientResponeCode;
-
-	// Welke modus draaiden we
-	String replicationModus;
-	String converterImplementation;
-	String converterTemplate;
-
-	// Wat is heeft het zds zaaksysteem gekregen en ontvangen
-	String zdsUrl;
-	String zdsSoapAction;
-	@Lob
-	String zdsRequest;
-	@Lob
-	String zdsResponseBody;
-	String zdsResponseCode;
-
-	@Lob
-	String zgwRequestBody;
-	@Lob
-	String zgwResponseBody;
+	private String clientResponeBody;
+	private String clientResponeCode;
 
 	// Wanneer we ergens in het proces een fout hebben, dan willen we die bewaren
 	@Lob
-	String stackTrace;
+	private String stackTrace;		
+	
+	// Welke modus draaiden we en hadden we een fout?
+	private String replicationModus;
+	private String converterImplementation;
+	private String converterTemplate;
+
+	// Wat is heeft het zds zaaksysteem gekregen en ontvangen
+	@Lob	
+	private String zdsUrl;
+	@Lob	
+	private String zdsSoapAction;
+	@Lob
+	private String zdsRequestBody;
+	@Lob	
+	private String zdsResponseCode;
+	@Lob
+	private String zdsResponseBody;
+
+	@Lob
+	private String zgwUrl;
+	@Lob
+	private String zgwRequestBody;
+	@Lob
+	private String zgwResponseBody;
 
 	public RequestResponseCycle(String clientUrl, String clientSoapAction, String clientRequestBody) {
 		this.timestamp = new Date();
@@ -73,122 +79,17 @@ public class RequestResponseCycle {
 		this.duration = duration;
 	}
 
-	public String getClientUrl() {
-		return this.clientUrl;
+	public void setClientResponse(HttpStatus responseCode, String responseBody) {
+		this.clientResponeCode = responseCode.toString();
+		this.clientResponeBody = responseBody;
+	}	
+	
+	public void setConverter(String replicationmodus, String implementation, String template) {
+		this.replicationModus = replicationmodus;
+		this.converterImplementation = implementation;
+		this.converterTemplate = template;
 	}
-
-	public void setClientUrl(String clientUrl) {
-		this.clientUrl = clientUrl;
-	}
-
-	public String getClientSoapAction() {
-		return this.clientSoapAction;
-	}
-
-	public void setClientSoapAction(String clientSoapAction) {
-		this.clientSoapAction = clientSoapAction;
-	}
-
-	public String getClientRequestBody() {
-		return this.clientRequestBody;
-	}
-
-	public void setClientRequestBody(String clientRequestBody) {
-		this.clientRequestBody = clientRequestBody;
-	}
-
-	public String getClientResponeBody() {
-		return this.clientResponeBody;
-	}
-
-	public void setClientResponseBody(String clientResponeBody) {
-		this.clientResponeBody = clientResponeBody;
-	}
-
-	public String getClientResponeCode() {
-		return this.clientResponeCode;
-	}
-
-	public void setClientResponseCode(String clientResponeCode) {
-		this.clientResponeCode = clientResponeCode;
-	}
-
-	public String getReplicationModus() {
-		return this.replicationModus;
-	}
-
-	public void setReplicationModus(String replicationModus) {
-		this.replicationModus = replicationModus;
-	}
-
-	public String getConverterImplementation() {
-		return this.converterImplementation;
-	}
-
-	public void setConverterImplementation(String converterImplementation) {
-		this.converterImplementation = converterImplementation;
-	}
-
-	public String getConverterTemplate() {
-		return this.converterTemplate;
-	}
-
-	public void setConverterTemplate(String converterTemplate) {
-		this.converterTemplate = converterTemplate;
-	}
-
-	public String getZdsUrl() {
-		return this.zdsUrl;
-	}
-
-	public void setZdsUrl(String zdsUrl) {
-		this.zdsUrl = zdsUrl;
-	}
-
-	public String getZdsSoapAction() {
-		return this.zdsSoapAction;
-	}
-
-	public void setZdsSoapAction(String zdsSoapAction) {
-		this.zdsSoapAction = zdsSoapAction;
-	}
-
-	public String getZdsRequest() {
-		return this.zdsRequest;
-	}
-
-	public void setZdsRequest(String zdsRequest) {
-		this.zdsRequest = zdsRequest;
-	}
-
-	public String getZdsResponeBody() {
-		return this.zdsResponseBody;
-	}
-
-	public void setZdsResponeBody(String zdsResponeBody) {
-		this.zdsResponseBody = zdsResponeBody;
-	}
-
-	public String getZdsResponeCode() {
-		return this.zdsResponseCode;
-	}
-
-	public void setZdsResponeCode(String zdsResponeCode) {
-		this.zdsResponseCode = zdsResponeCode;
-	}
-
-	public String getZgwResponeBody() {
-		return this.zgwResponseBody;
-	}
-
-	public void setZgwResponeBody(String zgwResponeBody) {
-		this.zgwResponseBody = zgwResponeBody;
-	}
-
-	public String getStackTrace() {
-		return this.stackTrace;
-	}
-
+	
 	public void setStackTrace(String stackTrace) {
 		this.stackTrace = stackTrace;
 	}
@@ -197,11 +98,23 @@ public class RequestResponseCycle {
 		return this.id;
 	}
 
-	public void addZgwRequest(String request) {
-		this.zgwRequestBody += "\n---------------------\n" + request;
+	public void addZdsRequest(String zdsUrl, String zdsSoapAction, String zdsRequestBody) {
+		this.zdsUrl = (this.zdsUrl == null ?  zdsUrl : this.zdsUrl + "\n---------------------\n" + zdsUrl);
+		this.zdsSoapAction = (this.zdsSoapAction == null ?  zdsSoapAction : this.zdsSoapAction + "\n---------------------\n" + zdsSoapAction);
+		this.zdsRequestBody = (this.zdsRequestBody == null ?  zdsRequestBody : this.zdsRequestBody + "\n---------------------\n" + zdsRequestBody);
+	}
+
+	public void addZdsRespone(String zdsResponseCode, String zdsResponseBody) {
+		this.zdsResponseCode = (this.zdsResponseCode == null ?  zdsResponseCode : this.zdsResponseCode + "\n---------------------\n" + zdsResponseCode);
+		this.zdsResponseBody = (this.zdsResponseBody == null ?  zdsResponseBody : this.zdsResponseBody + "\n---------------------\n" + zdsResponseBody);				
+	}
+	
+	public void addZgwRequest(String request, String method, String json) {
+		this.zgwUrl = (this.zgwUrl == null ?  method + " " + request : this.zgwUrl + "\n---------------------\n" + method + " " + request);
+		this.zgwRequestBody = (this.zgwRequestBody == null ?  request : this.zgwRequestBody+ "\n---------------------\n" + request); 
 	}
 
 	public void addZgwResponse(String response) {
-		this.zgwResponseBody += "\n---------------------\n" + response;
-	}
+		this.zgwResponseBody = (this.zgwResponseBody == null ?  response : this.zgwResponseBody + "\n---------------------\n" + response);		
+	}	
 }
