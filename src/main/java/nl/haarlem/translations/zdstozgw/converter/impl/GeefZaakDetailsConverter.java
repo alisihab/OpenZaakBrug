@@ -38,17 +38,36 @@ public class GeefZaakDetailsConverter extends Converter {
 	}
 
 	@Override
-	public String passThroughAndConvert(String soapAction, RequestResponseCycle session, ZGWClient zgwClient, ConfigService config, ApplicationParameterRepository repository, String body) {
-		throw new ConverterException(this, "passThroughAndConvert not implemented in version", body, null);
+	public String proxyZds(String soapAction, RequestResponseCycle session, ApplicationParameterRepository repository, String requestBody)  {
+		return postZdsRequest(session, soapAction, requestBody);
+	}
+		
+	@Override
+	public String proxyZdsAndReplicateToZgw(String soapAction, RequestResponseCycle session, ZGWClient zgwClient, ConfigService config, ApplicationParameterRepository repository, String requestBody) {
+		// to the legacy zaaksystem
+		String zdsResponse = postZdsRequest(session, soapAction, requestBody);
+		
+		// also to openzaak
+		String zgwResonse = convertToZgw(session, zgwClient, config, repository, requestBody);
+				
+		// the original response
+		return zdsResponse;		
 	}
 
 	@Override
-	public String convertAndPassThrough(String soapAction, RequestResponseCycle session, ZGWClient zgwClient, ConfigService config, ApplicationParameterRepository repository, String body) {
-		throw new ConverterException(this, "passThroughAndConvert not implemented in version", body, null);
-	}
-
+	public String convertToZgwAndReplicateToZds(String soapAction, RequestResponseCycle session, ZGWClient zgwClient, ConfigService config, ApplicationParameterRepository repository, String requestBody) {
+		// to openzaak
+		String zgwResonse = convertToZgw(session, zgwClient, config, repository, requestBody);
+						
+		// also to the legacy zaaksystem
+		String zdsResponse = postZdsRequest(session, soapAction, requestBody);
+		
+		// response
+		return zgwResonse;		
+	}		
+	
 	@Override
-	public String convert(RequestResponseCycle session, ZGWClient zgwClient, ConfigService configService, ApplicationParameterRepository repository, String requestBody) {
+	public String convertToZgw(RequestResponseCycle session, ZGWClient zgwClient, ConfigService configService, ApplicationParameterRepository repository, String requestBody) {
 		String result = "";
 		try {
 			

@@ -15,17 +15,22 @@ public class NotImplementedConverter extends Converter {
 	}
 
 	@Override
-	public String passThroughAndConvert(String soapAction, RequestResponseCycle session, ZGWClient zgwClient, ConfigService config, ApplicationParameterRepository repository, String body) {
-		throw new ConverterException(this, "passThroughAndConvert not implemented in version", body, null);
+	public String proxyZds(String soapAction, RequestResponseCycle session, ApplicationParameterRepository repository, String requestBody)  {
+		throw new ConverterException(this, "proxyZds not implemented in version", requestBody, null);
+	}		
+	
+	@Override
+	public String proxyZdsAndReplicateToZgw(String soapAction, RequestResponseCycle session, ZGWClient zgwClient, ConfigService config, ApplicationParameterRepository repository, String requestBody) {
+		throw new ConverterException(this, "proxyZdsAndReplicateToZgw not implemented in version", requestBody, null);
 	}
 
 	@Override
-	public String convertAndPassThrough(String soapAction, RequestResponseCycle session, ZGWClient zgwClient, ConfigService config, ApplicationParameterRepository repository, String body) {
-		throw new ConverterException(this, "passThroughAndConvert not implemented in version", body, null);
+	public String convertToZgwAndReplicateToZds(String soapAction, RequestResponseCycle session, ZGWClient zgwClient, ConfigService config, ApplicationParameterRepository repository, String requestBody) {
+		throw new ConverterException(this, "convertToZgwAndReplicateToZds not implemented in version", requestBody, null);
 	}
 
 	@Override
-	public String convert(RequestResponseCycle session, ZGWClient zgwClient, ConfigService configService, ApplicationParameterRepository repository, String requestBody) {
-		throw new RuntimeException("Not implemented");
+	public String convertToZgw(RequestResponseCycle session, ZGWClient zgwClient, ConfigService configService, ApplicationParameterRepository repository, String requestBody) {
+		throw new ConverterException(this, "convertToZgw not implemented in version", requestBody, null);
 	}
 }

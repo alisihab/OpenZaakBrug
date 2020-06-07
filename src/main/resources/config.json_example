@@ -1,5 +1,10 @@
 {
-	"replicationModus": "USE_ZGW",
+	"replicationModus": "USE_ZDS (proxyZds) : Stuur door naar het legacy zaaksysteem en logt berichtenverkeer en fouten naar de tabel: RequestResponseCycle",
+	"replicationModus": "USE_ZDS_AND_REPLICATE_2_ZGW (proxyZdsAndReplicateToZgw) : Stuur door naar het legacy zaaksysteem en logt berichtenverkeer en fouten naar de tabel: RequestResponseCycle, daarnaast nog een afschrift naar OpenZaak",
+	"replicationModus": "USE_ZGW_AND_REPLICATE_2_ZDS (convertToZgwAndReplicateToZds) : Converteer de berichten naar OpenZaak logt berichtenverkeer en fouten naar de tabel: RequestResponseCycle, daarnaast nog een afschrift naar het legacy zaaksysteem voor de zekerheid",
+	"replicationModus": "USE_ZGW (convertToZgw) : Converteer de berichten naar OpenZaak logt berichtenverkeer en fouten naar de tabel: RequestResponseCycle",
+	
+	"replicationModus": "USE_ZDS_AND_REPLICATE_2_ZGWso",
 	"translations": [
 		{
 			"translation": "ZDS 1.1 GWS4all genereerZaakIdentificatie_Di02",
@@ -32,7 +37,7 @@
 			"template": "src/main/java/nl/haarlem/translations/zdstozgw/converter/impl/UpdateZaak_Bv03.xml",
 			"implementation": "nl.haarlem.translations.zdstozgw.converter.impl.UpdateZaakConverter",
 			"legacyservice" : "http://localhost:8181/zds/OntvangAsynchroon"		
-		},
+		},		
 		{
 			"translation": "ZDS 1.1 GWS4all genereerDocumentIdentificatie_Di02",
 			"soapaction": "http://www.egem.nl/StUF/sector/zkn/0310/genereerDocumentIdentificatie_Di02",
@@ -42,10 +47,18 @@
 			"legacyservice" : "http://localhost:8181/zds/VrijBerichtService"
 		},
 		{
+			"translation": "ZDS 1.1 Generic genereerDocumentIdentificatie_Di02",
+			"soapaction": "http://www.egem.nl/StUF/sector/zkn/0310/genereerDocumentIdentificatie_Di02",
+			"requestcontains": "",
+			"template": "src/main/java/nl/haarlem/translations/zdstozgw/converter/impl/genereerDocumentIdentificatie_Du02.xml",
+			"implementation": "nl.haarlem.translations.zdstozgw.converter.impl.GenereerDocumentIdentificatieConverter",
+			"legacyservice" : "http://localhost:8181/zds/VrijBerichtService"
+		},		
+		{
 			"translation": "ZDS 1.1 Generic voegZaakdocumentToe_Lk01",
 			"soapaction": "http://www.egem.nl/StUF/sector/zkn/0310/voegZaakdocumentToe_Lk01",
 			"requestcontains": "",
-			"template": "src/main/java/nl/haarlem/translations/zdstozgw/converter/impl/VoegZaakdocumentToeConverter_Bv3.xml",
+			"template": "src/main/java/nl/haarlem/translations/zdstozgw/converter/impl/VoegZaakdocumentToeConverter_Bv03.xml",
 			"implementation": "nl.haarlem.translations.zdstozgw.converter.impl.VoegZaakdocumentToeConverter",
 			"legacyservice" : "http://localhost:8181/zds/OntvangAsynchroon"
 		},
@@ -61,7 +74,7 @@
 			"translation": "ZDS 1.1 Generic GeefZaakdocumentLezen_Lv01",
 			"soapaction": "http://www.egem.nl/StUF/sector/zkn/0310/geefZaakdocumentLezen_Lv01",
 			"requestcontains": "",
-			"template": "src/main/java/nl/haarlem/translations/zdstozgw/converter/impl/GeefZaakdocumentLezen_Lv01.xml",
+			"template": "src/main/java/nl/haarlem/translations/zdstozgw/converter/impl/GeefZaakdocumentLezen_La01.xml",
 			"implementation": "nl.haarlem.translations.zdstozgw.converter.impl.GeefZaakdocumentLezenConverter",
 			"legacyservice" : "http://localhost:8181/zds/BeantwoordVraag"		
 		},

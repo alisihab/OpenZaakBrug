@@ -31,12 +31,10 @@ Verhaal met plaatje:
 
 _Replicatie standen:_
 
-- **USE_ZDS** : Passtrough modus om communicatie te testen/inspecteren
-- **USE_ZDS_AND_REPLICATE_2_ZGW** : Afschrift naar OpenZaak, om berichtstructuur en data te controleren
-- **USE_ZGW_AND_REPLICATE_2_ZDS**: OpenZaak in de lead, om te controleren of het werkt met behoud van een fallback scenario naar het "oude" zaaksysteem
-- **USE_ZGW**  : Volledig over op OpenZaak, geen ander zaaksysteem meer nodig.
-
-
+- **USE_ZDS** (proxyZds) : Stuur door naar het legacy zaaksysteem en logt berichtenverkeer en fouten naar de tabel: RequestResponseCycle
+- **USE_ZDS_AND_REPLICATE_2_ZGW** (proxyZdsAndReplicateToZgw) : Stuur door naar het legacy zaaksysteem en logt berichtenverkeer en fouten naar de tabel: RequestResponseCycle, daarnaast nog een afschrift naar OpenZaak
+- **USE_ZGW_AND_REPLICATE_2_ZDS** (convertToZgwAndReplicateToZds) : Converteer de berichten naar OpenZaak logt berichtenverkeer en fouten naar de tabel: RequestResponseCycle, daarnaast nog een afschrift naar het legacy zaaksysteem voor de zekerheid
+- **USE_ZGW** (convertToZgw) : Converteer de berichten naar OpenZaak logt berichtenverkeer en fouten naar de tabel: RequestResponseCycle
 
 Hoe werkt de replicatie in de stand USE_ZGW_AND_REPLICATE_2_ZDS:
 

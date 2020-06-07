@@ -1,26 +1,14 @@
 logging.level.nl.haarlem=INFO
 
 ### Lokale installatie
-#openzaak.baseUrl = https://openzaak.local
-#openzaak.jwt.issuer=test
-#openzaak.jwt.secret=test
+openzaak.baseUrl = https://openzaak.local
+openzaak.jwt.issuer=test
+openzaak.jwt.secret=test
 
 ### Gehoste referentie implementatie
 #openzaak.baseUrl = https://zaken-api.vng.cloud/
 #openzaak.jwt.issuer=test
 #openzaak.jwt.secret=test
-
-### Haarlem demo
-# openzaak.baseUrl = https://fieldlab.westeurope.cloudapp.azure.com/
-# openzaak.jwt.issuer=fieldlab
-# openzaak.jwt.secret=groningen
-
-
-### Lokale openzaak installatie
-openzaak.baseUrl = https://open-zaak.local/
-openzaak.jwt.issuer=openzaakbrug
-openzaak.jwt.secret=openzaakbrug
-
 
 ### De linkjes naar het legacy-zaaksystem staan in: config.json.
 ### Default verwijzen deze naar http://localhost:8181, het endpoint waarop de SoapUI MockService van OpenZaakBrug draait
@@ -38,5 +26,5 @@ spring.jpa.hibernate.ddl-auto=update
 # Enabling H2 Console on http://localhost:8080/h2-console
 spring.h2.console.enabled=true
 spring.h2.console.path=/h2-console
-spring.h2.console.settings.trace=false
-spring.h2.console.settings.web-allow-others=false
+spring.h2.console.settings.trace=true
+spring.h2.console.settings.web-allow-others=true

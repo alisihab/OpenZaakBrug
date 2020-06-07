@@ -9,6 +9,7 @@ import org.w3c.dom.Document;
 import lombok.Data;
 import nl.haarlem.translations.zdstozgw.config.ConfigService;
 import nl.haarlem.translations.zdstozgw.converter.Converter;
+import nl.haarlem.translations.zdstozgw.converter.Converter.ConverterException;
 import nl.haarlem.translations.zdstozgw.jpa.ApplicationParameterRepository;
 import nl.haarlem.translations.zdstozgw.jpa.model.RequestResponseCycle;
 import nl.haarlem.translations.zdstozgw.translation.ZaakTranslator;
@@ -36,17 +37,36 @@ public class CreeerZaakConverter extends Converter {
 	}
 	
 	@Override
-	public String passThroughAndConvert(String soapAction, RequestResponseCycle session, ZGWClient zgwClient, ConfigService config, ApplicationParameterRepository repository, String body) {
-		throw new ConverterException(this, "passThroughAndConvert not implemented in version", body, null);
+	public String proxyZds(String soapAction, RequestResponseCycle session, ApplicationParameterRepository repository, String requestBody)  {
+		return postZdsRequest(session, soapAction, requestBody);
+	}
+		
+	@Override
+	public String proxyZdsAndReplicateToZgw(String soapAction, RequestResponseCycle session, ZGWClient zgwClient, ConfigService config, ApplicationParameterRepository repository, String requestBody) {
+		// to the legacy zaaksystem
+		String zdsResponse = postZdsRequest(session, soapAction, requestBody);
+		
+		// also to openzaak
+		String zgwResonse = convertToZgw(session, zgwClient, config, repository, requestBody);
+				
+		// the original response
+		return zdsResponse;		
 	}
 
 	@Override
-	public String convertAndPassThrough(String soapAction, RequestResponseCycle session, ZGWClient zgwClient, ConfigService config, ApplicationParameterRepository repository, String body) {
-		throw new ConverterException(this, "passThroughAndConvert not implemented in version", body, null);
-	}
-
+	public String convertToZgwAndReplicateToZds(String soapAction, RequestResponseCycle session, ZGWClient zgwClient, ConfigService config, ApplicationParameterRepository repository, String requestBody) {
+		// to openzaak
+		String zgwResonse = convertToZgw(session, zgwClient, config, repository, requestBody);
+						
+		// also to the legacy zaaksystem
+		String zdsResponse = postZdsRequest(session, soapAction, requestBody);
+		
+		// response
+		return zgwResonse;		
+	}	
+	
 	@Override
-	public String convert(RequestResponseCycle session, ZGWClient zgwClient, ConfigService configService, ApplicationParameterRepository repository, String requestBody) {
+	public String convertToZgw(RequestResponseCycle session, ZGWClient zgwClient, ConfigService configService, ApplicationParameterRepository repository, String requestBody) {
 		try {
 			
 			ZakLk01 zakLk01 = (ZakLk01) XmlUtils.getStUFObject(requestBody, ZakLk01.class);					

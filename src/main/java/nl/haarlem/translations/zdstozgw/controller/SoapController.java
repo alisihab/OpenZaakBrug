@@ -44,15 +44,19 @@ public class SoapController {
 			log.info("REPLICATION MODUS : " + config.getConfiguratie().replicationModus);
 			switch (config.getConfiguratie().replicationModus) {
 			case "USE_ZDS":
+				log.info("\t**USE_ZDS** (proxyZds) : Stuur door naar het legacy zaaksysteem en logt berichtenverkeer en fouten naar de tabel: RequestResponseCycle");
 				REPLICATION_MODUS = ReplicationModus.USE_ZDS;
 				break;
 			case "USE_ZDS_AND_REPLICATE_2_ZGW":
+				log.info("\t**USE_ZDS_AND_REPLICATE_2_ZGW** (proxyZdsAndReplicateToZgw) : Stuur door naar het legacy zaaksysteem en logt berichtenverkeer en fouten naar de tabel: RequestResponseCycle, daarnaast nog een afschrift naar OpenZaak");				
 				REPLICATION_MODUS = ReplicationModus.USE_ZDS_AND_REPLICATE_2_ZGW;
 				break;
 			case "USE_ZGW_AND_REPLICATE_2_ZDS":
+				log.info("\t**USE_ZGW_AND_REPLICATE_2_ZDS** (convertToZgwAndReplicateToZds) : Converteer de berichten naar OpenZaak logt berichtenverkeer en fouten naar de tabel: RequestResponseCycle, daarnaast nog een afschrift naar het legacy zaaksysteem voor de zekerheid");				
 				REPLICATION_MODUS = ReplicationModus.USE_ZGW_AND_REPLICATE_2_ZDS;
 				break;
 			case "USE_ZGW":
+				log.info("\t**USE_ZGW** (convertToZgw) : Converteer de berichten naar OpenZaak logt berichtenverkeer en fouten naar de tabel: RequestResponseCycle");
 				REPLICATION_MODUS = ReplicationModus.USE_ZGW;
 				break;
 			default:
@@ -98,16 +102,16 @@ public class SoapController {
 			// do the correct action
 			switch (REPLICATION_MODUS) {
 			case USE_ZDS:
-				responseBody = converter.passThrough(soapAction, session, this.repository, body);
+				responseBody = converter.proxyZds(soapAction, session, this.repository, body);
 				break;
 			case USE_ZDS_AND_REPLICATE_2_ZGW:
-				responseBody = converter.passThroughAndConvert(soapAction, session, this.zgwClient, config, this.repository, body);
+				responseBody = converter.proxyZdsAndReplicateToZgw(soapAction, session, this.zgwClient, config, this.repository, body);
 				break;
 			case USE_ZGW_AND_REPLICATE_2_ZDS:
-				responseBody = converter.convertAndPassThrough(soapAction, session, this.zgwClient, config, this.repository, body);
+				responseBody = converter.convertToZgwAndReplicateToZds(soapAction, session, this.zgwClient, config, this.repository, body);
 				break;
 			case USE_ZGW:
-				responseBody = converter.convert(session, this.zgwClient, config, this.repository, body);
+				responseBody = converter.convertToZgw(session, this.zgwClient, config, this.repository, body);
 				break;
 			default:
 			}

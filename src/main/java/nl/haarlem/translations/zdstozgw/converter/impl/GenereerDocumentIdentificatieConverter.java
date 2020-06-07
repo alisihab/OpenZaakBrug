@@ -52,17 +52,22 @@ public class GenereerDocumentIdentificatieConverter extends Converter {
 	}
 
 	@Override
-	public String passThroughAndConvert(String soapAction, RequestResponseCycle session, ZGWClient zgwClient, ConfigService config, ApplicationParameterRepository repository, String body) {
-		throw new ConverterException(this, "passThroughAndConvert not implemented in version", body, null);
+	public String proxyZds(String soapAction, RequestResponseCycle session, ApplicationParameterRepository repository, String requestBody)  {
+		return postZdsRequest(session, soapAction, requestBody);
+	}
+		
+	@Override
+	public String proxyZdsAndReplicateToZgw(String soapAction, RequestResponseCycle session, ZGWClient zgwClient, ConfigService config, ApplicationParameterRepository repository, String requestBody) {
+		return postZdsRequest(session, soapAction, requestBody);
 	}
 
 	@Override
-	public String convertAndPassThrough(String soapAction, RequestResponseCycle session, ZGWClient zgwClient, ConfigService config, ApplicationParameterRepository repository, String body) {
-		throw new ConverterException(this, "passThroughAndConvert not implemented in version", body, null);
-	}
-
+	public String convertToZgwAndReplicateToZds(String soapAction, RequestResponseCycle session, ZGWClient zgwClient, ConfigService config, ApplicationParameterRepository repository, String requestBody) {
+		return postZdsRequest(session, soapAction, requestBody);
+	}	
+	
 	@Override
-	public String convert(RequestResponseCycle session, ZGWClient zgwClient, ConfigService configService, ApplicationParameterRepository repository, String requestBody) {
+	public String convertToZgw(RequestResponseCycle session, ZGWClient zgwClient, ConfigService configService, ApplicationParameterRepository repository, String requestBody) {
 		var stufRequest = new StufRequest(XmlUtils.convertStringToDocument(requestBody));
 		DateFormat tijdstipformat = new SimpleDateFormat("yyyyMMddHHmmss");
 

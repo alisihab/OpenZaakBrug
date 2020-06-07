@@ -26,7 +26,7 @@ Hierbij hebben we de volgende uitgangspunten:
 
 informatie over de installatie kijk in : [INSTALL.md](INSTALL.md)  
 
-infomatie over de replicatie kijk in : [REPLICATION.md](REPLICATION.md)  
+informatie over de replicatie kijk in : [REPLICATION.md](REPLICATION.md)  
 
 ## Volwassenheid van het product
 
@@ -34,7 +34,7 @@ Deze applicatie is een proof-of-concept en wordt verder uitgewerkt zodat dit als
 Op deze manier is het duidelijk welke functionaliteiten de gemeente nodig heeft
 
 Onderdelen en de stand van zaken:
-- **USE_ZDS** : Beta en logt berichtenverkeer en fouten naar de tabel: RequestResponseCycle
-- **USE_ZDS_AND_REPLICATE_2_ZGW** : Nog niet geimplementeerd
+- **USE_ZDS** : Draait in de test-omgeving met het legacy zaaksysteem en wordt getest door functioneelbeheer
+- **USE_ZDS_AND_REPLICATE_2_ZGW** : Implementatie bezig
 - **USE_ZGW_AND_REPLICATE_2_ZDS**:  Nog niet geimplementeerd
-- **USE_ZGW**  : Berichtenverkeer vanuit SoapUI getest, work in progress
+- **USE_ZGW**  : Wordt ingericht voor testen

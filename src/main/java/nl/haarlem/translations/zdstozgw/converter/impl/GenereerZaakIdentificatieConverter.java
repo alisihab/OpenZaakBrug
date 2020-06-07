@@ -1,10 +1,14 @@
 package nl.haarlem.translations.zdstozgw.converter.impl;
 
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.lang.invoke.MethodHandles;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.apache.commons.httpclient.methods.PostMethod;
+import org.apache.commons.httpclient.methods.StringRequestEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
@@ -50,19 +54,24 @@ public class GenereerZaakIdentificatieConverter extends Converter {
 	public GenereerZaakIdentificatieConverter(String template, String legacyService) {
 		super(template, legacyService);
 	}
-
+	
 	@Override
-	public String passThroughAndConvert(String soapAction, RequestResponseCycle session, ZGWClient zgwClient, ConfigService config, ApplicationParameterRepository repository, String body) {
-		throw new ConverterException(this, "passThroughAndConvert not implemented in version", body, null);
+	public String proxyZds(String soapAction, RequestResponseCycle session, ApplicationParameterRepository repository, String requestBody)  {
+		return postZdsRequest(session, soapAction, requestBody);
+	}
+		
+	@Override
+	public String proxyZdsAndReplicateToZgw(String soapAction, RequestResponseCycle session, ZGWClient zgwClient, ConfigService config, ApplicationParameterRepository repository, String requestBody) {
+		return postZdsRequest(session, soapAction, requestBody);
 	}
 
 	@Override
-	public String convertAndPassThrough(String soapAction, RequestResponseCycle session, ZGWClient zgwClient, ConfigService config, ApplicationParameterRepository repository, String body) {
-		throw new ConverterException(this, "passThroughAndConvert not implemented in version", body, null);
-	}
-
+	public String convertToZgwAndReplicateToZds(String soapAction, RequestResponseCycle session, ZGWClient zgwClient, ConfigService config, ApplicationParameterRepository repository, String requestBody) {
+		return postZdsRequest(session, soapAction, requestBody);
+	}	
+	
 	@Override
-	public String convert(RequestResponseCycle session, ZGWClient zgwClient, ConfigService configService, ApplicationParameterRepository repository, String requestBody) {
+	public String convertToZgw(RequestResponseCycle session, ZGWClient zgwClient, ConfigService configService, ApplicationParameterRepository repository, String requestBody) {
 		var stufRequest = new StufRequest(XmlUtils.convertStringToDocument(requestBody));
 		DateFormat tijdstipformat = new SimpleDateFormat("yyyyMMddHHmmss");
 
