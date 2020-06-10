@@ -1,4 +1,4 @@
-package nl.haarlem.translations.zdstozgw.config;
+package nl.haarlem.translations.zdstozgw.config.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -18,4 +18,7 @@ public class Configuratie {
     @SerializedName("documentTypes")
     @Expose
     public List<DocumentType> documentTypes = null;
+    @SerializedName("translations")
+    @Expose
+    public List<Translation> translations = null;
 }

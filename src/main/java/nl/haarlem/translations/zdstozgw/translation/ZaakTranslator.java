@@ -2,9 +2,9 @@ package nl.haarlem.translations.zdstozgw.translation;
 
 import lombok.Data;
 import nl.haarlem.translations.zdstozgw.config.ConfigService;
-import nl.haarlem.translations.zdstozgw.config.DocumentType;
-import nl.haarlem.translations.zdstozgw.config.Organisatie;
-import nl.haarlem.translations.zdstozgw.config.ZaakType;
+import nl.haarlem.translations.zdstozgw.config.model.DocumentType;
+import nl.haarlem.translations.zdstozgw.config.model.Organisatie;
+import nl.haarlem.translations.zdstozgw.config.model.ZaakType;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.*;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.*;
 import org.slf4j.Logger;

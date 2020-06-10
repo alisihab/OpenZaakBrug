@@ -21,6 +21,8 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+import javax.xml.xpath.XPathExpressionException;
+import javax.xml.xpath.XPathFactory;
 import java.io.*;
 import java.lang.invoke.MethodHandles;
 
@@ -174,5 +176,15 @@ public class XmlUtils {
             e.printStackTrace();
         }
         return object;
+    }
+
+    public static String getApplicicatieFromZender(String request){
+        Document document = convertStringToDocument(request);
+        try {
+           return XPathFactory.newInstance().newXPath().evaluate("//*[local-name()='stuurgegevens']/*[local-name()='zender']/*[local-name()='applicatie']/text()", document);
+        } catch (XPathExpressionException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }
