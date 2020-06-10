@@ -1,14 +1,10 @@
 package nl.haarlem.translations.zdstozgw.translation.zds.model;
 
-import lombok.Data;
-import nl.haarlem.translations.zdstozgw.utils.xpath.XpathDocument;
-import org.w3c.dom.Document;
-
 import javax.xml.bind.annotation.*;
-
 import java.util.List;
 
-import static nl.haarlem.translations.zdstozgw.translation.zds.model.namespace.Namespace.*;
+import static nl.haarlem.translations.zdstozgw.translation.zds.model.namespace.Namespace.STUF;
+import static nl.haarlem.translations.zdstozgw.translation.zds.model.namespace.Namespace.ZKN;
 
 @XmlRootElement(namespace = ZKN, name="edcLk01")
 @XmlAccessorType(XmlAccessType.FIELD)

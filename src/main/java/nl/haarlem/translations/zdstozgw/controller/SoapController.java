@@ -1,7 +1,7 @@
 package nl.haarlem.translations.zdstozgw.controller;
 
-import nl.haarlem.translations.zdstozgw.converter.ConvertorFactory;
 import nl.haarlem.translations.zdstozgw.converter.Converter;
+import nl.haarlem.translations.zdstozgw.converter.ConvertorFactory;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.*;
 import nl.haarlem.translations.zdstozgw.translation.zds.services.ZaakService;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwZaak;
@@ -15,12 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
-import org.w3c.dom.NodeList;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.soap.*;
-import java.io.ByteArrayInputStream;
-import java.lang.Object;
 import java.lang.invoke.MethodHandles;
 
 @RestController

@@ -1,9 +1,10 @@
 package nl.haarlem.translations.zdstozgw.config;
 
-import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import lombok.Data;
+
+import java.util.List;
 
 @Data
 public class Configuratie {
