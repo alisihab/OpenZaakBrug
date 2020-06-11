@@ -1,7 +1,9 @@
 package nl.haarlem.translations.zdstozgw.controller;
 
+import nl.haarlem.translations.zdstozgw.config.ConfigService;
 import nl.haarlem.translations.zdstozgw.converter.ConverterFactory;
 import nl.haarlem.translations.zdstozgw.requesthandler.impl.BasicRequestHandler;
+import nl.haarlem.translations.zdstozgw.requesthandler.impl.ReplicationRequestHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,12 +18,14 @@ public class SoapController {
     private static final Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
     private final ConverterFactory converterFactory;
+    private final ConfigService configService;
 
     private String response = "NOT IMPLEMENTED";
 
     @Autowired
-    public SoapController(ConverterFactory converterFactory){
+    public SoapController(ConverterFactory converterFactory, ConfigService configService){
         this.converterFactory = converterFactory;
+        this.configService = configService;
     }
 
     @PostMapping(value = "/{requestUrl}", consumes = MediaType.TEXT_XML_VALUE, produces = MediaType.TEXT_XML_VALUE)
@@ -29,7 +33,8 @@ public class SoapController {
                                            @RequestHeader(name = "SOAPAction", required = true) String soapAction,
                                            @RequestBody String body) {
 
-        BasicRequestHandler basicRequestHandler = new BasicRequestHandler(this.converterFactory.getConverter(soapAction.replace("\"", ""), body));
+        BasicRequestHandler basicRequestHandler = new BasicRequestHandler(this.converterFactory.getConverter(soapAction.replace("\"", ""), body), null);
+//        ReplicationRequestHandler replicationRequestHandler = new ReplicationRequestHandler(this.converterFactory.getConverter(soapAction.replace("\"", ""), body), this.configService);
         return basicRequestHandler.execute(body);
     }
 
