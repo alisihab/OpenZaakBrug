@@ -83,14 +83,24 @@ public class ConfigService {
 
     }
 
-    public Translation getTranslationBySoapActionAndApplicatie(String soapAction, String applicatie){
+    public Translation getDefaultOrApplicationSpecificTranslationBySoapActionAndApplication(String soapAction, String application){
+        Translation foundTranslation;
         List<Translation> translations = this.getConfiguratie().getTranslations().stream()
-                .filter(translation -> translation.getSoapaction().equalsIgnoreCase(soapAction) && translation.getRequestcontains()
-                        .equalsIgnoreCase(applicatie))
+                .filter(translation -> translation.getSoapAction().equalsIgnoreCase(soapAction))
                 .collect(Collectors.toList());
 
-        if(translations.size()>1) log.warn("More then 1 translation found for soapAction & applicatie");
+        foundTranslation = translations.stream()
+                    .filter(translation -> translation.getApplicatie().equalsIgnoreCase(application))
+                    .findFirst()
+                .orElse(null);
 
-        return translations.get(0);
+        if(foundTranslation == null){
+            foundTranslation = translations.stream()
+                    .filter(translation -> translation.getApplicatie().equalsIgnoreCase(""))
+                    .findFirst()
+                    .orElseThrow(() -> new RuntimeException("No default or application specif translation found for soapAction:" + soapAction + " and application: " + application));
+        }
+
+        return foundTranslation;
     }
 }

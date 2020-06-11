@@ -11,10 +11,10 @@ public class Translation {
     public String translation;
     @SerializedName("soapAction")
     @Expose
-    public String soapaction;
+    public String soapAction;
     @SerializedName("applicatie")
     @Expose
-    public String requestcontains;
+    public String applicatie;
     @SerializedName("template")
     @Expose
     public String template;

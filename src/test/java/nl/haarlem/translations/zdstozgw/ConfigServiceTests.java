@@ -19,13 +19,26 @@ public class ConfigServiceTests {
     ConfigService configService;
 
     @Test
-    public void getTranslationBySoapActionAndApplicatie(){
+    public void getTranslationBySoapActionAndApplicatie_whenApplicatieAvailable_shouldReturnApplicationSpecificTranslation(){
         //assign
         String soapAction = "http://www.egem.nl/StUF/sector/zkn/0310/genereerDocumentIdentificatie_Di02";
         String applicatie = "GWS4all";
 
         //act
-        Translation result = configService.getTranslationBySoapActionAndApplicatie(soapAction,applicatie);
+        Translation result = configService.getDefaultOrApplicationSpecificTranslationBySoapActionAndApplication(soapAction, applicatie);
+
+        //assert
+        Assert.assertTrue(result != null);
+
+    }
+
+    @Test
+    public void getTranslationBySoapActionAndApplicatie_whenApplicatieNull_shouldReturnDefaultTranslation(){
+        //assign
+        String soapAction = "http://www.egem.nl/StUF/sector/zkn/0310/voegZaakdocumentToe_Lk01";
+
+        //act
+        Translation result = configService.getDefaultOrApplicationSpecificTranslationBySoapActionAndApplication(soapAction, null);
 
         //assert
         Assert.assertTrue(result != null);

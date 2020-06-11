@@ -29,8 +29,8 @@ public class SoapController {
                                            @RequestHeader(name = "SOAPAction", required = true) String soapAction,
                                            @RequestBody String body) {
 
-        BasicRequestHandler basicConvertHandler = new BasicRequestHandler(this.converterFactory.getConvertor(soapAction.replace("\"", ""), body));
-        return basicConvertHandler.execute(body);
+        BasicRequestHandler basicRequestHandler = new BasicRequestHandler(this.converterFactory.getConverter(soapAction.replace("\"", ""), body));
+        return basicRequestHandler.execute(body);
     }
 
 

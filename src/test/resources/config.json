@@ -37,6 +37,22 @@
       "template": "src/main/java/nl/haarlem/translations/zdstozgw/converter/impl/genereerDocumentIdentificatie_Du02.xml",
       "implementation": "nl.haarlem.translations.zdstozgw.converter.impl.GenereerDocumentIdentificatieConverter",
       "legacyService" : "http://localhost:8181/zds/VrijBerichtService"
+    },
+    {
+      "translation": "ZDS 1.1 GWS4all genereerDocumentIdentificatie_Di02 default",
+      "soapAction": "http://www.egem.nl/StUF/sector/zkn/0310/genereerDocumentIdentificatie_Di02",
+      "applicatie": "",
+      "template": "src/main/java/nl/haarlem/translations/zdstozgw/converter/impl/genereerDocumentIdentificatie_Du02.xml",
+      "implementation": "nl.haarlem.translations.zdstozgw.converter.impl.GenereerDocumentIdentificatieConverter",
+      "legacyService" : "http://localhost:8181/zds/VrijBerichtService"
+    },
+    {
+      "translation": "ZDS 1.1 Generic voegZaakdocumentToe_Lk01",
+      "soapAction": "http://www.egem.nl/StUF/sector/zkn/0310/voegZaakdocumentToe_Lk01",
+      "applicatie": "",
+      "template": "",
+      "implementation": "nl.haarlem.translations.zdstozgw.converter.impl.VoegZaakdocumentToeConverter",
+      "legacyservice" : ""
     }
   ]
 }
