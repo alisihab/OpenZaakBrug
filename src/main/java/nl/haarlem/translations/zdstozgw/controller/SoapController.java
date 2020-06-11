@@ -3,7 +3,6 @@ package nl.haarlem.translations.zdstozgw.controller;
 import nl.haarlem.translations.zdstozgw.config.ConfigService;
 import nl.haarlem.translations.zdstozgw.converter.ConverterFactory;
 import nl.haarlem.translations.zdstozgw.requesthandler.impl.BasicRequestHandler;
-import nl.haarlem.translations.zdstozgw.requesthandler.impl.ReplicationRequestHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

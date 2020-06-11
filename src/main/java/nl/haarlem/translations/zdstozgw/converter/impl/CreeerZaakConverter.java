@@ -1,6 +1,5 @@
 package nl.haarlem.translations.zdstozgw.converter.impl;
 
-import lombok.Data;
 import nl.haarlem.translations.zdstozgw.config.model.Translation;
 import nl.haarlem.translations.zdstozgw.converter.Converter;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZakLk01_v2;
