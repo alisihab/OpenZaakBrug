@@ -8,7 +8,6 @@ import nl.haarlem.translations.zdstozgw.translation.zds.services.ZaakService;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwZaakInformatieObject;
 import nl.haarlem.translations.zdstozgw.utils.XmlUtils;
 
-@Data
 public class VoegZaakdocumentToeConverter extends Converter {
 
     public VoegZaakdocumentToeConverter(Translation translation, ZaakService zaakService) {

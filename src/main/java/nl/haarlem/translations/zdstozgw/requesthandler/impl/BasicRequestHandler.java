@@ -1,20 +1,19 @@
-package nl.haarlem.translations.zdstozgw.converthandler.impl;
+package nl.haarlem.translations.zdstozgw.requesthandler.impl;
 
 import nl.haarlem.translations.zdstozgw.converter.Converter;
-import nl.haarlem.translations.zdstozgw.converthandler.RequestHandler;
-import nl.haarlem.translations.zdstozgw.translation.zds.services.ZaakService;
+import nl.haarlem.translations.zdstozgw.requesthandler.RequestHandler;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class BasicRequestHandler extends RequestHandler {
 
-    private ZaakService zaakService;
 
-    public BasicRequestHandler(Converter converter, ZaakService zaakService) {
+    @Autowired
+    public BasicRequestHandler(Converter converter) {
         super(converter);
-        this.zaakService = zaakService;
     }
 
     @Override
-    public String execute() {
-        return this.converter.Convert(this.zaakService, null);
+    public String execute(String request) {
+        return this.converter.convert(request);
     }
 }
