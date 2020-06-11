@@ -21,4 +21,7 @@ public class Configuratie {
     @SerializedName("translations")
     @Expose
     public List<Translation> translations = null;
+    @SerializedName("replication")
+    @Expose
+    public Replication replication = null;
 }

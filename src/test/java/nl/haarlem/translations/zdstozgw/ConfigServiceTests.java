@@ -1,15 +1,14 @@
 package nl.haarlem.translations.zdstozgw;
 
 import nl.haarlem.translations.zdstozgw.config.ConfigService;
-import nl.haarlem.translations.zdstozgw.config.model.Configuratie;
+import nl.haarlem.translations.zdstozgw.config.model.Replication;
+import nl.haarlem.translations.zdstozgw.config.model.ResponseType;
 import nl.haarlem.translations.zdstozgw.config.model.Translation;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
@@ -30,6 +29,22 @@ public class ConfigServiceTests {
 
         //assert
         Assert.assertTrue(result != null);
+
+    }
+
+    @Test
+    public void getReplication_shouldReturnCorrectObject(){
+        //assign
+        Replication expectedResult = new Replication()
+                .setEnableZDS(true)
+                .setEnableZGW(true)
+                .setResponseType(ResponseType.ZDS);
+
+        //act
+        Replication result = configService.getConfiguratie().getReplication();
+
+        //assert
+        Assert.assertEquals(expectedResult, result);
 
     }
 
