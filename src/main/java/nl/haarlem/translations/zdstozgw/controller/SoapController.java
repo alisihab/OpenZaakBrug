@@ -2,8 +2,8 @@ package nl.haarlem.translations.zdstozgw.controller;
 
 import nl.haarlem.translations.zdstozgw.config.ConfigService;
 import nl.haarlem.translations.zdstozgw.converter.ConverterFactory;
-import nl.haarlem.translations.zdstozgw.requesthandler.impl.BasicRequestHandler;
-import nl.haarlem.translations.zdstozgw.requesthandler.impl.ReplicationRequestHandler;
+import nl.haarlem.translations.zdstozgw.requesthandler.RequestHandler;
+import nl.haarlem.translations.zdstozgw.requesthandler.RequestHandlerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,13 +19,15 @@ public class SoapController {
 
     private final ConverterFactory converterFactory;
     private final ConfigService configService;
+    private final RequestHandlerFactory requestHandlerFactory;
 
     private String response = "NOT IMPLEMENTED";
 
     @Autowired
-    public SoapController(ConverterFactory converterFactory, ConfigService configService){
+    public SoapController(ConverterFactory converterFactory, ConfigService configService, RequestHandlerFactory requestHandlerFactory){
         this.converterFactory = converterFactory;
         this.configService = configService;
+        this.requestHandlerFactory = requestHandlerFactory;
     }
 
     @PostMapping(value = "/{requestUrl}", consumes = MediaType.TEXT_XML_VALUE, produces = MediaType.TEXT_XML_VALUE)
@@ -33,9 +35,8 @@ public class SoapController {
                                            @RequestHeader(name = "SOAPAction", required = true) String soapAction,
                                            @RequestBody String body) {
 
-        BasicRequestHandler basicRequestHandler = new BasicRequestHandler(this.converterFactory.getConverter(soapAction.replace("\"", ""), body), null);
-//        ReplicationRequestHandler replicationRequestHandler = new ReplicationRequestHandler(this.converterFactory.getConverter(soapAction.replace("\"", ""), body), this.configService);
-        return basicRequestHandler.execute(body);
+        RequestHandler requestHandler = requestHandlerFactory.getRequestHandler(this.converterFactory.getConverter(soapAction.replace("\"", ""), body));
+        return requestHandler.execute(body);
     }
 
 

@@ -1,15 +1,15 @@
 package nl.haarlem.translations.zdstozgw;
 
-import nl.haarlem.translations.zdstozgw.translation.zds.model.Stuurgegevens;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZakLk01_v2;
-import nl.haarlem.translations.zdstozgw.utils.XmlUtils;import org.apache.commons.io.IOUtils;
-import static org.junit.Assume.*;
-
+import nl.haarlem.translations.zdstozgw.utils.XmlUtils;
+import org.apache.commons.io.IOUtils;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.io.IOException;
+
+import static org.junit.Assume.assumeTrue;
 
 @SpringBootTest
 public class XmlUnitTests {

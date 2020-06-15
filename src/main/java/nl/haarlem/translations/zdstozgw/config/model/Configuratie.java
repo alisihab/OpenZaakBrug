@@ -24,4 +24,7 @@ public class Configuratie {
     @SerializedName("replication")
     @Expose
     public Replication replication = null;
+    @SerializedName("requestHandlerImplementation")
+    @Expose
+    public String requestHandlerImplementation = null;
 }
