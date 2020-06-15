@@ -17,12 +17,10 @@ public class ReplicationRequestHandler extends RequestHandler {
 
     private static final Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
-    private ConfigService configService;
     private String request;
 
     public ReplicationRequestHandler(Converter converter, ConfigService configService) {
         super(converter, configService);
-        this.configService = configService;
     }
 
     @Override
