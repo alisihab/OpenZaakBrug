@@ -1,4 +1,9 @@
 {
+   "replication": {
+       "enableZDS": true,
+       "enableZGW": true,
+       "responseType": "zds"
+     },
   "zaakTypes": [
     {
       "code": "1",

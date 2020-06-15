@@ -1,25 +1,24 @@
 package nl.haarlem.translations.zdstozgw.converter.impl;
 
+import nl.haarlem.translations.zdstozgw.config.model.Translation;
 import nl.haarlem.translations.zdstozgw.converter.Converter;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.*;
 import nl.haarlem.translations.zdstozgw.translation.zds.services.ZaakService;
 import nl.haarlem.translations.zdstozgw.utils.XmlUtils;
 
-import java.lang.Object;
+public class GeefZaakDocumentLezenConverter extends Converter {
 
-public class GeefZaakDocumentLezenConverter implements Converter {
-    protected String templatePath;
-
-    public GeefZaakDocumentLezenConverter(String templatePath) {
-        this.templatePath = templatePath;
+    public GeefZaakDocumentLezenConverter(Translation translation, ZaakService zaakService) {
+        super(translation, zaakService);
     }
 
     @Override
-    public String Convert(ZaakService zaakService, Object object) {
+    public String convert(String request) {
         String result = "";
         try {
-            EdcLa01 edcLa01 = zaakService.getZaakDocumentLezen((EdcLv01) object);
-            edcLa01 = getEdcLa01WithStuurgegevens((EdcLv01) object, edcLa01);
+            EdcLv01 edcLv01 = (EdcLv01) XmlUtils.getStUFObject(request, EdcLv01.class);
+            EdcLa01 edcLa01 = this.getZaakService().getZaakDocumentLezen((EdcLv01) edcLv01);
+            edcLa01 = getEdcLa01WithStuurgegevens((EdcLv01) edcLv01, edcLa01);
 
             edcLa01.stuurgegevens.berichtcode = "La01";
 

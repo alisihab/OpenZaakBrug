@@ -1,21 +1,22 @@
 package nl.haarlem.translations.zdstozgw.converter.impl;
 
+import nl.haarlem.translations.zdstozgw.config.model.Translation;
 import nl.haarlem.translations.zdstozgw.converter.Converter;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZakLk01_v2;
 import nl.haarlem.translations.zdstozgw.translation.zds.services.ZaakService;
+import nl.haarlem.translations.zdstozgw.utils.XmlUtils;
 
-public class ActualiseerZaakStatusConverter implements Converter {
-    protected String templatePath;
+public class ActualiseerZaakStatusConverter extends Converter {
 
-    public ActualiseerZaakStatusConverter(String templatePath) {
-        this.templatePath = templatePath;
+    public ActualiseerZaakStatusConverter(Translation translation, ZaakService zaakService) {
+        super(translation, zaakService);
     }
 
     @Override
-    public String Convert(ZaakService zaakService, Object object) {
+    public String convert(String request) {
         try {
-
-            var zaak = zaakService.actualiseerZaakstatus((ZakLk01_v2) object);
+            ZakLk01_v2 zakLk01 = (ZakLk01_v2) XmlUtils.getStUFObject(request, ZakLk01_v2.class);
+            var zaak = this.getZaakService().actualiseerZaakstatus((ZakLk01_v2) zakLk01);
             var bv03 = new nl.haarlem.translations.zdstozgw.translation.zds.model.Bv03();
             bv03.setReferentienummer(zaak.getUuid());
             return bv03.getSoapMessageAsString();
