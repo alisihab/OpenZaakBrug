@@ -2,6 +2,7 @@ package nl.haarlem.translations.zdstozgw.requesthandler.impl;
 
 import nl.haarlem.translations.zdstozgw.config.ConfigService;
 import nl.haarlem.translations.zdstozgw.config.model.Configuratie;
+import nl.haarlem.translations.zdstozgw.config.model.ResponseType;
 import nl.haarlem.translations.zdstozgw.converter.Converter;
 import nl.haarlem.translations.zdstozgw.requesthandler.RequestHandler;
 import org.apache.commons.httpclient.methods.PostMethod;
@@ -16,16 +17,19 @@ public class ReplicationRequestHandler extends RequestHandler {
 
     private static final Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
-    private Configuratie configuratie;
+    private ConfigService configService;
     private String request;
 
     public ReplicationRequestHandler(Converter converter, ConfigService configService) {
         super(converter, configService);
-        this.configuratie = configService.getConfiguratie();
+        this.configService = configService;
     }
 
     @Override
     public String execute(String request) {
+        Configuratie configuratie = configService.getConfiguratie();
+        validateReplicationConfiguration(configuratie);
+
         this.request = request;
         String responseZDS = null, responseZGW = null;
 
@@ -41,6 +45,19 @@ public class ReplicationRequestHandler extends RequestHandler {
             case ZDS: return responseZDS;
             case ZGW: return responseZGW;
             default: return null;
+        }
+    }
+
+    private void validateReplicationConfiguration(Configuratie configuratie){
+        boolean enableZDS = configuratie.getReplication().enableZDS;
+        boolean enableZGW = configuratie.getReplication().enableZGW;
+        ResponseType responseType = configuratie.getReplication().getResponseType();
+
+        if ((!enableZDS && !enableZGW)
+                || ((enableZDS || enableZGW) && (responseType!= ResponseType.ZDS && responseType != ResponseType.ZGW))
+                || (responseType == ResponseType.ZDS && !enableZDS)
+                || (responseType == ResponseType.ZGW && !enableZGW)){
+            throw new RuntimeException("Replication configuration is not setup correctly.");
         }
     }
 
