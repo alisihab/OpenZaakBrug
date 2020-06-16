@@ -14,13 +14,19 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.lang.invoke.MethodHandles;
+import java.time.Duration;
+import java.time.LocalDateTime;
 
 public class ReplicationRequestHandler extends RequestHandler {
 
     private static final Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
     private RequestResponseCycleService requestResponseCycleService;
+
+
 
     private String request;
 
@@ -33,7 +39,9 @@ public class ReplicationRequestHandler extends RequestHandler {
     public String execute(String request, String requestUrl, String requestSoapAction) {
         Configuratie configuratie = configService.getConfiguratie();
         validateReplicationConfiguration(configuratie);
+        LocalDateTime start = LocalDateTime.now();
         RequestResponseCycle requestResponseCycle = new RequestResponseCycle()
+                .setTimestamp(start)
                 .setClientRequestBody(request)
                 .setClientSoapAction(requestSoapAction)
                 .setClientUrl(requestUrl)
@@ -41,27 +49,39 @@ public class ReplicationRequestHandler extends RequestHandler {
                 .setConverterImplementation(this.getConverter().getTranslation().getImplementation())
                 .setConverterTemplate(this.getConverter().getTranslation().getImplementation());
         requestResponseCycleService.add(requestResponseCycle);
-        this.requestResponseCycleService.setSessionUUID(requestResponseCycle.getSessionUuid());
+        this.requestResponseCycleService.setRequestResponseCycleSession(requestResponseCycle);
 
         this.request = request;
-        String responseZDS = null, responseZGW = null;
+        String responseZDS = null, responseZGW = null, response = null;
 
-        if (configuratie.getReplication().enableZDS) {
-            responseZDS = this.postZdsRequest();
+        try{
+            if (configuratie.getReplication().enableZDS) {
+                responseZDS = this.postZdsRequest();
+            }
+
+            if (configuratie.getReplication().enableZGW) {
+                responseZGW = this.converter.convert(request);
+            }
+
+            switch (configuratie.getReplication().getResponseType()) {
+                case ZDS: response = responseZDS; break;
+                case ZGW: response = responseZGW; break;
+            }
+
+            requestResponseCycle.setClientResponseBodyZDS(responseZDS);
+            requestResponseCycle.setClientResponseBodyZGW(responseZGW);
+
+        }catch(Exception e){
+            StringWriter sw = new StringWriter();
+            e.printStackTrace(new PrintWriter(sw));
+            String exceptionAsString = sw.toString();
+            requestResponseCycle.setStackTrace(exceptionAsString);
+            throw e;
+        }finally {
+            requestResponseCycle.setDurationInMilliseconds(Duration.between(start, LocalDateTime.now()).toMillis());
+            this.requestResponseCycleService.add(requestResponseCycle);
         }
 
-        if (configuratie.getReplication().enableZGW) {
-            responseZGW = this.converter.convert(request);
-        }
-
-        String response = null;
-        switch (configuratie.getReplication().getResponseType()) {
-            case ZDS: response = responseZDS; break;
-            case ZGW: response = responseZGW; break;
-        }
-
-//        requestResponseCycle.setClientResponseCode(HttpStatus.OK.toString())
-//                .setClientResponeBody(response);
         return response;
     }
 

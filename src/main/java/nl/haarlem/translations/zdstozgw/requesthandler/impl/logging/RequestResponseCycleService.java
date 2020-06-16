@@ -10,15 +10,25 @@ public class RequestResponseCycleService {
 
     private final RequestResponseCycleRepository requestResponseCycleRepository;
 
+    private final InterimRequestResponseCycleRepository interimRequestResponseCycleRepository;
+
+    private RequestResponseCycle requestResponseCycleSession;
+
     private String sessionUUID;
 
     @Autowired
-    public RequestResponseCycleService(RequestResponseCycleRepository requestResponseCycleRepository){
+    public RequestResponseCycleService(RequestResponseCycleRepository requestResponseCycleRepository,
+                                       InterimRequestResponseCycleRepository interimRequestResponseCycleRepository){
         this.requestResponseCycleRepository = requestResponseCycleRepository;
+        this.interimRequestResponseCycleRepository = interimRequestResponseCycleRepository;
     }
 
     public RequestResponseCycle add(RequestResponseCycle requestResponseCycle){
         return this.requestResponseCycleRepository.save(requestResponseCycle);
+    }
+
+    public InterimRequestResponseCycle add(InterimRequestResponseCycle interimRequestResponseCycle){
+        return this.interimRequestResponseCycleRepository.save(interimRequestResponseCycle);
     }
 
 }

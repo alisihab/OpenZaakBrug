@@ -15,27 +15,29 @@ import java.io.UnsupportedEncodingException;
 
 public class LoggingRequestInterceptor implements ClientHttpRequestInterceptor {
 
-    final static Logger log = LoggerFactory.getLogger(LoggingRequestInterceptor.class);
-
     private RequestResponseCycleService requestResponseCycleService;
     private RequestResponseCycle currentRequestResponseCycle;
+    private InterimRequestResponseCycle currentInterimRequestResponseCycle;
 
 
     @Override
     public ClientHttpResponse intercept(HttpRequest request, byte[] body, ClientHttpRequestExecution execution) throws IOException {
         requestResponseCycleService = SpringContext.getBean(RequestResponseCycleService.class);
+        this.currentRequestResponseCycle = this.requestResponseCycleService.getRequestResponseCycleSession();
         addRequestToDatabase(request,body);
-//        traceRequest(request, body);
         ClientHttpResponse response = execution.execute(request, body);
-//        traceResponse(response);
         addResponseToDatabase(response);
         return response;
     }
 
     private void addRequestToDatabase(HttpRequest request, byte[] body) throws UnsupportedEncodingException {
-        this.currentRequestResponseCycle = this.requestResponseCycleService.add( new RequestResponseCycle().setSessionUuid(this.requestResponseCycleService.getSessionUUID())
+        this.currentInterimRequestResponseCycle = new InterimRequestResponseCycle()
+                .setRequestResponseCycle(this.currentRequestResponseCycle)
                 .setZgwRequestBody(new String(body, "UTF-8"))
-                .setZgwUrl(request.getURI().toString()));
+                .setZgwUrl(request.getURI().toString())
+                .setZgwMethod(request.getMethodValue());
+
+        this.requestResponseCycleService.add(this.currentInterimRequestResponseCycle);
     }
 
     private void addResponseToDatabase(ClientHttpResponse response) throws IOException {
@@ -47,40 +49,11 @@ public class LoggingRequestInterceptor implements ClientHttpRequestInterceptor {
             inputStringBuilder.append('\n');
             line = bufferedReader.readLine();
         }
-//        log.info("============================response begin==========================================");
-//        log.debug("Status code  : {}", response.getStatusCode());
-//        log.debug("Status text  : {}", response.getStatusText());
-//        log.debug("Headers      : {}", response.getHeaders());
-        this.requestResponseCycleService.add( this.currentRequestResponseCycle.setZgwResponseBody( inputStringBuilder.toString()));
-    }
 
+        this.requestResponseCycleService.add(this.currentInterimRequestResponseCycle
+                .setZgwResponseBody(inputStringBuilder.toString())
+                .setZgwResponseCode(response.getStatusCode().toString()));
 
-
-
-    private void traceRequest(HttpRequest request, byte[] body) throws IOException {
-        log.info("===========================request begin================================================");
-        log.debug("URI         : {}", request.getURI());
-        log.debug("Method      : {}", request.getMethod());
-        log.debug("Headers     : {}", request.getHeaders() );
-        log.debug("Request body: {}", new String(body, "UTF-8"));
-        log.info("==========================request end================================================");
-    }
-
-    private void traceResponse(ClientHttpResponse response) throws IOException {
-        StringBuilder inputStringBuilder = new StringBuilder();
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(response.getBody(), "UTF-8"));
-        String line = bufferedReader.readLine();
-        while (line != null) {
-            inputStringBuilder.append(line);
-            inputStringBuilder.append('\n');
-            line = bufferedReader.readLine();
-        }
-        log.info("============================response begin==========================================");
-        log.debug("Status code  : {}", response.getStatusCode());
-        log.debug("Status text  : {}", response.getStatusText());
-        log.debug("Headers      : {}", response.getHeaders());
-        log.debug("Response body: {}", inputStringBuilder.toString());
-        log.info("=======================response end=================================================");
     }
 
 }
