@@ -15,5 +15,5 @@ public abstract class RequestHandler {
         this.configService = configService;
     }
 
-    public abstract String execute(String request);
+    public abstract String execute(String request, String requestUrl, String requestSoapAction);
 }

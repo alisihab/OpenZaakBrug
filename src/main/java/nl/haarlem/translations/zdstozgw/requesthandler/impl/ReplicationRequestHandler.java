@@ -9,6 +9,7 @@ import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.methods.StringRequestEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
 import java.lang.invoke.MethodHandles;
@@ -16,7 +17,8 @@ import java.lang.invoke.MethodHandles;
 public class ReplicationRequestHandler extends RequestHandler {
 
     private static final Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
-
+    @Autowired
+    RequestResponseCycleRepository requestResponseCycleRepository;
     private String request;
 
     public ReplicationRequestHandler(Converter converter, ConfigService configService) {
@@ -24,37 +26,46 @@ public class ReplicationRequestHandler extends RequestHandler {
     }
 
     @Override
-    public String execute(String request) {
+    public String execute(String request, String requestUrl, String requestSoapAction) {
         Configuratie configuratie = configService.getConfiguratie();
         validateReplicationConfiguration(configuratie);
+//        RequestResponseCycle requestResponseCycle = new RequestResponseCycle()
+//                .setClientRequestBody(request)
+//                .setClientSoapAction(requestSoapAction)
+//                .setClientUrl(requestUrl);
 
         this.request = request;
         String responseZDS = null, responseZGW = null;
 
-        if(configuratie.getReplication().enableZDS){
+        if (configuratie.getReplication().enableZDS) {
             responseZDS = this.postZdsRequest();
         }
 
-        if(configuratie.getReplication().enableZGW){
+        if (configuratie.getReplication().enableZGW) {
             responseZGW = this.converter.convert(request);
         }
 
-        switch (configuratie.getReplication().getResponseType()){
-            case ZDS: return responseZDS;
-            case ZGW: return responseZGW;
-            default: return null;
+        String response = null;
+        switch (configuratie.getReplication().getResponseType()) {
+            case ZDS: response = responseZDS; break;
+            case ZGW: response = responseZGW; break;
         }
+
+//        requestResponseCycle.setClientResponseCode(HttpStatus.OK.toString())
+//                .setClientResponeBody(response);
+        return response;
     }
 
-    private void validateReplicationConfiguration(Configuratie configuratie){
+
+    private void validateReplicationConfiguration(Configuratie configuratie) {
         boolean enableZDS = configuratie.getReplication().enableZDS;
         boolean enableZGW = configuratie.getReplication().enableZGW;
         ResponseType responseType = configuratie.getReplication().getResponseType();
 
         if ((!enableZDS && !enableZGW)
-                || ((enableZDS || enableZGW) && (responseType!= ResponseType.ZDS && responseType != ResponseType.ZGW))
+                || ((enableZDS || enableZGW) && (responseType != ResponseType.ZDS && responseType != ResponseType.ZGW))
                 || (responseType == ResponseType.ZDS && !enableZDS)
-                || (responseType == ResponseType.ZGW && !enableZGW)){
+                || (responseType == ResponseType.ZGW && !enableZGW)) {
             throw new RuntimeException("Replication configuration is not setup correctly.");
         }
     }

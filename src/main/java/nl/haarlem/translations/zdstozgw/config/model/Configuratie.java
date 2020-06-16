@@ -27,4 +27,5 @@ public class Configuratie {
     @SerializedName("requestHandlerImplementation")
     @Expose
     public String requestHandlerImplementation = null;
+
 }

@@ -7,6 +7,7 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
@@ -23,14 +24,18 @@ public class RestTemplateService {
     @Autowired
     private JWTService jwtService;
 
+    RestTemplateBuilder restTemplateBuilder;
+
     private RestTemplate restTemplate;
 
-    public RestTemplateService(@Value("${nl.haarlem.translations.zdstozgw.trustAllCerts:false}") boolean trustAllCerts) {
-        if (trustAllCerts) {
-            this.restTemplate = new RestTemplate(this.getAllCertsTrustingRequestFactory());
-        } else {
-            this.restTemplate = new RestTemplate();
-        }
+    @Autowired
+    public RestTemplateService(@Value("${nl.haarlem.translations.zdstozgw.trustAllCerts:false}") boolean trustAllCerts, RestTemplateBuilder restTemplateBuilder) {
+//        if (trustAllCerts) {
+//            this.restTemplate = new RestTemplate(this.getAllCertsTrustingRequestFactory());
+//        } else {
+//            this.restTemplate = new RestTemplate();
+//        }
+        this.restTemplate = restTemplateBuilder.build();
     }
 
     private HttpComponentsClientHttpRequestFactory getAllCertsTrustingRequestFactory() {
