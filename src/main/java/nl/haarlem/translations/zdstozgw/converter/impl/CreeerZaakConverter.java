@@ -80,7 +80,7 @@ public class CreeerZaakConverter extends Converter {
 			bv03.xpathDocument.setNodeValue(".//stuf:ontvanger//stuf:organisatie", zakLk01.stuurgegevens.zender.organisatie);
 			bv03.xpathDocument.setNodeValue(".//stuf:ontvanger//stuf:applicatie", zakLk01.stuurgegevens.zender.applicatie);
 			bv03.xpathDocument.setNodeValue(".//stuf:ontvanger//stuf:gebruiker", zakLk01.stuurgegevens.zender.gebruiker);
-			bv03.xpathDocument.setNodeValue(".//stuf:referentienummer", zgwZaak.url);
+			bv03.xpathDocument.setNodeValue(".//stuf:referentienummer", zgwZaak.uuid);
 			bv03.xpathDocument.setNodeValue(".//stuf:crossRefnummer", zakLk01.stuurgegevens.referentienummer);
 			DateFormat tijdstipformat = new SimpleDateFormat("yyyyMMddHHmmss");
 			bv03.xpathDocument.setNodeValue(".//stuf:tijdstipBericht", tijdstipformat.format(new Date()));

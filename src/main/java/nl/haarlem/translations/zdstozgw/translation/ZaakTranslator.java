@@ -26,6 +26,8 @@ import nl.haarlem.translations.zdstozgw.config.ConfigService;
 import nl.haarlem.translations.zdstozgw.config.DocumentType;
 import nl.haarlem.translations.zdstozgw.config.Organisatie;
 import nl.haarlem.translations.zdstozgw.config.ZaakType;
+import nl.haarlem.translations.zdstozgw.jpa.ApplicationParameterRepository;
+import nl.haarlem.translations.zdstozgw.jpa.model.RequestResponseCycle;
 import nl.haarlem.translations.zdstozgw.translation.ZaakTranslator.ZaakTranslatorException;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.EdcLa01;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.EdcLa01.Antwoord;
@@ -44,6 +46,7 @@ import nl.haarlem.translations.zdstozgw.translation.zds.model.ZakLa01;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsRol;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZakLa01LijstZaakdocumenten;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsZaakDocument;
+import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsZaakDocumentInhoud;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZakLa01Zaakdetails;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZakLk01;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsZaak;
@@ -320,10 +323,10 @@ public class ZaakTranslator {
 		
 		EdcLa01 edcLa01 = new EdcLa01();
 		edcLa01.antwoord = new EdcLa01.Antwoord();
-		edcLa01.antwoord.object = new ZdsZaakDocument();
+		edcLa01.antwoord.object = new ZdsZaakDocumentInhoud();
         edcLa01.antwoord.object.auteur = (document.auteur == null || document.auteur.equals("") ? null: document.auteur);
 		edcLa01.antwoord.object.creatiedatum = document.creatiedatum;
-		edcLa01.antwoord.object.dctCategorie = document.beschrijving;
+		//edcLa01.antwoord.object.dctCategorie = document.beschrijving;
 		edcLa01.antwoord.object.dctOmschrijving = document.beschrijving;
 		edcLa01.antwoord.object.identificatie = document.identificatie;
 				
@@ -675,35 +678,40 @@ public class ZaakTranslator {
 			
 			log.info("zaak gevonden:" + zgwZaak.url);			
 			List<ZgwZaakInformatieObject> zgwZaakInformatieObjecten = zgwClient.getZaakInformatieObjectenByZaakUrl(zgwZaak.url);
-			List<ZdsZaakDocument> zdsDocumenten = new ArrayList<>();
+			List<ZdsRelatieZaakDocument> zdsRelatieDocumenten = new ArrayList<>();
 
 			
 			for(ZgwZaakInformatieObject zwgZaakInformatieObject : zgwZaakInformatieObjecten) {
 				ZgwInformatieObject zgwInformatieObject = zgwClient.getInformatieObjectByUrl(zwgZaakInformatieObject.informatieobject);				
 				
 				var zdsZaakDocument = new ZdsZaakDocument();
+				zdsZaakDocument.entiteittype = "EDC";
 				zdsZaakDocument.identificatie = zgwInformatieObject.identificatie;
-				zdsZaakDocument.dctOmschrijving = zgwInformatieObject.beschrijving;
-				zdsZaakDocument.dctCategorie= zgwInformatieObject.identificatie;
-				zdsZaakDocument.creatiedatum = zgwInformatieObject.creatiedatum;
+				
+				if (zgwInformatieObject.beschrijving != null  && zgwInformatieObject.beschrijving != "") zdsZaakDocument.dctOmschrijving = zgwInformatieObject.beschrijving;
+				
+				//zdsZaakDocument.dctCategorie= zgwInformatieObject.identificatie;
+				zdsZaakDocument.creatiedatum = zgwInformatieObject.creatiedatum.replace("-","");
 				zdsZaakDocument.ontvangstdatum  = zgwInformatieObject.ontvangstdatum;
 				zdsZaakDocument.titel  = zgwInformatieObject.titel;
 				zdsZaakDocument.taal  = zgwInformatieObject.taal;
 				zdsZaakDocument.versie  = zgwInformatieObject.versie;
 				zdsZaakDocument.status  = zgwInformatieObject.status;
-				zdsZaakDocument.vezenddatum  = zgwInformatieObject.verzenddatum;
-				zdsZaakDocument.vertrouwelijkAanduiding = zgwInformatieObject.vertrouwelijkheidaanduiding;
+				zdsZaakDocument.vertrouwelijkAanduiding = zgwInformatieObject.vertrouwelijkheidaanduiding.toUpperCase();
 				zdsZaakDocument.auteur  = zgwInformatieObject.auteur;
-				zdsZaakDocument.link  = zgwInformatieObject.link;
-				zdsZaakDocument.inhoud  = zgwInformatieObject.inhoud;
-				zdsDocumenten.add(zdsZaakDocument);
+				zdsZaakDocument.link  = zgwInformatieObject.url;
+
+				var zdsRelatieZaakDocument = new ZdsRelatieZaakDocument();
+				zdsRelatieZaakDocument.entiteittype = "ZAKEDC";
+				zdsRelatieZaakDocument.gerelateerde =  zdsZaakDocument;
+				zdsRelatieDocumenten.add(zdsRelatieZaakDocument);
 			}
 			
 			var result = new ZakLa01LijstZaakdocumenten();			
 			result.antwoord = new nl.haarlem.translations.zdstozgw.translation.zds.model.ZakLa01LijstZaakdocumenten.Antwoord();
 			result.antwoord.object = new ZdsZaak();
-			result.antwoord.object.heeftRelevant = new ZdsRelatieZaakDocument();
-			result.antwoord.object.heeftRelevant.gerelateerde = zdsDocumenten;
+			result.antwoord.object.entiteittype = "ZAK";
+			result.antwoord.object.heeftRelevant = zdsRelatieDocumenten;
 			
 			return result;
 			
@@ -809,6 +817,10 @@ public class ZaakTranslator {
 			*/
 		}
 		throw new ZaakTranslatorException("niet ondersteunde vraag in geefLijstZaakdocumenten");
+	}
+
+	public void synchronizeZdstoZgw(RequestResponseCycle session, ZGWClient zgwClient2, ConfigService config, ApplicationParameterRepository repository, String identificatie) {
+			// check
 	}
 	
 	/*

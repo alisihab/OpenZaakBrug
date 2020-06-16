@@ -1,7 +1,10 @@
-<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
-   <s:Body>
-      <StUF:Bv03Bericht xmlns:StUF="http://www.egem.nl/StUF/StUF0301">
-         <StUF:stuurgegevens>
+<s:Envelope
+	xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
+	<s:Body>
+		<StUF:Bv03Bericht
+			xmlns:StUF="http://www.egem.nl/StUF/StUF0301">
+			<StUF:stuurgegevens>
+				<StUF:berichtcode>Bv03</StUF:berichtcode>
 				<StUF:zender>
 					<StUF:organisatie>${zenderOrganisatie}</StUF:organisatie>
 					<StUF:applicatie>${zenderApplicatie}</StUF:applicatie>
@@ -14,8 +17,8 @@
 				</StUF:ontvanger>
 				<StUF:referentienummer>${referentienummer}</StUF:referentienummer>
 				<StUF:tijdstipBericht>${tijdstipbericht}</StUF:tijdstipBericht>
-				<StUF:crossRefnummer>${crossrefnummer}</StUF:crossRefnummer>	
-         </StUF:stuurgegevens>
-      </StUF:Bv03Bericht>
-   </s:Body>
+				<StUF:crossRefnummer>${crossrefnummer}</StUF:crossRefnummer>
+			</StUF:stuurgegevens>
+		</StUF:Bv03Bericht>
+	</s:Body>
 </s:Envelope>

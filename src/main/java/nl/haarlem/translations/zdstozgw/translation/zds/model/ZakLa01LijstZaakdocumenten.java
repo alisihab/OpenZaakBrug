@@ -19,11 +19,15 @@ public class ZakLa01LijstZaakdocumenten {
 	@XmlElement(namespace = ZKN, name = "stuurgegevens")
 	public Stuurgegevens stuurgegevens;
 
+	@XmlElement(namespace = ZKN, name = "parameters")
+	public Parameters parameters;	
+	
 	@XmlElement(namespace = ZKN, name = "antwoord")
 	public Antwoord antwoord;
 
     @XmlElement(namespace = ZKN, name="isRelevantVoor")
     public IsRelevantVoor isRelevantVoor;
+
 
 	@XmlAccessorType(XmlAccessType.FIELD)
 	public static class Antwoord {

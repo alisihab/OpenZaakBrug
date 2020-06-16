@@ -27,6 +27,6 @@ public class EdcLa01 {
 	public static class Antwoord {
 
 		@XmlElement(namespace = ZKN)
-		public ZdsZaakDocument object;
+		public ZdsZaakDocumentInhoud object;
 	}
 }

@@ -2,6 +2,9 @@ package nl.haarlem.translations.zdstozgw.translation.zds.model;
 
 
 import static nl.haarlem.translations.zdstozgw.translation.zds.model.namespace.Namespace.ZKN;
+
+import java.util.List;
+
 import static nl.haarlem.translations.zdstozgw.translation.zds.model.namespace.Namespace.STUF;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -63,5 +66,7 @@ public class ZdsZaak {
 		public ZdsRol heeftAlsVerantwoordelijke;
 
 		@XmlElement(namespace = ZKN, name = "heeftRelevant")
-		public ZdsRelatieZaakDocument heeftRelevant;				
+		//public ZdsRelatieZaakDocument heeftRelevant;				
+		public List<ZdsRelatieZaakDocument> heeftRelevant;
+
 	}

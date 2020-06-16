@@ -82,7 +82,7 @@ public class VoegZaakdocumentToeConverter extends Converter {
 			bv03.xpathDocument.setNodeValue(".//stuf:ontvanger//stuf:organisatie", edcLk01.stuurgegevens.zender.organisatie);
 			bv03.xpathDocument.setNodeValue(".//stuf:ontvanger//stuf:applicatie", edcLk01.stuurgegevens.zender.applicatie);
 			bv03.xpathDocument.setNodeValue(".//stuf:ontvanger//stuf:gebruiker", edcLk01.stuurgegevens.zender.gebruiker);
-			bv03.xpathDocument.setNodeValue(".//stuf:referentienummer", zgwZaakInformatieObject.url);
+			bv03.xpathDocument.setNodeValue(".//stuf:referentienummer", zgwZaakInformatieObject.uuid);
 			bv03.xpathDocument.setNodeValue(".//stuf:crossRefnummer", edcLk01.stuurgegevens.referentienummer);
 			DateFormat tijdstipformat = new SimpleDateFormat("yyyyMMddHHmmss");
 			bv03.xpathDocument.setNodeValue(".//stuf:tijdstipBericht", tijdstipformat.format(new Date()));

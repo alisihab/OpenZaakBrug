@@ -1,5 +1,9 @@
 package nl.haarlem.translations.zdstozgw.converter.impl;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import org.w3c.dom.Document;
 
 import lombok.Data;
@@ -12,6 +16,7 @@ import nl.haarlem.translations.zdstozgw.translation.ZaakTranslator;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.EdcLa01;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.EdcLv01;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.Ontvanger;
+import nl.haarlem.translations.zdstozgw.translation.zds.model.Parameters;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.Stuurgegevens;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZakLa01LijstZaakdocumenten;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZakLk01;
@@ -76,13 +81,29 @@ public class GeefLijstZaakdocumentenConverter extends Converter {
 			var translator = new ZaakTranslator(zgwClient, configService);
 			ZakLa01LijstZaakdocumenten zakLa01 = translator.geefLijstZaakdocumenten(zakLv01);
 
-			zakLa01.stuurgegevens = new Stuurgegevens();
+			zakLa01.stuurgegevens = new Stuurgegevens();			
+			zakLa01.stuurgegevens.berichtcode = "La01";			
 			zakLa01.stuurgegevens.zender = new Zender();
 			zakLa01.stuurgegevens.zender.applicatie = zakLv01.stuurgegevens.ontvanger.applicatie;
 			zakLa01.stuurgegevens.zender.organisatie = zakLv01.stuurgegevens.ontvanger.organisatie;
 			zakLa01.stuurgegevens.zender.gebruiker = zakLv01.stuurgegevens.ontvanger.organisatie;
-			zakLa01.stuurgegevens.berichtcode = "La01";
 
+			zakLa01.stuurgegevens.ontvanger = new Ontvanger();
+			zakLa01.stuurgegevens.ontvanger.applicatie = zakLv01.stuurgegevens.zender.applicatie;
+			zakLa01.stuurgegevens.ontvanger.organisatie = zakLv01.stuurgegevens.zender.organisatie;
+			zakLa01.stuurgegevens.ontvanger.gebruiker = zakLv01.stuurgegevens.zender.organisatie;
+			
+			zakLa01.stuurgegevens.referentienummer = "";
+			DateFormat tijdstipformat = new SimpleDateFormat("yyyyMMddHHmmss");
+			zakLa01.stuurgegevens.tijdstipBericht = tijdstipformat.format(new Date());
+			zakLa01.stuurgegevens.crossRefnummer = zakLv01.stuurgegevens.referentienummer;
+
+			zakLa01.stuurgegevens.crossRefnummer = zakLv01.stuurgegevens.referentienummer;
+			zakLa01.stuurgegevens.entiteittype = "ZAK";
+					
+			zakLa01.parameters =  new Parameters();
+			zakLa01.parameters.indicatorVervolgvraag = "false";
+			
 			return XmlUtils.getSOAPMessageFromObject(zakLa01);
 
 		} catch (Exception ex) {

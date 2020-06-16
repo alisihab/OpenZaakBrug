@@ -4,11 +4,11 @@
 	"replicationModus": "USE_ZGW_AND_REPLICATE_2_ZDS (convertToZgwAndReplicateToZds) : Converteer de berichten naar OpenZaak logt berichtenverkeer en fouten naar de tabel: RequestResponseCycle, daarnaast nog een afschrift naar het legacy zaaksysteem voor de zekerheid",
 	"replicationModus": "USE_ZGW (convertToZgw) : Converteer de berichten naar OpenZaak logt berichtenverkeer en fouten naar de tabel: RequestResponseCycle",
 	
-	"replicationModus": "USE_ZDS_AND_REPLICATE_2_ZGWso",
+	"replicationModus": "USE_ZGW",
 	"translations": [
 		{
 			"translation": "ZDS 1.1 GWS4all genereerZaakIdentificatie_Di02",
-			"soapaction": "http://www.egem.nl/StUF/sector/zkn/0310/genereerZaakIdentificatie_Di02",
+			"soapaction": "http://www.egem.nl/StUF/sector/zkn/0310/GenereerZaakIdentificatie_Di02",
 			"requestcontains": "<StUF:applicatie>GWS4all</StUF:applicatie>",
 			"template": "src/main/java/nl/haarlem/translations/zdstozgw/converter/impl/genereerZaakIdentificatie_Du02.xml",
 			"implementation": "nl.haarlem.translations.zdstozgw.converter.impl.GenereerZaakIdentificatieConverter",
@@ -16,7 +16,7 @@
 		},
 		{
 			"translation": "ZDS 1.1 Generic genereerZaakIdentificatie_Di02",
-			"soapaction": "http://www.egem.nl/StUF/sector/zkn/0310/genereerZaakIdentificatie_Di02",
+			"soapaction": "http://www.egem.nl/StUF/sector/zkn/0310/GenereerZaakIdentificatie_Di02",
 			"requestcontains": "",
 			"template": "src/main/java/nl/haarlem/translations/zdstozgw/converter/impl/genereerZaakIdentificatie_Du02.xml",
 			"implementation": "nl.haarlem.translations.zdstozgw.converter.impl.GenereerZaakIdentificatieConverter",
@@ -42,7 +42,7 @@
 			"translation": "ZDS 1.1 GWS4all genereerDocumentIdentificatie_Di02",
 			"soapaction": "http://www.egem.nl/StUF/sector/zkn/0310/genereerDocumentIdentificatie_Di02",
 			"requestcontains": "<StUF:applicatie>GWS4all</StUF:applicatie>",
-			"template": "src/main/java/nl/haarlem/translations/zdstozgw/converter/impl/genereerDocumentIdentificatie_Du02.xml",
+			"template": "src/main/java/nl/haarlem/translations/zdstozgw/converter/impl/GenereerDocumentIdentificatie_Du02.xml",
 			"implementation": "nl.haarlem.translations.zdstozgw.converter.impl.GenereerDocumentIdentificatieConverter",
 			"legacyservice" : "http://localhost:8181/zds/VrijBerichtService"
 		},
@@ -50,7 +50,7 @@
 			"translation": "ZDS 1.1 Generic genereerDocumentIdentificatie_Di02",
 			"soapaction": "http://www.egem.nl/StUF/sector/zkn/0310/genereerDocumentIdentificatie_Di02",
 			"requestcontains": "",
-			"template": "src/main/java/nl/haarlem/translations/zdstozgw/converter/impl/genereerDocumentIdentificatie_Du02.xml",
+			"template": "src/main/java/nl/haarlem/translations/zdstozgw/converter/impl/GenereerDocumentIdentificatie_Du02.xml",
 			"implementation": "nl.haarlem.translations.zdstozgw.converter.impl.GenereerDocumentIdentificatieConverter",
 			"legacyservice" : "http://localhost:8181/zds/VrijBerichtService"
 		},		

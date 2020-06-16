@@ -23,7 +23,11 @@ public class Stuurgegevens {
 	
 	@XmlElement(namespace = STUF)
 	public String tijdstipBericht;
+
+	@XmlElement(namespace = STUF)	
+	public String crossRefnummer;
+		
 	@XmlElement(namespace = STUF)
 	public String entiteittype;
-	
+
 }

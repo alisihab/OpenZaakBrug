@@ -95,7 +95,13 @@ public class GeefZaakdocumentLezenConverter extends Converter {
 			
 			// beetje dubbel
 			bv03.xpathDocument.setNodeValue(".//zkn:antwoord//zkn:object//zkn:auteur", edcLa01.antwoord.object.auteur);
-			bv03.xpathDocument.setNodeValue(".//zkn:antwoord//zkn:object//zkn:creatiedatum", edcLa01.antwoord.object.creatiedatum);
+			bv03.xpathDocument.setNodeValue(".//zkn:antwoord//zkn:object//zkn:creatiedatum", edcLa01.antwoord.object.creatiedatum.replace("-", ""));
+			if(edcLa01.antwoord.object.ontvangstdatum != null && edcLa01.antwoord.object.ontvangstdatum!= "") {
+				bv03.xpathDocument.setNodeValue(".//zkn:antwoord//zkn:object//zkn:ontvangstdatum", edcLa01.antwoord.object.ontvangstdatum.replace("-", ""));
+			}
+			else {
+				bv03.xpathDocument.setNodeValue(".//zkn:antwoord//zkn:object//zkn:ontvangstdatum", "00010101");				
+			}
 			//bv03.xpathDocument.setNodeValue(".//zkn:antwoord//zkn:object//beschrijving", edcLa01.antwoord.object.dctCategorie);
 			bv03.xpathDocument.setNodeValue(".//zkn:antwoord//zkn:object//zkn:beschrijving", edcLa01.antwoord.object.dctOmschrijving);
 			bv03.xpathDocument.setNodeValue(".//zkn:antwoord//zkn:object//zkn:identificatie", edcLa01.antwoord.object.identificatie);

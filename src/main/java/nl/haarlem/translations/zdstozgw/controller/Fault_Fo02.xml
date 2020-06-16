@@ -12,6 +12,7 @@
                   <StUF:code>StUF058</StUF:code>
                   <StUF:plek>server</StUF:plek>
                   <StUF:omschrijving>${errorMessage}</StUF:omschrijving>
+                  <StUF:entiteittype />
                   <StUF:details>${stackTrace}</StUF:details>
                   <StUF:detailsXML>${requestBody</StUF:detailsXML>
                </StUF:body>

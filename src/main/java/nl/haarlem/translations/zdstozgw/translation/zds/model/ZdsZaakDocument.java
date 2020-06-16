@@ -21,8 +21,8 @@ public class ZdsZaakDocument {
     @XmlElement(namespace = ZKN,name="dct.omschrijving", nillable = true)
 	public String dctOmschrijving;
 
-    @XmlElement(namespace = ZKN,name="dct.categorie", nillable =  true)
-	public String dctCategorie;
+    //@XmlElement(namespace = ZKN,name="dct.categorie", nillable =  true)
+	//public String dctCategorie;
 
     @XmlElement(namespace = ZKN, nillable =  true)
 	public String creatiedatum;
@@ -42,8 +42,8 @@ public class ZdsZaakDocument {
     @XmlElement(namespace = ZKN, nillable =  true)
 	public String status;
 
-    @XmlElement(namespace = ZKN, nillable =  true)
-	public String vezenddatum;
+    //	@XmlElement(namespace = ZKN, nillable =  true)
+	//	public String vezenddatum;
 
     @XmlElement(namespace = ZKN, nillable =  true)
 	public String vertrouwelijkAanduiding;
@@ -54,7 +54,9 @@ public class ZdsZaakDocument {
     @XmlElement(namespace = ZKN, nillable =  true)
 	public String link;
 
+    /*
     @XmlElement(namespace = ZKN, nillable =  true)
 	public String inhoud;
+	*/
 
 }

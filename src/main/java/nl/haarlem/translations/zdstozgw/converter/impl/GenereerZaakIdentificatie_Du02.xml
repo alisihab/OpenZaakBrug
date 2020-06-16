@@ -1,6 +1,10 @@
-<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
+<s:Envelope
+	xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
 	<s:Body>
-		<ZKN:genereerZaakIdentificatie_Du02 xmlns:StUF="http://www.egem.nl/StUF/StUF0301" xmlns:ZKN="http://www.egem.nl/StUF/sector/zkn/0310" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+		<ZKN:genereerZaakIdentificatie_Du02
+			xmlns:StUF="http://www.egem.nl/StUF/StUF0301"
+			xmlns:ZKN="http://www.egem.nl/StUF/sector/zkn/0310"
+			xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 			<ZKN:stuurgegevens>
 				<StUF:berichtcode>Du02</StUF:berichtcode>
 				<StUF:zender>
@@ -14,13 +18,13 @@
 					<StUF:gebruiker>${ontvangerGebruiker}</StUF:gebruiker>
 				</StUF:ontvanger>
 				<StUF:referentienummer>${referentienummer}</StUF:referentienummer>
-				<StUF:crossRefnummer>${crossrefnummer}</StUF:crossRefnummer>	
 				<StUF:tijdstipBericht>${tijdstipbericht}</StUF:tijdstipBericht>
+				<StUF:crossRefnummer>${crossrefnummer}</StUF:crossRefnummer>
 				<StUF:functie>genereerZaakidentificatie</StUF:functie>
 			</ZKN:stuurgegevens>
-			<ZKN:document StUF:entiteittype="ZAK" StUF:functie="entiteit">
+			<ZKN:zaak StUF:entiteittype="ZAK" StUF:functie="entiteit">
 				<ZKN:identificatie>${zaakidentificatie}</ZKN:identificatie>
-			</ZKN:document>
+			</ZKN:zaak>
 		</ZKN:genereerZaakIdentificatie_Du02>
 	</s:Body>
 </s:Envelope>
