@@ -1,4 +1,4 @@
-package nl.haarlem.translations.zdstozgw.requesthandler.impl;
+package nl.haarlem.translations.zdstozgw.requesthandler.impl.logging;
 
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.conn.ssl.TrustStrategy;

@@ -1,4 +1,4 @@
-package nl.haarlem.translations.zdstozgw.requesthandler.impl;
+package nl.haarlem.translations.zdstozgw.requesthandler.impl.logging;
 
 import lombok.Data;
 import org.apache.commons.httpclient.HttpStatus;
@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.Lob;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Entity
 @Data
@@ -16,6 +17,8 @@ public class RequestResponseCycle {
     @Id
     @GeneratedValue
     private long id;
+    private String sessionUuid;
+
 
     // Wat heeft de client gevraagd en gekregen
     private LocalDateTime timestamp;
@@ -52,9 +55,17 @@ public class RequestResponseCycle {
     @Lob
     private String zgwUrl;
     @Lob
+    private String zgwMethod;
+    @Lob
     private String zgwRequestBody;
     @Lob
     private String zgwResponseBody;
+    @Lob
+    private String zgwResponseCode;
+
+    public RequestResponseCycle(){
+        this.sessionUuid = UUID.randomUUID().toString();
+    }
 
     public RequestResponseCycle(String clientUrl, String clientSoapAction, String clientRequestBody) {
         this.timestamp = LocalDateTime.now();

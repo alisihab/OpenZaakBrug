@@ -1,15 +1,17 @@
 package nl.haarlem.translations.zdstozgw.requesthandler.impl;
 
 import nl.haarlem.translations.zdstozgw.config.ConfigService;
+import nl.haarlem.translations.zdstozgw.config.SpringContext;
 import nl.haarlem.translations.zdstozgw.config.model.Configuratie;
 import nl.haarlem.translations.zdstozgw.config.model.ResponseType;
 import nl.haarlem.translations.zdstozgw.converter.Converter;
 import nl.haarlem.translations.zdstozgw.requesthandler.RequestHandler;
+import nl.haarlem.translations.zdstozgw.requesthandler.impl.logging.RequestResponseCycle;
+import nl.haarlem.translations.zdstozgw.requesthandler.impl.logging.RequestResponseCycleService;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.methods.StringRequestEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
 import java.lang.invoke.MethodHandles;
@@ -17,22 +19,29 @@ import java.lang.invoke.MethodHandles;
 public class ReplicationRequestHandler extends RequestHandler {
 
     private static final Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
-    @Autowired
-    RequestResponseCycleRepository requestResponseCycleRepository;
+
+    private RequestResponseCycleService requestResponseCycleService;
+
     private String request;
 
     public ReplicationRequestHandler(Converter converter, ConfigService configService) {
         super(converter, configService);
+        requestResponseCycleService = SpringContext.getBean(RequestResponseCycleService.class);
     }
 
     @Override
     public String execute(String request, String requestUrl, String requestSoapAction) {
         Configuratie configuratie = configService.getConfiguratie();
         validateReplicationConfiguration(configuratie);
-//        RequestResponseCycle requestResponseCycle = new RequestResponseCycle()
-//                .setClientRequestBody(request)
-//                .setClientSoapAction(requestSoapAction)
-//                .setClientUrl(requestUrl);
+        RequestResponseCycle requestResponseCycle = new RequestResponseCycle()
+                .setClientRequestBody(request)
+                .setClientSoapAction(requestSoapAction)
+                .setClientUrl(requestUrl)
+                .setReplicationModus(this.getConfigService().getConfiguratie().getReplication().toString())
+                .setConverterImplementation(this.getConverter().getTranslation().getImplementation())
+                .setConverterTemplate(this.getConverter().getTranslation().getImplementation());
+        requestResponseCycleService.add(requestResponseCycle);
+        this.requestResponseCycleService.setSessionUUID(requestResponseCycle.getSessionUuid());
 
         this.request = request;
         String responseZDS = null, responseZGW = null;

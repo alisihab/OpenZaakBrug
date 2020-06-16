@@ -13,4 +13,7 @@ public class Replication {
     @Expose
     public boolean enableZGW;
     public ResponseType responseType;
+    @SerializedName("enableLogging")
+    @Expose
+    public boolean enableLogging;
 }
