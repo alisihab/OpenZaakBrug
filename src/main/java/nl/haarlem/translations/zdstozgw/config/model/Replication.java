@@ -13,7 +13,13 @@ public class Replication {
     @Expose
     public boolean enableZGW;
     public ResponseType responseType;
-    @SerializedName("enableLogging")
-    @Expose
-    public boolean enableLogging;
+
+    @Override
+    public String toString() {
+        return "Replication{" +
+                "enableZDS=" + enableZDS +
+                ", enableZGW=" + enableZGW +
+                ", responseType=" + responseType +
+                '}';
+    }
 }
