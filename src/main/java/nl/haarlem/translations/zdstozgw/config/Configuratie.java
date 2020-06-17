@@ -24,4 +24,7 @@ public class Configuratie {
 	//@SerializedName("documentTypes")
 	//@Expose
 	//public List<DocumentType> documentTypes = null;
+	@SerializedName("timeOffsetHour")
+	@Expose
+	public int timeOffsetHour;
 }

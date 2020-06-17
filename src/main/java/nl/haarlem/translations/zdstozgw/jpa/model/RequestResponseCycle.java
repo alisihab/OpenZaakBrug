@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Lob;
+import javax.persistence.Transient;
 
 import org.springframework.http.HttpStatus;
 
@@ -38,6 +39,8 @@ public class RequestResponseCycle {
 	private String converterTemplate;
 
 	// Wat is heeft het zds zaaksysteem gekregen en ontvangen
+	@Transient
+	private int zdsCount = 0;
 	@Lob	
 	private String zdsUrl;
 	@Lob	
@@ -48,7 +51,9 @@ public class RequestResponseCycle {
 	private String zdsResponseCode;
 	@Lob
 	private String zdsResponseBody;
-
+	
+	@Transient
+	private int zgwCount = 0;
 	@Lob
 	private String zgwUrl;
 	@Lob
@@ -99,22 +104,24 @@ public class RequestResponseCycle {
 	}
 
 	public void addZdsRequest(String zdsUrl, String zdsSoapAction, String zdsRequestBody) {
-		this.zdsUrl = (this.zdsUrl == null ?  zdsUrl : this.zdsUrl + "\n---------------------\n" + zdsUrl);
-		this.zdsSoapAction = (this.zdsSoapAction == null ?  zdsSoapAction : this.zdsSoapAction + "\n---------------------\n" + zdsSoapAction);
-		this.zdsRequestBody = (this.zdsRequestBody == null ?  zdsRequestBody : this.zdsRequestBody + "\n---------------------\n" + zdsRequestBody);
+		this.zdsUrl = (this.zdsUrl == null ?  zdsUrl : this.zdsUrl + "\n[zds#" + zdsCount + "]---------------------\n" + zdsUrl);
+		this.zdsSoapAction = (this.zdsSoapAction == null ?  zdsSoapAction : this.zdsSoapAction + "\n[zds#" + zdsCount + "]---------------------\n" + zdsSoapAction);
+		this.zdsRequestBody = (this.zdsRequestBody == null ?  zdsRequestBody : this.zdsRequestBody + "\n[zds#" + zdsCount + "]---------------------\n" + zdsRequestBody);
 	}
 
 	public void addZdsRespone(String zdsResponseCode, String zdsResponseBody) {
-		this.zdsResponseCode = (this.zdsResponseCode == null ?  zdsResponseCode : this.zdsResponseCode + "\n---------------------\n" + zdsResponseCode);
-		this.zdsResponseBody = (this.zdsResponseBody == null ?  zdsResponseBody : this.zdsResponseBody + "\n---------------------\n" + zdsResponseBody);				
+		this.zdsResponseCode = (this.zdsResponseCode == null ?  zdsResponseCode : this.zdsResponseCode + "\n[zds#" + zdsCount + "]---------------------\n" + zdsResponseCode);
+		this.zdsResponseBody = (this.zdsResponseBody == null ?  zdsResponseBody : this.zdsResponseBody + "\n[zds#" + zdsCount + "]---------------------\n" + zdsResponseBody);				
+		zdsCount += 1;
 	}
 	
 	public void addZgwRequest(String request, String method, String json) {
-		this.zgwUrl = (this.zgwUrl == null ?  method + " " + request : this.zgwUrl + "\n---------------------\n" + method + " " + request);
-		this.zgwRequestBody = (this.zgwRequestBody == null ?  request : this.zgwRequestBody+ "\n---------------------\n" + request); 
+		this.zgwUrl = (this.zgwUrl == null ?  method + " " + request : this.zgwUrl + "\n[zgw#" + zgwCount + "]---------------------\n" + method + " " + request);
+		this.zgwRequestBody = (this.zgwRequestBody == null ?  request : this.zgwRequestBody+ "\n[zgw" + zgwCount + "]---------------------\n" + request); 
 	}
 
 	public void addZgwResponse(String response) {
-		this.zgwResponseBody = (this.zgwResponseBody == null ?  response : this.zgwResponseBody + "\n---------------------\n" + response);		
+		this.zgwResponseBody = (this.zgwResponseBody == null ?  response : this.zgwResponseBody + "\n[zgw" + zgwCount + "]---------------------\n" + response);
+		zgwCount += 1;
 	}	
 }

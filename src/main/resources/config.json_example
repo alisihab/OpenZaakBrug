@@ -5,6 +5,7 @@
 	"replicationModus": "USE_ZGW (convertToZgw) : Converteer de berichten naar OpenZaak logt berichtenverkeer en fouten naar de tabel: RequestResponseCycle",
 	
 	"replicationModus": "USE_ZGW",
+	"timeOffsetHour":  -2,	
 	"translations": [
 		{
 			"translation": "ZDS 1.1 GWS4all genereerZaakIdentificatie_Di02",

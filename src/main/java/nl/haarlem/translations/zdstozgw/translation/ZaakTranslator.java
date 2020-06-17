@@ -6,7 +6,10 @@ import static nl.haarlem.translations.zdstozgw.translation.zds.model.namespace.N
 import static nl.haarlem.translations.zdstozgw.translation.zds.model.namespace.Namespace.ZKN;
 
 import java.lang.invoke.MethodHandles;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlAttribute;
@@ -136,11 +139,10 @@ public class ZaakTranslator {
 			var zgwZaakStatusNummer = zgwClient.getZaakTypeByIdentiticatie(zdsZaak.heeft.gerelateerde.volgnummer);
 			var zgwZaakStatusCode = zgwClient.getZaakTypeByIdentiticatie(zdsZaak.heeft.gerelateerde.code);
 			var zgwZaakStatusOmschrijving = zgwClient.getZaakTypeByIdentiticatie(zdsZaak.heeft.gerelateerde.omschrijving);
-
 			
 			ZgwStatus zgwStatus = new ZgwStatus();
 			zgwStatus.statustoelichting = zdsZaak.heeft.statustoelichting;
-			zgwStatus.datumStatusGezet = getDateTimeStringFromStufDate(zdsZaak.heeft.datumStatusGezet);
+			zgwStatus.datumStatusGezet = getDateTimeStringFromStufDate(zdsZaak.heeft.datumStatusGezet, this.configService.getConfiguratie().getTimeOffsetHour());
 			zgwStatus.zaak = zgwZaak.url;
 			zgwStatus.statustype = zgwClient.getStatusTypeByZaakTypeAndVolgnummer(zgwZaak.zaaktype, Integer.valueOf(zdsZaak.heeft.gerelateerde.volgnummer)).url;
 
@@ -350,7 +352,7 @@ public class ZaakTranslator {
 		//this.zaakTranslator.setZakLk01(zakLk01);
 		ZgwStatus zgwStatus = new ZgwStatus();
 		zgwStatus.statustoelichting = zdsZaak.heeft.statustoelichting;
-		zgwStatus.datumStatusGezet = getDateTimeStringFromStufDate(zdsZaak.heeft.datumStatusGezet);
+		zgwStatus.datumStatusGezet = getDateTimeStringFromStufDate(zdsZaak.heeft.datumStatusGezet, this.configService.getConfiguratie().getTimeOffsetHour());
 		zgwStatus.zaak = zgwZaak.url;
 		zgwStatus.statustype = zgwClient.getStatusTypeByZaakTypeAndVolgnummer(zgwZaak.zaaktype, Integer.valueOf(zdsZaak.heeft.gerelateerde.volgnummer)).url;
 
@@ -506,8 +508,12 @@ public class ZaakTranslator {
 	}
 	*/
 	
-	private String getDateTimeStringFromStufDate(String stufDate) {
-
+	private String getDateTimeStringFromStufDate(String stufDate) throws ZaakTranslatorException {
+		return getDateTimeStringFromStufDate(stufDate, 0);
+	}
+	
+	private String getDateTimeStringFromStufDate(String stufDate, int offsetHour) throws ZaakTranslatorException {
+		/*
 		var year = stufDate.substring(0, 4);
 		var month = stufDate.substring(4, 6);
 		var day = stufDate.substring(6, 8);
@@ -516,6 +522,18 @@ public class ZaakTranslator {
 		var seconds = stufDate.substring(12, 14);
 		var milliseconds = stufDate.substring(14);
 		return year + "-" + month + "-" + day + "T" + hours + ":" + minutes + ":" + seconds + "." + milliseconds + "Z";
+		*/
+		var zdsdate = new SimpleDateFormat("yyyyMMddHHmmssSSS");
+		var zgwdate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+		try {
+			var date = zdsdate.parse(stufDate);
+			date.setTime(date.getTime() + (offsetHour * 60 * 60 * 1000));
+			return zgwdate.format(date);
+
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			  throw new ZaakTranslatorException("ongeldige stuf-datum: '" + stufDate + "'");
+		}
 	}
 
 	public ZakLa01 getZaakDetails(ZakLv01 zakLv01) throws ZaakTranslatorException, ZGWClientException {
