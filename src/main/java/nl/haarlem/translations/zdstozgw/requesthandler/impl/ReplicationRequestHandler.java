@@ -26,8 +26,6 @@ public class ReplicationRequestHandler extends RequestHandler {
 
     private RequestResponseCycleService requestResponseCycleService;
 
-
-
     private String request;
 
     public ReplicationRequestHandler(Converter converter, ConfigService configService) {
@@ -47,7 +45,7 @@ public class ReplicationRequestHandler extends RequestHandler {
                 .setClientUrl(requestUrl)
                 .setReplicationModus(this.getConfigService().getConfiguratie().getReplication().toString())
                 .setConverterImplementation(this.getConverter().getTranslation().getImplementation())
-                .setConverterTemplate(this.getConverter().getTranslation().getImplementation());
+                .setConverterTemplate(this.getConverter().getTranslation().getTemplate());
         requestResponseCycleService.add(requestResponseCycle);
         this.requestResponseCycleService.setRequestResponseCycleSession(requestResponseCycle);
 
