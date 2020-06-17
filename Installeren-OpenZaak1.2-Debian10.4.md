@@ -1,6 +1,14 @@
 # Installeren van OpenZaak 1.2 op Debian 10.4
 
-Bronnen: 
+# WAARSCHUWING: Deze installatie is puur voor het snel testen!
+Dit betekend dus dat je hier nooit gegevens in moet opslaan of het ontsluiten.
+De meest voor de handliggende punten van aandacht zijn bij deze installatie:
+- SECRET_KEY moet nooit publiek zijn
+- Database credentials wil je niet delen
+- DEBUG wil je echt niet aan hebben staa
+
+
+## Bronnen: 
 
 - https://github.com/open-zaak/open-zaak/blob/1e5e4ac092b5b18376ce14115800e79b650cd4cc/docs/installation/linux.rst
 - https://open-zaak.readthedocs.io/en/latest/development/getting_started.html#installation
