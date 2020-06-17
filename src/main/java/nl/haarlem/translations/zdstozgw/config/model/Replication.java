@@ -13,4 +13,13 @@ public class Replication {
     @Expose
     public boolean enableZGW;
     public ResponseType responseType;
+
+    @Override
+    public String toString() {
+        return "Replication{" +
+                "enableZDS=" + enableZDS +
+                ", enableZGW=" + enableZGW +
+                ", responseType=" + responseType +
+                '}';
+    }
 }

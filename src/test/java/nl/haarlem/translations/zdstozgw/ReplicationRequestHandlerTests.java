@@ -38,7 +38,7 @@ public class ReplicationRequestHandlerTests {
         doReturn(configuratie).when(configService).getConfiguratie();
 
         //act
-        this.replicationRequestHandler.execute("test");
+        this.replicationRequestHandler.execute("test", null, null);
     }
 
     @Test(expected = RuntimeException.class)
@@ -53,7 +53,7 @@ public class ReplicationRequestHandlerTests {
         doReturn(configuratie).when(configService).getConfiguratie();
 
         //act
-        this.replicationRequestHandler.execute("test");
+        this.replicationRequestHandler.execute("test", null, null);
     }
 
     @Test(expected = RuntimeException.class)
@@ -68,7 +68,7 @@ public class ReplicationRequestHandlerTests {
         doReturn(configuratie).when(configService).getConfiguratie();
 
         //act
-        this.replicationRequestHandler.execute("test");
+        this.replicationRequestHandler.execute("test", null, null);
     }
 
     @Test(expected = RuntimeException.class)
@@ -83,7 +83,7 @@ public class ReplicationRequestHandlerTests {
         doReturn(configuratie).when(configService).getConfiguratie();
 
         //act
-        this.replicationRequestHandler.execute("test");
+        this.replicationRequestHandler.execute("test", null, null);
     }
 
 }

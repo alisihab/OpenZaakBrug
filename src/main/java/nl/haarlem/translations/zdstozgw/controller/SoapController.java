@@ -36,7 +36,7 @@ public class SoapController {
                                            @RequestBody String body) {
 
         RequestHandler requestHandler = requestHandlerFactory.getRequestHandler(this.converterFactory.getConverter(soapAction.replace("\"", ""), body));
-        return requestHandler.execute(body);
+        return requestHandler.execute(body,requestUrl,soapAction);
     }
 
 
