@@ -331,7 +331,8 @@ public class ZaakTranslator {
 		//edcLa01.antwoord.object.dctCategorie = document.beschrijving;
 		edcLa01.antwoord.object.dctOmschrijving = document.beschrijving;
 		edcLa01.antwoord.object.identificatie = document.identificatie;
-				
+		
+		edcLa01.antwoord.object.bestandsnaam = document.bestandsnaam;
 		edcLa01.antwoord.object.inhoud = zgwClient.getBas64Inhoud(document.inhoud);
 		
 		edcLa01.antwoord.object.link = document.url;

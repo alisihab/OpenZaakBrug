@@ -100,7 +100,10 @@ public class GeefZaakdocumentLezenConverter extends Converter {
 			//bv03.xpathDocument.setNodeValue(".//zkn:antwoord//zkn:object//beschrijving", edcLa01.antwoord.object.dctCategorie);
 			bv03.xpathDocument.setNodeValue(".//zkn:antwoord//zkn:object//zkn:beschrijving", edcLa01.antwoord.object.dctOmschrijving);
 			bv03.xpathDocument.setNodeValue(".//zkn:antwoord//zkn:object//zkn:identificatie", edcLa01.antwoord.object.identificatie);
+			
 			bv03.xpathDocument.setNodeValue(".//zkn:antwoord//zkn:object//zkn:inhoud", edcLa01.antwoord.object.inhoud);
+			bv03.xpathDocument.setAttributeValue(".//zkn:antwoord//zkn:object//zkn:inhoud", "StUF:bestandsnaam", edcLa01.antwoord.object.bestandsnaam);			
+			
 			//bv03.xpathDocument.setNodeValue(".//zkn:antwoord//zkn:object//zkn:link", edcLa01.antwoord.object.link);
 
 			/*

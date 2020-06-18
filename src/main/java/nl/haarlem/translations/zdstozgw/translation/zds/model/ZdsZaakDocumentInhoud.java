@@ -11,6 +11,9 @@ import javax.xml.bind.annotation.XmlElement;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ZdsZaakDocumentInhoud extends ZdsZaakDocument {
-    @XmlElement(namespace = ZKN, nillable =  true)
+    @XmlAttribute(namespace = STUF)
+	public String bestandsnaam;	
+	
+    @XmlElement(namespace = ZKN, nillable =  false)
 	public String inhoud;
 }

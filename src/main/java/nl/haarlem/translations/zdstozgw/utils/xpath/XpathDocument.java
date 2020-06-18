@@ -15,6 +15,8 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
+import aj.org.objectweb.asm.Attribute;
+
 public class XpathDocument {
 
 	private static final Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
@@ -112,5 +114,19 @@ public class XpathDocument {
 			log.error(e.getMessage());
 		}
 		return value;
+	}
+
+	public void setAttributeValue(String nodeExpression, String attributeName, String value) {
+		Element element;
+		try {
+			element = (Element) this.xPath.compile(nodeExpression).evaluate(this.document, XPathConstants.NODE);
+			
+		} catch (XPathExpressionException e) {
+			log.error(e.getMessage());
+			return;
+		}
+		log.info(element.toString());		
+		var attribute =  element.getAttributeNode(attributeName);
+		attribute.setValue(value);		
 	}
 }
