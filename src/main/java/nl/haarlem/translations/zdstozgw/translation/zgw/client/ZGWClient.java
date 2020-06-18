@@ -3,6 +3,7 @@ package nl.haarlem.translations.zdstozgw.translation.zgw.client;
 import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -24,6 +25,7 @@ import org.springframework.web.client.RequestCallback;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Type;
@@ -58,8 +60,8 @@ public class ZGWClient {
 	public class ZGWClientException extends Exception {
 		protected String details;
 
-		public ZGWClientException(String message, String details, Throwable err) {
-			super(message, err);
+		public ZGWClientException(String message, String json, Throwable err) {
+			super(message + " json:" + json, err);
 			this.details = details;
 		}
 
@@ -73,8 +75,8 @@ public class ZGWClient {
 	@Value("${openzaak.baseUrl}")
 	private String baseUrl;
 
-	@Autowired
-    HttpService httpService;
+	//@Autowired
+    //HttpService httpService;
 
     @Autowired
 	RestTemplateService restTemplateService;
@@ -86,7 +88,7 @@ public class ZGWClient {
 		HttpEntity<String> request = new HttpEntity<String>(json, this.restTemplateService.getHeaders());
 		String zgwResponse = null;
 		try {
-			restLogging.addZgwRequest(url, "POST", request.toString());
+			restLogging.addZgwRequest(url, "POST", json);
 			zgwResponse = this.restTemplateService.getRestTemplate().postForObject(url, request, String.class);
 			restLogging.addZgwResponse(zgwResponse);
 		} catch (HttpStatusCodeException hsce) {
@@ -150,14 +152,59 @@ public class ZGWClient {
 	
     public String getBas64Inhoud(String url) throws ZGWClientException {
 		log.info("GET BASE64 INHOUD: " + url);    	
-    	String result = null;
+/*
+		HttpEntity entity = new HttpEntity(this.restTemplateService.getHeaders());
+		ResponseEntity<String> response = null;
+		
+		try {
+			restLogging.addZgwRequest(url, "GET", "");
+			
+			response = this.restTemplateService.getRestTemplate().exchange(url, HttpMethod.GET, entity, String.class);
+			restLogging.addZgwResponse(response.toString());
+		} catch (HttpStatusCodeException hsce) {
+			throw new ZGWClientException("GET naar OpenZaak: " + url + " gaf foutmelding" + hsce.getStatusText(), url,
+					hsce);
+		} catch (org.springframework.web.client.ResourceAccessException rae) {
+			throw new ZGWClientException("GET naar OpenZaak: " + url + " niet geslaagd", url, rae);
+		}
+
+		log.info("GET response:\n\t" + response.getBody());
+
+		return response.getBody();
+*/
+		HttpEntity entity = new HttpEntity(this.restTemplateService.getHeaders());		
+		try {
+			restLogging.addZgwRequest(url, "GET", "");
+			
+			ResponseEntity<byte[]> response = null;
+			response = this.restTemplateService.getRestTemplate().exchange(url, HttpMethod.GET, entity,  byte[].class);
+			
+			//response = this.restTemplateService.getRestTemplate().exchange(url, HttpMethod.GET, entity, String.class);
+			/*
+			byte[] data = this.restTemplateService.getRestTemplate().execute(url, HttpMethod.GET, null, clientHttpResponse -> {
+	            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+	            org.springframework.util.StreamUtils.copy(clientHttpResponse.getBody(), bos);
+			    return bos.toByteArray();
+			});
+			*/
+			byte[] data =  response.getBody();
+			restLogging.addZgwResponse("DOWNLOADED #" + data.length + " bytes");
+			log.info("BASE64 INHOUD:" + data.length +  " bytes");
+			return Base64.getEncoder().encodeToString(data);
+		} catch (HttpStatusCodeException hsce) {
+			throw new ZGWClientException("GET BASE64 naar OpenZaak: " + url + " gaf foutmelding" + hsce.getStatusText(), url, hsce);
+		} catch (org.springframework.web.client.ResourceAccessException rae) {
+			throw new ZGWClientException("GET BASE64 naar OpenZaak: " + url + " niet geslaagd", url, rae);
+		}
+		
+/*		
+		String result = null;
         try {
             result  = httpService.downloadFile(url);
 		} catch (IOException ioe) {
 			throw new ZGWClientException("GET BASE64 INHOUD naar OpenZaak: " + url + " gaf foutmelding" + ioe.getMessage(), url, ioe);
 		} 
-		log.info("GET BASE64 INHOUD:" + result.length() +  " bytes");
-        return result;
+*/
     }
 	
 	private String getUrlWithParameters(String url, Map<String, String> parameters) {
