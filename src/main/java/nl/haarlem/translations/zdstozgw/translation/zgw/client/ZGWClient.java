@@ -186,7 +186,7 @@ public class ZGWClient {
 	            org.springframework.util.StreamUtils.copy(clientHttpResponse.getBody(), bos);
 			    return bos.toByteArray();
 			});
-			*/
+			*/	
 			byte[] data =  response.getBody();
 			restLogging.addZgwResponse("DOWNLOADED #" + data.length + " bytes");
 			log.info("BASE64 INHOUD:" + data.length +  " bytes");
