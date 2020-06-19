@@ -39,13 +39,14 @@ import nl.haarlem.translations.zdstozgw.config.ZaakType;
 import nl.haarlem.translations.zdstozgw.jpa.model.RequestResponseCycle;
 import nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient.ZGWClientException;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.QueryResult;
-import nl.haarlem.translations.zdstozgw.translation.zgw.model.Rol;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwBasicZaak;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwBetrokkeneIdentificatie;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwEnkelvoudigInformatieObject;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwInformatieObject;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwInformatieObjectType;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwNatuurlijkPersoon;
+import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwObject;
+import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwRol;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwRolType;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwStatus;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwStatusType;
@@ -196,7 +197,28 @@ public class ZGWClient {
 		} catch (org.springframework.web.client.ResourceAccessException rae) {
 			throw new ZGWClientException("GET BASE64 naar OpenZaak: " + url + " niet geslaagd", url, rae);
 		}
+    }
 		
+    public void delete(ZgwObject zgwObject) throws ZGWClientException {
+    	String url = zgwObject.url;
+		log.info("DELETE: " + url);
+
+		HttpEntity entity = new HttpEntity(this.restTemplateService.getHeaders());
+		ResponseEntity<String> response = null;
+		
+		try {
+			restLogging.addZgwRequest(url, "DELETE", "");				
+			response = this.restTemplateService.getRestTemplate().exchange(url, HttpMethod.DELETE, entity, String.class);
+			restLogging.addZgwResponse(response.toString());
+		} catch (HttpStatusCodeException hsce) {
+			throw new ZGWClientException("DELETE naar OpenZaak: " + url + " gaf foutmelding" + hsce.getStatusText(), url,
+					hsce);
+		} catch (org.springframework.web.client.ResourceAccessException rae) {
+			throw new ZGWClientException("DELETE naar OpenZaak: " + url + " niet geslaagd", url, rae);
+		}
+
+		log.info("DELETE response:\n\t" + response.getBody());
+	}		
 /*		
 		String result = null;
         try {
@@ -205,7 +227,6 @@ public class ZGWClient {
 			throw new ZGWClientException("GET BASE64 INHOUD naar OpenZaak: " + url + " gaf foutmelding" + ioe.getMessage(), url, ioe);
 		} 
 */
-    }
 	
 	private String getUrlWithParameters(String url, Map<String, String> parameters) {
 		var i = 0;
@@ -306,15 +327,39 @@ public class ZGWClient {
 		return result;
 	}	
 	
-	
-	public ZgwCompleteZaak getZaakByIdentificatie(String zaakIdentificatie) throws ZGWClientException {
+
+	public ZgwBasicZaak getZaakBasicByIdentificatie(String zaakIdentificatie) throws ZGWClientException {
 		Map<String, String> parameters = new HashMap();
 		parameters.put("identificatie", zaakIdentificatie);
-		return getZaakDetails(parameters);
+		return getZaakBasicDetails(parameters);
+	}		
+
+	public ZgwBasicZaak getZaakBasicDetails(Map<String, String> parameters) throws ZGWClientException {
+		ZgwBasicZaak result = null;
+		var zaakJson = get(this.baseUrl + "/zaken/api/v1/zaken", parameters);
+		//try {
+			Type type = new TypeToken<QueryResult<ZgwBasicZaak>>() {
+			}.getType();
+			Gson gson = new Gson();
+			QueryResult<ZgwCompleteZaak> queryResult = gson.fromJson(zaakJson, type);
+			if (queryResult.getResults().size() == 1) {
+				result = queryResult.getResults().get(0);
+			}
+		//} catch (Exception ex) {
+		//	log.error("Exception in getZaak: " + ex.getMessage());
+		//	throw ex;
+		//}
+		return result;
+	}
+	
+	
+	public ZgwCompleteZaak getZaakCompleteByIdentificatie(String zaakIdentificatie) throws ZGWClientException {
+		Map<String, String> parameters = new HashMap();
+		parameters.put("identificatie", zaakIdentificatie);
+		return getZaakCompleteDetails(parameters);
 	}		
 	
-	public ZgwCompleteZaak getZaakDetails(Map<String, String> parameters) throws ZGWClientException {
-
+	public ZgwCompleteZaak getZaakCompleteDetails(Map<String, String> parameters) throws ZGWClientException {
 		ZgwCompleteZaak result = null;
 		var zaakJson = get(this.baseUrl + "/zaken/api/v1/zaken", parameters);
 		//try {
@@ -338,21 +383,26 @@ public class ZGWClient {
 		String response = this.post(this.baseUrl + "/zaken/api/v1/zaken", json);
 		return gson.fromJson(response, ZgwCompleteZaak.class);
 	}
-
+	/*
 	public void putZaak(ZgwBasicZaak zgwZaak) throws ZGWClientException {
 		Gson gson = new Gson();
 		String json = gson.toJson(zgwZaak, ZgwBasicZaak.class);
 		this.put(zgwZaak.url, json);
 	}
+	*/
+	public void put(ZgwObject putObject) throws ZGWClientException {
+		Gson gson = new Gson();
+		String json = gson.toJson(putObject, putObject.getClass());
+		this.put(putObject.url, json);		
+	}
 	
-	
-	public Rol postRolNPS(Rol rolNPS) throws ZGWClientException {
-		Rol result = null;
+	public ZgwRol postRolNPS(ZgwRol rolNPS) throws ZGWClientException {
+		ZgwRol result = null;
 //		try {
 			Gson gson = new Gson();
 			String json = gson.toJson(rolNPS);
 			String response = this.post(this.baseUrl + "/zaken/api/v1/rollen", json);
-			result = gson.fromJson(response, Rol.class);
+			result = gson.fromJson(response, ZgwRol.class);
 //		} catch (HttpStatusCodeException ex) {
 //			log.error("Exception in addRolNPS: " + ex.getMessage());
 //			throw ex;
@@ -496,18 +546,18 @@ public class ZGWClient {
 		return null;
 	}
 
-	public List<Rol> getRollenByZaak(String url) throws ZGWClientException {
+	public List<ZgwRol> getRollenByZaak(String url) throws ZGWClientException {
 		Map<String, String> parameters = new HashMap();
 		parameters.put("zaak", url);
 
 		var zaakTypeJson = get(this.baseUrl + "/zaken/api/v1/rollen", parameters);
 //		try {
-			Type type = new TypeToken<QueryResult<Rol>>() {
+			Type type = new TypeToken<QueryResult<ZgwRol>>() {
 			}.getType();
 			Gson gson = new Gson();
-			QueryResult<Rol> queryResult = gson.fromJson(zaakTypeJson, type);
-			var result = new ArrayList<Rol>();
-			for(Rol current: queryResult.results) {
+			QueryResult<ZgwRol> queryResult = gson.fromJson(zaakTypeJson, type);
+			var result = new ArrayList<ZgwRol>();
+			for(ZgwRol current: queryResult.results) {
 				log.debug("gevonden rol met omschrijving: '" + current.roltoelichting + "'");
 				result.add(current);
 			}

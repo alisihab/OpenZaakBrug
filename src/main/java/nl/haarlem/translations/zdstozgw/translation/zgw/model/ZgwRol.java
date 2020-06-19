@@ -6,8 +6,7 @@ import com.google.gson.annotations.SerializedName;
 import lombok.Data;
 
 @Data
-public class Rol {
-
+public class ZgwRol extends ZgwObject {
 	@SerializedName("zaak")
 	@Expose
 	public String zaak;
@@ -27,5 +26,4 @@ public class Rol {
 	@SerializedName("betrokkeneIdentificatie")
 	@Expose
 	public ZgwBetrokkeneIdentificatie betrokkeneIdentificatie;
-
 }

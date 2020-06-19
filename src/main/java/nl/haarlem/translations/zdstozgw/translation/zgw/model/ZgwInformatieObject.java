@@ -39,13 +39,7 @@ import lombok.Data;
 */
 
 @Data
-public class ZgwInformatieObject {
-	@SerializedName("url")
-	@Expose
-	public String url;
-	@SerializedName("uuid")
-	@Expose
-	public String uuid;
+public class ZgwInformatieObject extends ZgwObject {
 	
 	@SerializedName("informatieobjecttype")
 	@Expose

@@ -8,14 +8,7 @@ import com.google.gson.annotations.SerializedName;
 import lombok.Data;
 
 @Data
-public class ZgwBasicZaak {
-
-	@SerializedName("url")
-	@Expose
-	public String url;
-	@SerializedName("uuid")
-	@Expose
-	public String uuid;
+public class ZgwBasicZaak extends ZgwObject {
 	@SerializedName("identificatie")
 	@Expose
 	public String identificatie;

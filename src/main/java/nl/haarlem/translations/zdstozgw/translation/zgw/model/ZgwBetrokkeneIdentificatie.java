@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName;
 import lombok.Data;
 
 @Data
-public class ZgwBetrokkeneIdentificatie {
+public class ZgwBetrokkeneIdentificatie extends ZgwObject {
 	
 	// medewerker
 	@Expose
@@ -18,7 +18,7 @@ public class ZgwBetrokkeneIdentificatie {
 	@Expose
 	public String voorvoegselAchternaam;
 
-	// medewerker
+	// natuurlijk_persoon
 	@Expose
 	public String inpBsn;
 	@Expose
