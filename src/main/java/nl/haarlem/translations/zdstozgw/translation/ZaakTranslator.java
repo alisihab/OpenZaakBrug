@@ -198,32 +198,32 @@ public class ZaakTranslator {
 		var nothingRollen = new java.util.ArrayList<ZgwRol>();
 		
 		// alles wat we gehad hebben verwijderen we uit de lijst
-		while(wasRollen.size() > 0 && wordtRollen.size() > 0 ) {
+		while(wasRollen.size() > 0 || wordtRollen.size() > 0 ) {
 			if(wasRollen.size() == 0) {
 				// er moet een rol bijkomen
-				var wasRol = wordtRollen.get(0);
-				wasRol.setZaak(zgwZaak.getUrl());
-				postRollen.add(wasRol);
+				var wordtRol = wordtRollen.get(0);
+				wordtRol.setZaak(zgwZaak.getUrl());
+				postRollen.add(wordtRol);
 				// deze hebben we gehad
-				wasRollen.remove(wasRol);
+				wordtRollen.remove(0);
 			}
 			else if(wordtRollen.size() == 0) {
 				// deze rol moet verwijderd worden
-				var wordtRol = wordtRollen.get(0);
+				var wasRol = wasRollen.get(0);
 				Boolean gevonden = false;
 				for(ZgwRol zgwRol : zgwRollen) {
-					if(zgwRol.betrokkeneType.equals(wordtRol.betrokkeneType)
+					if(zgwRol.betrokkeneType.equals(wasRol.betrokkeneType)
 							&& 
 							(		
-									(zgwRol.betrokkeneIdentificatie.inpBsn == null && wordtRol.betrokkeneIdentificatie.inpBsn == null)
+									(zgwRol.betrokkeneIdentificatie.inpBsn == null && wasRol.betrokkeneIdentificatie.inpBsn == null)
 									||
-									zgwRol.betrokkeneIdentificatie.inpBsn.equals(wordtRol.betrokkeneIdentificatie.inpBsn)
+									zgwRol.betrokkeneIdentificatie.inpBsn.equals(wasRol.betrokkeneIdentificatie.inpBsn)
 							)
 							&& 
 							(
-									(zgwRol.betrokkeneIdentificatie.identificatie != null && wordtRol.betrokkeneIdentificatie.identificatie != null)
+									(zgwRol.betrokkeneIdentificatie.identificatie != null && wasRol.betrokkeneIdentificatie.identificatie != null)
 									||
-									zgwRol.betrokkeneIdentificatie.identificatie.equals(wordtRol.betrokkeneIdentificatie.identificatie)
+									zgwRol.betrokkeneIdentificatie.identificatie.equals(wasRol.betrokkeneIdentificatie.identificatie)
 							) 
 						)
 					{
@@ -235,7 +235,7 @@ public class ZaakTranslator {
 				}
 				if(!gevonden) log.warn("rol niet terug gevonden in openzaak!");
 				// deze hebben we gehad
-				wordtRollen.remove(wordtRol);				
+				wasRollen.remove(0);				
 			}
 			else {
 				var wordtRol = wordtRollen.get(0);
@@ -303,29 +303,28 @@ public class ZaakTranslator {
 
 							}
 							// deze hebben we gehad
-							wasRollen.remove(wasRol);
+							if(!wasRollen.remove(wasRol)) throw new ZaakTranslatorException("fout bij het verwijderen van rol uit de rollenlijst");
 							break;
 						}
 				}
 				// deze hebben we gehad
-				wordtRollen.remove(wordtRol);				
-			}
-			
-			log.info("nothing rollen:" + nothingRollen.size());
-			log.info("post rollen:" + postRollen.size());
-			log.info("put rollen:" + putRollen.size());
-			log.info("delete rollen:" + deleteRollen.size());
-			
-			for(ZgwRol rol : postRollen) { 
-				zgwClient.postRolNPS(rol);
-			}					
-			for(ZgwRol rol : putRollen) { 
-				zgwClient.put(rol);
-			}
-			for(ZgwRol rol : deleteRollen) { 
-				zgwClient.delete(rol);
-			}		
+				wordtRollen.remove(0);				
+			}			
 		}
+		log.info("nothing rollen:" + nothingRollen.size());
+		log.info("post rollen:" + postRollen.size());
+		log.info("put rollen:" + putRollen.size());
+		log.info("delete rollen:" + deleteRollen.size());
+		
+		for(ZgwRol rol : postRollen) { 
+			zgwClient.postRolNPS(rol);
+		}					
+		for(ZgwRol rol : putRollen) { 
+			zgwClient.put(rol);
+		}
+		for(ZgwRol rol : deleteRollen) { 
+			zgwClient.delete(rol);
+		}				
 	}	
 
 	private void updateZaak(ZgwBasicZaak zgwZaak, ZdsZaak zdsWasZaak, ZdsZaak zdsWordtZaak) throws ZGWClientException, ZaakTranslatorException {
