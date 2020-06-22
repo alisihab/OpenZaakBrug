@@ -3,11 +3,13 @@ package nl.haarlem.translations.zdstozgw;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZakLk01_v2;
 import nl.haarlem.translations.zdstozgw.utils.XmlUtils;
 import org.apache.commons.io.IOUtils;
-import static org.junit.Assume.*;
+import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.io.IOException;
+
+import static org.junit.Assume.assumeTrue;
 
 @SpringBootTest
 public class XmlUnitTests {
@@ -35,5 +37,17 @@ public class XmlUnitTests {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	@Test
+	public void getApplicicatieFromZender() throws IOException {
+		//assign
+		String content = IOUtils.toString(getClass().getClassLoader().getResourceAsStream("zds1.1/ActualiseerZaakstatus"), "UTF-8");
+
+		//act
+		String applicatie = XmlUtils.getApplicicatieFromZender(content);
+
+		//assert
+		Assert.assertEquals( "GWS4all",applicatie);
 	}
 }

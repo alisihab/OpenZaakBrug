@@ -1,4 +1,10 @@
 {
+  "requestHandlerImplementation": "nl.haarlem.translations.zdstozgw.requesthandler.impl.ReplicationRequestHandler",
+   "replication": {
+       "enableZDS": true,
+       "enableZGW": true,
+       "responseType": "zds"
+     },
   "zaakTypes": [
     {
       "code": "1",
