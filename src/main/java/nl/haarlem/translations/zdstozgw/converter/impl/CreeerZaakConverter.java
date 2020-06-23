@@ -67,8 +67,7 @@ public class CreeerZaakConverter extends Converter {
 	
 	@Override
 	public String convertToZgw(RequestResponseCycle session, ZGWClient zgwClient, ConfigService configService, ApplicationParameterRepository repository, String requestBody) {
-		try {
-			
+		try {			
 			ZakLk01 zakLk01 = (ZakLk01) XmlUtils.getStUFObject(requestBody, ZakLk01.class);					
 			var translator = new ZaakTranslator(zgwClient, configService);			
 			var zgwZaak = translator.creeerZaak(zakLk01);
