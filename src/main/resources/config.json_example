@@ -83,7 +83,7 @@
 			"translation": "ZDS 1.1 Generic ActualiseerZaakstatus_Lk01",
 			"soapaction": "http://www.egem.nl/StUF/sector/zkn/0310/actualiseerZaakstatus_Lk01",
 			"requestcontains": "",
-			"template": "nvt.",
+			"template": "src/main/java/nl/haarlem/translations/zdstozgw/converter/impl/ActualiseerZaakstatus_La01.xml",			
 			"implementation": "nl.haarlem.translations.zdstozgw.converter.impl.ActualiseerZaakStatusConverter",
 			"legacyservice" : "http://localhost:8181/zds/BeantwoordVraag"		
 		},				
