@@ -482,6 +482,10 @@ public class ZaakTranslator {
 	private ZgwBetrokkeneIdentificatie getBetrokkeneIdentificatieMedewerker(ZdsMedewerker zdsMedewerker)  {
 		ZgwBetrokkeneIdentificatie zgwMedewerker = new ZgwBetrokkeneIdentificatie();
 		zgwMedewerker.identificatie = zdsMedewerker.identificatie;
+		zgwMedewerker.voorletters = zdsMedewerker.voorletters;
+		zgwMedewerker.voorvoegselAchternaam = "";
+		zgwMedewerker.achternaam = zdsMedewerker.achternaam;
+		
 		return zgwMedewerker;
 	}
 		
