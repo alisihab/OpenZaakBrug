@@ -461,12 +461,11 @@ public class ZaakTranslator {
 		nps.setVoornamen(natuurlijkPersoon.voornamen);
 		nps.setGeboortedatum(getDateStringFromZdsDate(natuurlijkPersoon.geboortedatum));
 		nps.setGeslachtsaanduiding(natuurlijkPersoon.geslachtsaanduiding.toLowerCase());
-		/*
 		if(natuurlijkPersoon.verblijfsadres != null) {
 			nps.verblijfsadres = new ZgwAdres();
-			nps.verblijfsadres.aoaIdentificatie = natuurlijkPersoon.verblijfsadres.identificatie;
-			//if (true) throw new RuntimeException("waarde:" + nps.verblijfsadres.aoaIdentificatie);
-			if(nps.verblijfsadres.aoaIdentificatie == null) {
+			nps.verblijfsadres.aoaIdentificatie = natuurlijkPersoon.verblijfsadres.identificatie;			
+			if(nps.verblijfsadres.aoaIdentificatie.length() == 0) {
+				// ongewenst, maar we moeten toch wat
 				nps.verblijfsadres.aoaIdentificatie = natuurlijkPersoon.verblijfsadres.postcode + natuurlijkPersoon.verblijfsadres.huisnummer + natuurlijkPersoon.verblijfsadres.huisletter +  natuurlijkPersoon.verblijfsadres.huisnummertoevoeging;
 			}
 			nps.verblijfsadres.wplWoonplaatsNaam = natuurlijkPersoon.verblijfsadres.woonplaatsnaam;
@@ -477,7 +476,6 @@ public class ZaakTranslator {
 			nps.verblijfsadres.aoaHuisnummertoevoeging = natuurlijkPersoon.verblijfsadres.huisnummertoevoeging;
 			nps.verblijfsadres.inpLocatiebeschrijving = natuurlijkPersoon.verblijfsadres.locatiebeschrijving;
 		}		
-		*/
 		return nps;
 	}
 
