@@ -38,7 +38,7 @@ public class ZgwBetrokkeneIdentificatie extends ZgwObject {
 	@Expose
 	public String geboortedatum;
 	@Expose
-	public String verblijfsadres;
-	@Expose
-	public String subVerblijfBuitenland;
+	public ZgwAdres verblijfsadres;
+//	@Expose
+//	public String subVerblijfBuitenland;
 }

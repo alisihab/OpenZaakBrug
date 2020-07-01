@@ -29,4 +29,7 @@ public class ZdsNatuurlijkPersoon {
 
 	@XmlElement(namespace = BG)
 	public String geboortedatum;
+
+	@XmlElement(namespace = BG)
+	public ZdsAdres verblijfsadres;
 }

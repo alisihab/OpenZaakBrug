@@ -396,7 +396,7 @@ public class ZGWClient {
 		this.put(putObject.url, json);		
 	}
 	
-	public ZgwRol postRolNPS(ZgwRol rolNPS) throws ZGWClientException {
+	public ZgwRol postRol(ZgwRol rolNPS) throws ZGWClientException {
 		ZgwRol result = null;
 //		try {
 			Gson gson = new Gson();

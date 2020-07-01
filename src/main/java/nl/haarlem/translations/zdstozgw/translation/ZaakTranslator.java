@@ -61,6 +61,7 @@ import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsNatuurlijkPerso
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsRelatieZaakDocument;
 import nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient;
 import nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient.ZGWClientException;
+import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwAdres;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwBasicZaak;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwBetrokkeneIdentificatie;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwEnkelvoudigInformatieObject;
@@ -156,7 +157,7 @@ public class ZaakTranslator {
 		if (zdsZaak.heeftAlsVerantwoordelijke != null) rollen.addAll(getRollen(zgwZaak, zdsZaak.heeftAlsVerantwoordelijke, "Verantwoordelijke"));		
 		for(ZgwRol rol : rollen) {
 			rol.setZaak(zgwZaak.getUrl());
-			zgwClient.postRolNPS(rol);
+			zgwClient.postRol(rol);
 		}	
 		
 		// zet de status
@@ -293,8 +294,9 @@ public class ZaakTranslator {
 								changed.compare(wasRol.betrokkeneIdentificatie.voornamen, wordtRol.betrokkeneIdentificatie.voornamen,  new Runnable() { public void run() {rol.betrokkeneIdentificatie.voornamen = wordtRol.betrokkeneIdentificatie.voornamen; } } );							
 								changed.compare(wasRol.betrokkeneIdentificatie.geslachtsaanduiding, wordtRol.betrokkeneIdentificatie.geslachtsaanduiding,  new Runnable() { public void run() {rol.betrokkeneIdentificatie.geslachtsaanduiding = wordtRol.betrokkeneIdentificatie.geslachtsaanduiding; } } );							
 								changed.compare(wasRol.betrokkeneIdentificatie.geboortedatum, wordtRol.betrokkeneIdentificatie.geboortedatum,  new Runnable() { public void run() {rol.betrokkeneIdentificatie.geboortedatum = wordtRol.betrokkeneIdentificatie.geboortedatum; } } );
-								changed.compare(wasRol.betrokkeneIdentificatie.verblijfsadres, wordtRol.betrokkeneIdentificatie.verblijfsadres,  new Runnable() { public void run() {rol.betrokkeneIdentificatie.verblijfsadres = wordtRol.betrokkeneIdentificatie.verblijfsadres; } } );							
-								changed.compare(wasRol.betrokkeneIdentificatie.subVerblijfBuitenland, wordtRol.betrokkeneIdentificatie.subVerblijfBuitenland,  new Runnable() { public void run() {rol.betrokkeneIdentificatie.subVerblijfBuitenland = wordtRol.betrokkeneIdentificatie.subVerblijfBuitenland; } } );
+// TODO: verhuizingen!
+//								changed.compare(wasRol.betrokkeneIdentificatie.verblijfsadres, wordtRol.betrokkeneIdentificatie.verblijfsadres,  new Runnable() { public void run() {rol.betrokkeneIdentificatie.verblijfsadres = wordtRol.betrokkeneIdentificatie.verblijfsadres; } } );							
+//								changed.compare(wasRol.betrokkeneIdentificatie.subVerblijfBuitenland, wordtRol.betrokkeneIdentificatie.subVerblijfBuitenland,  new Runnable() { public void run() {rol.betrokkeneIdentificatie.subVerblijfBuitenland = wordtRol.betrokkeneIdentificatie.subVerblijfBuitenland; } } );
 								if(changed.isDirty()) {
 									putRollen.add(rol);
 								} else {
@@ -317,7 +319,7 @@ public class ZaakTranslator {
 		log.info("delete rollen:" + deleteRollen.size());
 		
 		for(ZgwRol rol : postRollen) { 
-			zgwClient.postRolNPS(rol);
+			zgwClient.postRol(rol);
 		}					
 		for(ZgwRol rol : putRollen) { 
 			zgwClient.put(rol);
@@ -459,6 +461,23 @@ public class ZaakTranslator {
 		nps.setVoornamen(natuurlijkPersoon.voornamen);
 		nps.setGeboortedatum(getDateStringFromZdsDate(natuurlijkPersoon.geboortedatum));
 		nps.setGeslachtsaanduiding(natuurlijkPersoon.geslachtsaanduiding.toLowerCase());
+		/*
+		if(natuurlijkPersoon.verblijfsadres != null) {
+			nps.verblijfsadres = new ZgwAdres();
+			nps.verblijfsadres.aoaIdentificatie = natuurlijkPersoon.verblijfsadres.identificatie;
+			//if (true) throw new RuntimeException("waarde:" + nps.verblijfsadres.aoaIdentificatie);
+			if(nps.verblijfsadres.aoaIdentificatie == null) {
+				nps.verblijfsadres.aoaIdentificatie = natuurlijkPersoon.verblijfsadres.postcode + natuurlijkPersoon.verblijfsadres.huisnummer + natuurlijkPersoon.verblijfsadres.huisletter +  natuurlijkPersoon.verblijfsadres.huisnummertoevoeging;
+			}
+			nps.verblijfsadres.wplWoonplaatsNaam = natuurlijkPersoon.verblijfsadres.woonplaatsnaam;
+			nps.verblijfsadres.gorOpenbareRuimteNaam = natuurlijkPersoon.verblijfsadres.straatnaam;
+			nps.verblijfsadres.aoaPostcode = natuurlijkPersoon.verblijfsadres.postcode;
+			nps.verblijfsadres.aoaHuisnummer = natuurlijkPersoon.verblijfsadres.huisnummer;
+			nps.verblijfsadres.aoaHuisletter = natuurlijkPersoon.verblijfsadres.huisletter;
+			nps.verblijfsadres.aoaHuisnummertoevoeging = natuurlijkPersoon.verblijfsadres.huisnummertoevoeging;
+			nps.verblijfsadres.inpLocatiebeschrijving = natuurlijkPersoon.verblijfsadres.locatiebeschrijving;
+		}		
+		*/
 		return nps;
 	}
 
@@ -766,6 +785,7 @@ public class ZaakTranslator {
 					  zdsRol.gerelateerde.natuurlijkPersoon.voornamen =  zgwNatuurlijkPersoon.voornamen;
 					  zdsRol.gerelateerde.natuurlijkPersoon.geslachtsaanduiding = zgwNatuurlijkPersoon.geslachtsaanduiding;					  					  
 					  zdsRol.gerelateerde.natuurlijkPersoon.geboortedatum = getDateStringFromZgwDate(zgwNatuurlijkPersoon.geboortedatum);
+					  
 					  break;
 				  case "niet_natuurlijk_persoon":
 					  log.warn("todo: niet_natuurlijk_persoon not yet implemented!");
@@ -1018,8 +1038,23 @@ public class ZaakTranslator {
 		throw new ZaakTranslatorException("niet ondersteunde vraag in geefLijstZaakdocumenten");
 	}
 
-	public void synchronizeZdstoZgw(RequestResponseCycle session, ZGWClient zgwClient2, ConfigService config, ApplicationParameterRepository repository, String identificatie) {
-			// check
+	public void replicateZds2ZgwZaak(RequestResponseCycle session, String zaakidentificatie) throws ZGWClientException, ZaakTranslatorException {
+		var zgwZaak = zgwClient.getZaakBasicByIdentificatie(zaakidentificatie);
+		if(zgwZaak != null)  {
+			log.info("replication: no need to copy, zaak with id #" + zaakidentificatie + " already in zgw");
+			// nothing to do here
+			return;
+		}
+		throw new ZaakTranslatorException("replicatie voor zaakdocmenten nog niet ondersteund!\n\tzaakidentificatie:" + zaakidentificatie);	}
+
+	public void replicateZds2ZgwDocument(RequestResponseCycle session, String zaakdocmentidentificatie) throws ZGWClientException, ZaakTranslatorException {
+		var zgwZaakDocument= zgwClient.getZgwEnkelvoudigInformatieObject(zaakdocmentidentificatie);
+		if(zgwZaakDocument != null)  {
+			log.info("replication: no need to copy zaakdocument, zaakdocument with id #" + zaakdocmentidentificatie + " already in zgw");
+			// nothing to do here
+			return;
+		}
+		throw new ZaakTranslatorException("replicatie voor zaakdocmenten nog niet ondersteund!\n\tzaakdocumentidentificatie:" + zaakdocmentidentificatie);
 	}
 	
 	/*

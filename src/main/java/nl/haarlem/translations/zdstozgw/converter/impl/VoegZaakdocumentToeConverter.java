@@ -14,6 +14,7 @@ import nl.haarlem.translations.zdstozgw.jpa.ApplicationParameterRepository;
 import nl.haarlem.translations.zdstozgw.jpa.model.RequestResponseCycle;
 import nl.haarlem.translations.zdstozgw.translation.ZaakTranslator;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.EdcLk01;
+import nl.haarlem.translations.zdstozgw.translation.zds.model.EdcLv01;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZakLk01;
 import nl.haarlem.translations.zdstozgw.translation.zds.services.ZaakService;
 import nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient;
@@ -31,43 +32,57 @@ public class VoegZaakdocumentToeConverter extends Converter {
 			this.document = nl.haarlem.translations.zdstozgw.utils.XmlUtils.getDocument(template);
 			this.xpathDocument = new XpathDocument(this.document);
 		}
-	}	
-	
+	}
+
 	public VoegZaakdocumentToeConverter(String templatePath, String legacyService) {
 		super(templatePath, legacyService);
 	}
 
 	@Override
-	public String proxyZds(String soapAction, RequestResponseCycle session, ApplicationParameterRepository repository, String requestBody)  {
+	public String proxyZds(String soapAction, RequestResponseCycle session, ApplicationParameterRepository repository,
+			String requestBody) {
 		return postZdsRequest(session, soapAction, requestBody);
 	}
-		
+
 	@Override
-	public String proxyZdsAndReplicateToZgw(String soapAction, RequestResponseCycle session, ZGWClient zgwClient, ConfigService config, ApplicationParameterRepository repository, String requestBody) {
-		// to the legacy zaaksystem
-		String zdsResponse = postZdsRequest(session, soapAction, requestBody);
-		
-		// also to openzaak
-		String zgwResonse = convertToZgw(session, zgwClient, config, repository, requestBody);
-				
-		// the original response
-		return zdsResponse;		
+	public String proxyZdsAndReplicateToZgw(String soapAction, RequestResponseCycle session, ZGWClient zgwClient,
+			ConfigService config, ApplicationParameterRepository repository, String requestBody) {
+		try {
+			EdcLv01 edcLv01 = (EdcLv01) XmlUtils.getStUFObject(requestBody, ZakLk01.class);
+			var translator = new ZaakTranslator(zgwClient, config);
+			translator.replicateZds2ZgwDocument(session, edcLv01.gelijk.identificatie);
+
+			// to the legacy zaaksystem
+			String zdsResponse = postZdsRequest(session, soapAction, requestBody);
+
+			// also to openzaak
+			String zgwResonse = convertToZgw(session, zgwClient, config, repository, requestBody);
+
+			// the original response
+			return zdsResponse;
+		} catch (ZGWClient.ZGWClientException hsce) {
+			throw new ConverterException(this, hsce.getMessage(), hsce.getDetails(), hsce);
+		} catch (ZaakTranslator.ZaakTranslatorException zte) {
+			throw new ConverterException(this, zte.getMessage(), requestBody, zte);
+		}
 	}
 
 	@Override
-	public String convertToZgwAndReplicateToZds(String soapAction, RequestResponseCycle session, ZGWClient zgwClient, ConfigService config, ApplicationParameterRepository repository, String requestBody) {
+	public String convertToZgwAndReplicateToZds(String soapAction, RequestResponseCycle session, ZGWClient zgwClient,
+			ConfigService config, ApplicationParameterRepository repository, String requestBody) {
 		// to openzaak
 		String zgwResonse = convertToZgw(session, zgwClient, config, repository, requestBody);
-						
+
 		// also to the legacy zaaksystem
 		String zdsResponse = postZdsRequest(session, soapAction, requestBody);
-		
+
 		// response
-		return zgwResonse;		
-	}		
+		return zgwResonse;
+	}
 
 	@Override
-	public String convertToZgw(RequestResponseCycle session, ZGWClient zgwClient, ConfigService configService, ApplicationParameterRepository repository, String requestBody) {
+	public String convertToZgw(RequestResponseCycle session, ZGWClient zgwClient, ConfigService configService,
+			ApplicationParameterRepository repository, String requestBody) {
 		try {
 			EdcLk01 edcLk01 = (EdcLk01) XmlUtils.getStUFObject(requestBody, EdcLk01.class);
 			var translator = new ZaakTranslator(zgwClient, configService);
@@ -76,12 +91,18 @@ public class VoegZaakdocumentToeConverter extends Converter {
 //			bv03.setReferentienummer(zgwZaakInformatieObject.getUuid());
 //			return bv03.getSoapMessageAsString();
 			var bv03 = new VoegZaakdocumentToeConverter_Bv03(this.template);
-			bv03.xpathDocument.setNodeValue(".//stuf:zender//stuf:organisatie", edcLk01.stuurgegevens.ontvanger.organisatie);
-			bv03.xpathDocument.setNodeValue(".//stuf:zender//stuf:applicatie", edcLk01.stuurgegevens.ontvanger.applicatie);
-			bv03.xpathDocument.setNodeValue(".//stuf:zender//stuf:gebruiker", edcLk01.stuurgegevens.ontvanger.gebruiker);
-			bv03.xpathDocument.setNodeValue(".//stuf:ontvanger//stuf:organisatie", edcLk01.stuurgegevens.zender.organisatie);
-			bv03.xpathDocument.setNodeValue(".//stuf:ontvanger//stuf:applicatie", edcLk01.stuurgegevens.zender.applicatie);
-			bv03.xpathDocument.setNodeValue(".//stuf:ontvanger//stuf:gebruiker", edcLk01.stuurgegevens.zender.gebruiker);
+			bv03.xpathDocument.setNodeValue(".//stuf:zender//stuf:organisatie",
+					edcLk01.stuurgegevens.ontvanger.organisatie);
+			bv03.xpathDocument.setNodeValue(".//stuf:zender//stuf:applicatie",
+					edcLk01.stuurgegevens.ontvanger.applicatie);
+			bv03.xpathDocument.setNodeValue(".//stuf:zender//stuf:gebruiker",
+					edcLk01.stuurgegevens.ontvanger.gebruiker);
+			bv03.xpathDocument.setNodeValue(".//stuf:ontvanger//stuf:organisatie",
+					edcLk01.stuurgegevens.zender.organisatie);
+			bv03.xpathDocument.setNodeValue(".//stuf:ontvanger//stuf:applicatie",
+					edcLk01.stuurgegevens.zender.applicatie);
+			bv03.xpathDocument.setNodeValue(".//stuf:ontvanger//stuf:gebruiker",
+					edcLk01.stuurgegevens.zender.gebruiker);
 			bv03.xpathDocument.setNodeValue(".//stuf:referentienummer", zgwZaakInformatieObject.uuid);
 			bv03.xpathDocument.setNodeValue(".//stuf:crossRefnummer", edcLk01.stuurgegevens.referentienummer);
 			DateFormat tijdstipformat = new SimpleDateFormat("yyyyMMddHHmmss");
@@ -92,25 +113,22 @@ public class VoegZaakdocumentToeConverter extends Converter {
 		} catch (ZaakTranslator.ZaakTranslatorException zte) {
 			throw new ConverterException(this, zte.getMessage(), requestBody, zte);
 		}
-/*		
-		try {
-
-			EdcLk01 object = (EdcLk01) XmlUtils.getStUFObject(requestbody, EdcLk01.class);
-			var translator = new ZaakTranslator(zgwClient, configService);
-			ZgwZaakInformatieObject zgwZaakInformatieObject = translator.voegZaakDocumentToe((EdcLk01) object);
-			var bv03 = new nl.haarlem.translations.zdstozgw.translation.zds.model.Bv03();
-			bv03.setReferentienummer(zgwZaakInformatieObject.getUuid());
-			return bv03.getSoapMessageAsString();
-
-		} catch (Exception ex) {
-			ex.printStackTrace();
-			var f03 = new nl.haarlem.translations.zdstozgw.translation.zds.model.F03();
-			f03.setFaultString("Object was not saved");
-			f03.setCode("StUF046");
-			f03.setOmschrijving("Object niet opgeslagen");
-			f03.setDetails(ex.getMessage());
-			return f03.getSoapMessageAsString();
-		}
-*/		
+		/*
+		 * try {
+		 * 
+		 * EdcLk01 object = (EdcLk01) XmlUtils.getStUFObject(requestbody,
+		 * EdcLk01.class); var translator = new ZaakTranslator(zgwClient,
+		 * configService); ZgwZaakInformatieObject zgwZaakInformatieObject =
+		 * translator.voegZaakDocumentToe((EdcLk01) object); var bv03 = new
+		 * nl.haarlem.translations.zdstozgw.translation.zds.model.Bv03();
+		 * bv03.setReferentienummer(zgwZaakInformatieObject.getUuid()); return
+		 * bv03.getSoapMessageAsString();
+		 * 
+		 * } catch (Exception ex) { ex.printStackTrace(); var f03 = new
+		 * nl.haarlem.translations.zdstozgw.translation.zds.model.F03();
+		 * f03.setFaultString("Object was not saved"); f03.setCode("StUF046");
+		 * f03.setOmschrijving("Object niet opgeslagen");
+		 * f03.setDetails(ex.getMessage()); return f03.getSoapMessageAsString(); }
+		 */
 	}
 }
