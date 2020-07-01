@@ -120,7 +120,7 @@ public class ZGWClient {
     }
 
 
-    public ZgwZaak getZaakDetails(Map<String, String> parameters) {
+    public ZgwZaak getZaak(Map<String, String> parameters) {
 
         ZgwZaak result = null;
         var zaakJson = get(baseUrl + "/zaken/api/v1/zaken", parameters);
@@ -258,6 +258,19 @@ public class ZGWClient {
         }
     }
 
+    public List<ZgwStatus> getStatussen(Map<String, String> parameters) {
+        var statusTypeJson = get(baseUrl + "/zaken/api/v1/statussen", parameters);
+        try {
+            Type type = new TypeToken<QueryResult<ZgwStatus>>(){}.getType();
+            Gson gson = new Gson();
+            QueryResult<ZgwStatus> queryResult = gson.fromJson(statusTypeJson, type);
+            return queryResult.getResults();
+        } catch (Exception ex) {
+            log.error("Exception in getStatussen: " + ex.getMessage());
+            throw ex;
+        }
+    }
+
     public ZgwStatus actualiseerZaakStatus(ZgwStatus zgwSatus) {
         ZgwStatus result = null;
         try {
@@ -270,6 +283,32 @@ public class ZGWClient {
             throw ex;
         }
 
+        return result;
+    }
+
+    public List<ZgwZaakType> getZaakType(Map<String, String> parameters) {
+        var zaakTypeJson = get(baseUrl + "/catalogi/api/v1/zaaktypen", parameters);
+        try {
+            Type type = new TypeToken<QueryResult<ZgwZaakType>>(){}.getType();
+            Gson gson = new Gson();
+            QueryResult<ZgwZaakType> queryResult = gson.fromJson(zaakTypeJson, type);
+            return queryResult.getResults();
+        } catch (Exception ex) {
+            log.error("Exception in getZaaktype: " + ex.getMessage());
+            throw ex;
+        }
+    }
+
+    public List<ZgwRol> getRollen(Map<String, String> parameters) {
+        var zaakTypeJson = get(this.baseUrl + "/zaken/api/v1/rollen", parameters);
+        Type type = new TypeToken<QueryResult<ZgwRol>>() { }.getType();
+        Gson gson = new Gson();
+        QueryResult<ZgwRol> queryResult = gson.fromJson(zaakTypeJson, type);
+        var result = new ArrayList<ZgwRol>();
+        for (ZgwRol current : queryResult.results) {
+            log.debug("gevonden rol met omschrijving: '" + current.roltoelichting + "'");
+            result.add(current);
+        }
         return result;
     }
 

@@ -1,18 +1,59 @@
 package nl.haarlem.translations.zdstozgw.translation.zds.model;
 
 import lombok.Data;
-import nl.haarlem.translations.zdstozgw.utils.xpath.XpathDocument;
-import org.w3c.dom.Document;
+
+import javax.xml.bind.annotation.*;
+import java.util.List;
+
+import static nl.haarlem.translations.zdstozgw.translation.zds.model.namespace.Namespace.STUF;
+import static nl.haarlem.translations.zdstozgw.translation.zds.model.namespace.Namespace.ZKN;
 
 @Data
+@XmlRootElement(namespace = ZKN, name="zakLk01")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class ZakLk01 {
 
-    private final XpathDocument xpathDocument;
-    private Document document;
+    @XmlAccessorType(XmlAccessType.FIELD)
+    public static class Object{
+        @XmlAttribute(namespace = STUF)
+        public String entiteittype;
 
-    public ZakLk01(Document document) {
-        this.document = document;
-        this.xpathDocument  = new XpathDocument(document);
+        @XmlElement(namespace = ZKN)
+        public String identificatie;
+
+        @XmlElement(namespace = ZKN)
+        public String omschrijving;
+
+        @XmlElement(namespace = ZKN)
+        public String toelichting;
+
+        @XmlElement(namespace = ZKN)
+        public String startdatum;
+
+        @XmlElement(namespace = ZKN)
+        public String einddatumGepland;
+
+        @XmlElement(namespace = ZKN)
+        public String archiefnominatie;
+
+        @XmlElement(namespace = ZKN)
+        public String registratiedatum;
+
+        @XmlElement(namespace = ZKN)
+        public Rol isVan;
+
+        @XmlElement(namespace = ZKN)
+        public Heeft heeft;
+
+        @XmlElement(namespace = ZKN, name="heeftAlsInitiator")
+        public HeeftAlsInitiator heeftAlsInitiator;
     }
+
+
+    @XmlElement(namespace = ZKN, name="object")
+    public List<Object> objects;
+
+    @XmlElement(namespace = ZKN, name="stuurgegevens")
+    public Stuurgegevens stuurgegevens;
 
 }

@@ -27,5 +27,9 @@ public class Configuratie {
     @SerializedName("requestHandlerImplementation")
     @Expose
     public String requestHandlerImplementation = null;
+    @SerializedName("zgwRolOmschrijving")
+    @Expose
+    public ZgwRolOmschrijving zgwRolOmschrijving = null;
+
 
 }

@@ -43,13 +43,13 @@ public class EdcLk01 {
         public String vertrouwelijkAanduiding;
 
         @XmlElement(namespace = ZKN, name="isRelevantVoor")
-        public GerelateerdeWrapper isRelevantVoor;
+        public Rol isRelevantVoor;
 
         @XmlElement(namespace = ZKN, name="isVan")
-        public GerelateerdeWrapper isVan;
+        public Rol isVan;
 
         @XmlElement(namespace = ZKN, name="heeft")
-        public GerelateerdeWrapper heeft;
+        public Rol heeft;
 
         @XmlElement(namespace = ZKN, name="heeftAlsInitiator")
         public HeeftAlsInitiator heeftAlsInitiator;

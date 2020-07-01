@@ -18,4 +18,12 @@ public class Stuurgegevens{
     @XmlElement(namespace = STUF)
     public Ontvanger ontvanger;
 
+    public Stuurgegevens(Stuurgegevens stuurgegevens) {
+        this.zender = stuurgegevens.zender;
+        this.ontvanger = stuurgegevens.ontvanger;
+        this.berichtcode = stuurgegevens.berichtcode;
+    }
+
+    public Stuurgegevens() {
+    }
 }

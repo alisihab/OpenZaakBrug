@@ -1,21 +1,22 @@
 package nl.haarlem.translations.zdstozgw.translation.zds.model;
 
 import lombok.Data;
-import nl.haarlem.translations.zdstozgw.translation.zgw.model.Opschorting;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import static nl.haarlem.translations.zdstozgw.translation.zds.model.namespace.Namespace.STUF;
 import static nl.haarlem.translations.zdstozgw.translation.zds.model.namespace.Namespace.ZKN;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-
 @Data
-@XmlRootElement(namespace = ZKN, name = "edcLa01")
+@XmlRootElement(namespace = ZKN)
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ZakLa01 {
+
+    @XmlElement(namespace = STUF)
+    public Stuurgegevens stuurgegevens;
 
     @XmlElement(namespace = ZKN)
     public Antwoord antwoord;
@@ -23,13 +24,15 @@ public class ZakLa01 {
     @XmlElement(namespace = ZKN)
     public Object object;
 
+    @Data
     @XmlAccessorType(XmlAccessType.FIELD)
-    private static class Antwoord {
-        @XmlElement(namespace = ZKN)
-        public Object object;
+    public static class Antwoord {
+        @XmlElement(namespace = ZKN, name="object")
+        public Zaak zaak;
 
+        @Data
         @XmlAccessorType(XmlAccessType.FIELD)
-        private static class Object {
+        public static class Zaak {
             @XmlElement(namespace = ZKN)
             public String identificatie;
 
@@ -91,7 +94,7 @@ public class ZakLa01 {
             public AnderZaakObject anderZaakObject;
 
             @XmlElement(namespace = ZKN)
-            public Heeft heeftBetrekkingOp;
+            public Rol heeftBetrekkingOp;
 
             @XmlElement(namespace = ZKN)
             public Rol heeftAlsBelanghebbende;
@@ -106,7 +109,7 @@ public class ZakLa01 {
             public Rol heeftAlsUitvoerende;
 
             @XmlElement(namespace = ZKN)
-            public Rol heeftAlheeftAlsVerantwoordelijke;
+            public Rol heeftAlsVerantwoordelijke;
 
             @XmlElement(namespace = ZKN)
             public Rol heeftAlsOverigBetrokkene;
@@ -114,8 +117,9 @@ public class ZakLa01 {
             @XmlElement(namespace = ZKN)
             public Status heeft;
 
+            @Data
             @XmlAccessorType(XmlAccessType.FIELD)
-            private static class Resultaat{
+            public static class Resultaat{
                 @XmlElement(namespace = ZKN)
                 private String omschrijving;
 
@@ -123,8 +127,9 @@ public class ZakLa01 {
                 private String toelichting;
             }
 
+            @Data
             @XmlAccessorType(XmlAccessType.FIELD)
-            private static class AnderZaakObject {
+            public static class AnderZaakObject {
                 @XmlElement(namespace = ZKN)
                 public String omschrijving;
 
@@ -138,8 +143,9 @@ public class ZakLa01 {
                 public String registratie;
             }
 
+            @Data
             @XmlAccessorType(XmlAccessType.FIELD)
-            private static class Verlenging {
+            public static class Verlenging {
                 @XmlElement(namespace = ZKN)
                 public String duur;
 
@@ -147,8 +153,9 @@ public class ZakLa01 {
                 public String reden;
             }
 
+            @Data
             @XmlAccessorType(XmlAccessType.FIELD)
-            private static class Opschorting {
+            public static class Opschorting {
                 @XmlElement(namespace = ZKN)
                 public String indicatie;
 
@@ -156,8 +163,9 @@ public class ZakLa01 {
                 public String reden;
             }
 
+            @Data
             @XmlAccessorType(XmlAccessType.FIELD)
-            private static class Kenmerk {
+            public static class Kenmerk {
                 @XmlElement(namespace = ZKN)
                 public String kenmerk;
 
@@ -165,8 +173,9 @@ public class ZakLa01 {
                 public String bron;
             }
 
+            @Data
             @XmlAccessorType(XmlAccessType.FIELD)
-            private static class Status {
+            public static class Status {
                 @XmlElement(namespace = ZKN)
                 public String toelichting;
 
@@ -182,8 +191,9 @@ public class ZakLa01 {
         }
     }
 
+    @Data
     @XmlAccessorType(XmlAccessType.FIELD)
-    private static class Object{
+    public static class Object{
         @XmlElement(namespace = ZKN)
         public Rol isVan;
     }

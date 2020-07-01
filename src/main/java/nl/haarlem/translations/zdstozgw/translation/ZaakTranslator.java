@@ -28,42 +28,11 @@ public class ZaakTranslator {
     private ZgwZaak zgwZaak;
     private ZgwEnkelvoudigInformatieObject zgwEnkelvoudigInformatieObject;
     private List<ZgwEnkelvoudigInformatieObject> zgwEnkelvoudigInformatieObjectList;
-    private ZakLk01_v2 zakLk01;
+    private ZakLk01 zakLk01;
     private EdcLk01 edcLk01;
 
     public ZaakTranslator() {
 
-    }
-
-    public void zgwZaakToZakLa01() throws Exception {
-        if (zgwZaak == null) {
-            throw new Exception("ZGW zaak is null");
-        }
-
-        var zakLa01 = new ZakLa01Zaakdetails();
-        zakLa01.setIdentificatie(zgwZaak.getIdentificatie());
-        zakLa01.setOmschrijving(zgwZaak.getOmschrijving());
-        zakLa01.setToelichting(zgwZaak.getToelichting());
-        if (zgwZaak.getResultaat() != null) {
-            //TODO Fetch resultaat for this zaak from ZGW API
-            zakLa01.setResultaat("TODO", "Fetch resultaat for this zaak from ZGW API");
-        } else {
-            zakLa01.setEmptyResultaat();
-        }
-        zakLa01.setStartDatum(getStufDateFromDateString(zgwZaak.getStartdatum()));
-        zakLa01.setRegistratieDatum(getStufDateFromDateString(zgwZaak.getRegistratiedatum()));
-        zakLa01.setPublicatieDatum(getStufDateFromDateString(zgwZaak.getPublicatiedatum()));
-        zakLa01.setEinddatumGepland(getStufDateFromDateString(zgwZaak.getEinddatumGepland()));
-        zakLa01.setUiterlijkeEinddatum(getStufDateFromDateString(zgwZaak.getUiterlijkeEinddatumAfdoening()));
-        zakLa01.setEinddatum(getStufDateFromDateString(zgwZaak.getEinddatum()));
-        zakLa01.setArchiefNominatie(getZDSArchiefNominatie(zgwZaak.getArchiefnominatie()));
-        zakLa01.setDatumVernietigingDossier(getStufDateFromDateString(zgwZaak.getArchiefactiedatum()));
-        var zaakType = getZaakTypeByZGWZaakType(zgwZaak.getZaaktype());
-        zakLa01.setZaakTypeOmschrijving(zaakType.getZaakTypeOmschrijving());
-        zakLa01.setZaakTypeCode(zaakType.getCode());
-        zakLa01.setZaakTypeIngangsDatumObject(zaakType.getIngangsdatumObject());
-
-        this.document = zakLa01.getDocument();
     }
 
     public void zgwEnkelvoudingInformatieObjectenToZSDLijstZaakDocumenten(){
@@ -220,14 +189,6 @@ public class ZaakTranslator {
         }
     }
 
-    private String getZDSArchiefNominatie(String archiefNominatie) {
-        if (archiefNominatie.toUpperCase().equals("vernietigen")) {
-            return "J";
-        } else {
-            return "N";
-        }
-    }
-
     private ZaakType getZaakTypeByZGWZaakType(String zgwZaakType) {
         List<ZaakType> zaakTypes = configService.getConfiguratie().getZaakTypes();
         for (ZaakType zaakType : zaakTypes) {
@@ -269,7 +230,7 @@ public class ZaakTranslator {
     }
 
     public ZgwStatus getZgwStatus() {
-        ZakLk01_v2.Object object = zakLk01.getObjects().get(1);
+        ZakLk01.Object object = zakLk01.getObjects().get(1);
         ZgwStatus zgwStatus = new ZgwStatus();
         zgwStatus.statustoelichting = object.heeft.statustoelichting;
         zgwStatus.datumStatusGezet = getDateTimeStringFromStufDate(object.heeft.datumStatusGezet);
