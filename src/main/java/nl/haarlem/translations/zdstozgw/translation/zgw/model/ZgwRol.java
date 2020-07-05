@@ -3,6 +3,7 @@ package nl.haarlem.translations.zdstozgw.translation.zgw.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import lombok.Data;
+import nl.haarlem.translations.zdstozgw.translation.zds.model.NatuurlijkPersoon;
 
 @Data
 public class ZgwRol extends ZgwObject {
@@ -24,7 +25,7 @@ public class ZgwRol extends ZgwObject {
     public String roltoelichting;
     @SerializedName("betrokkeneIdentificatie")
     @Expose
-    public BetrokkeneIdentificatieNPS betrokkeneIdentificatie;
+    public Betrokkene betrokkeneIdentificatie;
     @SerializedName("omschrijvingGeneriek")
     @Expose
     public String omschrijvingGeneriek;

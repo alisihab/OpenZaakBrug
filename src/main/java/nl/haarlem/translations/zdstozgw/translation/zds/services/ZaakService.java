@@ -24,17 +24,22 @@ public class ZaakService {
 
     private static final Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
-    @Autowired
-    private ZGWClient zgwClient;
+    private final ZGWClient zgwClient;
+
+    private final ModelMapper modelMapper;
+
+    private final ZaakTranslator zaakTranslator;
+
+    private final ConfigService configService;
 
     @Autowired
-    private ModelMapper modelMapper;
+    public ZaakService(ZGWClient zgwClient, ModelMapper modelMapper, ZaakTranslator zaakTranslator, ConfigService configService) {
+        this.zgwClient = zgwClient;
+        this.modelMapper = modelMapper;
+        this.zaakTranslator = zaakTranslator;
+        this.configService = configService;
+    }
 
-    @Autowired
-    private ZaakTranslator zaakTranslator;
-
-    @Autowired
-    private ConfigService configService;
 
     public ZgwZaak creeerZaak(ZakLk01 zakLk01) throws Exception {
 
@@ -219,12 +224,12 @@ public class ZaakService {
             zakLa01.object.isVan.gerelateerde.code = zgwZaakType.identificatie;
             zakLa01.object.isVan.gerelateerde.omschrijving = zgwZaakType.omschrijving;
 
-            if(zgwZaak.getKenmerken() != null && !zgwZaak.getKenmerken().isEmpty()){
-                zakLa01.antwoord.zaak.kenmerk = modelMapper.map(zgwZaak.getKenmerken().get(0), ZakLa01.Antwoord.Zaak.Kenmerk.class);
-            }
+            zakLa01.antwoord.zaak.kenmerk = zgwZaak.getKenmerken() != null && !zgwZaak.getKenmerken().isEmpty()?  modelMapper.map(zgwZaak.getKenmerken().get(0), ZakLa01.Antwoord.Zaak.Kenmerk.class) : null;
+            zakLa01.antwoord.zaak.opschorting = zgwZaak.getOpschorting() != null? modelMapper.map(zgwZaak.getOpschorting(), ZakLa01.Antwoord.Zaak.Opschorting.class): null;
+            zakLa01.antwoord.zaak.verlening = zgwZaak.getVerlenging() != null? modelMapper.map(zgwZaak.getVerlenging(), ZakLa01.Antwoord.Zaak.Verlenging.class): null;
 
             if(zgwZaak.getStatus() != null ){
-                ZgwStatus zgwStatus = this.getStatusByStatusTypeUrl(zgwZaak.status);
+                ZgwStatus zgwStatus = zgwClient.getStatus(zgwZaak.status);
                 zakLa01.antwoord.zaak.heeft = modelMapper.map(zgwStatus, ZakLa01.Antwoord.Zaak.Status.class);
             }
 
@@ -233,18 +238,8 @@ public class ZaakService {
         return zakLa01;
     }
 
-    private ZgwStatus getStatusByStatusTypeUrl(String statusTypeUrl) {
-        Map<String, String> parameters = new HashMap();
-        parameters.put("statustype", statusTypeUrl);
-
-        return zgwClient.getStatussen(parameters)
-                .stream()
-                .findFirst()
-                .orElse(new ZgwStatus());
-    }
-
     private ZgwZaakType getZaakTypeByUrl(String url) {
-        return zgwClient.getZaakType(null)
+        return zgwClient.getZaakTypes(null)
                 .stream()
                 .filter(zgwZaakType -> zgwZaakType.url.equalsIgnoreCase(url))
                 .findFirst()

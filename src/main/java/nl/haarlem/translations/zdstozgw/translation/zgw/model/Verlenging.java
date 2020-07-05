@@ -12,6 +12,6 @@ public class Verlenging {
     public String reden;
     @SerializedName("duur")
     @Expose
-    public Object duur;
+    public String duur;
 
 }

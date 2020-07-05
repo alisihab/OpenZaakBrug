@@ -6,9 +6,11 @@ import lombok.Data;
 
 @Data
 public class ZgwStatus {
+    @SerializedName("zaak")
     @Expose
     public String zaak;
 
+    @SerializedName("statustype")
     @Expose
     public String statustype;
 
@@ -20,9 +22,11 @@ public class ZgwStatus {
     @Expose
     public String statustoelichting;
 
+    @SerializedName("url")
     @Expose
     public String url;
 
+    @SerializedName("uuid")
     @Expose
     public String uuid;
 

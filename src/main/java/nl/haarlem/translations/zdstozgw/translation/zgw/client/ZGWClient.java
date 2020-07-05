@@ -258,15 +258,13 @@ public class ZGWClient {
         }
     }
 
-    public List<ZgwStatus> getStatussen(Map<String, String> parameters) {
-        var statusTypeJson = get(baseUrl + "/zaken/api/v1/statussen", parameters);
+    public ZgwStatus getStatus(String url) {
         try {
-            Type type = new TypeToken<QueryResult<ZgwStatus>>(){}.getType();
             Gson gson = new Gson();
-            QueryResult<ZgwStatus> queryResult = gson.fromJson(statusTypeJson, type);
-            return queryResult.getResults();
+            String response = get(url,null);
+            return gson.fromJson(response, ZgwStatus.class);
         } catch (Exception ex) {
-            log.error("Exception in getStatussen: " + ex.getMessage());
+            log.error("Exception in getStatus: " + ex.getMessage());
             throw ex;
         }
     }
@@ -286,7 +284,7 @@ public class ZGWClient {
         return result;
     }
 
-    public List<ZgwZaakType> getZaakType(Map<String, String> parameters) {
+    public List<ZgwZaakType> getZaakTypes(Map<String, String> parameters) {
         var zaakTypeJson = get(baseUrl + "/catalogi/api/v1/zaaktypen", parameters);
         try {
             Type type = new TypeToken<QueryResult<ZgwZaakType>>(){}.getType();
