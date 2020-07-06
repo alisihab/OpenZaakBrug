@@ -27,7 +27,7 @@ public class ZakLa01 {
     @Data
     @XmlAccessorType(XmlAccessType.FIELD)
     public static class Antwoord {
-        @XmlElement(namespace = ZKN, name="object")
+        @XmlElement(namespace = ZKN, name = "object")
         public Zaak zaak;
 
         @Data
@@ -36,82 +36,82 @@ public class ZakLa01 {
             @XmlElement(namespace = ZKN)
             public String identificatie;
 
-            @XmlElement(namespace = ZKN)
+            @XmlElement(namespace = ZKN, nillable = true)
             public String einddatum;
 
-            @XmlElement(namespace = ZKN)
+            @XmlElement(namespace = ZKN, nillable = true)
             public String einddatumGepland;
 
-            @XmlElement(namespace = ZKN)
+            @XmlElement(namespace = ZKN, nillable = true)
             public String omschrijving;
 
-            @XmlElement(namespace = ZKN)
+            @XmlElement(namespace = ZKN, nillable = true)
             public Kenmerk kenmerk;
 
-            @XmlElement(namespace = ZKN)
+            @XmlElement(namespace = ZKN, nillable = true)
             public Resultaat resultaat;
 
-            @XmlElement(namespace = ZKN)
+            @XmlElement(namespace = ZKN, nillable = true)
             public String startdatum;
 
-            @XmlElement(namespace = ZKN)
+            @XmlElement(namespace = ZKN, nillable = true)
             public String toelichting;
 
-            @XmlElement(namespace = ZKN)
+            @XmlElement(namespace = ZKN, nillable = true)
             public String uiterlijkeEinddatum;
 
-            @XmlElement(namespace = ZKN)
+            @XmlElement(namespace = ZKN, nillable = true)
             public String zaakniveau;
 
-            @XmlElement(namespace = ZKN)
+            @XmlElement(namespace = ZKN, nillable = true)
             public String deelzakenIdicatie;
 
-            @XmlElement(namespace = ZKN)
+            @XmlElement(namespace = ZKN, nillable = true)
             public String registratiedatum;
 
-            @XmlElement(namespace = ZKN)
+            @XmlElement(namespace = ZKN, nillable = true)
             public String publicatiedatum;
 
-            @XmlElement(namespace = ZKN)
+            @XmlElement(namespace = ZKN, nillable = true)
             public String archiefnominatie;
 
-            @XmlElement(namespace = ZKN)
+            @XmlElement(namespace = ZKN, nillable = true)
             public String datumVernietigingDossier;
 
-            @XmlElement(namespace = ZKN)
+            @XmlElement(namespace = ZKN, nillable = true)
             public String betalingsIndicatie;
 
-            @XmlElement(namespace = ZKN)
+            @XmlElement(namespace = ZKN, nillable = true)
             public String laatsteBetaaldatum;
 
-            @XmlElement(namespace = ZKN)
+            @XmlElement(namespace = ZKN, nillable = true)
             public Opschorting opschorting;
 
-            @XmlElement(namespace = ZKN)
+            @XmlElement(namespace = ZKN, nillable = true)
             public Verlenging verlening;
 
-            @XmlElement(namespace = ZKN)
+            @XmlElement(namespace = ZKN, nillable = true)
             public AnderZaakObject anderZaakObject;
 
-            @XmlElement(namespace = ZKN)
+            @XmlElement(namespace = ZKN, nillable = true)
             public Rol heeftBetrekkingOp;
 
-            @XmlElement(namespace = ZKN)
+            @XmlElement(namespace = ZKN, nillable = true)
             public Rol heeftAlsBelanghebbende;
 
-            @XmlElement(namespace = ZKN)
+            @XmlElement(namespace = ZKN, nillable = true)
             public Rol heeftAlsGemachtigde;
 
-            @XmlElement(namespace = ZKN)
+            @XmlElement(namespace = ZKN, nillable = true)
             public Rol heeftAlsInitiator;
 
-            @XmlElement(namespace = ZKN)
+            @XmlElement(namespace = ZKN, nillable = true)
             public Rol heeftAlsUitvoerende;
 
-            @XmlElement(namespace = ZKN)
+            @XmlElement(namespace = ZKN, nillable = true)
             public Rol heeftAlsVerantwoordelijke;
 
-            @XmlElement(namespace = ZKN)
+            @XmlElement(namespace = ZKN, nillable = true)
             public Rol heeftAlsOverigBetrokkene;
 
             @XmlElement(namespace = ZKN)
@@ -119,7 +119,7 @@ public class ZakLa01 {
 
             @Data
             @XmlAccessorType(XmlAccessType.FIELD)
-            public static class Resultaat{
+            public static class Resultaat {
                 @XmlElement(namespace = ZKN)
                 private String omschrijving;
 
@@ -193,7 +193,7 @@ public class ZakLa01 {
 
     @Data
     @XmlAccessorType(XmlAccessType.FIELD)
-    public static class Object{
+    public static class Object {
         @XmlElement(namespace = ZKN)
         public Rol isVan;
     }

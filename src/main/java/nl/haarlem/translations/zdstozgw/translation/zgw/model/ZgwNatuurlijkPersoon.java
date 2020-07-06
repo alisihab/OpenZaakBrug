@@ -14,7 +14,7 @@ public class ZgwNatuurlijkPersoon extends Betrokkene {
     @Expose
     public String anpIdentificatie;
 
-    @SerializedName("inpA")
+    @SerializedName("inpA_nummer")
     @Expose
     public String inpA;
 

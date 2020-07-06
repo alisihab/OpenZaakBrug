@@ -17,10 +17,10 @@ public class Gerelateerde {
     @XmlAttribute(namespace = STUF)
     public String verwerkingssoort;
 
-    @XmlElement(namespace = ZKN)
+    @XmlElement(namespace = ZKN, nillable = true)
     public String omschrijving;
 
-    @XmlElement(namespace = ZKN)
+    @XmlElement(namespace = ZKN, nillable = true)
     public String code;
 
     @XmlElement(namespace = ZKN)

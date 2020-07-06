@@ -45,7 +45,8 @@ public class ModelMapperConfig {
 
         modelMapper.typeMap(ZgwNatuurlijkPersoon.class, NatuurlijkPersoon.class)
                 .addMappings(mapper -> mapper.using(convertDateStringToStufDate()).map(ZgwNatuurlijkPersoon::getGeboortedatum, NatuurlijkPersoon::setGeboortedatum))
-                .addMappings(mapper -> mapper.using(convertToLowerCase()).map(ZgwNatuurlijkPersoon::getGeslachtsaanduiding, NatuurlijkPersoon::setGeslachtsaanduiding));
+                .addMappings(mapper -> mapper.using(convertToLowerCase()).map(ZgwNatuurlijkPersoon::getGeslachtsaanduiding, NatuurlijkPersoon::setGeslachtsaanduiding))
+                .addMappings(mapper -> mapper.using(convertToLowerCase()).map(ZgwNatuurlijkPersoon::getInpBsn, NatuurlijkPersoon::setBsn));
 
         modelMapper.addConverter(convertZgwRolToZdsRol());
 
