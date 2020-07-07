@@ -2,10 +2,8 @@ package nl.haarlem.translations.zdstozgw.translation.zds.model;
 
 import lombok.Data;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.*;
+import java.util.List;
 
 import static nl.haarlem.translations.zdstozgw.translation.zds.model.namespace.Namespace.STUF;
 import static nl.haarlem.translations.zdstozgw.translation.zds.model.namespace.Namespace.ZKN;
@@ -33,6 +31,9 @@ public class ZakLa01 {
         @Data
         @XmlAccessorType(XmlAccessType.FIELD)
         public static class Zaak {
+            @XmlAttribute(namespace = STUF)
+            public String entiteittype = "ZAK";
+
             @XmlElement(namespace = ZKN)
             public String identificatie;
 
@@ -88,7 +89,7 @@ public class ZakLa01 {
             public Opschorting opschorting;
 
             @XmlElement(namespace = ZKN, nillable = true)
-            public Verlenging verlening;
+            public Verlenging verlenging;
 
             @XmlElement(namespace = ZKN, nillable = true)
             public AnderZaakObject anderZaakObject;
@@ -115,7 +116,7 @@ public class ZakLa01 {
             public Rol heeftAlsOverigBetrokkene;
 
             @XmlElement(namespace = ZKN)
-            public Status heeft;
+            public List<Status> heeft;
 
             @Data
             @XmlAccessorType(XmlAccessType.FIELD)
@@ -176,6 +177,9 @@ public class ZakLa01 {
             @Data
             @XmlAccessorType(XmlAccessType.FIELD)
             public static class Status {
+                @XmlAttribute(namespace = STUF)
+                public String entiteittype;
+
                 @XmlElement(namespace = ZKN)
                 public String toelichting;
 

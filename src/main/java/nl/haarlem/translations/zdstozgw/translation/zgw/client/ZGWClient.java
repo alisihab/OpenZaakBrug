@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.GenericTypeResolver;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -258,13 +259,26 @@ public class ZGWClient {
         }
     }
 
-    public ZgwStatus getStatus(String url) {
+    public List<ZgwStatus> getStatussen(Map<String, String> parameters) {
+        var statusTypeJson = get(baseUrl + "/zaken/api/v1/statussen", parameters);
+        try {
+            Type type = new TypeToken<QueryResult<ZgwStatus>>(){}.getType();
+            Gson gson = new Gson();
+            QueryResult<ZgwStatus> queryResult = gson.fromJson(statusTypeJson, type);
+            return queryResult.getResults();
+        } catch (Exception ex) {
+            log.error("Exception in getStatussen: " + ex.getMessage());
+            throw ex;
+        }
+    }
+
+    public <T> T getResource(String url, Class<T> resourceType) {
         try {
             Gson gson = new Gson();
             String response = get(url,null);
-            return gson.fromJson(response, ZgwStatus.class);
+            return gson.fromJson(response, resourceType);
         } catch (Exception ex) {
-            log.error("Exception in getStatus: " + ex.getMessage());
+            log.error("Exception in getResource: " + ex.getMessage() + "for resourceType: "+ resourceType.getCanonicalName());
             throw ex;
         }
     }

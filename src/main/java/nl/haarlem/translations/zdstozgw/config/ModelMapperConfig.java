@@ -5,8 +5,9 @@ import nl.haarlem.translations.zdstozgw.translation.zds.model.NatuurlijkPersoon;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.Rol;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZakLa01;
 import nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient;
-import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwNatuurlijkPersoon;
+import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwBetrokkeneIdentificatie;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwRol;
+import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwStatus;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwZaak;
 import org.modelmapper.AbstractConverter;
 import org.modelmapper.Conditions;
@@ -43,10 +44,13 @@ public class ModelMapperConfig {
                 .addMappings(mapper -> mapper.using(convertZgwArchiefNomitieToZdsArchiefNominatie()).map(ZgwZaak::getArchiefnominatie, ZakLa01.Antwoord.Zaak::setArchiefnominatie));
 
 
-        modelMapper.typeMap(ZgwNatuurlijkPersoon.class, NatuurlijkPersoon.class)
-                .addMappings(mapper -> mapper.using(convertDateStringToStufDate()).map(ZgwNatuurlijkPersoon::getGeboortedatum, NatuurlijkPersoon::setGeboortedatum))
-                .addMappings(mapper -> mapper.using(convertToLowerCase()).map(ZgwNatuurlijkPersoon::getGeslachtsaanduiding, NatuurlijkPersoon::setGeslachtsaanduiding))
-                .addMappings(mapper -> mapper.using(convertToLowerCase()).map(ZgwNatuurlijkPersoon::getInpBsn, NatuurlijkPersoon::setBsn));
+        modelMapper.typeMap(ZgwBetrokkeneIdentificatie.class, NatuurlijkPersoon.class)
+                .addMappings(mapper -> mapper.using(convertDateStringToStufDate()).map(ZgwBetrokkeneIdentificatie::getGeboortedatum, NatuurlijkPersoon::setGeboortedatum))
+                .addMappings(mapper -> mapper.using(convertToLowerCase()).map(ZgwBetrokkeneIdentificatie::getGeslachtsaanduiding, NatuurlijkPersoon::setGeslachtsaanduiding))
+                .addMappings(mapper -> mapper.using(convertToLowerCase()).map(ZgwBetrokkeneIdentificatie::getInpBsn, NatuurlijkPersoon::setBsn));
+
+        modelMapper.typeMap(ZgwStatus.class, ZakLa01.Antwoord.Zaak.Status.class)
+                .addMappings(mapper -> mapper.map(ZgwStatus::getStatustoelichting, ZakLa01.Antwoord.Zaak.Status::setToelichting));
 
         modelMapper.addConverter(convertZgwRolToZdsRol());
 
@@ -98,6 +102,7 @@ public class ModelMapperConfig {
                 rol.gerelateerde = new Gerelateerde();
                 if(zgwRol.getBetrokkeneType().equalsIgnoreCase(NATUURLIJK_PERSOON.getDescription())){
                     rol.gerelateerde.natuurlijkPersoon = modelMapper().map(zgwRol.betrokkeneIdentificatie, NatuurlijkPersoon.class);
+                    rol.gerelateerde.natuurlijkPersoon.entiteittype = "NPS";
                 }else {
                     throw new RuntimeException("Betrokkene type nog niet geïmplementeerd");
                 }

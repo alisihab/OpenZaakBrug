@@ -1,11 +1,12 @@
 package nl.haarlem.translations.zdstozgw.translation.zgw.model;
 
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import lombok.Data;
 
 @Data
-public class ZgwNatuurlijkPersoon extends Betrokkene {
+public class ZgwBetrokkeneIdentificatie {
     @SerializedName("inpBsn")
     @Expose
     public String inpBsn;
@@ -49,4 +50,12 @@ public class ZgwNatuurlijkPersoon extends Betrokkene {
     @SerializedName("sub")
     @Expose
     public String sub;
+
+    @SerializedName("isGehuisvestIn")
+    @Expose
+    public String isGehuisvestIn;
+
+    @SerializedName("naam")
+    @Expose
+    public String naam;
 }
