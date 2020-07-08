@@ -516,6 +516,11 @@ public class ZGWClient {
 //		}
 		return result;
 	}
+	
+	public ZgwStatusType getStatusTypeByZaakTypeAndVolgnummer(String zaakTypeUrl, String volgnummer) throws ZGWClientException {
+		return getStatusTypeByZaakTypeAndVolgnummer(zaakTypeUrl, Integer.valueOf(volgnummer));
+	}
+	
 	public ZgwStatusType getStatusTypeByZaakTypeAndVolgnummer(String zaakTypeUrl, int volgnummer) throws ZGWClientException {
 		Map<String, String> parameters = new HashMap();
 		parameters.put("zaaktype", zaakTypeUrl);

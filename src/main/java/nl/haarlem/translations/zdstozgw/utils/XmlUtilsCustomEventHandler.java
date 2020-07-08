@@ -20,7 +20,6 @@ public class XmlUtilsCustomEventHandler implements ValidationEventHandler{
       }
 
 
-
 	@Override
       public boolean handleEvent(ValidationEvent event) {
     	  log.info("Class:" + c.getCanonicalName() + " message:" + event.getMessage());  

@@ -10,5 +10,4 @@ import javax.xml.bind.annotation.XmlElement;
 public class ZdsRol {
 	@XmlElement(namespace = ZKN)
 	public GerelateerdeRol gerelateerde;
-
 }

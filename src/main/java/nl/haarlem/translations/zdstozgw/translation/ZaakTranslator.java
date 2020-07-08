@@ -155,6 +155,10 @@ public class ZaakTranslator {
 		if (zdsZaak.heeftAlsInitiator != null) rollen.addAll(getRollen(zgwZaak, zdsZaak.heeftAlsInitiator, "Initiator"));
 		if (zdsZaak.heeftAlsUitvoerende != null) rollen.addAll(getRollen(zgwZaak, zdsZaak.heeftAlsUitvoerende, "Uitvoerende"));
 		if (zdsZaak.heeftAlsVerantwoordelijke != null) rollen.addAll(getRollen(zgwZaak, zdsZaak.heeftAlsVerantwoordelijke, "Verantwoordelijke"));		
+		
+		// if (zdsZaak.heeftAlsVerantwoordelijke != null) rollen.addAll(getRollen(zgwZaak, zdsZaak.heeftAlsVerantwoordelijke, "Verantwoordelijke"));		
+
+		
 		for(ZgwRol rol : rollen) {
 			rol.setZaak(zgwZaak.getUrl());
 			zgwClient.postRol(rol);
@@ -407,6 +411,9 @@ public class ZaakTranslator {
 			rol.setBetrokkeneType("medewerker");
 			rollen.add(rol);			
 		}
+		if(zdsRol.gerelateerde.entiteittype == "CTP") {
+			throw new ZaakTranslatorException("not yet implemented");
+		}
 		return rollen;
 	}
 
@@ -503,10 +510,21 @@ public class ZaakTranslator {
 	public ZgwZaakInformatieObject voegZaakDocumentToe(EdcLk01 edcLk01) throws ZaakTranslatorException, ZGWClientException  {
 		var zgwEnkelvoudigInformatieObject = zdsDocumentToZgwDocument(edcLk01);
 		zgwEnkelvoudigInformatieObject  = this.zgwClient.addDocument(zgwEnkelvoudigInformatieObject);
-		
-		var zgwZaak = this.zgwClient.getZaakCompleteByIdentificatie(edcLk01.objects.get(0).isRelevantVoor.gerelateerde.identificatie);
+		var zdsDocument = edcLk01.objects.get(0);
+		var zaakIdentificatie = zdsDocument.isRelevantVoor.gerelateerde.identificatie;
+		var zgwZaak = this.zgwClient.getZaakCompleteByIdentificatie(zaakIdentificatie);
 		String zaakUrl = zgwZaak.url;
 		ZgwZaakInformatieObject result = addZaakInformatieObject(zgwEnkelvoudigInformatieObject, zaakUrl);
+		
+		if(zdsDocument.isRelevantVoor.sttOmschrijving.length() > 0) {
+			ZgwStatus zgwStatus = new ZgwStatus();
+			zgwStatus.statustoelichting = zdsDocument.isRelevantVoor.sttOmschrijving;
+			zgwStatus.datumStatusGezet = getDateTimeStringFromStufDate(zdsDocument.isRelevantVoor.staDatumStatusGezet, this.configService.getConfiguratie().getTimeOffsetHour());
+			zgwStatus.zaak = zgwZaak.url;
+			zgwStatus.statustype = zgwClient.getStatusTypeByZaakTypeAndVolgnummer(zgwZaak.zaaktype, zdsDocument.isRelevantVoor.sttVolgnummer).url;
+			this.zgwClient.actualiseerZaakStatus(zgwStatus);
+		}
+		
 		return result;
 	}
 	
@@ -556,7 +574,7 @@ public class ZaakTranslator {
 		zgwStatus.statustoelichting = zdsZaak.heeft.statustoelichting;
 		zgwStatus.datumStatusGezet = getDateTimeStringFromStufDate(zdsZaak.heeft.datumStatusGezet, this.configService.getConfiguratie().getTimeOffsetHour());
 		zgwStatus.zaak = zgwZaak.url;
-		zgwStatus.statustype = zgwClient.getStatusTypeByZaakTypeAndVolgnummer(zgwZaak.zaaktype, Integer.valueOf(zdsZaak.heeft.gerelateerde.volgnummer)).url;
+		zgwStatus.statustype = zgwClient.getStatusTypeByZaakTypeAndVolgnummer(zgwZaak.zaaktype, zdsZaak.heeft.gerelateerde.volgnummer).url;
 
 		this.zgwClient.actualiseerZaakStatus(zgwStatus);
 		return zgwZaak;
@@ -725,6 +743,12 @@ public class ZaakTranslator {
 		var milliseconds = stufDate.substring(14);
 		return year + "-" + month + "-" + day + "T" + hours + ":" + minutes + ":" + seconds + "." + milliseconds + "Z";
 		*/
+		
+		// 20200311 
+		if(stufDate.length() == 8) {
+			stufDate += "000000000";
+		}
+		
 		var zdsdate = new SimpleDateFormat("yyyyMMddHHmmssSSS");
 		var zgwdate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
 		try {
