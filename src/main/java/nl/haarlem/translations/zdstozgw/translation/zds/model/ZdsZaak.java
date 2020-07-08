@@ -41,6 +41,9 @@ public class ZdsZaak {
 		@XmlElement(namespace = ZKN)		
 		public String einddatum;
 		
+		@XmlElement(namespace = ZKN)		
+		public ZdsOpschorting opschorting;
+		
 		@XmlElement(namespace = ZKN)
 		public GerelateerdeWrapper isVan;
 

@@ -30,9 +30,6 @@ public class ZgwCompleteZaak extends ZgwBasicZaak {
 	@SerializedName("verlenging")
 	@Expose
 	public Verlenging verlenging;
-	@SerializedName("opschorting")
-	@Expose
-	public Opschorting opschorting;
 	@SerializedName("selectielijstklasse")
 	@Expose
 	public String selectielijstklasse;

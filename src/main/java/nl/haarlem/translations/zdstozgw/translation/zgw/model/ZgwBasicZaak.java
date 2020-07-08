@@ -48,4 +48,7 @@ public class ZgwBasicZaak extends ZgwObject {
 	@SerializedName("communicatiekanaal")
 	@Expose
 	public String communicatiekanaal;
+	@SerializedName("opschorting")
+	@Expose
+	public Opschorting opschorting;	
 }

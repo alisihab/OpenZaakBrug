@@ -58,9 +58,11 @@ import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsZaak;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZakLv01;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsMedewerker;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsNatuurlijkPersoon;
+import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsOpschorting;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsRelatieZaakDocument;
 import nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient;
 import nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient.ZGWClientException;
+import nl.haarlem.translations.zdstozgw.translation.zgw.model.Opschorting;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwAdres;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwBasicZaak;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwBetrokkeneIdentificatie;
@@ -341,6 +343,21 @@ public class ZaakTranslator {
 		changed.compare(zdsWasZaak.startdatum, zdsWordtZaak.startdatum,  new Runnable() { public void run() {zgwZaak.startdatum = getDateStringFromZdsDate(zdsWordtZaak.startdatum); } } );
 		changed.compare(zdsWasZaak.einddatum, zdsWordtZaak.einddatum,  new Runnable() { public void run() {zgwZaak.einddatum = getDateStringFromZdsDate(zdsWordtZaak.einddatum); } } );
 		changed.compare(zdsWasZaak.einddatumGepland, zdsWordtZaak.einddatumGepland,  new Runnable() { public void run() {zgwZaak.einddatumGepland = getDateStringFromZdsDate(zdsWordtZaak.einddatumGepland); } } );
+
+		if(zdsWasZaak.opschorting != null || zdsWordtZaak.opschorting != null) {			
+			if(zdsWasZaak.opschorting == null) {
+				zdsWasZaak.opschorting = new ZdsOpschorting();
+			}
+			if(zdsWordtZaak.opschorting == null) {
+				zdsWordtZaak.opschorting = new ZdsOpschorting();
+			}			
+			if(zgwZaak.opschorting == null) {
+				zgwZaak.opschorting = new Opschorting();
+			}			
+			changed.compare(zdsWasZaak.opschorting.indicatie, zdsWordtZaak.opschorting.indicatie,  new Runnable() { public void run() {zgwZaak.opschorting.indicatie = zdsWordtZaak.opschorting.indicatie.equals("J"); } } );
+			changed.compare(zdsWasZaak.opschorting.reden, zdsWordtZaak.opschorting.reden,  new Runnable() { public void run() {zgwZaak.opschorting.reden = zdsWordtZaak.opschorting.reden; } } );
+		}
+				
 		if(changed.isDirty()) {
 			zgwClient.put(zgwZaak);
 		}
