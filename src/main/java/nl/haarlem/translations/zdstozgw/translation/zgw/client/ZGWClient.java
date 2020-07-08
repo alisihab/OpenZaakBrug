@@ -517,8 +517,13 @@ public class ZGWClient {
 		return result;
 	}
 	
-	public ZgwStatusType getStatusTypeByZaakTypeAndVolgnummer(String zaakTypeUrl, String volgnummer) throws ZGWClientException {
-		return getStatusTypeByZaakTypeAndVolgnummer(zaakTypeUrl, Integer.valueOf(volgnummer));
+	public ZgwStatusType getStatusTypeByZaakTypeAndVolgnummer(String zaakTypeUrl, String volgnummer, String verwachteomschrijving) throws ZGWClientException {
+		ZgwStatusType statustype =  getStatusTypeByZaakTypeAndVolgnummer(zaakTypeUrl, Integer.valueOf(volgnummer));		
+		if(!statustype.omschrijving.startsWith(verwachteomschrijving)) 
+		{
+			throw new RuntimeException("zaakstatus verschil in omschrijving met volgnummer #" + statustype.volgnummer + " verwacht: '" + statustype.omschrijving + "' gekregen: '" +  verwachteomschrijving  + "'");
+		}
+		return statustype;
 	}
 	
 	public ZgwStatusType getStatusTypeByZaakTypeAndVolgnummer(String zaakTypeUrl, int volgnummer) throws ZGWClientException {

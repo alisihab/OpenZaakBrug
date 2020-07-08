@@ -14,8 +14,8 @@ public class Heeft {
 	@XmlElement(namespace = ZKN)
 	public String datumStatusGezet;
 
-	@XmlElement(namespace = ZKN)
-	public String statustoelichting;
+	//@XmlElement(namespace = ZKN)
+	//public String statustoelichting;
 
 	@XmlElement(namespace = ZKN)
 	public GerelateerdeWrapper isGezetDoor;

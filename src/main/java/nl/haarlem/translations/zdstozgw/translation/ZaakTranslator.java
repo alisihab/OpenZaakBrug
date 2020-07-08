@@ -171,11 +171,10 @@ public class ZaakTranslator {
 			var zgwZaakStatusOmschrijving = zgwClient.getZaakTypeByIdentiticatie(zdsZaak.heeft.gerelateerde.omschrijving);
 			
 			ZgwStatus zgwStatus = new ZgwStatus();
-			zgwStatus.statustoelichting = zdsZaak.heeft.statustoelichting;
+			zgwStatus.statustoelichting = zdsZaak.heeft.gerelateerde.omschrijving;
 			zgwStatus.datumStatusGezet = getDateTimeStringFromStufDate(zdsZaak.heeft.datumStatusGezet, this.configService.getConfiguratie().getTimeOffsetHour());
 			zgwStatus.zaak = zgwZaak.url;
-			zgwStatus.statustype = zgwClient.getStatusTypeByZaakTypeAndVolgnummer(zgwZaak.zaaktype, Integer.valueOf(zdsZaak.heeft.gerelateerde.volgnummer)).url;
-
+			zgwStatus.statustype = zgwClient.getStatusTypeByZaakTypeAndVolgnummer(zgwZaak.zaaktype, zdsZaak.heeft.gerelateerde.volgnummer, zdsZaak.heeft.gerelateerde.omschrijving).url;
 			this.zgwClient.actualiseerZaakStatus(zgwStatus);			
 		}
 		if(zgwZaakType == null) throw new ZaakTranslatorException("Geen zaaktype niet gevonden ZTC voor identificatie: '" + zdsZaak.isVan.gerelateerde.code + "'");
@@ -521,7 +520,7 @@ public class ZaakTranslator {
 			zgwStatus.statustoelichting = zdsDocument.isRelevantVoor.sttOmschrijving;
 			zgwStatus.datumStatusGezet = getDateTimeStringFromStufDate(zdsDocument.isRelevantVoor.staDatumStatusGezet, this.configService.getConfiguratie().getTimeOffsetHour());
 			zgwStatus.zaak = zgwZaak.url;
-			zgwStatus.statustype = zgwClient.getStatusTypeByZaakTypeAndVolgnummer(zgwZaak.zaaktype, zdsDocument.isRelevantVoor.sttVolgnummer).url;
+			zgwStatus.statustype = zgwClient.getStatusTypeByZaakTypeAndVolgnummer(zgwZaak.zaaktype, zdsDocument.isRelevantVoor.sttVolgnummer, zgwStatus.statustoelichting).url;
 			this.zgwClient.actualiseerZaakStatus(zgwStatus);
 		}
 		
@@ -571,11 +570,17 @@ public class ZaakTranslator {
 
 		//this.zaakTranslator.setZakLk01(zakLk01);
 		ZgwStatus zgwStatus = new ZgwStatus();
+		/*
 		zgwStatus.statustoelichting = zdsZaak.heeft.statustoelichting;
 		zgwStatus.datumStatusGezet = getDateTimeStringFromStufDate(zdsZaak.heeft.datumStatusGezet, this.configService.getConfiguratie().getTimeOffsetHour());
 		zgwStatus.zaak = zgwZaak.url;
 		zgwStatus.statustype = zgwClient.getStatusTypeByZaakTypeAndVolgnummer(zgwZaak.zaaktype, zdsZaak.heeft.gerelateerde.volgnummer).url;
-
+		 */
+		zgwStatus.statustoelichting = zdsZaak.heeft.gerelateerde.omschrijving;
+		zgwStatus.datumStatusGezet = getDateTimeStringFromStufDate(zdsZaak.heeft.datumStatusGezet, this.configService.getConfiguratie().getTimeOffsetHour());
+		zgwStatus.zaak = zgwZaak.url;
+		zgwStatus.statustype = zgwClient.getStatusTypeByZaakTypeAndVolgnummer(zgwZaak.zaaktype, zdsZaak.heeft.gerelateerde.volgnummer, zgwStatus.statustoelichting).url;
+	
 		this.zgwClient.actualiseerZaakStatus(zgwStatus);
 		return zgwZaak;
 	}

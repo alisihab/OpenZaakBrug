@@ -14,6 +14,28 @@ public class GerelateerdeWrapper {
 	@XmlElement(namespace = ZKN)
 	public GerelateerdeRol gerelateerde;
 	
+	///////////////////////////////////////////////////////////////////
+
+    @XmlElement(namespace = ZKN,name="zkt.code", nillable = true)
+	public String zktCode;
+	
+    @XmlElement(namespace = ZKN,name="zkt.omschrijving", nillable = true)
+	public String zktOmschrijving;
+	
+    @XmlElement(namespace = ZKN,name="volgnummer", nillable = true)
+	public String volgnummer;
+
+    @XmlElement(namespace = ZKN,name="code", nillable = true)
+	public String code;
+
+    @XmlElement(namespace = ZKN,name="omschrijving", nillable = true)
+	public String omschrijving;
+    
+    @XmlElement(namespace = ZKN,name="ingangsdatumObject", nillable = true)
+	public String ingangsdatumObject;
+
+    //////////////////////////////////////////////////////////////////
+    
     @XmlElement(namespace = ZKN,name="stt.volgnummer", nillable = true)
 	public String sttVolgnummer;
 	
@@ -21,5 +43,5 @@ public class GerelateerdeWrapper {
 	public String sttOmschrijving;
 	
     @XmlElement(namespace = ZKN,name="sta.datumStatusGezet", nillable = true)
-	public String staDatumStatusGezet;
+	public String staDatumStatusGezet;    
 }
