@@ -13,6 +13,7 @@ import nl.haarlem.translations.zdstozgw.converter.Converter.ConverterException;
 import nl.haarlem.translations.zdstozgw.jpa.ApplicationParameterRepository;
 import nl.haarlem.translations.zdstozgw.jpa.model.RequestResponseCycle;
 import nl.haarlem.translations.zdstozgw.translation.ZaakTranslator;
+import nl.haarlem.translations.zdstozgw.translation.zds.client.ZDSClient;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.EdcLk01;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.EdcLv01;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZakLk01;
@@ -39,9 +40,10 @@ public class VoegZaakdocumentToeConverter extends Converter {
 	}
 
 	@Override
-	public String proxyZds(String soapAction, RequestResponseCycle session, ApplicationParameterRepository repository,
-			String requestBody) {
-		return postZdsRequest(session, soapAction, requestBody);
+	public String proxyZds(String soapAction, RequestResponseCycle session, ApplicationParameterRepository repository, String requestBody) {
+		var zdsClient= new ZDSClient();
+		String zdsResponse = zdsClient.post(session, zdsUrl, soapAction, requestBody);
+		return zdsResponse;
 	}
 
 	@Override
@@ -53,7 +55,8 @@ public class VoegZaakdocumentToeConverter extends Converter {
 			translator.replicateZds2ZgwDocument(session, edcLv01.gelijk.identificatie);
 
 			// to the legacy zaaksystem
-			String zdsResponse = postZdsRequest(session, soapAction, requestBody);
+			var zdsClient= new ZDSClient();
+			String zdsResponse = zdsClient.post(session, zdsUrl, soapAction, requestBody);
 
 			// also to openzaak
 			String zgwResonse = convertToZgw(session, zgwClient, config, repository, requestBody);
@@ -70,14 +73,25 @@ public class VoegZaakdocumentToeConverter extends Converter {
 	@Override
 	public String convertToZgwAndReplicateToZds(String soapAction, RequestResponseCycle session, ZGWClient zgwClient,
 			ConfigService config, ApplicationParameterRepository repository, String requestBody) {
-		// to openzaak
-		String zgwResonse = convertToZgw(session, zgwClient, config, repository, requestBody);
+		try {
+			EdcLv01 edcLv01 = (EdcLv01) XmlUtils.getStUFObject(requestBody, ZakLk01.class);
+			var translator = new ZaakTranslator(zgwClient, config);
+			translator.replicateZds2ZgwDocument(session, edcLv01.gelijk.identificatie);
 
-		// also to the legacy zaaksystem
-		String zdsResponse = postZdsRequest(session, soapAction, requestBody);
+			// to openzaak
+			String zgwResonse = convertToZgw(session, zgwClient, config, repository, requestBody);
 
-		// response
-		return zgwResonse;
+			// also to the legacy zaaksystem
+			var zdsClient= new ZDSClient();
+			String zdsResponse = zdsClient.post(session, zdsUrl, soapAction, requestBody);
+
+			// response
+			return zgwResonse;
+		} catch (ZGWClient.ZGWClientException hsce) {
+			throw new ConverterException(this, hsce.getMessage(), hsce.getDetails(), hsce);
+		} catch (ZaakTranslator.ZaakTranslatorException zte) {
+			throw new ConverterException(this, zte.getMessage(), requestBody, zte);
+		}		
 	}
 
 	@Override

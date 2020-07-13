@@ -6,6 +6,7 @@ import static nl.haarlem.translations.zdstozgw.translation.zds.model.namespace.N
 import static nl.haarlem.translations.zdstozgw.translation.zds.model.namespace.Namespace.ZKN;
 
 import java.lang.invoke.MethodHandles;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -30,10 +31,12 @@ import lombok.Data;
 import nl.haarlem.translations.zdstozgw.config.ConfigService;
 import nl.haarlem.translations.zdstozgw.config.DocumentType;
 import nl.haarlem.translations.zdstozgw.config.Organisatie;
+import nl.haarlem.translations.zdstozgw.config.Translation;
 import nl.haarlem.translations.zdstozgw.config.ZaakType;
 import nl.haarlem.translations.zdstozgw.jpa.ApplicationParameterRepository;
 import nl.haarlem.translations.zdstozgw.jpa.model.RequestResponseCycle;
 import nl.haarlem.translations.zdstozgw.translation.ZaakTranslator.ZaakTranslatorException;
+import nl.haarlem.translations.zdstozgw.translation.zds.client.ZDSClient;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.EdcLa01;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.EdcLa01.Antwoord;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.EdcLk01;
@@ -47,6 +50,7 @@ import nl.haarlem.translations.zdstozgw.translation.zds.model.Heeft;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.HeeftAlsInitiator;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.HeeftAlsUitvoerende;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.HeeftRelevantEDC;
+import nl.haarlem.translations.zdstozgw.translation.zds.model.Stuurgegevens;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZakLa01;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsRol;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZakLa01LijstZaakdocumenten;
@@ -75,6 +79,8 @@ import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwStatus;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwCompleteZaak;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwZaakInformatieObject;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwZaakType;
+import nl.haarlem.translations.zdstozgw.utils.XmlUtils;
+import nl.haarlem.translations.zdstozgw.utils.xpath.XpathDocument;
 
 @Service
 @Data
@@ -128,24 +134,30 @@ public class ZaakTranslator {
 		this.configService = configService;
 	}
 
+
 	public ZgwCompleteZaak creeerZaak(ZakLk01 zakLk01) throws ZGWClientException, ZaakTranslatorException {
 		// zaakTranslator.setDocument((Document) zakLk01).zdsZaakToZgwZaak();
 		//this.zaakTranslator.setZakLk01(zakLk01).zdsZaakToZgwZaak();
 
-		var zdsZaak = zakLk01.object.get(0);
-		ZgwCompleteZaak zgwZaak = zdsZaakToZgwZaak(zdsZaak);		
+		ZgwCompleteZaak zgwZaak = creeerZaak(zakLk01.stuurgegevens, zakLk01.object.get(0));
+			
+		return zgwZaak;
+	}
+	
+	public ZgwCompleteZaak creeerZaak(Stuurgegevens stuurgegevens, ZdsZaak zdsZaak) throws ZGWClientException, ZaakTranslatorException {
+		ZgwCompleteZaak zgwZaak = zdsZaakToZgwZaak(zdsZaak);
 
+		// verplichte velden
+		if (stuurgegevens.zender.organisatie.length() == 0) throw new ZaakTranslatorException("zender.organisatie is verplicht");
+		zgwZaak.setVerantwoordelijkeOrganisatie(getRSIN(stuurgegevens.zender.organisatie));
+		if (getRSIN(stuurgegevens.ontvanger.organisatie).length() == 0) throw new ZaakTranslatorException("zaak identificatie is verplicht");
+		zgwZaak.setBronorganisatie(getRSIN(stuurgegevens.ontvanger.organisatie));		
+			
 		// zaaktype
 		var zgwZaakType = zgwClient.getZaakTypeByIdentiticatie(zdsZaak.isVan.gerelateerde.code);
 		if(zgwZaakType == null) throw new ZaakTranslatorException("Geen zaaktype niet gevonden voor identificatie: '" + zdsZaak.isVan.gerelateerde.code + "'");
 		zgwZaak.setZaaktype(zgwZaakType.getUrl());
 				
-		// verplichte velden
-		if (zakLk01.stuurgegevens.zender.organisatie.length() == 0) throw new ZaakTranslatorException("zender.organisatie is verplicht");
-		zgwZaak.setVerantwoordelijkeOrganisatie(getRSIN(zakLk01.stuurgegevens.zender.organisatie));
-		if (getRSIN(zakLk01.stuurgegevens.ontvanger.organisatie).length() == 0) throw new ZaakTranslatorException("zaak identificatie is verplicht");
-		zgwZaak.setBronorganisatie(getRSIN(zakLk01.stuurgegevens.ontvanger.organisatie));
-
 		// en de zaak bestaat
 		zgwZaak = this.zgwClient.postZaak(zgwZaak);					
 		log.info("Created a ZGW Zaak with UUID: " + zgwZaak.getUuid() + " (" + zdsZaak.identificatie + ")");
@@ -784,107 +796,112 @@ public class ZaakTranslator {
 		}
 	}
 
+	public ZdsZaak getZaakDetailsZaakId(String zaakidentiticatie) throws ZaakTranslatorException, ZGWClientException {
+		var zgwZaak = zgwClient.getZaakCompleteByIdentificatie(zaakidentiticatie);
+		if(zgwZaak == null) throw new ZaakTranslatorException("Geen zaak niet gevonden voor identificatie: '" + zaakidentiticatie + "'");
+		var zdsZaak = new ZdsZaak();
+		zdsZaak.identificatie = zgwZaak.identificatie;
+		zdsZaak.omschrijving = zgwZaak.omschrijving;
+		zdsZaak.toelichting = zgwZaak.toelichting;
+		zdsZaak.toelichting = zgwZaak.toelichting;
+		
+		var zgwZaakType = zgwClient.getZaakTypeByUrl(zgwZaak.zaaktype);
+		if(zgwZaakType == null) throw new ZaakTranslatorException("Geen zaaktype niet gevonden voor identificatie: '" + zgwZaak.zaaktype + "'");
+		
+		zdsZaak.isVan = new GerelateerdeWrapper();
+		zdsZaak.isVan.gerelateerde = new GerelateerdeRol(); 
+		zdsZaak.isVan.gerelateerde.code = zgwZaakType.identificatie;			
+		zdsZaak.isVan.gerelateerde.omschrijving = zgwZaakType.omschrijving;			
+
+		zdsZaak.registratiedatum = getDateStringFromZgwDate(zgwZaak.registratiedatum);
+		zdsZaak.startdatum = getDateStringFromZgwDate(zgwZaak.startdatum);
+		zdsZaak.einddatumGepland = getDateStringFromZgwDate(zgwZaak.einddatumGepland);
+		zdsZaak.einddatum = getDateStringFromZgwDate(zgwZaak.einddatum);
+		zdsZaak.archiefnominatie = getZdsArchiefNominatie(zgwZaak.einddatum);
+					
+		log.warn("rollen enzo moeten hier nog!");
+		var zgwRollen = zgwClient.getRollenByZaak(zgwZaak.url);
+		for(ZgwRol zgwRol: zgwRollen) {
+			var zdsRol = new ZdsRol();
+			zdsRol.gerelateerde = new GerelateerdeRol();				
+			// relatie van de rol
+			switch(zgwRol.betrokkeneType) {
+			  case "natuurlijk_persoon":
+				  ZgwNatuurlijkPersoon zgwNatuurlijkPersoon = null;
+				  if(zgwRol.betrokkene.length() > 0) {
+					  zgwNatuurlijkPersoon = zgwClient.getNatuurlijkPersoonByUrl(zgwRol.betrokkene);
+				  }
+				  else {
+					  Gson gson = new Gson();
+					  String json = gson.toJson(zgwRol.betrokkeneIdentificatie);
+					  zgwNatuurlijkPersoon = gson.fromJson(json, ZgwNatuurlijkPersoon.class);						  
+				  }						  
+				  zdsRol.gerelateerde.natuurlijkPersoon = new ZdsNatuurlijkPersoon();
+				  zdsRol.gerelateerde.natuurlijkPersoon.bsn = zgwNatuurlijkPersoon.inpBsn;
+				  zdsRol.gerelateerde.natuurlijkPersoon.geslachtsnaam = zgwNatuurlijkPersoon.geslachtsnaam;
+				  zdsRol.gerelateerde.natuurlijkPersoon.voorvoegselGeslachtsnaam = zgwNatuurlijkPersoon.voorvoegselGeslachtsnaam;
+				  zdsRol.gerelateerde.natuurlijkPersoon.voorletters = zgwNatuurlijkPersoon.voorletters;
+				  zdsRol.gerelateerde.natuurlijkPersoon.voornamen =  zgwNatuurlijkPersoon.voornamen;
+				  zdsRol.gerelateerde.natuurlijkPersoon.geslachtsaanduiding = zgwNatuurlijkPersoon.geslachtsaanduiding;					  					  
+				  zdsRol.gerelateerde.natuurlijkPersoon.geboortedatum = getDateStringFromZgwDate(zgwNatuurlijkPersoon.geboortedatum);
+				  
+				  break;
+			  case "niet_natuurlijk_persoon":
+				  log.warn("todo: niet_natuurlijk_persoon not yet implemented!");
+				  break;
+			  case "vestiging":
+				  log.warn("todo: vestiging not yet implemented!");
+				  break;
+			  case "organisatorische_eenheid":
+				  log.warn("todo: organisatorische_eenheidnot yet implemented!");
+				  break;
+			  case "medewerker":
+				  ZgwBetrokkeneIdentificatie zgwMedewerker = null;
+				  if(zgwRol.betrokkene.length() > 0) {
+					  zgwMedewerker = zgwClient.getMedewerkerByUrl(zgwRol.betrokkene);
+				  }
+				  else {
+					  Gson gson = new Gson();
+					  String json = gson.toJson(zgwRol.betrokkeneIdentificatie);
+					  zgwMedewerker = gson.fromJson(json, ZgwBetrokkeneIdentificatie.class);						  
+				  }						  
+				  zdsRol.gerelateerde.medewerker = new ZdsMedewerker();
+				  zdsRol.gerelateerde.medewerker.identificatie = zgwMedewerker.identificatie;
+				  zdsRol.gerelateerde.medewerker.achternaam = zgwMedewerker.achternaam;
+				  zdsRol.gerelateerde.medewerker.voorletters = zgwMedewerker.voorletters;
+				  break;
+			  default:
+				  throw new ZaakTranslatorException("onbekende betrokkeneType: '" + zgwRol.betrokkeneType+ "'");
+			}
+			// type rol
+			switch(zgwRol.roltoelichting) {
+			  case "Betrekking":
+				  zdsZaak.heeftBetrekkingOp = zdsRol;
+				  break;
+			  case "Belanghebbende":
+				  zdsZaak.heeftAlsBelanghebbende = zdsRol;
+				  break;
+			  case "Initiator":
+				  zdsZaak.heeftAlsInitiator= zdsRol;
+				  break;
+			  case "Uitvoerende":
+				  zdsZaak.heeftAlsUitvoerende= zdsRol;
+				  break;
+			  case "Verantwoordelijke":
+				  zdsZaak.heeftAlsVerantwoordelijke= zdsRol;
+				    break;
+			  default:
+				  throw new ZaakTranslatorException("onbekende rol met omschrijving: '" + zgwRol.roltoelichting + "'");				
+			}
+		}
+		return zdsZaak;
+	}
+	
 	public ZakLa01 getZaakDetails(ZakLv01 zakLv01) throws ZaakTranslatorException, ZGWClientException {
 		if (zakLv01.gelijk != null && zakLv01.gelijk.identificatie != null) {
-			var zgwZaak = zgwClient.getZaakCompleteByIdentificatie(zakLv01.gelijk.identificatie);
-			if(zgwZaak == null) throw new ZaakTranslatorException("Geen zaak niet gevonden voor identificatie: '" + zakLv01.gelijk.identificatie + "'");
-			var zdsZaak = new ZdsZaak();
-			zdsZaak.identificatie = zgwZaak.identificatie;
-			zdsZaak.omschrijving = zgwZaak.omschrijving;
-			zdsZaak.toelichting = zgwZaak.toelichting;
-			zdsZaak.toelichting = zgwZaak.toelichting;
-			
-			var zgwZaakType = zgwClient.getZaakTypeByUrl(zgwZaak.zaaktype);
-			if(zgwZaakType == null) throw new ZaakTranslatorException("Geen zaaktype niet gevonden voor identificatie: '" + zgwZaak.zaaktype + "'");
-			
-			zdsZaak.isVan = new GerelateerdeWrapper();
-			zdsZaak.isVan.gerelateerde = new GerelateerdeRol(); 
-			zdsZaak.isVan.gerelateerde.code = zgwZaakType.identificatie;			
-			zdsZaak.isVan.gerelateerde.omschrijving = zgwZaakType.omschrijving;			
-
-			zdsZaak.registratiedatum = getDateStringFromZgwDate(zgwZaak.registratiedatum);
-			zdsZaak.startdatum = getDateStringFromZgwDate(zgwZaak.startdatum);
-			zdsZaak.einddatumGepland = getDateStringFromZgwDate(zgwZaak.einddatumGepland);
-			zdsZaak.einddatum = getDateStringFromZgwDate(zgwZaak.einddatum);
-			zdsZaak.archiefnominatie = getZdsArchiefNominatie(zgwZaak.einddatum);
-						
-			log.warn("rollen enzo moeten hier nog!");
-			var zgwRollen = zgwClient.getRollenByZaak(zgwZaak.url);
-			for(ZgwRol zgwRol: zgwRollen) {
-				var zdsRol = new ZdsRol();
-				zdsRol.gerelateerde = new GerelateerdeRol();				
-				// relatie van de rol
-				switch(zgwRol.betrokkeneType) {
-				  case "natuurlijk_persoon":
-					  ZgwNatuurlijkPersoon zgwNatuurlijkPersoon = null;
-					  if(zgwRol.betrokkene.length() > 0) {
-						  zgwNatuurlijkPersoon = zgwClient.getNatuurlijkPersoonByUrl(zgwRol.betrokkene);
-					  }
-					  else {
-						  Gson gson = new Gson();
-						  String json = gson.toJson(zgwRol.betrokkeneIdentificatie);
-						  zgwNatuurlijkPersoon = gson.fromJson(json, ZgwNatuurlijkPersoon.class);						  
-					  }						  
-					  zdsRol.gerelateerde.natuurlijkPersoon = new ZdsNatuurlijkPersoon();
-					  zdsRol.gerelateerde.natuurlijkPersoon.bsn = zgwNatuurlijkPersoon.inpBsn;
-					  zdsRol.gerelateerde.natuurlijkPersoon.geslachtsnaam = zgwNatuurlijkPersoon.geslachtsnaam;
-					  zdsRol.gerelateerde.natuurlijkPersoon.voorvoegselGeslachtsnaam = zgwNatuurlijkPersoon.voorvoegselGeslachtsnaam;
-					  zdsRol.gerelateerde.natuurlijkPersoon.voorletters = zgwNatuurlijkPersoon.voorletters;
-					  zdsRol.gerelateerde.natuurlijkPersoon.voornamen =  zgwNatuurlijkPersoon.voornamen;
-					  zdsRol.gerelateerde.natuurlijkPersoon.geslachtsaanduiding = zgwNatuurlijkPersoon.geslachtsaanduiding;					  					  
-					  zdsRol.gerelateerde.natuurlijkPersoon.geboortedatum = getDateStringFromZgwDate(zgwNatuurlijkPersoon.geboortedatum);
-					  
-					  break;
-				  case "niet_natuurlijk_persoon":
-					  log.warn("todo: niet_natuurlijk_persoon not yet implemented!");
-					  break;
-				  case "vestiging":
-					  log.warn("todo: vestiging not yet implemented!");
-					  break;
-				  case "organisatorische_eenheid":
-					  log.warn("todo: organisatorische_eenheidnot yet implemented!");
-					  break;
-				  case "medewerker":
-					  ZgwBetrokkeneIdentificatie zgwMedewerker = null;
-					  if(zgwRol.betrokkene.length() > 0) {
-						  zgwMedewerker = zgwClient.getMedewerkerByUrl(zgwRol.betrokkene);
-					  }
-					  else {
-						  Gson gson = new Gson();
-						  String json = gson.toJson(zgwRol.betrokkeneIdentificatie);
-						  zgwMedewerker = gson.fromJson(json, ZgwBetrokkeneIdentificatie.class);						  
-					  }						  
-					  zdsRol.gerelateerde.medewerker = new ZdsMedewerker();
-					  zdsRol.gerelateerde.medewerker.identificatie = zgwMedewerker.identificatie;
-					  zdsRol.gerelateerde.medewerker.achternaam = zgwMedewerker.achternaam;
-					  zdsRol.gerelateerde.medewerker.voorletters = zgwMedewerker.voorletters;
-					  break;
-				  default:
-					  throw new ZaakTranslatorException("onbekende betrokkeneType: '" + zgwRol.betrokkeneType+ "'");
-				}
-				// type rol
-				switch(zgwRol.roltoelichting) {
-				  case "Betrekking":
-					  zdsZaak.heeftBetrekkingOp = zdsRol;
-					  break;
-				  case "Belanghebbende":
-					  zdsZaak.heeftAlsBelanghebbende = zdsRol;
-					  break;
-				  case "Initiator":
-					  zdsZaak.heeftAlsInitiator= zdsRol;
-					  break;
-				  case "Uitvoerende":
-					  zdsZaak.heeftAlsUitvoerende= zdsRol;
-					  break;
-				  case "Verantwoordelijke":
-					  zdsZaak.heeftAlsVerantwoordelijke= zdsRol;
-					    break;
-				  default:
-					  throw new ZaakTranslatorException("onbekende rol met omschrijving: '" + zgwRol.roltoelichting + "'");				
-				}
-			}
 			var result = new ZakLa01();
 			result.antwoord = new ZakLa01.Antwoord();
+			var zdsZaak = getZaakDetailsZaakId(zakLv01.gelijk.identificatie);
 			result.antwoord.object = zdsZaak;
 			return result;
 		}
@@ -1086,14 +1103,50 @@ public class ZaakTranslator {
 		throw new ZaakTranslatorException("niet ondersteunde vraag in geefLijstZaakdocumenten");
 	}
 
-	public void replicateZds2ZgwZaak(RequestResponseCycle session, String zaakidentificatie) throws ZGWClientException, ZaakTranslatorException {
+	public void replicateZds2ZgwZaak(RequestResponseCycle session, ConfigService config, Stuurgegevens stuurgegevens, String zaakidentificatie) throws ZGWClientException, ZaakTranslatorException {
 		var zgwZaak = zgwClient.getZaakBasicByIdentificatie(zaakidentificatie);
 		if(zgwZaak != null)  {
 			log.info("replication: no need to copy, zaak with id #" + zaakidentificatie + " already in zgw");
 			// nothing to do here
 			return;
 		}
-		throw new ZaakTranslatorException("replicatie voor zaakdocmenten nog niet ondersteund!\n\tzaakidentificatie:" + zaakidentificatie);	}
+		var zdsClient= new ZDSClient();		
+		String soapAction = "http://www.egem.nl/StUF/sector/zkn/0310/geefZaakdetails_Lv01";
+		String zdsUrl = null;
+		for(Translation translation : config.getConfiguratie().getTranslations())
+		{
+			if(soapAction.equals(translation.soapaction)) {
+				zdsUrl = translation.legacyservice;
+				break;
+			}
+		}
+		if(zdsUrl == null) {
+			throw new ZaakTranslatorException("geen legacy url gevonden voor soapaction:" + soapAction);			
+		}
+
+		// get the zaak details
+		var document = nl.haarlem.translations.zdstozgw.utils.XmlUtils.getDocument("src/main/java/nl/haarlem/translations/zdstozgw/converter/impl/GeefZaakdetails_Lv01.xml");
+		var xpathDocument = new XpathDocument(document);
+		xpathDocument.setNodeValue(".//stuf:zender//stuf:organisatie", stuurgegevens.ontvanger.organisatie);
+		xpathDocument.setNodeValue(".//stuf:zender//stuf:applicatie", stuurgegevens.ontvanger.applicatie);
+		xpathDocument.setNodeValue(".//stuf:zender//stuf:gebruiker", stuurgegevens.ontvanger.gebruiker);
+		xpathDocument.setNodeValue(".//stuf:ontvanger//stuf:organisatie", stuurgegevens.zender.organisatie);
+		xpathDocument.setNodeValue(".//stuf:ontvanger//stuf:applicatie", stuurgegevens.zender.applicatie);
+		xpathDocument.setNodeValue(".//stuf:ontvanger//stuf:gebruiker", stuurgegevens.zender.gebruiker);
+		xpathDocument.setNodeValue(".//stuf:referentienummer", stuurgegevens.crossRefnummer);
+		xpathDocument.setNodeValue(".//stuf:crossRefnummer", stuurgegevens.referentienummer);
+		DateFormat tijdstipformat = new SimpleDateFormat("yyyyMMddHHmmss");
+		xpathDocument.setNodeValue(".//stuf:tijdstipBericht", tijdstipformat.format(new Date()));		
+		String zdsResponse = zdsClient.post(session, zdsUrl, soapAction, XmlUtils.xmlToString(document));					
+		ZakLa01 zakLa01 = (ZakLa01) XmlUtils.getStUFObject(zdsResponse, ZakLa01.class);
+		ZdsZaak zdsZaak = zakLa01.antwoord.object;
+	
+		// use the info to create the zaak with this info
+		creeerZaak(stuurgegevens, zdsZaak);
+		
+		// TODO: ook de documenten copieren!
+		log.error("Also copy the files for zaakid:" + zaakidentificatie);
+	}
 
 	public void replicateZds2ZgwDocument(RequestResponseCycle session, String zaakdocmentidentificatie) throws ZGWClientException, ZaakTranslatorException {
 		var zgwZaakDocument= zgwClient.getZgwEnkelvoudigInformatieObject(zaakdocmentidentificatie);

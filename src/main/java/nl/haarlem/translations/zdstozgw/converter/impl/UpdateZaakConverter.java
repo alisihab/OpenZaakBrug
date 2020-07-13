@@ -17,6 +17,7 @@ import nl.haarlem.translations.zdstozgw.jpa.ApplicationParameterRepository;
 import nl.haarlem.translations.zdstozgw.jpa.model.RequestResponseCycle;
 import nl.haarlem.translations.zdstozgw.translation.ZaakTranslator;
 import nl.haarlem.translations.zdstozgw.translation.ZaakTranslator.ZaakTranslatorException;
+import nl.haarlem.translations.zdstozgw.translation.zds.client.ZDSClient;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZakLk01;
 import nl.haarlem.translations.zdstozgw.translation.zds.services.ZaakService;
 import nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient;
@@ -42,9 +43,10 @@ public class UpdateZaakConverter extends Converter {
 	}
 
 	@Override
-	public String proxyZds(String soapAction, RequestResponseCycle session, ApplicationParameterRepository repository,
-			String requestBody) {
-		return postZdsRequest(session, soapAction, requestBody);
+	public String proxyZds(String soapAction, RequestResponseCycle session, ApplicationParameterRepository repository, String requestBody) {
+		var zdsClient= new ZDSClient();
+		String zdsResponse = zdsClient.post(session, zdsUrl, soapAction, requestBody);
+		return zdsResponse;
 	}
 
 	@Override
@@ -52,7 +54,8 @@ public class UpdateZaakConverter extends Converter {
 			ConfigService config, ApplicationParameterRepository repository, String requestBody) {
 		try {
 			// to the legacy zaaksystem
-			String zdsResponse = postZdsRequest(session, soapAction, requestBody);
+			var zdsClient= new ZDSClient();
+			String zdsResponse = zdsClient.post(session, zdsUrl, soapAction, requestBody);
 
 			// also to openzaak, maar we weten niet of die hier al aanwezig is
 			ZakLk01 zakLk01 = (ZakLk01) XmlUtils.getStUFObject(requestBody, ZakLk01.class);
@@ -61,8 +64,9 @@ public class UpdateZaakConverter extends Converter {
 			// ConverterException(this, "zaak identificatie is verplicht", null);
 
 			var translator = new ZaakTranslator(zgwClient, config);
-			translator.replicateZds2ZgwZaak(session, zdsWasZaak.identificatie);
+			translator.replicateZds2ZgwZaak(session, config, zakLk01.stuurgegevens, zdsWasZaak.identificatie);
 
+			
 			// the original response
 			return zdsResponse;
 		} catch (ZGWClient.ZGWClientException hsce) {
@@ -75,14 +79,30 @@ public class UpdateZaakConverter extends Converter {
 	@Override
 	public String convertToZgwAndReplicateToZds(String soapAction, RequestResponseCycle session, ZGWClient zgwClient,
 			ConfigService config, ApplicationParameterRepository repository, String requestBody) {
-		// to openzaak
-		String zgwResonse = convertToZgw(session, zgwClient, config, repository, requestBody);
+		try {
+			// also to openzaak, maar we weten niet of die hier al aanwezig is
+			ZakLk01 zakLk01 = (ZakLk01) XmlUtils.getStUFObject(requestBody, ZakLk01.class);
+			var zdsWasZaak = zakLk01.object.get(0);
+			// if (zdsWasZaak.identificatie.length() == 0) throw new
+			// ConverterException(this, "zaak identificatie is verplicht", null);
 
-		// also to the legacy zaaksystem
-		String zdsResponse = postZdsRequest(session, soapAction, requestBody);
+			var translator = new ZaakTranslator(zgwClient, config);
+			translator.replicateZds2ZgwZaak(session, config, zakLk01.stuurgegevens, zdsWasZaak.identificatie);
 
-		// response
-		return zgwResonse;
+			// to openzaak
+			String zgwResonse = convertToZgw(session, zgwClient, config, repository, requestBody);
+
+			// also to the legacy zaaksystem
+			var zdsClient= new ZDSClient();
+			String zdsResponse = zdsClient.post(session, zdsUrl, soapAction, requestBody);
+
+			// response
+			return zgwResonse;
+		} catch (ZGWClient.ZGWClientException hsce) {
+			throw new ConverterException(this, hsce.getMessage(), hsce.getDetails(), hsce);
+		} catch (ZaakTranslator.ZaakTranslatorException zte) {
+			throw new ConverterException(this, zte.getMessage(), requestBody, zte);
+		}
 	}
 
 	@Override

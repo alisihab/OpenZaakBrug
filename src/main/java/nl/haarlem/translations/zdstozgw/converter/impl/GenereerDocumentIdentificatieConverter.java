@@ -15,6 +15,7 @@ import nl.haarlem.translations.zdstozgw.converter.Converter;
 import nl.haarlem.translations.zdstozgw.converter.Converter.ConverterException;
 import nl.haarlem.translations.zdstozgw.jpa.ApplicationParameterRepository;
 import nl.haarlem.translations.zdstozgw.jpa.model.RequestResponseCycle;
+import nl.haarlem.translations.zdstozgw.translation.zds.client.ZDSClient;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.StufRequest;
 import nl.haarlem.translations.zdstozgw.translation.zds.services.ZaakService;
 import nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient;
@@ -53,17 +54,20 @@ public class GenereerDocumentIdentificatieConverter extends Converter {
 
 	@Override
 	public String proxyZds(String soapAction, RequestResponseCycle session, ApplicationParameterRepository repository, String requestBody)  {
-		return postZdsRequest(session, soapAction, requestBody);
+		var zdsClient= new ZDSClient();
+		return zdsClient.post(session, zdsUrl, soapAction, requestBody);
 	}
 		
 	@Override
 	public String proxyZdsAndReplicateToZgw(String soapAction, RequestResponseCycle session, ZGWClient zgwClient, ConfigService config, ApplicationParameterRepository repository, String requestBody) {
-		return postZdsRequest(session, soapAction, requestBody);
+		var zdsClient= new ZDSClient();
+		return zdsClient.post(session, zdsUrl, soapAction, requestBody);
 	}
 
 	@Override
 	public String convertToZgwAndReplicateToZds(String soapAction, RequestResponseCycle session, ZGWClient zgwClient, ConfigService config, ApplicationParameterRepository repository, String requestBody) {
-		return postZdsRequest(session, soapAction, requestBody);
+		var zdsClient= new ZDSClient();
+		return zdsClient.post(session, zdsUrl, soapAction, requestBody);
 	}	
 	
 	@Override

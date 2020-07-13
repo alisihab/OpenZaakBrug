@@ -14,6 +14,7 @@ import nl.haarlem.translations.zdstozgw.jpa.ApplicationParameterRepository;
 import nl.haarlem.translations.zdstozgw.jpa.model.RequestResponseCycle;
 import nl.haarlem.translations.zdstozgw.translation.ZaakTranslator;
 import nl.haarlem.translations.zdstozgw.translation.ZaakTranslator.ZaakTranslatorException;
+import nl.haarlem.translations.zdstozgw.translation.zds.client.ZDSClient;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZakLk01;
 import nl.haarlem.translations.zdstozgw.translation.zds.services.ZaakService;
 import nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient;
@@ -38,13 +39,16 @@ public class CreeerZaakConverter extends Converter {
 	
 	@Override
 	public String proxyZds(String soapAction, RequestResponseCycle session, ApplicationParameterRepository repository, String requestBody)  {
-		return postZdsRequest(session, soapAction, requestBody);
+		var zdsClient= new ZDSClient();
+		String zdsResponse = zdsClient.post(session, zdsUrl, soapAction, requestBody);
+		return zdsResponse;
 	}
 		
 	@Override
 	public String proxyZdsAndReplicateToZgw(String soapAction, RequestResponseCycle session, ZGWClient zgwClient, ConfigService config, ApplicationParameterRepository repository, String requestBody) {
 		// to the legacy zaaksystem
-		String zdsResponse = postZdsRequest(session, soapAction, requestBody);
+		var zdsClient= new ZDSClient();
+		String zdsResponse = zdsClient.post(session, zdsUrl, soapAction, requestBody);
 		
 		// also to openzaak
 		String zgwResonse = convertToZgw(session, zgwClient, config, repository, requestBody);
@@ -59,7 +63,8 @@ public class CreeerZaakConverter extends Converter {
 		String zgwResonse = convertToZgw(session, zgwClient, config, repository, requestBody);
 						
 		// also to the legacy zaaksystem
-		String zdsResponse = postZdsRequest(session, soapAction, requestBody);
+		var zdsClient= new ZDSClient();
+		String zdsResponse = zdsClient.post(session, zdsUrl, soapAction, requestBody);
 		
 		// response
 		return zgwResonse;		

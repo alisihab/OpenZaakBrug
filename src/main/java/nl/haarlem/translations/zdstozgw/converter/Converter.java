@@ -78,34 +78,6 @@ public abstract class Converter {
 	public String getTemplate() {
 		return this.template;
 	}
-
-	protected String postZdsRequest(RequestResponseCycle session, String zdsSoapAction, String zdsRequest) {
-		// what are we going to do?
-		session.addZdsRequest(this.zdsUrl, zdsSoapAction, zdsRequest);
-		log.info("Performing ZDS request to: '" + this.zdsUrl + "' for soapaction:" + zdsSoapAction);
-		var post = new PostMethod(this.zdsUrl);
-		try { 			
-			post.setRequestHeader("SOAPAction", zdsSoapAction);
-			post.setRequestHeader("Content-Type", "text/xml; charset=utf-8");
-			StringRequestEntity requestEntity = new org.apache.commons.httpclient.methods.StringRequestEntity(zdsRequest, "text/xml", "utf-8");
-			post.setRequestEntity(requestEntity);
-			var httpclient = new org.apache.commons.httpclient.HttpClient();
-			int responsecode = httpclient.executeMethod(post);
-			String zdsResponseCode = "" + responsecode;
-			String zdsResponseBody = post.getResponseBodyAsString();
-	
-			if (responsecode != 200) {
-				log.warn("Receive the responsecode status " + responsecode + "  from: " + this.zdsUrl + " (dus geen status=200  van het ouwe zaaksysteem)");
-			}
-			session.addZdsRespone(zdsResponseCode, zdsResponseBody);		
-			return zdsResponseBody;
-		} catch (IOException ce) {
-			throw new ConverterException(this, "OpenZaakBrug kon geen geen verbinding maken met:" + this.zdsUrl, zdsRequest,ce);
-		} finally {
-			// Release current connection to the connection pool once you are done
-			post.releaseConnection();
-		}		
-	}	
 	
 	public abstract String proxyZds(String zdsSoapAction, RequestResponseCycle session, ApplicationParameterRepository repository, String zdsRequest) throws Exception;	
 	public abstract String proxyZdsAndReplicateToZgw(String soapAction, RequestResponseCycle session, ZGWClient zgwClient, ConfigService config, ApplicationParameterRepository repository, String body);	
