@@ -47,12 +47,11 @@ public class VoegZaakdocumentToeConverter extends Converter {
 	}
 
 	@Override
-	public String proxyZdsAndReplicateToZgw(String soapAction, RequestResponseCycle session, ZGWClient zgwClient,
-			ConfigService config, ApplicationParameterRepository repository, String requestBody) {
+	public String proxyZdsAndReplicateToZgw(String soapAction, RequestResponseCycle session, ZGWClient zgwClient, ConfigService config, ApplicationParameterRepository repository, String requestBody) {
 		try {
 			EdcLk01 edcLk01 = (EdcLk01) XmlUtils.getStUFObject(requestBody, EdcLk01.class);
 			var translator = new ZaakTranslator(zgwClient, config);			
-			translator.replicateZds2ZgwDocument(session, edcLk01.objects.get(0).identificatie);
+			translator.replicateZds2ZgwZaak(session, config,  edcLk01.stuurgegevens,  edcLk01.objects.get(0).isRelevantVoor.gerelateerde.identificatie);
 
 			// to the legacy zaaksystem
 			var zdsClient= new ZDSClient();
@@ -75,7 +74,7 @@ public class VoegZaakdocumentToeConverter extends Converter {
 		try {
 			EdcLk01 edcLk01 = (EdcLk01) XmlUtils.getStUFObject(requestBody, EdcLk01.class);
 			var translator = new ZaakTranslator(zgwClient, config);			
-			translator.replicateZds2ZgwDocument(session, edcLk01.objects.get(0).identificatie);
+			translator.replicateZds2ZgwZaak(session, config,  edcLk01.stuurgegevens,  edcLk01.objects.get(0).isRelevantVoor.gerelateerde.identificatie);
 
 			// to openzaak
 			String zgwResonse = convertToZgw(session, zgwClient, config, repository, requestBody);
