@@ -458,6 +458,7 @@ public class ZaakTranslator {
 	
 	private String getDateStringFromZdsDate(String zdsDate) {
 		if(zdsDate == null) return null;
+		if(zdsDate.length() == 0) return null;
 		var year = zdsDate.substring(0, 4);
 		var month = zdsDate.substring(4, 6);
 		var day = zdsDate.substring(6, 8);
