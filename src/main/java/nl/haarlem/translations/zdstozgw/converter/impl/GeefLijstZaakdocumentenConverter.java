@@ -53,15 +53,11 @@ public class GeefLijstZaakdocumentenConverter extends Converter {
 	}
 
 	@Override
-	public String proxyZdsAndReplicateToZgw(String soapAction, RequestResponseCycle session, ZGWClient zgwClient,
-			ConfigService config, ApplicationParameterRepository repository, String requestBody) {
+	public String proxyZdsAndReplicateToZgw(String soapAction, RequestResponseCycle session, ZGWClient zgwClient, ConfigService config, ApplicationParameterRepository repository, String requestBody) {
 		try {
-
-			ZakLk01 zakLk01 = (ZakLk01) XmlUtils.getStUFObject(requestBody, ZakLk01.class);
-			ZdsZaak zdsZaak = zakLk01.object.get(1);
+			ZakLv01 zakLv01 = (ZakLv01) XmlUtils.getStUFObject(requestBody, ZakLv01.class);
 			var translator = new ZaakTranslator(zgwClient, config);
-			translator.replicateZds2ZgwZaak(session, config, zakLk01.stuurgegevens, zdsZaak.identificatie);
-			
+			translator.replicateZds2ZgwZaak(session, config, zakLv01.stuurgegevens, zakLv01.gelijk.identificatie);			
 
 			// to the legacy zaaksystem
 			var zdsClient= new ZDSClient();
@@ -80,14 +76,11 @@ public class GeefLijstZaakdocumentenConverter extends Converter {
 	}
 
 	@Override
-	public String convertToZgwAndReplicateToZds(String soapAction, RequestResponseCycle session, ZGWClient zgwClient,
-			ConfigService config, ApplicationParameterRepository repository, String requestBody) {
+	public String convertToZgwAndReplicateToZds(String soapAction, RequestResponseCycle session, ZGWClient zgwClient, ConfigService config, ApplicationParameterRepository repository, String requestBody) {
 		try {
-
-			ZakLk01 zakLk01 = (ZakLk01) XmlUtils.getStUFObject(requestBody, ZakLk01.class);
-			ZdsZaak zdsZaak = zakLk01.object.get(1);
+			ZakLv01 zakLv01 = (ZakLv01) XmlUtils.getStUFObject(requestBody, ZakLv01.class);
 			var translator = new ZaakTranslator(zgwClient, config);
-			translator.replicateZds2ZgwZaak(session, config, zakLk01.stuurgegevens, zdsZaak.identificatie);
+			translator.replicateZds2ZgwZaak(session, config, zakLv01.stuurgegevens, zakLv01.gelijk.identificatie);
 
 			// to openzaak
 			String zgwResonse = convertToZgw(session, zgwClient, config, repository, requestBody);
@@ -106,11 +99,9 @@ public class GeefLijstZaakdocumentenConverter extends Converter {
 	}
 
 	@Override
-	public String convertToZgw(RequestResponseCycle session, ZGWClient zgwClient, ConfigService configService,
-			ApplicationParameterRepository repository, String requestBody) {
+	public String convertToZgw(RequestResponseCycle session, ZGWClient zgwClient, ConfigService configService, ApplicationParameterRepository repository, String requestBody) {
 		String result = "";
 		try {
-
 			ZakLv01 zakLv01 = (ZakLv01) XmlUtils.getStUFObject(requestBody, ZakLv01.class);
 			var translator = new ZaakTranslator(zgwClient, configService);
 			ZakLa01LijstZaakdocumenten zakLa01 = translator.geefLijstZaakdocumenten(zakLv01);

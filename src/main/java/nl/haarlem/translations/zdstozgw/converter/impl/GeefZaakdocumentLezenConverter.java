@@ -54,10 +54,9 @@ public class GeefZaakdocumentLezenConverter extends Converter {
 	}
 
 	@Override
-	public String proxyZdsAndReplicateToZgw(String soapAction, RequestResponseCycle session, ZGWClient zgwClient,
-			ConfigService config, ApplicationParameterRepository repository, String requestBody) {
+	public String proxyZdsAndReplicateToZgw(String soapAction, RequestResponseCycle session, ZGWClient zgwClient, ConfigService config, ApplicationParameterRepository repository, String requestBody) {
 		try {
-			EdcLv01 edcLv01 = (EdcLv01) XmlUtils.getStUFObject(requestBody, ZakLk01.class);
+			EdcLv01 edcLv01 = (EdcLv01) XmlUtils.getStUFObject(requestBody, EdcLv01.class);
 			var translator = new ZaakTranslator(zgwClient, config);
 			translator.replicateZds2ZgwDocument(session, edcLv01.gelijk.identificatie);
 
@@ -78,10 +77,9 @@ public class GeefZaakdocumentLezenConverter extends Converter {
 	}
 
 	@Override
-	public String convertToZgwAndReplicateToZds(String soapAction, RequestResponseCycle session, ZGWClient zgwClient,
-			ConfigService config, ApplicationParameterRepository repository, String requestBody) {
+	public String convertToZgwAndReplicateToZds(String soapAction, RequestResponseCycle session, ZGWClient zgwClient, ConfigService config, ApplicationParameterRepository repository, String requestBody) {
 		try {
-			EdcLv01 edcLv01 = (EdcLv01) XmlUtils.getStUFObject(requestBody, ZakLk01.class);
+			EdcLv01 edcLv01 = (EdcLv01) XmlUtils.getStUFObject(requestBody, EdcLv01.class);
 			var translator = new ZaakTranslator(zgwClient, config);
 			translator.replicateZds2ZgwDocument(session, edcLv01.gelijk.identificatie);
 

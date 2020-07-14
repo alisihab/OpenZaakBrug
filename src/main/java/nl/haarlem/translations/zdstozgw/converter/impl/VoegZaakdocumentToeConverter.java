@@ -50,9 +50,9 @@ public class VoegZaakdocumentToeConverter extends Converter {
 	public String proxyZdsAndReplicateToZgw(String soapAction, RequestResponseCycle session, ZGWClient zgwClient,
 			ConfigService config, ApplicationParameterRepository repository, String requestBody) {
 		try {
-			EdcLv01 edcLv01 = (EdcLv01) XmlUtils.getStUFObject(requestBody, ZakLk01.class);
-			var translator = new ZaakTranslator(zgwClient, config);
-			translator.replicateZds2ZgwDocument(session, edcLv01.gelijk.identificatie);
+			EdcLk01 edcLk01 = (EdcLk01) XmlUtils.getStUFObject(requestBody, EdcLk01.class);
+			var translator = new ZaakTranslator(zgwClient, config);			
+			translator.replicateZds2ZgwDocument(session, edcLk01.objects.get(0).identificatie);
 
 			// to the legacy zaaksystem
 			var zdsClient= new ZDSClient();
@@ -71,12 +71,11 @@ public class VoegZaakdocumentToeConverter extends Converter {
 	}
 
 	@Override
-	public String convertToZgwAndReplicateToZds(String soapAction, RequestResponseCycle session, ZGWClient zgwClient,
-			ConfigService config, ApplicationParameterRepository repository, String requestBody) {
+	public String convertToZgwAndReplicateToZds(String soapAction, RequestResponseCycle session, ZGWClient zgwClient, ConfigService config, ApplicationParameterRepository repository, String requestBody) {
 		try {
-			EdcLv01 edcLv01 = (EdcLv01) XmlUtils.getStUFObject(requestBody, ZakLk01.class);
-			var translator = new ZaakTranslator(zgwClient, config);
-			translator.replicateZds2ZgwDocument(session, edcLv01.gelijk.identificatie);
+			EdcLk01 edcLk01 = (EdcLk01) XmlUtils.getStUFObject(requestBody, EdcLk01.class);
+			var translator = new ZaakTranslator(zgwClient, config);			
+			translator.replicateZds2ZgwDocument(session, edcLk01.objects.get(0).identificatie);
 
 			// to openzaak
 			String zgwResonse = convertToZgw(session, zgwClient, config, repository, requestBody);
@@ -95,8 +94,7 @@ public class VoegZaakdocumentToeConverter extends Converter {
 	}
 
 	@Override
-	public String convertToZgw(RequestResponseCycle session, ZGWClient zgwClient, ConfigService configService,
-			ApplicationParameterRepository repository, String requestBody) {
+	public String convertToZgw(RequestResponseCycle session, ZGWClient zgwClient, ConfigService configService, ApplicationParameterRepository repository, String requestBody) {
 		try {
 			EdcLk01 edcLk01 = (EdcLk01) XmlUtils.getStUFObject(requestBody, EdcLk01.class);
 			var translator = new ZaakTranslator(zgwClient, configService);
