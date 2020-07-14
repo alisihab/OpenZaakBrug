@@ -1136,8 +1136,14 @@ public class ZaakTranslator {
 		xpathDocument.setNodeValue(".//stuf:referentienummer", stuurgegevens.crossRefnummer);
 		xpathDocument.setNodeValue(".//stuf:crossRefnummer", stuurgegevens.referentienummer);
 		DateFormat tijdstipformat = new SimpleDateFormat("yyyyMMddHHmmss");
-		xpathDocument.setNodeValue(".//stuf:tijdstipBericht", tijdstipformat.format(new Date()));		
-		String zdsResponse = zdsClient.post(session, zdsUrl, soapAction, XmlUtils.xmlToString(document));					
+		xpathDocument.setNodeValue(".//stuf:tijdstipBericht", tijdstipformat.format(new Date()));
+		
+		xpathDocument.setNodeValue(".//zkn:gelijk//zkn:identificatie", zaakidentificatie);
+		
+		String zdsRequest = XmlUtils.xmlToString(document);
+		log.info("post action: " + soapAction + " with body:" + zdsRequest);
+		String zdsResponse = zdsClient.post(session, zdsUrl, soapAction, zdsRequest);
+		log.info("response:" + zdsResponse);
 		ZakLa01 zakLa01 = (ZakLa01) XmlUtils.getStUFObject(zdsResponse, ZakLa01.class);
 		ZdsZaak zdsZaak = zakLa01.antwoord.object;
 	
