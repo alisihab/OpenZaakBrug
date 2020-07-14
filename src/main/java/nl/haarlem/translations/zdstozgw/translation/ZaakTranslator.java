@@ -51,7 +51,7 @@ import nl.haarlem.translations.zdstozgw.translation.zds.model.HeeftAlsInitiator;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.HeeftAlsUitvoerende;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.HeeftRelevantEDC;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.Stuurgegevens;
-import nl.haarlem.translations.zdstozgw.translation.zds.model.ZakLa01;
+import nl.haarlem.translations.zdstozgw.translation.zds.model.ZakEdcLa01;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsRol;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZakLa01LijstZaakdocumenten;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsZaakDocument;
@@ -60,6 +60,7 @@ import nl.haarlem.translations.zdstozgw.translation.zds.model.ZakLa01Zaakdetails
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZakLk01;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsZaak;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZakLv01;
+import nl.haarlem.translations.zdstozgw.translation.zds.model.ZakZakLa01;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsMedewerker;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsNatuurlijkPersoon;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsOpschorting;
@@ -897,10 +898,10 @@ public class ZaakTranslator {
 		return zdsZaak;
 	}
 	
-	public ZakLa01 getZaakDetails(ZakLv01 zakLv01) throws ZaakTranslatorException, ZGWClientException {
+	public ZakEdcLa01 getZaakDetails(ZakLv01 zakLv01) throws ZaakTranslatorException, ZGWClientException {
 		if (zakLv01.gelijk != null && zakLv01.gelijk.identificatie != null) {
-			var result = new ZakLa01();
-			result.antwoord = new ZakLa01.Antwoord();
+			var result = new ZakEdcLa01();
+			result.antwoord = new ZakEdcLa01.Antwoord();
 			var zdsZaak = getZaakDetailsZaakId(zakLv01.gelijk.identificatie);
 			result.antwoord.object = zdsZaak;
 			return result;
@@ -1144,7 +1145,7 @@ public class ZaakTranslator {
 		log.info("post action: " + soapAction + " with body:" + zdsRequest);
 		String zdsResponse = zdsClient.post(session, zdsUrl, soapAction, zdsRequest);
 		log.info("response:" + zdsResponse);
-		ZakLa01 zakLa01 = (ZakLa01) XmlUtils.getStUFObject(zdsResponse, ZakLa01.class);
+		ZakZakLa01 zakLa01 = (ZakZakLa01) XmlUtils.getStUFObject(zdsResponse, ZakZakLa01.class);
 		ZdsZaak zdsZaak = zakLa01.antwoord.object;
 	
 		// use the info to create the zaak with this info
