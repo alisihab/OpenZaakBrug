@@ -11,12 +11,8 @@ import nl.haarlem.translations.zdstozgw.utils.XmlUtils;
 
 public class GeefZaakDetailsConverter extends Converter {
 
-    //todo: merge zaakservice & zaaktranslator into zaakTranslationService
-    private ZaakTranslator zaakTranslator;
-
     public GeefZaakDetailsConverter(Translation translation, ZaakService zaakService) {
         super(translation, zaakService);
-        this.zaakTranslator = SpringContext.getBean(ZaakTranslator.class);
     }
 
     @Override
