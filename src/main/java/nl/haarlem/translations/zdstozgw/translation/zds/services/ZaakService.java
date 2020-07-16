@@ -79,6 +79,9 @@ public class ZaakService {
         zakLa01LijstZaakdocumenten.antwoord.object.identificatie = zgwZaak.identificatie;
         zakLa01LijstZaakdocumenten.antwoord.object.heeftRelevant = new ArrayList<>();
 
+        zakLa01LijstZaakdocumenten.stuurgegevens = new Stuurgegevens(zakLv01.stuurgegevens);
+        zakLa01LijstZaakdocumenten.stuurgegevens.berichtcode = "La01";
+
         this.getZaakInformatieObjectenByZaak(zgwZaak.url).forEach(zgwZaakInformatieObject -> {
             ZgwEnkelvoudigInformatieObject zgwEnkelvoudigInformatieObject = zgwClient.getZaakDocument(zgwZaakInformatieObject.informatieobject);
             ZaakDocument zaakDocument = null;
@@ -154,6 +157,9 @@ public class ZaakService {
         var zgwZaak = zgwClient.getZaakByUrl(zgwZaakInformatieObject.getZaak());
 
         var edcLa01 = new EdcLa01();
+        edcLa01.stuurgegevens = new Stuurgegevens(edcLv01.stuurgegevens);
+        edcLa01.stuurgegevens.berichtcode = "La01";
+
         edcLa01.antwoord = new EdcLa01.Antwoord();
         edcLa01.antwoord.object = modelMapper.map(zgwEnkelvoudigInformatieObject, EdcLa01.Object.class);
 
@@ -208,6 +214,7 @@ public class ZaakService {
 
             zakLa01GeefZaakDetails.stuurgegevens = new Stuurgegevens(zakLv01.stuurgegevens);
             zakLa01GeefZaakDetails.stuurgegevens.berichtcode = "La01";
+
             zakLa01GeefZaakDetails.antwoord = new ZakLa01GeefZaakDetails.Antwoord();
             zakLa01GeefZaakDetails.antwoord.zaak = modelMapper.map(zgwZaak, ZakLa01GeefZaakDetails.Antwoord.Zaak.class);
 

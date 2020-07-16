@@ -22,9 +22,14 @@ public class Stuurgegevens{
     public Ontvanger ontvanger;
 
     public Stuurgegevens(Stuurgegevens stuurgegevens) {
-        this.zender = stuurgegevens.zender;
-        this.ontvanger = stuurgegevens.ontvanger;
-        this.berichtcode = stuurgegevens.berichtcode;
+        this.zender = new Zender()
+                .setApplicatie(stuurgegevens.ontvanger.applicatie)
+                .setOrganisatie(stuurgegevens.ontvanger.organisatie)
+                .setGebruiker(stuurgegevens.ontvanger.gebruiker);
+        this.ontvanger = new Ontvanger()
+                .setApplicatie(stuurgegevens.zender.applicatie)
+                .setOrganisatie(stuurgegevens.zender.organisatie)
+                .setGebruiker(stuurgegevens.zender.gebruiker);
     }
 
     public Stuurgegevens() {

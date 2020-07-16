@@ -13,6 +13,9 @@ import static nl.haarlem.translations.zdstozgw.translation.zds.model.namespace.N
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ZakLa01LijstZaakdocumenten {
 
+    @XmlElement(namespace = STUF)
+    public Stuurgegevens stuurgegevens;
+
     @XmlElement(namespace = ZKN)
     public Antwoord antwoord;
 
