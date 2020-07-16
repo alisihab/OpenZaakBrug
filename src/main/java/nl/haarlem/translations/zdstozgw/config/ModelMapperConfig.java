@@ -1,10 +1,6 @@
 package nl.haarlem.translations.zdstozgw.config;
 
-import nl.haarlem.translations.zdstozgw.translation.zds.model.Gerelateerde;
-import nl.haarlem.translations.zdstozgw.translation.zds.model.NatuurlijkPersoon;
-import nl.haarlem.translations.zdstozgw.translation.zds.model.Rol;
-import nl.haarlem.translations.zdstozgw.translation.zds.model.ZakLa01;
-import nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient;
+import nl.haarlem.translations.zdstozgw.translation.zds.model.*;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwBetrokkeneIdentificatie;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwRol;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwStatus;
@@ -13,17 +9,14 @@ import org.modelmapper.AbstractConverter;
 import org.modelmapper.Conditions;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import static nl.haarlem.translations.zdstozgw.translation.BetrokkeneType.MEDEWERKER;
 import static nl.haarlem.translations.zdstozgw.translation.BetrokkeneType.NATUURLIJK_PERSOON;
 
 @Configuration
 public class ModelMapperConfig {
-
-    @Autowired
-    ZGWClient zgwClient;
 
     @Bean
     public ModelMapper modelMapper() {
@@ -103,7 +96,10 @@ public class ModelMapperConfig {
                 if(zgwRol.getBetrokkeneType().equalsIgnoreCase(NATUURLIJK_PERSOON.getDescription())){
                     rol.gerelateerde.natuurlijkPersoon = modelMapper().map(zgwRol.betrokkeneIdentificatie, NatuurlijkPersoon.class);
                     rol.gerelateerde.natuurlijkPersoon.entiteittype = "NPS";
-                }else {
+                }else if(zgwRol.getBetrokkeneType().equalsIgnoreCase(MEDEWERKER.getDescription())){
+                    rol.gerelateerde.medewerker = modelMapper().map(zgwRol.betrokkeneIdentificatie, Medewerker.class);
+                    rol.gerelateerde.medewerker.entiteittype = "MDW";
+                }else{
                     throw new RuntimeException("Betrokkene type nog niet geïmplementeerd");
                 }
                 return rol;
