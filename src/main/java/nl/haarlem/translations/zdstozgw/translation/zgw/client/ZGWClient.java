@@ -169,7 +169,7 @@ public class ZGWClient {
         return result;
     }
 
-    public ZgwEnkelvoudigInformatieObject addDocument(ZgwEnkelvoudigInformatieObject zgwEnkelvoudigInformatieObject) {
+    public ZgwEnkelvoudigInformatieObject addZaakDocument(ZgwEnkelvoudigInformatieObject zgwEnkelvoudigInformatieObject) {
         ZgwEnkelvoudigInformatieObject result = null;
         try {
             Gson gson = new Gson();
@@ -198,21 +198,6 @@ public class ZGWClient {
 
         return result;
 
-    }
-
-    public List<ZgwEnkelvoudigInformatieObject> getLijstZaakDocumenten(Map<String, String> parameters) {
-        var result = new ArrayList();
-
-        try {
-            var zaakInformatieObjects = getZgwZaakInformatieObjects(parameters);
-            result = (ArrayList) getZgwEnkelvoudigInformatieObjectList(result, zaakInformatieObjects);
-
-        } catch (Exception ex) {
-            log.error("Exception in getLijstZaakdocumenten: " + ex.getMessage());
-            throw ex;
-        }
-
-        return result;
     }
 
     private List<ZgwEnkelvoudigInformatieObject> getZgwEnkelvoudigInformatieObjectList(List<ZgwEnkelvoudigInformatieObject> tempResult, List<ZgwZaakInformatieObject> zaakInformatieObjects) {

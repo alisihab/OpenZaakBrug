@@ -2,9 +2,8 @@ package nl.haarlem.translations.zdstozgw.converter.impl;
 
 import nl.haarlem.translations.zdstozgw.config.model.Translation;
 import nl.haarlem.translations.zdstozgw.converter.Converter;
-import nl.haarlem.translations.zdstozgw.translation.zds.model.ZakLa01GeefZaakDetails;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZakLa01LijstZaakdocumenten;
-import nl.haarlem.translations.zdstozgw.translation.zds.model.ZakLv01_v2;
+import nl.haarlem.translations.zdstozgw.translation.zds.model.ZakLv01;
 import nl.haarlem.translations.zdstozgw.translation.zds.services.ZaakService;
 import nl.haarlem.translations.zdstozgw.utils.XmlUtils;
 
@@ -17,7 +16,7 @@ public class GeefLijstZaakdocumentenConverter extends Converter {
     @Override
     public String convert(String request) {
         try {
-            ZakLv01_v2 zakLv01 = (ZakLv01_v2) XmlUtils.getStUFObject(request, ZakLv01_v2.class);
+            ZakLv01 zakLv01 = (ZakLv01) XmlUtils.getStUFObject(request, ZakLv01.class);
             ZakLa01LijstZaakdocumenten zakLa01LijstZaakdocumenten = this.getZaakService().geefLijstZaakdocumenten(zakLv01);
             return XmlUtils.getSOAPMessageFromObject(zakLa01LijstZaakdocumenten);
 

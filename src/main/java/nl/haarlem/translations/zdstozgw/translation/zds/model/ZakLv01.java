@@ -1,21 +1,21 @@
 package nl.haarlem.translations.zdstozgw.translation.zds.model;
 
 import lombok.Data;
-import nl.haarlem.translations.zdstozgw.utils.xpath.XpathDocument;
-import org.w3c.dom.Document;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
+import static nl.haarlem.translations.zdstozgw.translation.zds.model.namespace.Namespace.ZKN;
 
 @Data
+@XmlRootElement(namespace = ZKN, name = "zakLv01")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class ZakLv01 {
+    @XmlElement(namespace = ZKN, name = "stuurgegevens")
+    public Stuurgegevens stuurgegevens;
 
-    private final XpathDocument xpathDocument;
-    private Document document;
-
-    public ZakLv01(Document document) {
-        this.document = document;
-        this.xpathDocument  = new XpathDocument(document);
-    }
-
-    public String getIdentificatie(){
-        return xpathDocument.getNodeValue("//zkn:identificatie");
-    }
+    @XmlElement(namespace = ZKN, name = "gelijk")
+    public Gelijk gelijk;
 }

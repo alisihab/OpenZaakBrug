@@ -19,12 +19,6 @@ public class ZaakDocument {
     @XmlElement(namespace = ZKN, nillable =  true)
     public String identificatie;
 
-//    @XmlElement(namespace = ZKN,name="dct.omschrijving", nillable = true)
-//    public String dctOmschrijving;
-//
-//    @XmlElement(namespace = ZKN,name="dct.categorie", nillable =  true)
-//    public String dctCategorie;
-
     @XmlElement(namespace = ZKN, nillable =  true)
     public String creatiedatum;
 
@@ -54,9 +48,4 @@ public class ZaakDocument {
 
     @XmlElement(namespace = ZKN, nillable =  true)
     public String link;
-
-    /*
-    @XmlElement(namespace = ZKN, nillable =  true)
-	public String inhoud;
-	*/
 }

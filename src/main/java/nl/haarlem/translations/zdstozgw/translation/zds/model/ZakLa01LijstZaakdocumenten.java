@@ -1,8 +1,8 @@
 package nl.haarlem.translations.zdstozgw.translation.zds.model;
 
 import lombok.Data;
-import javax.xml.bind.annotation.*;
 
+import javax.xml.bind.annotation.*;
 import java.util.List;
 
 import static nl.haarlem.translations.zdstozgw.translation.zds.model.namespace.Namespace.STUF;
