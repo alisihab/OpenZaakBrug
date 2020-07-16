@@ -35,16 +35,6 @@ public class ZaakTranslator {
 
     }
 
-    public void zgwEnkelvoudingInformatieObjectenToZSDLijstZaakDocumenten(){
-        var zakLa01 = new ZakLa01LijstZaakdocumenten();
-
-        zgwEnkelvoudigInformatieObjectList.forEach(document -> {
-            zgwDocumentToZgwDocument(zakLa01, document);
-        });
-
-        document =  zakLa01.getDocument();
-    }
-
     public EdcLa01  getEdcLa01FromZgwEnkelvoudigInformatieObject(ZgwEnkelvoudigInformatieObject document){
         EdcLa01 edcLa01 = new EdcLa01();
         edcLa01.antwoord = new EdcLa01.Antwoord();
@@ -65,25 +55,6 @@ public class ZaakTranslator {
         edcLa01.antwoord.object.versie = document.versie;
 
         return  edcLa01;
-    }
-
-    private void zgwDocumentToZgwDocument(ZakLa01LijstZaakdocumenten zakLa01, ZgwEnkelvoudigInformatieObject document) {
-        HeeftRelevantEDC heeftRelevantEDC = new HeeftRelevantEDC();
-        heeftRelevantEDC.setIdentificatie(document.getIdentificatie());
-        heeftRelevantEDC.setDctOmschrijving(getDocumentTypeOmschrijving(document.getInformatieobjecttype()));
-        heeftRelevantEDC.setCreatieDatum(getStufDateFromDateString(document.getCreatiedatum()));
-        heeftRelevantEDC.setOntvangstDatum(getStufDateFromDateString(document.getOntvangstdatum()));
-        heeftRelevantEDC.setTitel(document.getTitel());
-        heeftRelevantEDC.setBeschrijving(document.getBeschrijving());
-        heeftRelevantEDC.setFormaat(document.getFormaat());
-        heeftRelevantEDC.setTaal(document.getTaal());
-        heeftRelevantEDC.setVersie(document.getVersie());
-        heeftRelevantEDC.setStatus(document.getStatus());
-        heeftRelevantEDC.setVerzendDatum(getStufDateFromDateString(document.getVerzenddatum()));
-        heeftRelevantEDC.setVertrouwelijkAanduiding(document.getVertrouwelijkheidaanduiding().toUpperCase());
-        heeftRelevantEDC.setAuteur(document.getAuteur());
-        heeftRelevantEDC.setLink(document.getUrl());
-        zakLa01.addHeeftRelevant(heeftRelevantEDC);
     }
 
     public void zdsDocumentToZgwDocument(){

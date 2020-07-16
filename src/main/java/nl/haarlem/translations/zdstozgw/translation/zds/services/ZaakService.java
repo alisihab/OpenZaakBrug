@@ -11,9 +11,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.w3c.dom.Document;
 
 import java.lang.invoke.MethodHandles;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -67,20 +67,34 @@ public class ZaakService {
         return null;
     }
 
-    public Document getLijstZaakdocumenten(ZakLv01 zakLv01) throws Exception {
-        ZgwZaak zgwZaak = getZaak(zakLv01.getIdentificatie());
+    public ZakLa01LijstZaakdocumenten geefLijstZaakdocumenten(ZakLv01_v2 zakLv01) throws Exception {
+        ZgwZaak zgwZaak = getZaak(zakLv01.gelijk.identificatie);
 
+        ZakLa01LijstZaakdocumenten zakLa01LijstZaakdocumenten = new ZakLa01LijstZaakdocumenten();
+        zakLa01LijstZaakdocumenten.antwoord = new ZakLa01LijstZaakdocumenten.Antwoord();
+        zakLa01LijstZaakdocumenten.antwoord.object = new ZakLa01LijstZaakdocumenten.Antwoord.Object();
+        zakLa01LijstZaakdocumenten.antwoord.object.identificatie = zgwZaak.identificatie;
+        zakLa01LijstZaakdocumenten.antwoord.object.heeftRelevant = new ArrayList<>();
+
+        this.getZaakInformatieObjectenByZaak(zgwZaak.url).forEach(zgwZaakInformatieObject -> {
+            ZgwEnkelvoudigInformatieObject zgwEnkelvoudigInformatieObject = zgwClient.getZaakDocument(zgwZaakInformatieObject.informatieobject);
+            ZaakDocument zaakDocument = null;
+            if(zgwEnkelvoudigInformatieObject!= null){
+                zaakDocument = modelMapper.map(zgwEnkelvoudigInformatieObject, ZaakDocument.class);
+            }
+            zakLa01LijstZaakdocumenten.antwoord.object.heeftRelevant.add(modelMapper.map(zgwZaakInformatieObject, ZakLa01LijstZaakdocumenten.Antwoord.Object.HeeftRelevant.class)
+                                                                                        .setGerelateerde(zaakDocument));
+        });
+
+        return zakLa01LijstZaakdocumenten;
+
+    }
+
+    private List<ZgwZaakInformatieObject> getZaakInformatieObjectenByZaak(String zaakUrl){
         Map<String, String> parameters = new HashMap();
-        parameters.put("zaak", zgwZaak.getUrl());
+        parameters.put("zaak", zaakUrl);
 
-        var zaakInformatieObjecten = zgwClient.getLijstZaakDocumenten(parameters);
-
-
-        zaakTranslator.setZgwEnkelvoudigInformatieObjectList(zaakInformatieObjecten);
-        zaakTranslator.zgwEnkelvoudingInformatieObjectenToZSDLijstZaakDocumenten();
-
-        return zaakTranslator.getDocument();
-
+        return this.zgwClient.getZgwZaakInformatieObjects(parameters);
     }
 
     public ZgwZaakInformatieObject voegZaakDocumentToe(EdcLk01 edcLk01) throws Exception {
@@ -179,18 +193,18 @@ public class ZaakService {
     }
 
     //todo: handle exceptions
-    public ZakLa01 getZaakDetails(ZakLv01_v2 zakLv01) {
-        ZakLa01 zakLa01 = new ZakLa01();
+    public ZakLa01GeefZaakDetails getZaakDetails(ZakLv01_v2 zakLv01) {
+        ZakLa01GeefZaakDetails zakLa01GeefZaakDetails = new ZakLa01GeefZaakDetails();
 
         if (zakLv01.gelijk != null && zakLv01.gelijk.identificatie != null) {
             var zgwZaak = this.getZaak(zakLv01.gelijk.identificatie);
             if (zgwZaak == null)
                 throw new RuntimeException("Zaak niet gevonden voor identificatie: '" + zakLv01.gelijk.identificatie + "'");
 
-            zakLa01.stuurgegevens = new Stuurgegevens(zakLv01.stuurgegevens);
-            zakLa01.stuurgegevens.berichtcode = "La01";
-            zakLa01.antwoord = new ZakLa01.Antwoord();
-            zakLa01.antwoord.zaak = modelMapper.map(zgwZaak, ZakLa01.Antwoord.Zaak.class);
+            zakLa01GeefZaakDetails.stuurgegevens = new Stuurgegevens(zakLv01.stuurgegevens);
+            zakLa01GeefZaakDetails.stuurgegevens.berichtcode = "La01";
+            zakLa01GeefZaakDetails.antwoord = new ZakLa01GeefZaakDetails.Antwoord();
+            zakLa01GeefZaakDetails.antwoord.zaak = modelMapper.map(zgwZaak, ZakLa01GeefZaakDetails.Antwoord.Zaak.class);
 
             ZgwRolOmschrijving zgwRolOmschrijving = this.configService.getConfiguratie().getZgwRolOmschrijving();
 
@@ -198,50 +212,50 @@ public class ZaakService {
 
                 if (zgwRolOmschrijving.getHeeftAlsInitiator() != null
                         && zgwRolOmschrijving.getHeeftAlsInitiator().equalsIgnoreCase(zgwRol.getOmschrijvingGeneriek())) {
-                    zakLa01.antwoord.zaak.heeftAlsInitiator = getZdsRol(zgwZaak, zgwRolOmschrijving.getHeeftAlsInitiator());
-                    zakLa01.antwoord.zaak.heeftAlsInitiator.entiteittype = "ZAKBTRINI";
+                    zakLa01GeefZaakDetails.antwoord.zaak.heeftAlsInitiator = getZdsRol(zgwZaak, zgwRolOmschrijving.getHeeftAlsInitiator());
+                    zakLa01GeefZaakDetails.antwoord.zaak.heeftAlsInitiator.entiteittype = "ZAKBTRINI";
                 }else if (zgwRolOmschrijving.getHeeftAlsBelanghebbende() != null
                         && zgwRolOmschrijving.getHeeftAlsBelanghebbende().equalsIgnoreCase(zgwRol.getOmschrijvingGeneriek())) {
-                    zakLa01.antwoord.zaak.heeftAlsBelanghebbende = getZdsRol(zgwZaak, zgwRolOmschrijving.getHeeftAlsBelanghebbende());
-                    zakLa01.antwoord.zaak.heeftAlsBelanghebbende.setEntiteittype("ZAKBTRBLH");
+                    zakLa01GeefZaakDetails.antwoord.zaak.heeftAlsBelanghebbende = getZdsRol(zgwZaak, zgwRolOmschrijving.getHeeftAlsBelanghebbende());
+                    zakLa01GeefZaakDetails.antwoord.zaak.heeftAlsBelanghebbende.setEntiteittype("ZAKBTRBLH");
                 }else if (zgwRolOmschrijving.getHeeftAlsUitvoerende() != null
                         && zgwRolOmschrijving.getHeeftAlsUitvoerende().equalsIgnoreCase(zgwRol.getOmschrijvingGeneriek())) {
-                    zakLa01.antwoord.zaak.heeftAlsUitvoerende = getZdsRol(zgwZaak, zgwRolOmschrijving.getHeeftAlsUitvoerende());
-                    zakLa01.antwoord.zaak.heeftAlsUitvoerende.entiteittype = "ZAKBTRUTV";
+                    zakLa01GeefZaakDetails.antwoord.zaak.heeftAlsUitvoerende = getZdsRol(zgwZaak, zgwRolOmschrijving.getHeeftAlsUitvoerende());
+                    zakLa01GeefZaakDetails.antwoord.zaak.heeftAlsUitvoerende.entiteittype = "ZAKBTRUTV";
                 }else if (zgwRolOmschrijving.getHeeftAlsVerantwoordelijke() != null
                         && zgwRolOmschrijving.getHeeftAlsVerantwoordelijke().equalsIgnoreCase(zgwRol.getOmschrijvingGeneriek())) {
-                    zakLa01.antwoord.zaak.heeftAlsVerantwoordelijke = getZdsRol(zgwZaak, zgwRolOmschrijving.getHeeftAlsVerantwoordelijke());
-                    zakLa01.antwoord.zaak.heeftAlsVerantwoordelijke.entiteittype = "ZAKBTRVRA";
+                    zakLa01GeefZaakDetails.antwoord.zaak.heeftAlsVerantwoordelijke = getZdsRol(zgwZaak, zgwRolOmschrijving.getHeeftAlsVerantwoordelijke());
+                    zakLa01GeefZaakDetails.antwoord.zaak.heeftAlsVerantwoordelijke.entiteittype = "ZAKBTRVRA";
                 }else if (zgwRolOmschrijving.getHeeftAlsGemachtigde() != null
                         && zgwRolOmschrijving.getHeeftAlsGemachtigde().equalsIgnoreCase(zgwRol.getOmschrijvingGeneriek())) {
-                    zakLa01.antwoord.zaak.heeftAlsGemachtigde = getZdsRol(zgwZaak, zgwRolOmschrijving.getHeeftAlsGemachtigde());
-                    zakLa01.antwoord.zaak.heeftAlsGemachtigde.setEntiteittype("ZAKBTRGMC");
+                    zakLa01GeefZaakDetails.antwoord.zaak.heeftAlsGemachtigde = getZdsRol(zgwZaak, zgwRolOmschrijving.getHeeftAlsGemachtigde());
+                    zakLa01GeefZaakDetails.antwoord.zaak.heeftAlsGemachtigde.setEntiteittype("ZAKBTRGMC");
                 }else if (zgwRolOmschrijving.getHeeftAlsOverigBetrokkene() != null
                         && zgwRolOmschrijving.getHeeftAlsOverigBetrokkene().equalsIgnoreCase(zgwRol.getOmschrijvingGeneriek())) {
-                    zakLa01.antwoord.zaak.heeftAlsOverigBetrokkene = getZdsRol(zgwZaak, zgwRolOmschrijving.getHeeftAlsOverigBetrokkene());
-                    zakLa01.antwoord.zaak.heeftAlsOverigBetrokkene.setEntiteittype("ZAKBTROVR");
+                    zakLa01GeefZaakDetails.antwoord.zaak.heeftAlsOverigBetrokkene = getZdsRol(zgwZaak, zgwRolOmschrijving.getHeeftAlsOverigBetrokkene());
+                    zakLa01GeefZaakDetails.antwoord.zaak.heeftAlsOverigBetrokkene.setEntiteittype("ZAKBTROVR");
                 }
 
             });
 
             ZgwZaakType zgwZaakType = this.getZaakTypeByUrl(zgwZaak.zaaktype);
-            zakLa01.object = new ZakLa01.Object();
-            zakLa01.object.isVan = new Rol();
-            zakLa01.object.isVan.entiteittype = "ZAKZKT";
-            zakLa01.object.isVan.gerelateerde = new Gerelateerde();
-            zakLa01.object.isVan.gerelateerde.entiteittype = "ZKT";
-            zakLa01.object.isVan.gerelateerde.code = zgwZaakType.identificatie;
-            zakLa01.object.isVan.gerelateerde.omschrijving = zgwZaakType.omschrijving;
+            zakLa01GeefZaakDetails.object = new ZakLa01GeefZaakDetails.Object();
+            zakLa01GeefZaakDetails.object.isVan = new Rol();
+            zakLa01GeefZaakDetails.object.isVan.entiteittype = "ZAKZKT";
+            zakLa01GeefZaakDetails.object.isVan.gerelateerde = new Gerelateerde();
+            zakLa01GeefZaakDetails.object.isVan.gerelateerde.entiteittype = "ZKT";
+            zakLa01GeefZaakDetails.object.isVan.gerelateerde.code = zgwZaakType.identificatie;
+            zakLa01GeefZaakDetails.object.isVan.gerelateerde.omschrijving = zgwZaakType.omschrijving;
 
-            zakLa01.antwoord.zaak.kenmerk = zgwZaak.getKenmerken() != null && !zgwZaak.getKenmerken().isEmpty()?  modelMapper.map(zgwZaak.getKenmerken().get(0), ZakLa01.Antwoord.Zaak.Kenmerk.class) : null;
-            zakLa01.antwoord.zaak.opschorting = zgwZaak.getOpschorting() != null? modelMapper.map(zgwZaak.getOpschorting(), ZakLa01.Antwoord.Zaak.Opschorting.class): null;
-            zakLa01.antwoord.zaak.verlenging = zgwZaak.getVerlenging() != null? modelMapper.map(zgwZaak.getVerlenging(), ZakLa01.Antwoord.Zaak.Verlenging.class): null;
+            zakLa01GeefZaakDetails.antwoord.zaak.kenmerk = zgwZaak.getKenmerken() != null && !zgwZaak.getKenmerken().isEmpty()?  modelMapper.map(zgwZaak.getKenmerken().get(0), ZakLa01GeefZaakDetails.Antwoord.Zaak.Kenmerk.class) : null;
+            zakLa01GeefZaakDetails.antwoord.zaak.opschorting = zgwZaak.getOpschorting() != null? modelMapper.map(zgwZaak.getOpschorting(), ZakLa01GeefZaakDetails.Antwoord.Zaak.Opschorting.class): null;
+            zakLa01GeefZaakDetails.antwoord.zaak.verlenging = zgwZaak.getVerlenging() != null? modelMapper.map(zgwZaak.getVerlenging(), ZakLa01GeefZaakDetails.Antwoord.Zaak.Verlenging.class): null;
 
-            zakLa01.antwoord.zaak.heeft = getStatussenByZaakUrl(zgwZaak.url)
+            zakLa01GeefZaakDetails.antwoord.zaak.heeft = getStatussenByZaakUrl(zgwZaak.url)
                     .stream()
                     .map(zgwStatus -> {
                         ZgwStatusType zgwStatusType = zgwClient.getResource(zgwStatus.statustype, ZgwStatusType.class);
-                        return modelMapper.map(zgwStatus, ZakLa01.Antwoord.Zaak.Status.class)
+                        return modelMapper.map(zgwStatus, ZakLa01GeefZaakDetails.Antwoord.Zaak.Status.class)
                                 .setEntiteittype("ZAKSTT")
                                 .setIndicatieLaatsteStatus(Boolean.valueOf(zgwStatusType.isEindstatus)?"J":"N");
                     })
@@ -249,7 +263,7 @@ public class ZaakService {
 
         }
 
-        return zakLa01;
+        return zakLa01GeefZaakDetails;
     }
 
     private ZgwZaakType getZaakTypeByUrl(String url) {

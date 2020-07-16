@@ -1,10 +1,7 @@
 package nl.haarlem.translations.zdstozgw.config;
 
 import nl.haarlem.translations.zdstozgw.translation.zds.model.*;
-import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwBetrokkeneIdentificatie;
-import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwRol;
-import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwStatus;
-import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwZaak;
+import nl.haarlem.translations.zdstozgw.translation.zgw.model.*;
 import org.modelmapper.AbstractConverter;
 import org.modelmapper.Conditions;
 import org.modelmapper.ModelMapper;
@@ -26,15 +23,15 @@ public class ModelMapperConfig {
                 .setSkipNullEnabled(true)
                 .setPropertyCondition(Conditions.isNotNull());
 
-        modelMapper.typeMap(ZgwZaak.class, ZakLa01.Antwoord.Zaak.class)
-                .addMappings(mapper -> mapper.using(convertDateStringToStufDate()).map(ZgwZaak::getStartdatum, ZakLa01.Antwoord.Zaak::setStartdatum))
-                .addMappings(mapper -> mapper.using(convertDateStringToStufDate()).map(ZgwZaak::getRegistratiedatum, ZakLa01.Antwoord.Zaak::setRegistratiedatum))
-                .addMappings(mapper -> mapper.using(convertDateStringToStufDate()).map(ZgwZaak::getPublicatiedatum, ZakLa01.Antwoord.Zaak::setPublicatiedatum))
-                .addMappings(mapper -> mapper.using(convertDateStringToStufDate()).map(ZgwZaak::getEinddatumGepland, ZakLa01.Antwoord.Zaak::setEinddatumGepland))
-                .addMappings(mapper -> mapper.using(convertDateStringToStufDate()).map(ZgwZaak::getUiterlijkeEinddatumAfdoening, ZakLa01.Antwoord.Zaak::setUiterlijkeEinddatum))
-                .addMappings(mapper -> mapper.using(convertDateStringToStufDate()).map(ZgwZaak::getEinddatum, ZakLa01.Antwoord.Zaak::setEinddatum))
-                .addMappings(mapper -> mapper.using(convertDateStringToStufDate()).map(ZgwZaak::getArchiefactiedatum, ZakLa01.Antwoord.Zaak::setDatumVernietigingDossier))
-                .addMappings(mapper -> mapper.using(convertZgwArchiefNomitieToZdsArchiefNominatie()).map(ZgwZaak::getArchiefnominatie, ZakLa01.Antwoord.Zaak::setArchiefnominatie));
+        modelMapper.typeMap(ZgwZaak.class, ZakLa01GeefZaakDetails.Antwoord.Zaak.class)
+                .addMappings(mapper -> mapper.using(convertDateStringToStufDate()).map(ZgwZaak::getStartdatum, ZakLa01GeefZaakDetails.Antwoord.Zaak::setStartdatum))
+                .addMappings(mapper -> mapper.using(convertDateStringToStufDate()).map(ZgwZaak::getRegistratiedatum, ZakLa01GeefZaakDetails.Antwoord.Zaak::setRegistratiedatum))
+                .addMappings(mapper -> mapper.using(convertDateStringToStufDate()).map(ZgwZaak::getPublicatiedatum, ZakLa01GeefZaakDetails.Antwoord.Zaak::setPublicatiedatum))
+                .addMappings(mapper -> mapper.using(convertDateStringToStufDate()).map(ZgwZaak::getEinddatumGepland, ZakLa01GeefZaakDetails.Antwoord.Zaak::setEinddatumGepland))
+                .addMappings(mapper -> mapper.using(convertDateStringToStufDate()).map(ZgwZaak::getUiterlijkeEinddatumAfdoening, ZakLa01GeefZaakDetails.Antwoord.Zaak::setUiterlijkeEinddatum))
+                .addMappings(mapper -> mapper.using(convertDateStringToStufDate()).map(ZgwZaak::getEinddatum, ZakLa01GeefZaakDetails.Antwoord.Zaak::setEinddatum))
+                .addMappings(mapper -> mapper.using(convertDateStringToStufDate()).map(ZgwZaak::getArchiefactiedatum, ZakLa01GeefZaakDetails.Antwoord.Zaak::setDatumVernietigingDossier))
+                .addMappings(mapper -> mapper.using(convertZgwArchiefNomitieToZdsArchiefNominatie()).map(ZgwZaak::getArchiefnominatie, ZakLa01GeefZaakDetails.Antwoord.Zaak::setArchiefnominatie));
 
 
         modelMapper.typeMap(ZgwBetrokkeneIdentificatie.class, NatuurlijkPersoon.class)
@@ -42,12 +39,27 @@ public class ModelMapperConfig {
                 .addMappings(mapper -> mapper.using(convertToLowerCase()).map(ZgwBetrokkeneIdentificatie::getGeslachtsaanduiding, NatuurlijkPersoon::setGeslachtsaanduiding))
                 .addMappings(mapper -> mapper.using(convertToLowerCase()).map(ZgwBetrokkeneIdentificatie::getInpBsn, NatuurlijkPersoon::setBsn));
 
-        modelMapper.typeMap(ZgwStatus.class, ZakLa01.Antwoord.Zaak.Status.class)
-                .addMappings(mapper -> mapper.map(ZgwStatus::getStatustoelichting, ZakLa01.Antwoord.Zaak.Status::setToelichting));
+        modelMapper.typeMap(ZgwStatus.class, ZakLa01GeefZaakDetails.Antwoord.Zaak.Status.class)
+                .addMappings(mapper -> mapper.map(ZgwStatus::getStatustoelichting, ZakLa01GeefZaakDetails.Antwoord.Zaak.Status::setToelichting));
+
+        modelMapper.typeMap(ZgwZaakInformatieObject.class, ZakLa01LijstZaakdocumenten.Antwoord.Object.HeeftRelevant.class)
+                .addMappings(mapper -> mapper.using(convertDateStringToStufDate()).map(ZgwZaakInformatieObject::getRegistratiedatum, ZakLa01LijstZaakdocumenten.Antwoord.Object.HeeftRelevant::setRegistratiedatum));
+
+
+        addZgwEnkelvoudigInformatieObjectToZaakDocumentTypeMapping(modelMapper);
 
         modelMapper.addConverter(convertZgwRolToZdsRol());
 
         return modelMapper;
+    }
+
+    private void addZgwEnkelvoudigInformatieObjectToZaakDocumentTypeMapping(ModelMapper modelMapper) {
+        modelMapper.typeMap(ZgwEnkelvoudigInformatieObject.class, ZaakDocument.class)
+                .addMappings(mapper -> mapper.using(convertDateStringToStufDate()).map(ZgwEnkelvoudigInformatieObject::getCreatiedatum, ZaakDocument::setCreatiedatum))
+                .addMappings(mapper -> mapper.using(convertDateStringToStufDate()).map(ZgwEnkelvoudigInformatieObject::getOntvangstdatum, ZaakDocument::setOntvangstdatum))
+                .addMappings(mapper -> mapper.using(convertDateStringToStufDate()).map(ZgwEnkelvoudigInformatieObject::getVerzenddatum, ZaakDocument::setVezenddatum))
+                .addMappings(mapper -> mapper.using(convertToUpperCase()).map(ZgwEnkelvoudigInformatieObject::getVertrouwelijkheidaanduiding, ZaakDocument::setVertrouwelijkheidAanduiding))
+                .addMappings(mapper -> mapper.map(ZgwEnkelvoudigInformatieObject::getUrl, ZaakDocument::setLink));
     }
 
     private AbstractConverter<String, String> convertDateStringToStufDate() {
@@ -83,6 +95,15 @@ public class ModelMapperConfig {
             @Override
             protected String convert(String s) {
                 return s.toLowerCase();
+            }
+        };
+    }
+
+    private AbstractConverter<String, String> convertToUpperCase() {
+        return new AbstractConverter<>() {
+            @Override
+            protected String convert(String s) {
+                return s.toUpperCase();
             }
         };
     }

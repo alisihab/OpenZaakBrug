@@ -235,7 +235,7 @@ public class ZGWClient {
         return gson.fromJson(zaakInformatieObjectJson, documentList);
     }
 
-    private ZgwEnkelvoudigInformatieObject getZaakDocument(String url) {
+    public ZgwEnkelvoudigInformatieObject getZaakDocument(String url) {
         ZgwEnkelvoudigInformatieObject informatieObject = null;
 
         var zaakInformatieObjectJson = get(url, null);

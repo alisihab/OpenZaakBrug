@@ -19,11 +19,11 @@ public class ZaakDocument {
     @XmlElement(namespace = ZKN, nillable =  true)
     public String identificatie;
 
-    @XmlElement(namespace = ZKN,name="dct.omschrijving", nillable = true)
-    public String dctOmschrijving;
-
-    @XmlElement(namespace = ZKN,name="dct.categorie", nillable =  true)
-    public String dctCategorie;
+//    @XmlElement(namespace = ZKN,name="dct.omschrijving", nillable = true)
+//    public String dctOmschrijving;
+//
+//    @XmlElement(namespace = ZKN,name="dct.categorie", nillable =  true)
+//    public String dctCategorie;
 
     @XmlElement(namespace = ZKN, nillable =  true)
     public String creatiedatum;
@@ -43,11 +43,11 @@ public class ZaakDocument {
     @XmlElement(namespace = ZKN, nillable =  true)
     public String status;
 
-    //	@XmlElement(namespace = ZKN, nillable =  true)
-    //	public String vezenddatum;
+    @XmlElement(namespace = ZKN, nillable =  true)
+    public String vezenddatum;
 
     @XmlElement(namespace = ZKN, nillable =  true)
-    public String vertrouwelijkAanduiding;
+    public String vertrouwelijkheidAanduiding;
 
     @XmlElement(namespace = ZKN,nillable = true)
     public String auteur;

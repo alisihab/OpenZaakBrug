@@ -61,6 +61,14 @@
           "template": "",
           "implementation": "nl.haarlem.translations.zdstozgw.converter.impl.GeefZaakDetailsConverter",
           "legacyService" : ""
+        },
+        {
+          "translation": "ZDS 1.1 Generic geefLijstZaakdocumenten",
+          "soapAction": "http://www.egem.nl/StUF/sector/zkn/0310/geefLijstZaakdocumenten_Lv01",
+          "applicatie": "",
+          "template": "",
+          "implementation": "nl.haarlem.translations.zdstozgw.converter.impl.GeefLijstZaakdocumentenConverter",
+          "legacyService" : ""
         }
       ],
       "zgwRolOmschrijving": {
