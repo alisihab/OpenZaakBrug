@@ -13,6 +13,7 @@ import static nl.haarlem.translations.zdstozgw.translation.zds.model.namespace.N
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ZakLk01 {
 
+    @Data
     @XmlAccessorType(XmlAccessType.FIELD)
     public static class Object{
         @XmlAttribute(namespace = STUF)

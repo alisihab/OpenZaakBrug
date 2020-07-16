@@ -154,15 +154,15 @@ public class ZGWClient {
         return result;
     }
 
-    public RolNPS addRolNPS(RolNPS rolNPS) {
-        RolNPS result = null;
+    public ZgwRol addZgwRol(ZgwRol zgwRol) {
+        ZgwRol result = null;
         try {
             Gson gson = new Gson();
-            String json = gson.toJson(rolNPS);
+            String json = gson.toJson(zgwRol);
             String response = this.post(baseUrl + "/zaken/api/v1/rollen", json);
-            result = gson.fromJson(response, RolNPS.class);
+            result = gson.fromJson(response, ZgwRol.class);
         } catch (HttpStatusCodeException ex) {
-            log.error("Exception in addRolNPS: " + ex.getMessage());
+            log.error("Exception in addZgwRol: " + ex.getMessage());
             throw ex;
         }
 

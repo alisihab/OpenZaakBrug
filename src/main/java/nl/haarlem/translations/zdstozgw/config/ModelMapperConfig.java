@@ -45,8 +45,12 @@ public class ModelMapperConfig {
         modelMapper.typeMap(ZgwZaakInformatieObject.class, ZakLa01LijstZaakdocumenten.Antwoord.Object.HeeftRelevant.class)
                 .addMappings(mapper -> mapper.using(convertDateStringToStufDate()).map(ZgwZaakInformatieObject::getRegistratiedatum, ZakLa01LijstZaakdocumenten.Antwoord.Object.HeeftRelevant::setRegistratiedatum));
 
+        modelMapper.typeMap(Heeft.class, ZgwStatus.class)
+                .addMappings(mapper -> mapper.using(convertStufDateToDateTimeString()).map(Heeft::getDatumStatusGezet, ZgwStatus::setDatumStatusGezet));
 
         addZgwEnkelvoudigInformatieObjectToZaakDocumentTypeMapping(modelMapper);
+        addZdsZaakToZgwZaakTypeMapping(modelMapper);
+        addZdsNatuurlijkPersoonToZgwBetrokkeneIdentificatieTypeMapping(modelMapper);
 
         modelMapper.addConverter(convertZgwRolToZdsRol());
 
@@ -60,6 +64,64 @@ public class ModelMapperConfig {
                 .addMappings(mapper -> mapper.using(convertDateStringToStufDate()).map(ZgwEnkelvoudigInformatieObject::getVerzenddatum, ZaakDocument::setVezenddatum))
                 .addMappings(mapper -> mapper.using(convertToUpperCase()).map(ZgwEnkelvoudigInformatieObject::getVertrouwelijkheidaanduiding, ZaakDocument::setVertrouwelijkheidAanduiding))
                 .addMappings(mapper -> mapper.map(ZgwEnkelvoudigInformatieObject::getUrl, ZaakDocument::setLink));
+    }
+
+    public void addZdsZaakToZgwZaakTypeMapping(ModelMapper modelMapper) {
+        modelMapper.typeMap(ZakLk01.Object.class, ZgwZaak.class)
+                .addMappings(mapper -> mapper.using(convertStufDateToDateString()).map(ZakLk01.Object::getRegistratiedatum, ZgwZaak::setRegistratiedatum))
+                .addMappings(mapper -> mapper.using(convertStufDateToDateString()).map(ZakLk01.Object::getStartdatum, ZgwZaak::setStartdatum))
+                .addMappings(mapper -> mapper.using(convertStufDateToDateString()).map(ZakLk01.Object::getEinddatumGepland, ZgwZaak::setEinddatumGepland))
+                .addMappings(mapper -> mapper.using(getZGWArchiefNominatie()).map(ZakLk01.Object::getArchiefnominatie, ZgwZaak::setArchiefnominatie));
+    }
+
+    public void addZdsNatuurlijkPersoonToZgwBetrokkeneIdentificatieTypeMapping(ModelMapper modelMapper) {
+        modelMapper.typeMap(NatuurlijkPersoon.class, ZgwBetrokkeneIdentificatie.class)
+                .addMappings(mapper -> mapper.using(convertStufDateToDateString()).map(NatuurlijkPersoon::getGeboortedatum, ZgwBetrokkeneIdentificatie::setGeboortedatum))
+                .addMappings(mapper -> mapper.map(NatuurlijkPersoon::getBsn, ZgwBetrokkeneIdentificatie::setInpBsn))
+                .addMappings(mapper -> mapper.using(convertToLowerCase()).map(NatuurlijkPersoon::getGeslachtsaanduiding, ZgwBetrokkeneIdentificatie::setGeslachtsaanduiding));
+    }
+
+    private  AbstractConverter<String, String> convertStufDateToDateString() {
+        return new AbstractConverter<>() {
+            @Override
+            protected String convert(String stufDate) {
+
+                var year = stufDate.substring(0, 4);
+                var month = stufDate.substring(4, 6);
+                var day = stufDate.substring(6, 8);
+                return year + "-" + month + "-" + day;
+            }
+        };
+    }
+
+    private  AbstractConverter<String, String> convertStufDateToDateTimeString() {
+        return new AbstractConverter<>() {
+            @Override
+            protected String convert(String stufDate) {
+
+                var year = stufDate.substring(0, 4);
+                var month = stufDate.substring(4, 6);
+                var day = stufDate.substring(6, 8);
+                var hours = stufDate.substring(8, 10);
+                var minutes = stufDate.substring(10, 12);
+                var seconds =  stufDate.substring(12, 14);
+                var milliseconds = stufDate.substring(14);
+                return year + "-" + month + "-" + day + "T" + hours + ":" + minutes + ":" + seconds + "." + milliseconds + "Z";
+            }
+        };
+    }
+
+    private AbstractConverter<String, String> getZGWArchiefNominatie() {
+        return new AbstractConverter<>() {
+            @Override
+            protected String convert(String archiefNominatie) {
+                if (archiefNominatie.toUpperCase().equals("J")) {
+                    return "vernietigen";
+                } else {
+                    return "blijvend_bewaren";
+                }
+            }
+        };
     }
 
     private AbstractConverter<String, String> convertDateStringToStufDate() {
