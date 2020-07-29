@@ -36,5 +36,39 @@
         "documentType" : "https://openzaak.local/catalogi/api/v1/informatieobjecttypen/b380e35f-3b10-4d76-81b5-58f8013dca4a",
         "omschrijving" : "Overig stuk inkomend"
       }
-    ]
+    ],
+    "translations": [
+        {
+          "translation": "ZDS 1.1 GWS4all genereerDocumentIdentificatie_Di02",
+          "soapAction": "http://www.egem.nl/StUF/sector/zkn/0310/genereerDocumentIdentificatie_Di02",
+          "applicatie": "GWS4all",
+          "template": "src/main/java/nl/haarlem/translations/zdstozgw/converter/impl/genereerDocumentIdentificatie_Du02.xml",
+          "implementation": "nl.haarlem.translations.zdstozgw.converter.impl.GenereerDocumentIdentificatieConverter",
+          "legacyService" : "http://localhost:8181/zds/VrijBerichtService"
+        },
+        {
+          "translation": "ZDS 1.1 Generic actualiseerZaakstatus_Lk01",
+          "soapAction": "http://www.egem.nl/StUF/sector/zkn/0310/actualiseerZaakstatus_Lk01",
+          "applicatie": "",
+          "template": "",
+          "implementation": "nl.haarlem.translations.zdstozgw.converter.impl.ActualiseerZaakStatusConverter",
+          "legacyService" : ""
+        },
+        {
+          "translation": "ZDS 1.1 Generic geefZaakDetails",
+          "soapAction": "http://www.egem.nl/StUF/sector/zkn/0310/geefZaakdetails_Lv01",
+          "applicatie": "",
+          "template": "",
+          "implementation": "nl.haarlem.translations.zdstozgw.converter.impl.GeefZaakDetailsConverter",
+          "legacyService" : ""
+        }
+      ],
+      "zgwRolOmschrijving": {
+        "heeftAlsBelanghebbende": "Belanghebbende",
+        "heeftAlsInitiator": "initiator",
+        "heeftAlsUitvoerende": "Uitvoerende",
+        "heeftAlsVerantwoordelijke": "Verantwoordelijke",
+        "heeftAlsGemachtigde": "Gemachtigde",
+        "heeftAlsOverigBetrokkene": "Overige_betrokkene"
+      }
 }

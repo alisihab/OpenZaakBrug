@@ -1,25 +1,27 @@
 package nl.haarlem.translations.zdstozgw.converter.impl;
 
+import nl.haarlem.translations.zdstozgw.config.SpringContext;
 import nl.haarlem.translations.zdstozgw.config.model.Translation;
 import nl.haarlem.translations.zdstozgw.converter.Converter;
-import nl.haarlem.translations.zdstozgw.translation.zds.model.ZakLk01;
+import nl.haarlem.translations.zdstozgw.translation.ZaakTranslator;
+import nl.haarlem.translations.zdstozgw.translation.zds.model.ZakLa01;
+import nl.haarlem.translations.zdstozgw.translation.zds.model.ZakLv01_v2;
 import nl.haarlem.translations.zdstozgw.translation.zds.services.ZaakService;
 import nl.haarlem.translations.zdstozgw.utils.XmlUtils;
 
-public class CreeerZaakConverter extends Converter {
+public class GeefZaakDetailsConverter extends Converter {
 
-    public CreeerZaakConverter(Translation translation, ZaakService zaakService) {
+    public GeefZaakDetailsConverter(Translation translation, ZaakService zaakService) {
         super(translation, zaakService);
     }
 
     @Override
     public String convert(String request) {
         try {
-            ZakLk01 zakLk01_r = (ZakLk01) XmlUtils.getStUFObject(request, ZakLk01.class);
-            var zaak = this.getZaakService().creeerZaak(zakLk01_r);
-            var bv03 = new nl.haarlem.translations.zdstozgw.translation.zds.model.Bv03();
-            bv03.setReferentienummer(zaak.getUuid());
-            return bv03.getSoapMessageAsString();
+
+            ZakLv01_v2 zakLv01 = (ZakLv01_v2) XmlUtils.getStUFObject(request, ZakLv01_v2.class);
+            ZakLa01 zakLa01 = this.getZaakService().getZaakDetails(zakLv01);
+            return XmlUtils.getSOAPMessageFromObject(zakLa01);
 
         } catch (Exception ex) {
             ex.printStackTrace();

@@ -95,10 +95,10 @@ public class ZgwZaak {
     public List<Object> eigenschappen = null;
     @SerializedName("status")
     @Expose
-    public Object status;
+    public String status;
     @SerializedName("kenmerken")
     @Expose
-    public List<Object> kenmerken = null;
+    public List<ZgwKenmerk> kenmerken = null;
     @SerializedName("archiefnominatie")
     @Expose
     public String archiefnominatie;

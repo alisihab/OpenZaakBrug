@@ -1,15 +1,12 @@
 package nl.haarlem.translations.zdstozgw.requesthandler.impl.logging;
 
 import lombok.Data;
-import org.apache.commons.httpclient.HttpStatus;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Lob;
-import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 @Entity
 @Data

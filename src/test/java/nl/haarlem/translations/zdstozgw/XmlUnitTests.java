@@ -1,6 +1,6 @@
 package nl.haarlem.translations.zdstozgw;
 
-import nl.haarlem.translations.zdstozgw.translation.zds.model.ZakLk01_v2;
+import nl.haarlem.translations.zdstozgw.translation.zds.model.ZakLk01;
 import nl.haarlem.translations.zdstozgw.utils.XmlUtils;
 import org.apache.commons.io.IOUtils;
 import org.junit.Assert;
@@ -26,8 +26,8 @@ public class XmlUnitTests {
 					.getResourceAsStream("zds1.1/ActualiseerZaakstatus"), "UTF-8");
 
 			//act
-			ZakLk01_v2 zakLk01_v2 = (ZakLk01_v2) XmlUtils.getStUFObject(content, ZakLk01_v2.class);
-			ZakLk01_v2.Object object = zakLk01_v2.objects.get(1);
+			ZakLk01 zakLk01_ = (ZakLk01) XmlUtils.getStUFObject(content, ZakLk01.class);
+			ZakLk01.Object object = zakLk01_.objects.get(1);
 
 			//assert
 			assumeTrue(object.identificatie != null);

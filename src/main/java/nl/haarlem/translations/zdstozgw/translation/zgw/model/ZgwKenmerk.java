@@ -5,13 +5,12 @@ import com.google.gson.annotations.SerializedName;
 import lombok.Data;
 
 @Data
-public class Verlenging {
+public class ZgwKenmerk {
 
-    @SerializedName("reden")
+    @SerializedName("kenmerk")
     @Expose
-    public String reden;
-    @SerializedName("duur")
+    public String kenmerk;
+    @SerializedName("bron")
     @Expose
-    public String duur;
-
+    public String bron;
 }

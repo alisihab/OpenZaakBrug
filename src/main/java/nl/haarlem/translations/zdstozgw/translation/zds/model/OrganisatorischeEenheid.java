@@ -12,7 +12,8 @@ import static nl.haarlem.translations.zdstozgw.translation.zds.model.namespace.N
 
 @Data
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Medewerker {
+public class OrganisatorischeEenheid {
+
     @XmlAttribute(namespace = STUF)
     public String entiteittype;
 
@@ -20,8 +21,35 @@ public class Medewerker {
     public String identificatie;
 
     @XmlElement(namespace = ZKN)
-    public String achternaam;
+    public String naam;
 
     @XmlElement(namespace = ZKN)
-    public String voorletters;
+    public String naamVerkort;
+
+    @XmlElement(namespace = ZKN)
+    public String omschrijving;
+
+    @XmlElement(namespace = ZKN)
+    public String toelichting;
+
+    @XmlElement(namespace = ZKN)
+    public String telefoonnummer;
+
+    @XmlElement(namespace = ZKN)
+    public String faxnummer;
+
+    @XmlElement(namespace = ZKN)
+    public String emailadres;
+
+    @XmlElement(namespace = ZKN)
+    public IsGehuisvestIn isGehuisvestIn;
+
+    @Data
+    @XmlAccessorType(XmlAccessType.FIELD)
+    public static class IsGehuisvestIn{
+
+        @XmlElement(namespace = ZKN)
+        Rol isEen;
+    }
+
 }
