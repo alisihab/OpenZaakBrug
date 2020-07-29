@@ -154,22 +154,22 @@ public class ZGWClient {
         return result;
     }
 
-    public RolNPS addRolNPS(RolNPS rolNPS) {
-        RolNPS result = null;
+    public ZgwRol addZgwRol(ZgwRol zgwRol) {
+        ZgwRol result = null;
         try {
             Gson gson = new Gson();
-            String json = gson.toJson(rolNPS);
+            String json = gson.toJson(zgwRol);
             String response = this.post(baseUrl + "/zaken/api/v1/rollen", json);
-            result = gson.fromJson(response, RolNPS.class);
+            result = gson.fromJson(response, ZgwRol.class);
         } catch (HttpStatusCodeException ex) {
-            log.error("Exception in addRolNPS: " + ex.getMessage());
+            log.error("Exception in addZgwRol: " + ex.getMessage());
             throw ex;
         }
 
         return result;
     }
 
-    public ZgwEnkelvoudigInformatieObject addDocument(ZgwEnkelvoudigInformatieObject zgwEnkelvoudigInformatieObject) {
+    public ZgwEnkelvoudigInformatieObject addZaakDocument(ZgwEnkelvoudigInformatieObject zgwEnkelvoudigInformatieObject) {
         ZgwEnkelvoudigInformatieObject result = null;
         try {
             Gson gson = new Gson();
@@ -200,21 +200,6 @@ public class ZGWClient {
 
     }
 
-    public List<ZgwEnkelvoudigInformatieObject> getLijstZaakDocumenten(Map<String, String> parameters) {
-        var result = new ArrayList();
-
-        try {
-            var zaakInformatieObjects = getZgwZaakInformatieObjects(parameters);
-            result = (ArrayList) getZgwEnkelvoudigInformatieObjectList(result, zaakInformatieObjects);
-
-        } catch (Exception ex) {
-            log.error("Exception in getLijstZaakdocumenten: " + ex.getMessage());
-            throw ex;
-        }
-
-        return result;
-    }
-
     private List<ZgwEnkelvoudigInformatieObject> getZgwEnkelvoudigInformatieObjectList(List<ZgwEnkelvoudigInformatieObject> tempResult, List<ZgwZaakInformatieObject> zaakInformatieObjects) {
         var result = tempResult;
         zaakInformatieObjects.forEach(zaakInformatieObject -> {
@@ -235,7 +220,7 @@ public class ZGWClient {
         return gson.fromJson(zaakInformatieObjectJson, documentList);
     }
 
-    private ZgwEnkelvoudigInformatieObject getZaakDocument(String url) {
+    public ZgwEnkelvoudigInformatieObject getZaakDocument(String url) {
         ZgwEnkelvoudigInformatieObject informatieObject = null;
 
         var zaakInformatieObjectJson = get(url, null);

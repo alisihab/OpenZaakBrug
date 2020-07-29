@@ -2,24 +2,23 @@ package nl.haarlem.translations.zdstozgw.converter.impl;
 
 import nl.haarlem.translations.zdstozgw.config.model.Translation;
 import nl.haarlem.translations.zdstozgw.converter.Converter;
-import nl.haarlem.translations.zdstozgw.translation.zds.model.ZakLa01GeefZaakDetails;
+import nl.haarlem.translations.zdstozgw.translation.zds.model.ZakLa01LijstZaakdocumenten;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZakLv01;
 import nl.haarlem.translations.zdstozgw.translation.zds.services.ZaakService;
 import nl.haarlem.translations.zdstozgw.utils.XmlUtils;
 
-public class GeefZaakDetailsConverter extends Converter {
+public class GeefLijstZaakdocumentenConverter extends Converter {
 
-    public GeefZaakDetailsConverter(Translation translation, ZaakService zaakService) {
+    public GeefLijstZaakdocumentenConverter(Translation translation, ZaakService zaakService) {
         super(translation, zaakService);
     }
 
     @Override
     public String convert(String request) {
         try {
-
             ZakLv01 zakLv01 = (ZakLv01) XmlUtils.getStUFObject(request, ZakLv01.class);
-            ZakLa01GeefZaakDetails zakLa01GeefZaakDetails = this.getZaakService().getZaakDetails(zakLv01);
-            return XmlUtils.getSOAPMessageFromObject(zakLa01GeefZaakDetails);
+            ZakLa01LijstZaakdocumenten zakLa01LijstZaakdocumenten = this.getZaakService().geefLijstZaakdocumenten(zakLv01);
+            return XmlUtils.getSOAPMessageFromObject(zakLa01LijstZaakdocumenten);
 
         } catch (Exception ex) {
             ex.printStackTrace();

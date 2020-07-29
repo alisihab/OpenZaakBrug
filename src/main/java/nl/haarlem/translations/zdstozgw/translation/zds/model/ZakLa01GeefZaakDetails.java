@@ -11,7 +11,7 @@ import static nl.haarlem.translations.zdstozgw.translation.zds.model.namespace.N
 @Data
 @XmlRootElement(namespace = ZKN)
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ZakLa01 {
+public class ZakLa01GeefZaakDetails {
 
     @XmlElement(namespace = STUF)
     public Stuurgegevens stuurgegevens;

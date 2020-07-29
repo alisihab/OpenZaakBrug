@@ -1,8 +1,10 @@
 package nl.haarlem.translations.zdstozgw.translation.zds.model;
 
+import lombok.Data;
+
 import javax.xml.bind.annotation.*;
 
-import static nl.haarlem.translations.zdstozgw.translation.zds.model.namespace.Namespace.STUF;
+import static nl.haarlem.translations.zdstozgw.translation.zds.model.namespace.Namespace.MIME;
 import static nl.haarlem.translations.zdstozgw.translation.zds.model.namespace.Namespace.ZKN;
 
 @XmlRootElement(namespace = ZKN, name="edcLa01")
@@ -17,6 +19,7 @@ public class EdcLa01 {
     @XmlElement(namespace = ZKN, name="isRelevantVoor")
     public IsRelevantVoor isRelevantVoor;
 
+    @Data
     @XmlAccessorType(XmlAccessType.FIELD)
     public static class Antwoord{
 
@@ -24,54 +27,32 @@ public class EdcLa01 {
         public Object object;
     }
 
+    @Data
     @XmlAccessorType(XmlAccessType.FIELD)
-    public static class Object{
+    public static class Object extends ZaakDocument{
 
-        @XmlAttribute(namespace = STUF)
-        public String entiteittype;
+        @XmlElement(namespace = ZKN, name="dct.omschrijving")
+        public String omschrijving;
 
-        @XmlElement(namespace = ZKN, nillable =  true)
-        public String identificatie;
+        @XmlElement(namespace = ZKN, name="dct.categorie")
+        public String categorie;
 
-        @XmlElement(namespace = ZKN,name="dct.omschrijving", nillable = true)
-        public String dctOmschrijving;
-
-        @XmlElement(namespace = ZKN,name="dct.categorie", nillable =  true)
-        public String dctCategorie;
-
-        @XmlElement(namespace = ZKN, nillable =  true)
-        public String creatiedatum;
-
-        @XmlElement(namespace = ZKN, nillable =  true)
-        public String ontvangstdatum;
-
-        @XmlElement(namespace = ZKN, nillable =  true)
-        public String titel;
-
-        @XmlElement(namespace = ZKN, nillable =  true)
-        public String taal;
-
-        @XmlElement(namespace = ZKN, nillable =  true)
-        public String versie;
-
-        @XmlElement(namespace = ZKN, nillable =  true)
-        public String status;
-
-        @XmlElement(namespace = ZKN, nillable =  true)
-        public String vezenddatum;
-
-        @XmlElement(namespace = ZKN, nillable =  true)
-        public String vertrouwelijkAanduiding;
-
-        @XmlElement(namespace = ZKN,nillable = true)
-        public String auteur;
-
-        @XmlElement(namespace = ZKN, nillable =  true)
-        public String link;
-
-        @XmlElement(namespace = ZKN, nillable =  true)
+        @XmlElement(namespace = ZKN)
         public String inhoud;
 
+        @Data
+        @XmlAccessorType(XmlAccessType.FIELD)
+        public static class Inhoud{
+
+            @XmlAttribute(namespace = MIME)
+            public String contentType;
+
+            @XmlAttribute(namespace = ZKN)
+            public String bestandsnaam;
+
+            @XmlElement(namespace = ZKN)
+            public String inhoud;
+        }
     }
 
 }
