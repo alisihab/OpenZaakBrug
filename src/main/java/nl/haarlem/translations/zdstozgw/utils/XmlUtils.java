@@ -1,5 +1,6 @@
 package nl.haarlem.translations.zdstozgw.utils;
 
+import org.apache.http.client.UserTokenHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
@@ -109,12 +110,12 @@ public class XmlUtils {
     }
 
 
-    public static String getSOAPMessageFromObject(Object object) {
+    public static String getSOAPMessageFromObject(Object object, boolean isSoapFault) {
 
         String result = "";
         try {
             Document document = marshalJAXBToXMLDocument(object);
-             SOAPMessage message = getSoapMessage(document);
+             SOAPMessage message = getSoapMessage(document, isSoapFault);
             result = getStringFromSOAP(message);
         } catch (Exception e) {
             e.printStackTrace();
@@ -155,14 +156,22 @@ public class XmlUtils {
         return db.newDocument();
     }
 
-    private static SOAPMessage getSoapMessage(Document document) throws SOAPException {
+    private static SOAPMessage getSoapMessage(Document document, boolean isSoapFault) throws SOAPException {
         //SOAP
         MessageFactory mf = MessageFactory.newInstance();
         SOAPMessage message = mf.createMessage();
         SOAPPart part = message.getSOAPPart();
         SOAPEnvelope env = part.getEnvelope();
         SOAPBody body = env.getBody();
-        body.addDocument(document);
+        if(isSoapFault){
+            SOAPFault fault = body.addFault();
+            fault.setFaultString("Object niet gevonden");
+            fault.setFaultCode(SOAPConstants.SOAP_RECEIVER_FAULT);
+            Detail detail = fault.addDetail();
+            detail.setTextContent(xmlToString(document));
+        }else{
+            body.addDocument(document);
+        }
         return message;
     }
 

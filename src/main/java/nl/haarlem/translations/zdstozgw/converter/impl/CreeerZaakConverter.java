@@ -2,9 +2,16 @@ package nl.haarlem.translations.zdstozgw.converter.impl;
 
 import nl.haarlem.translations.zdstozgw.config.model.Translation;
 import nl.haarlem.translations.zdstozgw.converter.Converter;
+import nl.haarlem.translations.zdstozgw.translation.zds.model.Bv03;
+import nl.haarlem.translations.zdstozgw.translation.zds.model.Fo03;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZakLk01;
 import nl.haarlem.translations.zdstozgw.translation.zds.services.ZaakService;
 import nl.haarlem.translations.zdstozgw.utils.XmlUtils;
+
+import javax.xml.soap.Detail;
+import javax.xml.soap.SOAPException;
+import javax.xml.soap.SOAPFactory;
+import javax.xml.soap.SOAPFault;
 
 public class CreeerZaakConverter extends Converter {
 
@@ -14,21 +21,17 @@ public class CreeerZaakConverter extends Converter {
 
     @Override
     public String convert(String request) {
+        ZakLk01 zakLk01 = new ZakLk01();
         try {
-            ZakLk01 zakLk01_r = (ZakLk01) XmlUtils.getStUFObject(request, ZakLk01.class);
-            var zaak = this.getZaakService().creeerZaak(zakLk01_r);
-            var bv03 = new nl.haarlem.translations.zdstozgw.translation.zds.model.Bv03();
-            bv03.setReferentienummer(zaak.getUuid());
-            return bv03.getSoapMessageAsString();
-
+            zakLk01 = (ZakLk01) XmlUtils.getStUFObject(request, ZakLk01.class);
+            this.getZaakService().creeerZaak(zakLk01);
+            var bv03 = new Bv03(zakLk01.stuurgegevens);
+            return XmlUtils.getSOAPMessageFromObject(bv03, false);
         } catch (Exception ex) {
             ex.printStackTrace();
-            var f03 = new nl.haarlem.translations.zdstozgw.translation.zds.model.F03();
-            f03.setFaultString("Object was not saved");
-            f03.setCode("StUF046");
-            f03.setOmschrijving("Object niet opgeslagen");
-            f03.setDetails(ex.getMessage());
-            return f03.getSoapMessageAsString();
+            var fo03 = new Fo03(zakLk01.stuurgegevens);
+            fo03.body = new Fo03.Body(ex);
+            return XmlUtils.getSOAPMessageFromObject(fo03, true);
         }
     }
 }

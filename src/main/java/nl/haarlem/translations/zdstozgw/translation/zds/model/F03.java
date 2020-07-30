@@ -10,74 +10,74 @@ import org.w3c.dom.Document;
 import java.lang.invoke.MethodHandles;
 
 public class F03 {
-    private static final Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
-
-    private Document document;
-    private XpathDocument xpathDocument;
-
-    public F03() {
-        createBaseDocument();
-        xpathDocument = new XpathDocument(document);
-        xpathDocument.setNodeValue("//stuf:tijdstipBericht", StufUtils.getTijdstipBericht());
-    }
-
-    public String getSoapMessageAsString() {
-        return XmlUtils.getSoapMessageAsString(document);
-    }
-
-    public void setFaultString(String faultString) {
-        xpathDocument.setNodeValue("//faultstring", faultString);
-    }
-
-    public void setCode(String code) {
-        xpathDocument.setNodeValue("//stuf:code", code);
-    }
-
-    public void setOmschrijving(String omschrijving) {
-        xpathDocument.setNodeValue("//stuf:omschrijving", omschrijving);
-    }
-
-    public void setDetails(String details) {
-        xpathDocument.setNodeValue("//stuf:details", details);
-    }
-
-
-    private void createBaseDocument() {
-        document = XmlUtils.convertStringToDocument("<soap11env:Envelope xmlns:soap11env=\"http://schemas.xmlsoap.org/soap/envelope/\">\n" +
-                "   <soap11env:Body>\n" +
-                "      <soap11env:Fault>\n" +
-                "         <faultcode>soap11env:server</faultcode>\n" +
-                "         <faultstring>Object niet gevonden</faultstring>\n" +
-                "         <faultactor/>\n" +
-                "         <detail>\n" +
-                "            <stuf:Fo03Bericht xmlns:stuf=\"http://www.egem.nl/StUF/StUF0301\">\n" +
-                "               <stuf:stuurgegevens>\n" +
-                "                  <stuf:berichtcode>Fo03</stuf:berichtcode>\n" +
-                "                  <stuf:zender>\n" +
-                "                     <stuf:organisatie>0392</stuf:organisatie>\n" +
-                "                     <stuf:applicatie>ZDS-ZGW-Translator</stuf:applicatie>\n" +
-                "                  </stuf:zender>\n" +
-                "                  <stuf:ontvanger>\n" +
-                "                     <stuf:organisatie>0392</stuf:organisatie>\n" +
-                "                     <stuf:applicatie>TEST</stuf:applicatie>\n" +
-                "                  </stuf:ontvanger>\n" +
-                "                  <stuf:referentienummer>0392b6eef2dd-6aea-4365-b806-9afd32250d9b</stuf:referentienummer>\n" +
-                "                  <stuf:tijdstipBericht>20200206213813</stuf:tijdstipBericht>\n" +
-                "                  <stuf:crossRefnummer>e443d87f-69ee-4fd4-b1d9-dd797ffff628</stuf:crossRefnummer>\n" +
-                "               </stuf:stuurgegevens>\n" +
-                "               <stuf:body>\n" +
-                "                  <stuf:code>StUF064</stuf:code>\n" +
-                "                  <stuf:plek>server</stuf:plek>\n" +
-                "                  <stuf:omschrijving>Object niet gevonden</stuf:omschrijving>\n" +
-                "                  <stuf:details>ZaakType matching query does not exist.</stuf:details>\n" +
-                "               </stuf:body>\n" +
-                "            </stuf:Fo03Bericht>\n" +
-                "         </detail>\n" +
-                "      </soap11env:Fault>\n" +
-                "   </soap11env:Body>\n" +
-                "</soap11env:Envelope>");
-
-    }
-
+//    private static final Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+//
+//    private Document document;
+//    private XpathDocument xpathDocument;
+//
+//    public F03() {
+//        createBaseDocument();
+//        xpathDocument = new XpathDocument(document);
+//        xpathDocument.setNodeValue("//stuf:tijdstipBericht", StufUtils.getTijdstipBericht());
+//    }
+//
+//    public String getSoapMessageAsString() {
+//        return XmlUtils.getSoapMessageAsString(document);
+//    }
+//
+//    public void setFaultString(String faultString) {
+//        xpathDocument.setNodeValue("//faultstring", faultString);
+//    }
+//
+//    public void setCode(String code) {
+//        xpathDocument.setNodeValue("//stuf:code", code);
+//    }
+//
+//    public void setOmschrijving(String omschrijving) {
+//        xpathDocument.setNodeValue("//stuf:omschrijving", omschrijving);
+//    }
+//
+//    public void setDetails(String details) {
+//        xpathDocument.setNodeValue("//stuf:details", details);
+//    }
+//
+//
+//    private void createBaseDocument() {
+//        document = XmlUtils.convertStringToDocument("<soap11env:Envelope xmlns:soap11env=\"http://schemas.xmlsoap.org/soap/envelope/\">\n" +
+//                "   <soap11env:Body>\n" +
+//                "      <soap11env:Fault>\n" +
+//                "         <faultcode>soap11env:server</faultcode>\n" +
+//                "         <faultstring>Object niet gevonden</faultstring>\n" +
+//                "         <faultactor/>\n" +
+//                "         <detail>\n" +
+//                "            <stuf:Fo03Bericht xmlns:stuf=\"http://www.egem.nl/StUF/StUF0301\">\n" +
+//                "               <stuf:stuurgegevens>\n" +
+//                "                  <stuf:berichtcode>Fo03</stuf:berichtcode>\n" +
+//                "                  <stuf:zender>\n" +
+//                "                     <stuf:organisatie>0392</stuf:organisatie>\n" +
+//                "                     <stuf:applicatie>ZDS-ZGW-Translator</stuf:applicatie>\n" +
+//                "                  </stuf:zender>\n" +
+//                "                  <stuf:ontvanger>\n" +
+//                "                     <stuf:organisatie>0392</stuf:organisatie>\n" +
+//                "                     <stuf:applicatie>TEST</stuf:applicatie>\n" +
+//                "                  </stuf:ontvanger>\n" +
+//                "                  <stuf:referentienummer>0392b6eef2dd-6aea-4365-b806-9afd32250d9b</stuf:referentienummer>\n" +
+//                "                  <stuf:tijdstipBericht>20200206213813</stuf:tijdstipBericht>\n" +
+//                "                  <stuf:crossRefnummer>e443d87f-69ee-4fd4-b1d9-dd797ffff628</stuf:crossRefnummer>\n" +
+//                "               </stuf:stuurgegevens>\n" +
+//                "               <stuf:body>\n" +
+//                "                  <stuf:code>StUF064</stuf:code>\n" +
+//                "                  <stuf:plek>server</stuf:plek>\n" +
+//                "                  <stuf:omschrijving>Object niet gevonden</stuf:omschrijving>\n" +
+//                "                  <stuf:details>ZaakType matching query does not exist.</stuf:details>\n" +
+//                "               </stuf:body>\n" +
+//                "            </stuf:Fo03Bericht>\n" +
+//                "         </detail>\n" +
+//                "      </soap11env:Fault>\n" +
+//                "   </soap11env:Body>\n" +
+//                "</soap11env:Envelope>");
+//
+//    }
+//
 
 }

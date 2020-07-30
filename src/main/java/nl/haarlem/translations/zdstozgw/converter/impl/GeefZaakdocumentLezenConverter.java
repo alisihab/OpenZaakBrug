@@ -14,21 +14,16 @@ public class GeefZaakdocumentLezenConverter extends Converter {
 
     @Override
     public String convert(String request) {
-        String result = "";
+        EdcLv01 edcLv01 = new EdcLv01();
         try {
-            EdcLv01 edcLv01 = (EdcLv01) XmlUtils.getStUFObject(request, EdcLv01.class);
-            EdcLa01 edcLa01 = this.getZaakService().getZaakDocumentLezen((EdcLv01) edcLv01);
-
-            return XmlUtils.getSOAPMessageFromObject(edcLa01);
-
+            edcLv01 = (EdcLv01) XmlUtils.getStUFObject(request, EdcLv01.class);
+            EdcLa01 edcLa01 = this.getZaakService().getZaakDocumentLezen(edcLv01);
+            return XmlUtils.getSOAPMessageFromObject(edcLa01, false);
         } catch (Exception ex) {
             ex.printStackTrace();
-            var f03 = new nl.haarlem.translations.zdstozgw.translation.zds.model.F03();
-            f03.setFaultString("Object was not saved");
-            f03.setCode("StUF046");
-            f03.setOmschrijving("Object niet opgeslagen");
-            f03.setDetails(ex.getMessage());
-            return f03.getSoapMessageAsString();
+            var fo03 = new Fo03(edcLv01.stuurgegevens);
+            fo03.body = new Fo03.Body(ex);
+            return XmlUtils.getSOAPMessageFromObject(fo03, true);
         }
     }
 

@@ -16,6 +16,15 @@ public class Stuurgegevens{
     public String berichtcode;
 
     @XmlElement(namespace = STUF)
+    public String referentienummer;
+
+    @XmlElement(namespace = STUF)
+    public String tijdstipBericht;
+
+    @XmlElement(namespace = STUF)
+    public String crossRefnummer;
+
+    @XmlElement(namespace = STUF)
     public Zender zender;
 
     @XmlElement(namespace = STUF)
