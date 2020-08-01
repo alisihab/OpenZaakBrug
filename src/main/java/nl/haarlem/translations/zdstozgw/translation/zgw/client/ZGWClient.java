@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -308,4 +309,24 @@ public class ZGWClient {
         return result;
     }
 
+    public List<ZgwRolType> getRolTypen(Map<String, String> parameters) {
+        var rolTypeJson = get(baseUrl + "/catalogi/api/v1/roltypen", parameters);
+        try {
+            Type type = new TypeToken<QueryResult<ZgwRolType>>(){}.getType();
+            Gson gson = new Gson();
+            QueryResult<ZgwRolType> queryResult = gson.fromJson(rolTypeJson, type);
+            return queryResult.getResults();
+        } catch (Exception ex) {
+            log.error("Exception in getRolTypen: " + ex.getMessage());
+            throw ex;
+        }
+    }
+
+    public ZgwRolType getRoltypeByZaakTypeUrlAndOmschrijvingGeneriek(String zaakTypeUrl, String omschrijvingGeneriek){
+        Map<String, String> parameters = new HashMap<>();
+        parameters.put("zaaktype", zaakTypeUrl);
+        parameters.put("omschrijvingGeneriek", omschrijvingGeneriek);
+
+        return this.getRolTypen(parameters).get(0);
+    }
 }

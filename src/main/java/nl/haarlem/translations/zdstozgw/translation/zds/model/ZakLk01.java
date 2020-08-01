@@ -47,7 +47,22 @@ public class ZakLk01 {
         public Heeft heeft;
 
         @XmlElement(namespace = ZKN, name="heeftAlsInitiator")
-        public HeeftAlsInitiator heeftAlsInitiator;
+        public Rol heeftAlsInitiator;
+
+        @XmlElement(namespace = ZKN, name="heeftAlsBelanghebbende")
+        public Rol heeftAlsBelanghebbende;
+
+        @XmlElement(namespace = ZKN, name="heeftAlsGemachtigde")
+        public Rol heeftAlsGemachtigde;
+
+        @XmlElement(namespace = ZKN, name="heeftAlsUitvoerende")
+        public Rol heeftAlsUitvoerende;
+
+        @XmlElement(namespace = ZKN, name="heeftAlsVerantwoordelijke")
+        public Rol heeftAlsVerantwoordelijke;
+
+        @XmlElement(namespace = ZKN, name="heeftAlsOverigBetrokkene")
+        public Rol heeftAlsOverigBetrokkene;
     }
 
 

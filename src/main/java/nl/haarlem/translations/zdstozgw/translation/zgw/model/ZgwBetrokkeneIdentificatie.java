@@ -23,6 +23,10 @@ public class ZgwBetrokkeneIdentificatie {
     @Expose
     public String geslachtsnaam;
 
+    @SerializedName("achternaam")
+    @Expose
+    public String achternaam;
+
     @SerializedName("voorvoegselGeslachtsnaam")
     @Expose
     public String voorvoegselGeslachtsnaam;

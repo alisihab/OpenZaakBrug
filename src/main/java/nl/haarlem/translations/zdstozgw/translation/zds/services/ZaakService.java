@@ -45,7 +45,7 @@ public class ZaakService {
     public ZgwZaak creeerZaak(ZakLk01 zakLk01) throws Exception {
         var zaak = zakLk01.objects.get(0);
         ZgwZaak zgwZaak = modelMapper.map(zaak, ZgwZaak.class);
-        zgwZaak.zaaktype = getZaakTypeByZDSCode(zaak.isVan.gerelateerde.code).zaakType;
+        zgwZaak.zaaktype = getZgwZaakTypeByIdentificatie(zaak.isVan.gerelateerde.code).url;
         zgwZaak.bronorganisatie = getRSIN(zakLk01.stuurgegevens.zender.organisatie);
         zgwZaak.verantwoordelijkeOrganisatie = getRSIN(zakLk01.stuurgegevens.ontvanger.organisatie);
 
@@ -53,21 +53,39 @@ public class ZaakService {
             var createdZaak = zgwClient.addZaak(zgwZaak);
             if (createdZaak.getUrl() != null) {
                 log.info("Created a ZGW Zaak with UUID: " + createdZaak.getUuid());
-                if(zaak.heeftAlsInitiator != null){
-                    ZgwRol zgwRol = new ZgwRol();
-                    zgwRol.betrokkeneIdentificatie = modelMapper.map(zaak.heeftAlsInitiator.gerelateerde.natuurlijkPersoon, ZgwBetrokkeneIdentificatie.class);
-                    zgwRol.betrokkeneType = BetrokkeneType.NATUURLIJK_PERSOON.getDescription();
-                    zgwRol.roltoelichting = this.configService.getConfiguratie().getZgwRolOmschrijving().getHeeftAlsInitiator();
-                    zgwRol.roltype = getZaakTypeByZDSCode(zaak.isVan.gerelateerde.code).initiatorRolTypeUrl;
-                    zgwRol.zaak = createdZaak.getUrl();
-                    zgwClient.addZgwRol(zgwRol);
-                }
+                ZgwRolOmschrijving zgwRolOmschrijving = this.configService.getConfiguratie().getZgwRolOmschrijving();
+                addRolToZgw(zaak.heeftAlsInitiator, zgwRolOmschrijving.getHeeftAlsInitiator(), createdZaak);
+                addRolToZgw(zaak.heeftAlsBelanghebbende, zgwRolOmschrijving.getHeeftAlsBelanghebbende(), createdZaak);
+                addRolToZgw(zaak.heeftAlsGemachtigde, zgwRolOmschrijving.getHeeftAlsGemachtigde(), createdZaak);
+                addRolToZgw(zaak.heeftAlsOverigBetrokkene, zgwRolOmschrijving.getHeeftAlsOverigBetrokkene(), createdZaak);
+                addRolToZgw(zaak.heeftAlsUitvoerende, zgwRolOmschrijving.getHeeftAlsUitvoerende(), createdZaak);
+                addRolToZgw(zaak.heeftAlsVerantwoordelijke, zgwRolOmschrijving.getHeeftAlsVerantwoordelijke(), createdZaak);
                 return createdZaak;
             }
+
         } catch (Exception e) {
+            //todo throw error, is case created; yes/no?
             throw e;
         }
         return null;
+    }
+
+    private void addRolToZgw(Rol rol, String rolOmschrijvingGeneriek, ZgwZaak createdZaak){
+        if(rol==null)return;
+        ZgwRol zgwRol = new ZgwRol();
+        if(rol.gerelateerde.medewerker != null){
+            zgwRol.betrokkeneIdentificatie = modelMapper.map(rol.gerelateerde.medewerker, ZgwBetrokkeneIdentificatie.class);
+            zgwRol.betrokkeneType = BetrokkeneType.MEDEWERKER.getDescription();
+        } else if (rol.gerelateerde.natuurlijkPersoon != null) {
+            zgwRol.betrokkeneIdentificatie = modelMapper.map(rol.gerelateerde.natuurlijkPersoon, ZgwBetrokkeneIdentificatie.class);
+            zgwRol.betrokkeneType = BetrokkeneType.NATUURLIJK_PERSOON.getDescription();
+        } else {
+            throw new RuntimeException("Natuurlijkpersoon or medewerker missing for adding roltype to case");
+        }
+        zgwRol.roltoelichting = rolOmschrijvingGeneriek;
+        zgwRol.roltype = zgwClient.getRoltypeByZaakTypeUrlAndOmschrijvingGeneriek(createdZaak.zaaktype,rolOmschrijvingGeneriek).url;
+        zgwRol.zaak = createdZaak.getUrl();
+        zgwClient.addZgwRol(zgwRol);
     }
 
     public ZakLa01LijstZaakdocumenten geefLijstZaakdocumenten(ZakLv01 zakLv01) throws Exception {
@@ -93,7 +111,6 @@ public class ZaakService {
         });
 
         return zakLa01LijstZaakdocumenten;
-
     }
 
     private List<ZgwZaakInformatieObject> getZaakInformatieObjectenByZaak(String zaakUrl){
@@ -299,7 +316,7 @@ public class ZaakService {
         return zgwClient.getRollen(parameters);
     }
 
-    private ZgwRol getRolByZaakUrlAndOmschrijvingGeneriek(String zaakUrl, String omschrijvingGeneriek) {
+    public ZgwRol getRolByZaakUrlAndOmschrijvingGeneriek(String zaakUrl, String omschrijvingGeneriek) {
         Map<String, String> parameters = new HashMap();
         parameters.put("zaak", zaakUrl);
         parameters.put("omschrijvingGeneriek", omschrijvingGeneriek);
@@ -335,6 +352,13 @@ public class ZaakService {
             }
         }
         return null;
+    }
+
+    public ZgwZaakType getZgwZaakTypeByIdentificatie(String identificatie){
+        Map<String, String> parameters = new HashMap<>();
+        parameters.put("identificatie", identificatie);
+
+        return zgwClient.getZaakTypes(parameters).get(0);
     }
 
     public ZaakType getZaakTypeByZDSCode(String zaakTypeCode) {
