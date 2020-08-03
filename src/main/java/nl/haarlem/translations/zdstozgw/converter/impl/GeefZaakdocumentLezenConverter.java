@@ -2,7 +2,9 @@ package nl.haarlem.translations.zdstozgw.converter.impl;
 
 import nl.haarlem.translations.zdstozgw.config.model.Translation;
 import nl.haarlem.translations.zdstozgw.converter.Converter;
-import nl.haarlem.translations.zdstozgw.translation.zds.model.*;
+import nl.haarlem.translations.zdstozgw.translation.zds.model.EdcLa01;
+import nl.haarlem.translations.zdstozgw.translation.zds.model.EdcLv01;
+import nl.haarlem.translations.zdstozgw.translation.zds.model.Fo03;
 import nl.haarlem.translations.zdstozgw.translation.zds.services.ZaakService;
 import nl.haarlem.translations.zdstozgw.utils.XmlUtils;
 

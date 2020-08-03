@@ -5,9 +5,7 @@ import nl.haarlem.translations.zdstozgw.converter.Converter;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.Bv03;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.EdcLk01;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.Fo03;
-import nl.haarlem.translations.zdstozgw.translation.zds.model.Stuurgegevens;
 import nl.haarlem.translations.zdstozgw.translation.zds.services.ZaakService;
-import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwZaakInformatieObject;
 import nl.haarlem.translations.zdstozgw.utils.XmlUtils;
 
 public class VoegZaakdocumentToeConverter extends Converter {

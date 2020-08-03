@@ -9,6 +9,7 @@ import nl.haarlem.translations.zdstozgw.translation.BetrokkeneType;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.*;
 import nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.*;
+import nl.haarlem.translations.zdstozgw.utils.ChangeDetector;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.lang.invoke.MethodHandles;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -42,12 +44,12 @@ public class ZaakService {
         this.configService = configService;
     }
 
-    public ZgwZaak creeerZaak(ZakLk01 zakLk01) throws Exception {
-        var zaak = zakLk01.objects.get(0);
+    public ZgwZaak creeerZaak(ZakLk01CreeerZaak zakLk01CreeerZaak) throws Exception {
+        var zaak = zakLk01CreeerZaak.objects.get(0);
         ZgwZaak zgwZaak = modelMapper.map(zaak, ZgwZaak.class);
         zgwZaak.zaaktype = getZgwZaakTypeByIdentificatie(zaak.isVan.gerelateerde.code).url;
-        zgwZaak.bronorganisatie = getRSIN(zakLk01.stuurgegevens.zender.organisatie);
-        zgwZaak.verantwoordelijkeOrganisatie = getRSIN(zakLk01.stuurgegevens.ontvanger.organisatie);
+        zgwZaak.bronorganisatie = getRSIN(zakLk01CreeerZaak.stuurgegevens.zender.organisatie);
+        zgwZaak.verantwoordelijkeOrganisatie = getRSIN(zakLk01CreeerZaak.stuurgegevens.ontvanger.organisatie);
 
         try {
             var createdZaak = zgwClient.addZaak(zgwZaak);
@@ -209,8 +211,8 @@ public class ZaakService {
                 .orElse(null);
     }
 
-    public ZgwZaak actualiseerZaakstatus(ZakLk01 zakLk01) {
-        ZakLk01.Object object = zakLk01.objects.get(1);
+    public ZgwZaak actualiseerZaakstatus(ZakLk01ActualiseerZaakstatus zakLk01) {
+        ZakLk01ActualiseerZaakstatus.Object object = zakLk01.objects.get(1);
         ZgwZaak zgwZaak = getZaak(object.identificatie);
 
         ZgwStatus zgwStatus = modelMapper.map(object.heeft, ZgwStatus.class);
@@ -233,7 +235,7 @@ public class ZaakService {
             zakLa01GeefZaakDetails.stuurgegevens.berichtcode = "La01";
 
             zakLa01GeefZaakDetails.antwoord = new ZakLa01GeefZaakDetails.Antwoord();
-            zakLa01GeefZaakDetails.antwoord.zaak = modelMapper.map(zgwZaak, ZakLa01GeefZaakDetails.Antwoord.Zaak.class);
+            zakLa01GeefZaakDetails.antwoord.zaak = modelMapper.map(zgwZaak, ZakLa01GeefZaakDetails.Antwoord.Object.class);
 
             ZgwRolOmschrijving zgwRolOmschrijving = this.configService.getConfiguratie().getZgwRolOmschrijving();
 
@@ -276,15 +278,15 @@ public class ZaakService {
             zakLa01GeefZaakDetails.object.isVan.gerelateerde.code = zgwZaakType.identificatie;
             zakLa01GeefZaakDetails.object.isVan.gerelateerde.omschrijving = zgwZaakType.omschrijving;
 
-            zakLa01GeefZaakDetails.antwoord.zaak.kenmerk = zgwZaak.getKenmerken() != null && !zgwZaak.getKenmerken().isEmpty()?  modelMapper.map(zgwZaak.getKenmerken().get(0), ZakLa01GeefZaakDetails.Antwoord.Zaak.Kenmerk.class) : null;
-            zakLa01GeefZaakDetails.antwoord.zaak.opschorting = zgwZaak.getOpschorting() != null? modelMapper.map(zgwZaak.getOpschorting(), ZakLa01GeefZaakDetails.Antwoord.Zaak.Opschorting.class): null;
-            zakLa01GeefZaakDetails.antwoord.zaak.verlenging = zgwZaak.getVerlenging() != null? modelMapper.map(zgwZaak.getVerlenging(), ZakLa01GeefZaakDetails.Antwoord.Zaak.Verlenging.class): null;
+            zakLa01GeefZaakDetails.antwoord.zaak.kenmerk = zgwZaak.getKenmerken() != null && !zgwZaak.getKenmerken().isEmpty()?  modelMapper.map(zgwZaak.getKenmerken().get(0), ZakLa01GeefZaakDetails.Antwoord.Object.Kenmerk.class) : null;
+            zakLa01GeefZaakDetails.antwoord.zaak.opschorting = zgwZaak.getOpschorting() != null? modelMapper.map(zgwZaak.getOpschorting(), ZakLa01GeefZaakDetails.Antwoord.Object.Opschorting.class): null;
+            zakLa01GeefZaakDetails.antwoord.zaak.verlenging = zgwZaak.getVerlenging() != null? modelMapper.map(zgwZaak.getVerlenging(), ZakLa01GeefZaakDetails.Antwoord.Object.Verlenging.class): null;
 
             zakLa01GeefZaakDetails.antwoord.zaak.heeft = getStatussenByZaakUrl(zgwZaak.url)
                     .stream()
                     .map(zgwStatus -> {
                         ZgwStatusType zgwStatusType = zgwClient.getResource(zgwStatus.statustype, ZgwStatusType.class);
-                        return modelMapper.map(zgwStatus, ZakLa01GeefZaakDetails.Antwoord.Zaak.Status.class)
+                        return modelMapper.map(zgwStatus, ZakLa01GeefZaakDetails.Status.class)
                                 .setEntiteittype("ZAKSTT")
                                 .setIndicatieLaatsteStatus(Boolean.valueOf(zgwStatusType.isEindstatus)?"J":"N");
                     })
@@ -381,5 +383,254 @@ public class ZaakService {
         return "";
     }
 
+    public void updateZaak(ZakLk01UpdateZaak ZakLk01UpdateZaak) throws IllegalAccessException, NoSuchMethodException, InstantiationException, InvocationTargetException {
+        var zdsWasZaak = ZakLk01UpdateZaak.objects.get(0);
+        var zdsWijzigingInZaak = ZakLk01UpdateZaak.objects.get(1);
+
+        ChangeDetector changeDetector = new ChangeDetector();
+        changeDetector.detect(zdsWasZaak, zdsWijzigingInZaak);
+
+        if(changeDetector.getAllChangesByClass(Zaak.class).size()>0){
+            System.out.println("jawol, zaak");
+            //         this.modelMapper.map(zdsWijzigingInZaak, ZgwZaak.class);
+
+            //todo: check nested objects that don't have to be updated seperately.. like opschorting, verlenging, etc
+        }
+
+        Map<ChangeDetector.Change, ChangeDetector.ChangeType> rolChanges = changeDetector.getAllChangesByClass(Rol.class);
+
+        if(rolChanges.size()>0){
+
+            changeDetector.filterChangesByType(rolChanges, ChangeDetector.ChangeType.NEW).forEach((change, changeType) -> {
+                //todo: add rol to ZGW
+            });
+
+            changeDetector.filterChangesByType(rolChanges, ChangeDetector.ChangeType.DELETED).forEach((change, changeType) -> {
+                //todo: delete rol from ZGW
+            });
+
+            changeDetector.filterChangesByType(rolChanges, ChangeDetector.ChangeType.CHANGED).forEach((change, changeType) -> {
+                //todo: change rol in ZGW
+            });
+
+        }
+
+    }
+
+
+
+//	public String updateZaak(ZakLk01 zakLk01) {
+//        var zdsWasZaak = zakLk01.objects.get(0);
+//        var zdsWordtZaak = zakLk01.objects.get(1);
+//
+//        if (zdsWasZaak.identificatie.length() == 0) throw new RuntimeException("zaak identificatie is verplicht");
+//        var zgwZaak = getZaak(zdsWasZaak.identificatie);
+//        if(zgwZaak == null) throw new RuntimeException("zaak met identificatie: " + zdsWasZaak.identificatie + " niet gevonden");
+//
+//        var changed = new ChangeDetector();
+//        changed.compare(zdsWasZaak.identificatie, zdsWordtZaak.identificatie,  new Runnable() { public void run() {zgwZaak.identificatie = zdsWordtZaak.identificatie; } } );
+//        changed.compare(zdsWasZaak.omschrijving, zdsWordtZaak.omschrijving,  new Runnable() { public void run() {zgwZaak.omschrijving = zdsWordtZaak.omschrijving; } } );
+//        changed.compare(zdsWasZaak.toelichting, zdsWordtZaak.toelichting,  new Runnable() { public void run() {zgwZaak.toelichting = zdsWordtZaak.toelichting; } } );
+//        changed.compare(zdsWasZaak.registratiedatum, zdsWordtZaak.registratiedatum,  new Runnable() { public void run() {zgwZaak.registratiedatum = getDateStringFromZdsDate(zdsWordtZaak.registratiedatum); } } );
+//        changed.compare(zdsWasZaak.startdatum, zdsWordtZaak.startdatum,  new Runnable() { public void run() {zgwZaak.startdatum = getDateStringFromZdsDate(zdsWordtZaak.startdatum); } } );
+//        changed.compare(zdsWasZaak.einddatum, zdsWordtZaak.einddatum,  new Runnable() { public void run() {zgwZaak.einddatum = getDateStringFromZdsDate(zdsWordtZaak.einddatum); } } );
+//        changed.compare(zdsWasZaak.einddatumGepland, zdsWordtZaak.einddatumGepland,  new Runnable() { public void run() {zgwZaak.einddatumGepland = getDateStringFromZdsDate(zdsWordtZaak.einddatumGepland); } } );
+//
+//        if(zdsWasZaak.opschorting != null || zdsWordtZaak.opschorting != null) {
+//            if(zdsWasZaak.opschorting == null) {
+//                zdsWasZaak.opschorting = new ZdsOpschorting();
+//            }
+//            if(zdsWordtZaak.opschorting == null) {
+//                zdsWordtZaak.opschorting = new ZdsOpschorting();
+//            }
+//            if(zgwZaak.opschorting == null) {
+//                zgwZaak.opschorting = new Opschorting();
+//            }
+//            changed.compare(zdsWasZaak.opschorting.indicatie, zdsWordtZaak.opschorting.indicatie,  new Runnable() { public void run() {zgwZaak.opschorting.indicatie = zdsWordtZaak.opschorting.indicatie.equals("J"); } } );
+//            changed.compare(zdsWasZaak.opschorting.reden, zdsWordtZaak.opschorting.reden,  new Runnable() { public void run() {zgwZaak.opschorting.reden = zdsWordtZaak.opschorting.reden; } } );
+//        }
+//
+//        if(changed.isDirty()) {
+//            zgwClient.put(zgwZaak);
+//        }
+//
+//        var rollen = zgwClient.getRollenByZaak(zgwZaak.url);
+//        updateZaak(zgwZaak, rollen, "Betrekking", zdsWasZaak.heeftBetrekkingOp, zdsWordtZaak.heeftBetrekkingOp);
+//        updateZaak(zgwZaak, rollen, "Belanghebbende", zdsWasZaak.heeftAlsBelanghebbende, zdsWordtZaak.heeftAlsBelanghebbende);
+//        updateZaak(zgwZaak, rollen, "Initiator", zdsWasZaak.heeftAlsInitiator, zdsWordtZaak.heeftAlsInitiator);
+//        updateZaak(zgwZaak, rollen, "Uitvoerende", zdsWasZaak.heeftAlsUitvoerende, zdsWordtZaak.heeftAlsUitvoerende);
+//        updateZaak(zgwZaak, rollen, "Verantwoordelijke", zdsWasZaak.heeftAlsVerantwoordelijke, zdsWordtZaak.heeftAlsVerantwoordelijke);
+//
+//        return zgwZaak;
+//	}
+
+//    private void updateZaak(ZgwBasicZaak zgwZaak, List<ZgwRol> zgwRollen, String rolnaam, ZdsRol zdsWasRol, ZdsRol zdsWordtRol) throws ZaakTranslatorException, ZGWClientException {
+//        var zgwRoltype = zgwClient.getRolTypeByOmschrijving(zgwZaak.zaaktype, rolnaam);
+//        if(zgwRoltype == null) throw new ZaakTranslatorException("Geen roltype niet gevonden ZTC voor identificatie: '" + rolnaam);
+//        // filter waar het ons roltype betreft
+//        zgwRollen = zgwRollen.stream().filter(r -> r.roltype.equals(zgwRoltype.url)).collect(Collectors.toList());
+//
+//        // nu gaan we het vergelijken starten
+//        var wasRollen = getRollen(zgwZaak, zdsWasRol, rolnaam);
+//        var wordtRollen = getRollen(zgwZaak, zdsWordtRol, rolnaam);
+//
+//        // acties die moeten gebeuren
+//        var postRollen = new java.util.ArrayList<ZgwRol>();
+//        var putRollen = new java.util.ArrayList<ZgwRol>();
+//        var deleteRollen = new java.util.ArrayList<ZgwRol>();
+//        var nothingRollen = new java.util.ArrayList<ZgwRol>();
+//
+//        // alles wat we gehad hebben verwijderen we uit de lijst
+//        while(wasRollen.size() > 0 || wordtRollen.size() > 0 ) {
+//            if(wasRollen.size() == 0) {
+//                // er moet een rol bijkomen
+//                var wordtRol = wordtRollen.get(0);
+//                wordtRol.setZaak(zgwZaak.getUrl());
+//                postRollen.add(wordtRol);
+//                // deze hebben we gehad
+//                wordtRollen.remove(0);
+//            }
+//            else if(wordtRollen.size() == 0) {
+//                // deze rol moet verwijderd worden
+//                var wasRol = wasRollen.get(0);
+//                Boolean gevonden = false;
+//                for(ZgwRol zgwRol : zgwRollen) {
+//                    if(zgwRol.betrokkeneType.equals(wasRol.betrokkeneType)
+//                            &&
+//                            (
+//                                    (zgwRol.betrokkeneIdentificatie.inpBsn == null && wasRol.betrokkeneIdentificatie.inpBsn == null)
+//                                            ||
+//                                            zgwRol.betrokkeneIdentificatie.inpBsn.equals(wasRol.betrokkeneIdentificatie.inpBsn)
+//                            )
+//                            &&
+//                            (
+//                                    (zgwRol.betrokkeneIdentificatie.identificatie != null && wasRol.betrokkeneIdentificatie.identificatie != null)
+//                                            ||
+//                                            zgwRol.betrokkeneIdentificatie.identificatie.equals(wasRol.betrokkeneIdentificatie.identificatie)
+//                            )
+//                    )
+//                    {
+//                        // er is een rol teveel
+//                        gevonden = true;
+//                        deleteRollen.add(zgwRol);
+//                        break;
+//                    }
+//                }
+//                if(!gevonden) log.warn("rol niet terug gevonden in openzaak!");
+//                // deze hebben we gehad
+//                wasRollen.remove(0);
+//            }
+//            else {
+//                var wordtRol = wordtRollen.get(0);
+//                Boolean gevonden = false;
+//                for(ZgwRol wasRol : wasRollen) {
+//                    if(
+//                            wasRol.betrokkeneType.equals(wordtRol.betrokkeneType)
+//                                    &&
+//                                    (
+//                                            (wasRol.betrokkeneIdentificatie.inpBsn == null && wordtRol.betrokkeneIdentificatie.inpBsn == null)
+//                                                    ||
+//                                                    wasRol.betrokkeneIdentificatie.inpBsn.equals(wordtRol.betrokkeneIdentificatie.inpBsn)
+//                                    )
+//                                    &&
+//                                    (
+//                                            (wasRol.betrokkeneIdentificatie.identificatie != null && wordtRol.betrokkeneIdentificatie.identificatie != null)
+//                                                    ||
+//                                                    wasRol.betrokkeneIdentificatie.identificatie.equals(wordtRol.betrokkeneIdentificatie.identificatie)
+//                                    )
+//                    )
+//                    {
+//                        ZgwRol zgwRol = null;
+//                        for(ZgwRol rol : zgwRollen) {
+//                            if(rol.betrokkeneType.equals(wordtRol.betrokkeneType)
+//                                    &&
+//                                    (
+//                                            (rol.betrokkeneIdentificatie.inpBsn == null && wordtRol.betrokkeneIdentificatie.inpBsn == null)
+//                                                    ||
+//                                                    rol.betrokkeneIdentificatie.inpBsn.equals(wordtRol.betrokkeneIdentificatie.inpBsn)
+//                                    )
+//                                    &&
+//                                    (
+//                                            (rol.betrokkeneIdentificatie.identificatie != null && wordtRol.betrokkeneIdentificatie.identificatie != null)
+//                                                    ||
+//                                                    rol.betrokkeneIdentificatie.identificatie.equals(wordtRol.betrokkeneIdentificatie.identificatie)
+//                                    )
+//                            )
+//                            {
+//                                // er is een rol teveel
+//                                zgwRol = rol;
+//                                break;
+//                            }
+//                        }
+//                        if(zgwRol == null) log.warn("rol niet terug gevonden in openzaak!");
+//                        {
+//                            // for runnable has to be from final
+//                            final ZgwRol rol = zgwRol;
+//
+//                            var changed = new ChangeDetector();
+//                            changed.compare(wasRol.betrokkeneIdentificatie.anpIdentificatie, wordtRol.betrokkeneIdentificatie.anpIdentificatie,  new Runnable() { public void run() { rol.betrokkeneIdentificatie.anpIdentificatie = wordtRol.betrokkeneIdentificatie.anpIdentificatie; } } );
+//                            changed.compare(wasRol.betrokkeneIdentificatie.inpA_nummer, wordtRol.betrokkeneIdentificatie.inpA_nummer,  new Runnable() { public void run() {rol.betrokkeneIdentificatie.inpA_nummer = wordtRol.betrokkeneIdentificatie.inpA_nummer; } } );
+//                            changed.compare(wasRol.betrokkeneIdentificatie.inpgeslachtsnaam, wordtRol.betrokkeneIdentificatie.inpgeslachtsnaam,  new Runnable() { public void run() {rol.betrokkeneIdentificatie.inpgeslachtsnaam = wordtRol.betrokkeneIdentificatie.inpgeslachtsnaam; } } );
+//                            changed.compare(wasRol.betrokkeneIdentificatie.geslachtsnaam, wordtRol.betrokkeneIdentificatie.geslachtsnaam,  new Runnable() { public void run() {rol.betrokkeneIdentificatie.geslachtsnaam = wordtRol.betrokkeneIdentificatie.geslachtsnaam; } } );
+//                            changed.compare(wasRol.betrokkeneIdentificatie.voorvoegselGeslachtsnaam, wordtRol.betrokkeneIdentificatie.voorvoegselGeslachtsnaam,  new Runnable() { public void run() {rol.betrokkeneIdentificatie.voorvoegselGeslachtsnaam = wordtRol.betrokkeneIdentificatie.voorvoegselGeslachtsnaam; } } );
+//                            changed.compare(wasRol.betrokkeneIdentificatie.voornamen, wordtRol.betrokkeneIdentificatie.voornamen,  new Runnable() { public void run() {rol.betrokkeneIdentificatie.voornamen = wordtRol.betrokkeneIdentificatie.voornamen; } } );
+//                            changed.compare(wasRol.betrokkeneIdentificatie.geslachtsaanduiding, wordtRol.betrokkeneIdentificatie.geslachtsaanduiding,  new Runnable() { public void run() {rol.betrokkeneIdentificatie.geslachtsaanduiding = wordtRol.betrokkeneIdentificatie.geslachtsaanduiding; } } );
+//                            changed.compare(wasRol.betrokkeneIdentificatie.geboortedatum, wordtRol.betrokkeneIdentificatie.geboortedatum,  new Runnable() { public void run() {rol.betrokkeneIdentificatie.geboortedatum = wordtRol.betrokkeneIdentificatie.geboortedatum; } } );
+//// TODO: verhuizingen!
+////								changed.compare(wasRol.betrokkeneIdentificatie.verblijfsadres, wordtRol.betrokkeneIdentificatie.verblijfsadres,  new Runnable() { public void run() {rol.betrokkeneIdentificatie.verblijfsadres = wordtRol.betrokkeneIdentificatie.verblijfsadres; } } );
+////								changed.compare(wasRol.betrokkeneIdentificatie.subVerblijfBuitenland, wordtRol.betrokkeneIdentificatie.subVerblijfBuitenland,  new Runnable() { public void run() {rol.betrokkeneIdentificatie.subVerblijfBuitenland = wordtRol.betrokkeneIdentificatie.subVerblijfBuitenland; } } );
+//                            if(changed.isDirty()) {
+//                                putRollen.add(rol);
+//                            } else {
+//                                nothingRollen.add(rol);
+//                            }
+//
+//                        }
+//                        // deze hebben we gehad
+//                        if(!wasRollen.remove(wasRol)) throw new ZaakTranslatorException("fout bij het verwijderen van rol uit de rollenlijst");
+//                        break;
+//                    }
+//                }
+//                // deze hebben we gehad
+//                wordtRollen.remove(0);
+//            }
+//        }
+//        log.info("nothing rollen:" + nothingRollen.size());
+//        log.info("post rollen:" + postRollen.size());
+//        log.info("put rollen:" + putRollen.size());
+//        log.info("delete rollen:" + deleteRollen.size());
+//
+//        for(ZgwRol rol : postRollen) {
+//            zgwClient.postRol(rol);
+//        }
+//        for(ZgwRol rol : putRollen) {
+//            zgwClient.put(rol);
+//        }
+//        for(ZgwRol rol : deleteRollen) {
+//            zgwClient.delete(rol);
+//        }
+//    }
+
+//    class ChangeDetector {
+//        private Boolean dirty = false;
+//
+//        public Boolean compare(String eersteWaarde, String tweedeWaarde) {
+//            if(eersteWaarde == null && tweedeWaarde == null) return false;
+//            if(eersteWaarde == null) return true;
+//            return !eersteWaarde.equals(tweedeWaarde);
+//        }
+//
+//        public void compare(String eersteWaarde, String tweedeWaarde, Runnable bijverschil) {
+//            Boolean different = compare(eersteWaarde, tweedeWaarde);
+//            if(different) {
+//                bijverschil.run();
+//                dirty = true;
+//            }
+//        }
+//
+//        public Boolean isDirty() {
+//            return dirty;
+//        }
+//    }
 }
 

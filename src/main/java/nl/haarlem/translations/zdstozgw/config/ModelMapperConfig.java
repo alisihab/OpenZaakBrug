@@ -23,15 +23,15 @@ public class ModelMapperConfig {
                 .setSkipNullEnabled(true)
                 .setPropertyCondition(Conditions.isNotNull());
 
-        modelMapper.typeMap(ZgwZaak.class, ZakLa01GeefZaakDetails.Antwoord.Zaak.class)
-                .addMappings(mapper -> mapper.using(convertDateStringToStufDate()).map(ZgwZaak::getStartdatum, ZakLa01GeefZaakDetails.Antwoord.Zaak::setStartdatum))
-                .addMappings(mapper -> mapper.using(convertDateStringToStufDate()).map(ZgwZaak::getRegistratiedatum, ZakLa01GeefZaakDetails.Antwoord.Zaak::setRegistratiedatum))
-                .addMappings(mapper -> mapper.using(convertDateStringToStufDate()).map(ZgwZaak::getPublicatiedatum, ZakLa01GeefZaakDetails.Antwoord.Zaak::setPublicatiedatum))
-                .addMappings(mapper -> mapper.using(convertDateStringToStufDate()).map(ZgwZaak::getEinddatumGepland, ZakLa01GeefZaakDetails.Antwoord.Zaak::setEinddatumGepland))
-                .addMappings(mapper -> mapper.using(convertDateStringToStufDate()).map(ZgwZaak::getUiterlijkeEinddatumAfdoening, ZakLa01GeefZaakDetails.Antwoord.Zaak::setUiterlijkeEinddatum))
-                .addMappings(mapper -> mapper.using(convertDateStringToStufDate()).map(ZgwZaak::getEinddatum, ZakLa01GeefZaakDetails.Antwoord.Zaak::setEinddatum))
-                .addMappings(mapper -> mapper.using(convertDateStringToStufDate()).map(ZgwZaak::getArchiefactiedatum, ZakLa01GeefZaakDetails.Antwoord.Zaak::setDatumVernietigingDossier))
-                .addMappings(mapper -> mapper.using(convertZgwArchiefNomitieToZdsArchiefNominatie()).map(ZgwZaak::getArchiefnominatie, ZakLa01GeefZaakDetails.Antwoord.Zaak::setArchiefnominatie));
+        modelMapper.typeMap(ZgwZaak.class, ZakLa01GeefZaakDetails.Antwoord.Object.class)
+                .addMappings(mapper -> mapper.using(convertDateStringToStufDate()).map(ZgwZaak::getStartdatum, ZakLa01GeefZaakDetails.Antwoord.Object::setStartdatum))
+                .addMappings(mapper -> mapper.using(convertDateStringToStufDate()).map(ZgwZaak::getRegistratiedatum, ZakLa01GeefZaakDetails.Antwoord.Object::setRegistratiedatum))
+                .addMappings(mapper -> mapper.using(convertDateStringToStufDate()).map(ZgwZaak::getPublicatiedatum, ZakLa01GeefZaakDetails.Antwoord.Object::setPublicatiedatum))
+                .addMappings(mapper -> mapper.using(convertDateStringToStufDate()).map(ZgwZaak::getEinddatumGepland, ZakLa01GeefZaakDetails.Antwoord.Object::setEinddatumGepland))
+                .addMappings(mapper -> mapper.using(convertDateStringToStufDate()).map(ZgwZaak::getUiterlijkeEinddatumAfdoening, ZakLa01GeefZaakDetails.Antwoord.Object::setUiterlijkeEinddatum))
+                .addMappings(mapper -> mapper.using(convertDateStringToStufDate()).map(ZgwZaak::getEinddatum, ZakLa01GeefZaakDetails.Antwoord.Object::setEinddatum))
+                .addMappings(mapper -> mapper.using(convertDateStringToStufDate()).map(ZgwZaak::getArchiefactiedatum, ZakLa01GeefZaakDetails.Antwoord.Object::setDatumVernietigingDossier))
+                .addMappings(mapper -> mapper.using(convertZgwArchiefNomitieToZdsArchiefNominatie()).map(ZgwZaak::getArchiefnominatie, ZakLa01GeefZaakDetails.Antwoord.Object::setArchiefnominatie));
 
 
         modelMapper.typeMap(ZgwBetrokkeneIdentificatie.class, NatuurlijkPersoon.class)
@@ -39,8 +39,8 @@ public class ModelMapperConfig {
                 .addMappings(mapper -> mapper.using(convertToLowerCase()).map(ZgwBetrokkeneIdentificatie::getGeslachtsaanduiding, NatuurlijkPersoon::setGeslachtsaanduiding))
                 .addMappings(mapper -> mapper.using(convertToLowerCase()).map(ZgwBetrokkeneIdentificatie::getInpBsn, NatuurlijkPersoon::setBsn));
 
-        modelMapper.typeMap(ZgwStatus.class, ZakLa01GeefZaakDetails.Antwoord.Zaak.Status.class)
-                .addMappings(mapper -> mapper.map(ZgwStatus::getStatustoelichting, ZakLa01GeefZaakDetails.Antwoord.Zaak.Status::setToelichting));
+        modelMapper.typeMap(ZgwStatus.class, ZakLa01GeefZaakDetails.Status.class)
+                .addMappings(mapper -> mapper.map(ZgwStatus::getStatustoelichting, ZakLa01GeefZaakDetails.Status::setToelichting));
 
         modelMapper.typeMap(ZgwZaakInformatieObject.class, ZakLa01LijstZaakdocumenten.Antwoord.Object.HeeftRelevant.class)
                 .addMappings(mapper -> mapper.using(convertDateStringToStufDate()).map(ZgwZaakInformatieObject::getRegistratiedatum, ZakLa01LijstZaakdocumenten.Antwoord.Object.HeeftRelevant::setRegistratiedatum));
@@ -69,11 +69,11 @@ public class ModelMapperConfig {
     }
 
     public void addZdsZaakToZgwZaakTypeMapping(ModelMapper modelMapper) {
-        modelMapper.typeMap(ZakLk01.Object.class, ZgwZaak.class)
-                .addMappings(mapper -> mapper.using(convertStufDateToDateString()).map(ZakLk01.Object::getRegistratiedatum, ZgwZaak::setRegistratiedatum))
-                .addMappings(mapper -> mapper.using(convertStufDateToDateString()).map(ZakLk01.Object::getStartdatum, ZgwZaak::setStartdatum))
-                .addMappings(mapper -> mapper.using(convertStufDateToDateString()).map(ZakLk01.Object::getEinddatumGepland, ZgwZaak::setEinddatumGepland))
-                .addMappings(mapper -> mapper.using(getZGWArchiefNominatie()).map(ZakLk01.Object::getArchiefnominatie, ZgwZaak::setArchiefnominatie));
+        modelMapper.typeMap(ZakLk01CreeerZaak.Object.class, ZgwZaak.class)
+                .addMappings(mapper -> mapper.using(convertStufDateToDateString()).map(ZakLk01CreeerZaak.Object::getRegistratiedatum, ZgwZaak::setRegistratiedatum))
+                .addMappings(mapper -> mapper.using(convertStufDateToDateString()).map(ZakLk01CreeerZaak.Object::getStartdatum, ZgwZaak::setStartdatum))
+                .addMappings(mapper -> mapper.using(convertStufDateToDateString()).map(ZakLk01CreeerZaak.Object::getEinddatumGepland, ZgwZaak::setEinddatumGepland))
+                .addMappings(mapper -> mapper.using(getZGWArchiefNominatie()).map(ZakLk01CreeerZaak.Object::getArchiefnominatie, ZgwZaak::setArchiefnominatie));
     }
 
     public void addZdsNatuurlijkPersoonToZgwBetrokkeneIdentificatieTypeMapping(ModelMapper modelMapper) {
