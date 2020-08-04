@@ -97,6 +97,9 @@ public class Zaak {
     @XmlElement(namespace = ZKN, nillable = true)
     public Rol heeftAlsOverigBetrokkene;
 
+    @XmlElement(namespace = ZKN)
+    public Rol isVan;
+
     @Data
     @XmlAccessorType(XmlAccessType.FIELD)
     public static class Resultaat {

@@ -1,7 +1,6 @@
 package nl.haarlem.translations.zdstozgw;
 
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZakLk01ActualiseerZaakstatus;
-import nl.haarlem.translations.zdstozgw.translation.zds.model.ZakLk01CreeerZaak;
 import nl.haarlem.translations.zdstozgw.utils.XmlUtils;
 import org.apache.commons.io.IOUtils;
 import org.junit.Assert;
@@ -27,7 +26,7 @@ public class XmlUnitTests {
 					.getResourceAsStream("zds1.1/ActualiseerZaakstatus"), "UTF-8");
 
 			//actheb
-			ZakLk01ActualiseerZaakstatus zakLk01ActualiseerZaakstatus = (ZakLk01ActualiseerZaakstatus) XmlUtils.getStUFObject(content, ZakLk01CreeerZaak.class);
+			ZakLk01ActualiseerZaakstatus zakLk01ActualiseerZaakstatus = (ZakLk01ActualiseerZaakstatus) XmlUtils.getStUFObject(content, ZakLk01ActualiseerZaakstatus.class);
 			ZakLk01ActualiseerZaakstatus.Object object = zakLk01ActualiseerZaakstatus.objects.get(1);
 
 			//assert

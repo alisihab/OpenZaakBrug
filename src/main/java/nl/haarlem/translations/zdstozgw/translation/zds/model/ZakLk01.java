@@ -13,7 +13,7 @@ import static nl.haarlem.translations.zdstozgw.translation.zds.model.namespace.N
 @Data
 @XmlRootElement(namespace = ZKN, name="zakLk01")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ZakLk01UpdateZaak {
+public class ZakLk01 {
 
     @XmlElement(namespace = ZKN, name="object")
     public List<Zaak> objects;

@@ -44,7 +44,7 @@ public class ZaakService {
         this.configService = configService;
     }
 
-    public ZgwZaak creeerZaak(ZakLk01CreeerZaak zakLk01CreeerZaak) throws Exception {
+    public ZgwZaak creeerZaak(ZakLk01 zakLk01CreeerZaak) throws Exception {
         var zaak = zakLk01CreeerZaak.objects.get(0);
         ZgwZaak zgwZaak = modelMapper.map(zaak, ZgwZaak.class);
         zgwZaak.zaaktype = getZgwZaakTypeByIdentificatie(zaak.isVan.gerelateerde.code).url;
@@ -54,7 +54,7 @@ public class ZaakService {
         try {
             var createdZaak = zgwClient.addZaak(zgwZaak);
             if (createdZaak.getUrl() != null) {
-                log.info("Created a ZGW Zaak with UUID: " + createdZaak.getUuid());
+                log.debug("Created a ZGW Zaak with UUID: " + createdZaak.getUuid());
                 ZgwRolOmschrijving zgwRolOmschrijving = this.configService.getConfiguratie().getZgwRolOmschrijving();
                 addRolToZgw(zaak.heeftAlsInitiator, zgwRolOmschrijving.getHeeftAlsInitiator(), createdZaak);
                 addRolToZgw(zaak.heeftAlsBelanghebbende, zgwRolOmschrijving.getHeeftAlsBelanghebbende(), createdZaak);
@@ -235,6 +235,7 @@ public class ZaakService {
             zakLa01GeefZaakDetails.stuurgegevens.berichtcode = "La01";
 
             zakLa01GeefZaakDetails.antwoord = new ZakLa01GeefZaakDetails.Antwoord();
+            zakLa01GeefZaakDetails.antwoord.zaak = new ZakLa01GeefZaakDetails.Antwoord.Object();
             zakLa01GeefZaakDetails.antwoord.zaak = modelMapper.map(zgwZaak, ZakLa01GeefZaakDetails.Antwoord.Object.class);
 
             ZgwRolOmschrijving zgwRolOmschrijving = this.configService.getConfiguratie().getZgwRolOmschrijving();
@@ -270,13 +271,12 @@ public class ZaakService {
             });
 
             ZgwZaakType zgwZaakType = this.getZaakTypeByUrl(zgwZaak.zaaktype);
-            zakLa01GeefZaakDetails.object = new ZakLa01GeefZaakDetails.Object();
-            zakLa01GeefZaakDetails.object.isVan = new Rol();
-            zakLa01GeefZaakDetails.object.isVan.entiteittype = "ZAKZKT";
-            zakLa01GeefZaakDetails.object.isVan.gerelateerde = new Gerelateerde();
-            zakLa01GeefZaakDetails.object.isVan.gerelateerde.entiteittype = "ZKT";
-            zakLa01GeefZaakDetails.object.isVan.gerelateerde.code = zgwZaakType.identificatie;
-            zakLa01GeefZaakDetails.object.isVan.gerelateerde.omschrijving = zgwZaakType.omschrijving;
+            zakLa01GeefZaakDetails.antwoord.zaak.isVan = new Rol();
+            zakLa01GeefZaakDetails.antwoord.zaak.isVan.entiteittype = "ZAKZKT";
+            zakLa01GeefZaakDetails.antwoord.zaak.isVan.gerelateerde = new Gerelateerde();
+            zakLa01GeefZaakDetails.antwoord.zaak.isVan.gerelateerde.entiteittype = "ZKT";
+            zakLa01GeefZaakDetails.antwoord.zaak.isVan.gerelateerde.code = zgwZaakType.identificatie;
+            zakLa01GeefZaakDetails.antwoord.zaak.isVan.gerelateerde.omschrijving = zgwZaakType.omschrijving;
 
             zakLa01GeefZaakDetails.antwoord.zaak.kenmerk = zgwZaak.getKenmerken() != null && !zgwZaak.getKenmerken().isEmpty()?  modelMapper.map(zgwZaak.getKenmerken().get(0), ZakLa01GeefZaakDetails.Antwoord.Object.Kenmerk.class) : null;
             zakLa01GeefZaakDetails.antwoord.zaak.opschorting = zgwZaak.getOpschorting() != null? modelMapper.map(zgwZaak.getOpschorting(), ZakLa01GeefZaakDetails.Antwoord.Object.Opschorting.class): null;
@@ -383,36 +383,71 @@ public class ZaakService {
         return "";
     }
 
-    public void updateZaak(ZakLk01UpdateZaak ZakLk01UpdateZaak) throws IllegalAccessException, NoSuchMethodException, InstantiationException, InvocationTargetException {
-        var zdsWasZaak = ZakLk01UpdateZaak.objects.get(0);
-        var zdsWijzigingInZaak = ZakLk01UpdateZaak.objects.get(1);
+    public void updateZaak(ZakLk01 ZakLk01) throws IllegalAccessException, NoSuchMethodException, InstantiationException, InvocationTargetException {
+        var zdsWasZaak = ZakLk01.objects.get(0);
+        var zdsWijzigingInZaak = ZakLk01.objects.get(1);
+        ZgwZaak zgwZaak = getZaak(zdsWasZaak.identificatie);
+        if(zgwZaak==null)throw new RuntimeException("Zaak with identification "+ zdsWasZaak.identificatie + " not found in ZGW");
 
         ChangeDetector changeDetector = new ChangeDetector();
         changeDetector.detect(zdsWasZaak, zdsWijzigingInZaak);
 
-        if(changeDetector.getAllChangesByClass(Zaak.class).size()>0){
-            System.out.println("jawol, zaak");
-            //         this.modelMapper.map(zdsWijzigingInZaak, ZgwZaak.class);
-
-            //todo: check nested objects that don't have to be updated seperately.. like opschorting, verlenging, etc
+        if(changeDetector.getAllChangesByDeclaringClassAndFilter(Zaak.class, Rol.class).size()>0){
+           ZgwZaak updatedZaak =  this.modelMapper.map(zdsWijzigingInZaak, ZgwZaak.class);
+           updatedZaak.zaaktype = zgwZaak.zaaktype;
+           updatedZaak.bronorganisatie = zgwZaak.bronorganisatie;
+           updatedZaak.verantwoordelijkeOrganisatie = zgwZaak.verantwoordelijkeOrganisatie;
+           zgwClient.updateZaak(zgwZaak.uuid, updatedZaak);
         }
 
-        Map<ChangeDetector.Change, ChangeDetector.ChangeType> rolChanges = changeDetector.getAllChangesByClass(Rol.class);
+        Map<ChangeDetector.Change, ChangeDetector.ChangeType> rolChanges = changeDetector.getAllChangesByFieldType(Rol.class);
 
         if(rolChanges.size()>0){
-
             changeDetector.filterChangesByType(rolChanges, ChangeDetector.ChangeType.NEW).forEach((change, changeType) -> {
-                //todo: add rol to ZGW
+                addRolToZgw((Rol) change.getValue(), getRolOmschrijvingGeneriekByRolName(change.getField().getName()), zgwZaak);
             });
 
             changeDetector.filterChangesByType(rolChanges, ChangeDetector.ChangeType.DELETED).forEach((change, changeType) -> {
-                //todo: delete rol from ZGW
+                deleteRolFromZgw(getRolOmschrijvingGeneriekByRolName(change.getField().getName()), zgwZaak);
             });
 
             changeDetector.filterChangesByType(rolChanges, ChangeDetector.ChangeType.CHANGED).forEach((change, changeType) -> {
-                //todo: change rol in ZGW
+                updateRolInZgw(getRolOmschrijvingGeneriekByRolName(change.getField().getName()), zgwZaak, change.getValue());
             });
 
+        }
+
+    }
+
+
+
+    private void updateRolInZgw(String omschrijvingGeneriek, ZgwZaak zgwZaak, Object value) {
+        //no put action for rollen, so first delete then add
+        log.debug("Attempting to update rol by deleting and adding as new");
+        deleteRolFromZgw(omschrijvingGeneriek, zgwZaak);
+        addRolToZgw((Rol) value, omschrijvingGeneriek, zgwZaak);
+    }
+
+    private void deleteRolFromZgw(String omschrijvingGeneriek, ZgwZaak zgwZaak) {
+        ZgwRol zgwRol = getRolByZaakUrlAndOmschrijvingGeneriek(zgwZaak.url, omschrijvingGeneriek);
+        if(zgwRol == null){
+            log.warn("Attempted to delete rol " + zgwRol.roltoelichting + " from case "+ zgwZaak.getUrl()+ ", but rol hasn't been added to case.");
+            return;
+        }
+        zgwClient.deleteRol(zgwRol.uuid);
+    }
+
+    public String getRolOmschrijvingGeneriekByRolName(String rolName){
+        ZgwRolOmschrijving zgwRolOmschrijving = this.configService.getConfiguratie().getZgwRolOmschrijving();
+
+        switch(rolName.toLowerCase()){
+            case "heeftalsbelanghebbende": return zgwRolOmschrijving.getHeeftAlsBelanghebbende();
+            case "heeftalsinitiator": return zgwRolOmschrijving.getHeeftAlsInitiator();
+            case "heeftalsuitvoerende": return zgwRolOmschrijving.getHeeftAlsUitvoerende();
+            case "heeftalsverantwoordelijke": return zgwRolOmschrijving.getHeeftAlsVerantwoordelijke();
+            case "heeftalsgemachtigde": return zgwRolOmschrijving.getHeeftAlsGemachtigde();
+            case "heeftalsoverigBetrokkene": return zgwRolOmschrijving.getHeeftAlsOverigBetrokkene();
+            default: return null;
         }
 
     }

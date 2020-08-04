@@ -30,6 +30,30 @@ public class ZGWClient {
     @Value("${openzaak.baseUrl}")
     private String baseUrl;
 
+    @Value("${zgw.endpoint.roltype}")
+    private String endpointRolType;
+
+    @Value("${zgw.endpoint.rol}")
+    private String endpointRol;
+
+    @Value("${zgw.endpoint.zaaktype}")
+    private String endpointZaaktype;
+
+    @Value("${zgw.endpoint.status}")
+    private String endpointStatus;
+
+    @Value("${zgw.endpoint.statustype}")
+    private String endpointStatustype;
+
+    @Value("${zgw.endpoint.zaakinformatieobject}")
+    private String endpointZaakinformatieobject;
+
+    @Value("${zgw.endpoint.enkelvoudiginformatieobject}")
+    private String endpointEnkelvoudiginformatieobject;
+
+    @Value("${zgw.endpoint.zaak}")
+    private String endpointZaak;
+
     @Autowired
     HttpService httpService;
 
@@ -61,6 +85,24 @@ public class ZGWClient {
         return response.getBody();
     }
 
+    public void delete(String url) throws HttpStatusCodeException {
+        log.debug("DELETE: " + url );
+        HttpEntity entity = new HttpEntity(restTemplateService.getHeaders());
+
+        ResponseEntity<String> response = restTemplateService.getRestTemplate().exchange(
+                url, HttpMethod.DELETE, entity, String.class);
+        log.debug("DELETE response: " + response.getBody());
+    }
+
+    public String put(String url, String json) throws HttpStatusCodeException {
+        log.debug("PUT: " + url + ", json: " + json);
+        HttpEntity<String> request = new HttpEntity<String>(json, restTemplateService.getHeaders());
+
+        ResponseEntity<String> response = restTemplateService.getRestTemplate().exchange(url, HttpMethod.PUT, request, String.class);
+        log.debug("PUT response: " + response.getBody());
+        return response.getBody();
+    }
+
     private String getUrlWithParameters(String url, Map<String, String> parameters) {
         var i = 0;
         for (Map.Entry<String, String> entry : parameters.entrySet()) {
@@ -78,7 +120,7 @@ public class ZGWClient {
 
     public ZgwEnkelvoudigInformatieObject getZgwEnkelvoudigInformatieObject(String identificatie){
         ZgwEnkelvoudigInformatieObject result = null;
-        var documentJson = get(baseUrl+"/documenten/api/v1/enkelvoudiginformatieobjecten?identificatie="+identificatie,null);
+        var documentJson = get(baseUrl+ endpointEnkelvoudiginformatieobject+"?identificatie="+identificatie,null);
         try {
             Type type = new TypeToken<QueryResult<ZgwEnkelvoudigInformatieObject>>(){}.getType();
             Gson gson = new Gson();
@@ -124,7 +166,7 @@ public class ZGWClient {
     public ZgwZaak getZaak(Map<String, String> parameters) {
 
         ZgwZaak result = null;
-        var zaakJson = get(baseUrl + "/zaken/api/v1/zaken", parameters);
+        var zaakJson = get(baseUrl + endpointZaak, parameters);
         try {
             Type type = new TypeToken<QueryResult<ZgwZaak>>(){}.getType();
             Gson gson = new Gson();
@@ -145,7 +187,7 @@ public class ZGWClient {
         try {
             Gson gson = new Gson();
             String json = gson.toJson(zgwZaak);
-            String response = this.post(baseUrl + "/zaken/api/v1/zaken", json);
+            String response = this.post(baseUrl + endpointZaak, json);
             result = gson.fromJson(response, ZgwZaak.class);
         } catch (HttpStatusCodeException ex) {
             log.error("Exception in addZaak: " + ex.getMessage());
@@ -160,7 +202,7 @@ public class ZGWClient {
         try {
             Gson gson = new Gson();
             String json = gson.toJson(zgwRol);
-            String response = this.post(baseUrl + "/zaken/api/v1/rollen", json);
+            String response = this.post(baseUrl + endpointRol, json);
             result = gson.fromJson(response, ZgwRol.class);
         } catch (HttpStatusCodeException ex) {
             log.error("Exception in addZgwRol: " + ex.getMessage());
@@ -175,7 +217,7 @@ public class ZGWClient {
         try {
             Gson gson = new Gson();
             String json = gson.toJson(zgwEnkelvoudigInformatieObject);
-            String response = this.post(baseUrl + "/documenten/api/v1/enkelvoudiginformatieobjecten", json);
+            String response = this.post(baseUrl + endpointEnkelvoudiginformatieobject, json);
             result = gson.fromJson(response, ZgwEnkelvoudigInformatieObject.class);
         } catch (HttpStatusCodeException ex) {
             log.error("Exception in addDocument: " + ex.getMessage());
@@ -190,7 +232,7 @@ public class ZGWClient {
         try {
             Gson gson = new Gson();
             String json = gson.toJson(zgwZaakInformatieObject);
-            String response = this.post(baseUrl + "/zaken/api/v1/zaakinformatieobjecten", json);
+            String response = this.post(baseUrl + endpointZaakinformatieobject, json);
             result = gson.fromJson(response, ZgwZaakInformatieObject.class);
         } catch (HttpStatusCodeException ex) {
             log.error("Exception in addDocument: " + ex.getMessage());
@@ -213,7 +255,7 @@ public class ZGWClient {
 
     public List<ZgwZaakInformatieObject> getZgwZaakInformatieObjects(Map<String, String> parameters) {
         //Fetch EnkelvoudigInformatieObjects
-        var zaakInformatieObjectJson = get(baseUrl + "/zaken/api/v1/zaakinformatieobjecten", parameters);
+        var zaakInformatieObjectJson = get(baseUrl + endpointZaakinformatieobject, parameters);
 
         Gson gson = new Gson();
         Type documentList = new TypeToken<ArrayList<ZgwZaakInformatieObject>>() {
@@ -232,7 +274,7 @@ public class ZGWClient {
     }
 
     public List<ZgwStatusType> getStatusTypes(Map<String, String> parameters) {
-        var statusTypeJson = get(baseUrl + "/catalogi/api/v1/statustypen", parameters);
+        var statusTypeJson = get(baseUrl + endpointStatustype, parameters);
         try {
             Type type = new TypeToken<QueryResult<ZgwStatusType>>(){}.getType();
             Gson gson = new Gson();
@@ -245,7 +287,7 @@ public class ZGWClient {
     }
 
     public List<ZgwStatus> getStatussen(Map<String, String> parameters) {
-        var statusTypeJson = get(baseUrl + "/zaken/api/v1/statussen", parameters);
+        var statusTypeJson = get(baseUrl + endpointStatus, parameters);
         try {
             Type type = new TypeToken<QueryResult<ZgwStatus>>(){}.getType();
             Gson gson = new Gson();
@@ -273,7 +315,7 @@ public class ZGWClient {
         try {
             Gson gson = new Gson();
             String json = gson.toJson(zgwSatus);
-            String response = this.post(baseUrl + "/zaken/api/v1/statussen", json);
+            String response = this.post(baseUrl + endpointStatus, json);
             result = gson.fromJson(response, ZgwStatus.class);
         } catch (HttpStatusCodeException ex) {
             log.error("Exception in actualiseerZaakStatus: " + ex.getMessage());
@@ -284,7 +326,7 @@ public class ZGWClient {
     }
 
     public List<ZgwZaakType> getZaakTypes(Map<String, String> parameters) {
-        var zaakTypeJson = get(baseUrl + "/catalogi/api/v1/zaaktypen", parameters);
+        var zaakTypeJson = get(baseUrl + endpointZaaktype, parameters);
         try {
             Type type = new TypeToken<QueryResult<ZgwZaakType>>(){}.getType();
             Gson gson = new Gson();
@@ -297,7 +339,7 @@ public class ZGWClient {
     }
 
     public List<ZgwRol> getRollen(Map<String, String> parameters) {
-        var zaakTypeJson = get(this.baseUrl + "/zaken/api/v1/rollen", parameters);
+        var zaakTypeJson = get(this.baseUrl + endpointRol, parameters);
         Type type = new TypeToken<QueryResult<ZgwRol>>() { }.getType();
         Gson gson = new Gson();
         QueryResult<ZgwRol> queryResult = gson.fromJson(zaakTypeJson, type);
@@ -310,7 +352,7 @@ public class ZGWClient {
     }
 
     public List<ZgwRolType> getRolTypen(Map<String, String> parameters) {
-        var rolTypeJson = get(baseUrl + "/catalogi/api/v1/roltypen", parameters);
+        var rolTypeJson = get(baseUrl + endpointRolType, parameters);
         try {
             Type type = new TypeToken<QueryResult<ZgwRolType>>(){}.getType();
             Gson gson = new Gson();
@@ -328,5 +370,15 @@ public class ZGWClient {
         parameters.put("omschrijvingGeneriek", omschrijvingGeneriek);
 
         return this.getRolTypen(parameters).get(0);
+    }
+
+    public void updateZaak(String zaakUuid, ZgwZaak zaak){
+        Gson gson = new Gson();
+        String json = gson.toJson(zaak);
+        this.put(baseUrl+endpointZaak+"/"+ zaakUuid, json);
+    }
+
+    public void deleteRol(String rolUuid){
+        delete(baseUrl+endpointRol+"/"+rolUuid);
     }
 }

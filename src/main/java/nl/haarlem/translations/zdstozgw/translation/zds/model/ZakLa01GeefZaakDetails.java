@@ -19,9 +19,6 @@ public class ZakLa01GeefZaakDetails {
     @XmlElement(namespace = ZKN)
     public Antwoord antwoord;
 
-    @XmlElement(namespace = ZKN)
-    public Object object;
-
     @Data
     @XmlAccessorType(XmlAccessType.FIELD)
     public static class Antwoord {
@@ -34,13 +31,6 @@ public class ZakLa01GeefZaakDetails {
             @XmlElement(namespace = ZKN)
             public List<Status> heeft;
         }
-    }
-
-    @Data
-    @XmlAccessorType(XmlAccessType.FIELD)
-    public static class Object {
-        @XmlElement(namespace = ZKN)
-        public Rol isVan;
     }
 
     @Data

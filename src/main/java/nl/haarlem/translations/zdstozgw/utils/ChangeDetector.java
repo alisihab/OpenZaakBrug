@@ -1,6 +1,7 @@
 package nl.haarlem.translations.zdstozgw.utils;
 
 import lombok.Data;
+import nl.haarlem.translations.zdstozgw.translation.zds.model.Zaak;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -37,7 +38,7 @@ public class ChangeDetector {
         }
     }
 
-    public Map<Change, ChangeType> getAllChangesByClass(Class classType){
+    public Map<Change, ChangeType> getAllChangesByFieldType(Class classType){
 
         return this.changes
                 .entrySet()
@@ -54,6 +55,16 @@ public class ChangeDetector {
                 .filter(changeTypeChangeEntry -> changeTypeChangeEntry.getValue().equals(changeType))
                 .collect(Collectors.toMap(changeTypeChangeEntry -> changeTypeChangeEntry.getKey(), changeTypeChangeEntry -> changeTypeChangeEntry.getValue()));
 
+    }
+
+    public Map<Change, ChangeType> getAllChangesByDeclaringClassAndFilter(Class classType, Class filterFieldType){
+
+        return this.changes
+                .entrySet()
+                .stream()
+                .filter(changeTypeChangeEntry -> changeTypeChangeEntry.getKey().getField().getDeclaringClass().equals(classType))
+                .filter(changeChangeTypeEntry -> !changeChangeTypeEntry.getKey().getField().getType().equals(filterFieldType))
+                .collect(Collectors.toMap(changeTypeChangeEntry -> changeTypeChangeEntry.getKey(), changeTypeChangeEntry -> changeTypeChangeEntry.getValue()));
     }
 
     @Data

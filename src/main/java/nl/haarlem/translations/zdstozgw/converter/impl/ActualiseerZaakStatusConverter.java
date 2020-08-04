@@ -5,7 +5,6 @@ import nl.haarlem.translations.zdstozgw.converter.Converter;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.Bv03;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.Fo03;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZakLk01ActualiseerZaakstatus;
-import nl.haarlem.translations.zdstozgw.translation.zds.model.ZakLk01CreeerZaak;
 import nl.haarlem.translations.zdstozgw.translation.zds.services.ZaakService;
 import nl.haarlem.translations.zdstozgw.utils.XmlUtils;
 
@@ -19,7 +18,7 @@ public class ActualiseerZaakStatusConverter extends Converter {
     public String convert(String request) {
         ZakLk01ActualiseerZaakstatus zakLk01 = new ZakLk01ActualiseerZaakstatus();
         try {
-            XmlUtils.getStUFObject(request, ZakLk01CreeerZaak.class);
+            XmlUtils.getStUFObject(request, ZakLk01ActualiseerZaakstatus.class);
             this.getZaakService().actualiseerZaakstatus(zakLk01);
             var bv03 = new Bv03(zakLk01.stuurgegevens);
             return XmlUtils.getSOAPMessageFromObject(bv03, false);

@@ -37,4 +37,7 @@ public class NatuurlijkPersoon {
 
     @XmlElement(namespace = BG)
     public String geboortedatum;
+
+    @XmlElement(namespace = BG)
+    public Adres verblijfsadres;
 }
