@@ -393,7 +393,17 @@ public class ZGWClient {
         Map<String, String> parameters = new HashMap();
         parameters.put("identificatie", zaakIdentificatie);
 
-        return this.getZaak(parameters);
+        ZgwZaak zgwZaak = this.getZaak(parameters);
+
+        //When Verlenging/Opschorting not set, zgw returns object with empty values, in stead of null.
+        //This will cause issues when response of getzaakdetails is used for updatezaak.
+        if(zgwZaak.getZgwVerlenging().getDuur() == null || zgwZaak.getZgwVerlenging().getReden().equals("")){
+            zgwZaak.setZgwVerlenging(null);
+        }
+        if(zgwZaak.getZgwOpschorting().getReden().equals("")){
+            zgwZaak.setZgwOpschorting(null);
+        }
+        return zgwZaak;
     }
 
     public ZgwZaakInformatieObject getZgwZaakInformatieObject(ZgwEnkelvoudigInformatieObject zgwEnkelvoudigInformatieObject) {

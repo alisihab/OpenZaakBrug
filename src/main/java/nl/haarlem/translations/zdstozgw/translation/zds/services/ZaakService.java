@@ -45,10 +45,17 @@ public class ZaakService {
 
     public ZgwZaak creeerZaak(ZakLk01 zakLk01CreeerZaak) throws Exception {
         var zaak = zakLk01CreeerZaak.objects.get(0);
+
         ZgwZaak zgwZaak = modelMapper.map(zaak, ZgwZaak.class);
         zgwZaak.zaaktype = zgwClient.getZgwZaakTypeByIdentificatie(zaak.isVan.gerelateerde.code).url;
         zgwZaak.bronorganisatie = getRSIN(zakLk01CreeerZaak.stuurgegevens.zender.organisatie);
         zgwZaak.verantwoordelijkeOrganisatie = getRSIN(zakLk01CreeerZaak.stuurgegevens.ontvanger.organisatie);
+        if(zaak.getKenmerk() != null && !zaak.getKenmerk().isEmpty()){
+            zgwZaak.kenmerken =  new ArrayList<>();
+            zaak.getKenmerk().forEach(kenmerk -> {
+                zgwZaak.kenmerken.add(modelMapper.map(kenmerk, ZgwKenmerk.class));
+            });
+        }
 
         try {
             var createdZaak = zgwClient.addZaak(zgwZaak);
@@ -243,9 +250,15 @@ public class ZaakService {
             zakLa01GeefZaakDetails.antwoord.zaak.isVan.gerelateerde.code = zgwZaakType.identificatie;
             zakLa01GeefZaakDetails.antwoord.zaak.isVan.gerelateerde.omschrijving = zgwZaakType.omschrijving;
 
-            zakLa01GeefZaakDetails.antwoord.zaak.kenmerk = zgwZaak.getKenmerken() != null && !zgwZaak.getKenmerken().isEmpty()?  modelMapper.map(zgwZaak.getKenmerken().get(0), ZakLa01GeefZaakDetails.Antwoord.Object.Kenmerk.class) : null;
-            zakLa01GeefZaakDetails.antwoord.zaak.opschorting = zgwZaak.getOpschorting() != null? modelMapper.map(zgwZaak.getOpschorting(), ZakLa01GeefZaakDetails.Antwoord.Object.Opschorting.class): null;
-            zakLa01GeefZaakDetails.antwoord.zaak.verlenging = zgwZaak.getVerlenging() != null? modelMapper.map(zgwZaak.getVerlenging(), ZakLa01GeefZaakDetails.Antwoord.Object.Verlenging.class): null;
+            if(zgwZaak.getKenmerken() != null && !zgwZaak.getKenmerken().isEmpty()){
+                zakLa01GeefZaakDetails.antwoord.zaak.kenmerk = new ArrayList<Zaak.Kenmerk>();
+                zgwZaak.getKenmerken().forEach(zgwKenmerk -> {
+                    zakLa01GeefZaakDetails.antwoord.zaak.kenmerk.add(modelMapper.map(zgwKenmerk, Zaak.Kenmerk.class));
+                });
+            }
+
+            zakLa01GeefZaakDetails.antwoord.zaak.opschorting = zgwZaak.getZgwOpschorting() != null? modelMapper.map(zgwZaak.getZgwOpschorting(), ZakLa01GeefZaakDetails.Antwoord.Object.Opschorting.class): null;
+            zakLa01GeefZaakDetails.antwoord.zaak.verlenging = zgwZaak.getZgwVerlenging() != null? modelMapper.map(zgwZaak.getZgwVerlenging(), ZakLa01GeefZaakDetails.Antwoord.Object.Verlenging.class): null;
 
             zakLa01GeefZaakDetails.antwoord.zaak.heeft = zgwClient.getStatussenByZaakUrl(zgwZaak.url)
                     .stream()

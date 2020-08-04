@@ -1,11 +1,13 @@
 package nl.haarlem.translations.zdstozgw.translation.zgw.model;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import lombok.Data;
 
 import java.util.List;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @Data
 public class ZgwZaak {
 
@@ -68,16 +70,16 @@ public class ZgwZaak {
     public String betalingsindicatieWeergave;
     @SerializedName("laatsteBetaaldatum")
     @Expose
-    public Object laatsteBetaaldatum;
+    public String laatsteBetaaldatum;
     @SerializedName("zaakgeometrie")
     @Expose
     public Object zaakgeometrie;
     @SerializedName("verlenging")
     @Expose
-    public Verlenging verlenging;
+    public ZgwVerlenging zgwVerlenging;
     @SerializedName("opschorting")
     @Expose
-    public Opschorting opschorting;
+    public ZgwOpschorting zgwOpschorting;
     @SerializedName("selectielijstklasse")
     @Expose
     public String selectielijstklasse;

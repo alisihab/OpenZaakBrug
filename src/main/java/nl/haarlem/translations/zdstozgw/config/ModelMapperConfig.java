@@ -32,8 +32,8 @@ public class ModelMapperConfig {
         modelMapper.typeMap(Heeft.class, ZgwStatus.class)
                 .addMappings(mapper -> mapper.using(convertStufDateToDateTimeString()).map(Heeft::getDatumStatusGezet, ZgwStatus::setDatumStatusGezet));
 
-        modelMapper.typeMap(Zaak.Opschorting.class, Opschorting.class)
-                .addMappings(mapper -> mapper.using(convertStringToBoolean()).map(Zaak.Opschorting::getIndicatie, Opschorting::setIndicatie));
+        modelMapper.typeMap(Zaak.Opschorting.class, ZgwOpschorting.class)
+                .addMappings(mapper -> mapper.using(convertStringToBoolean()).map(Zaak.Opschorting::getIndicatie, ZgwOpschorting::setIndicatie));
 
         addZgwZaakToZdsZaakTypeMapping(modelMapper);
         addZgwBetrokkeneIdentificatieToNatuurlijkPersoonTypeMapping(modelMapper);
