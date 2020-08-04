@@ -49,7 +49,7 @@ public class ZgwBetrokkeneIdentificatie {
 
     @SerializedName("verblijfsadres")
     @Expose
-    public String verblijfsadres;
+    public ZgwAdres verblijfsadres;
 
     @SerializedName("sub")
     @Expose

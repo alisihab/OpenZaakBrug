@@ -1,7 +1,6 @@
 package nl.haarlem.translations.zdstozgw.utils;
 
 import lombok.Data;
-import nl.haarlem.translations.zdstozgw.translation.zds.model.Zaak;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;

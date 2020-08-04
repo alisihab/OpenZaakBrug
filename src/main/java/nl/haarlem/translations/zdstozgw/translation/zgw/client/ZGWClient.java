@@ -381,4 +381,67 @@ public class ZGWClient {
     public void deleteRol(String rolUuid){
         delete(baseUrl+endpointRol+"/"+rolUuid);
     }
+
+    public List<ZgwZaakInformatieObject> getZaakInformatieObjectenByZaak(String zaakUrl){
+        Map<String, String> parameters = new HashMap();
+        parameters.put("zaak", zaakUrl);
+
+        return this.getZgwZaakInformatieObjects(parameters);
+    }
+
+    public ZgwZaak getZaak(String zaakIdentificatie) {
+        Map<String, String> parameters = new HashMap();
+        parameters.put("identificatie", zaakIdentificatie);
+
+        return this.getZaak(parameters);
+    }
+
+    public ZgwZaakInformatieObject getZgwZaakInformatieObject(ZgwEnkelvoudigInformatieObject zgwEnkelvoudigInformatieObject) {
+        Map<String, String> parameters = new HashMap();
+        parameters.put("informatieobject", zgwEnkelvoudigInformatieObject.getUrl());
+        return this.getZgwZaakInformatieObjects(parameters).get(0);
+    }
+
+    public ZgwStatusType getStatusTypeByZaakTypeAndVolgnummer(String zaakTypeUrl, int volgnummer){
+        Map<String, String> parameters = new HashMap();
+        parameters.put("zaaktype", zaakTypeUrl);
+
+        return this.getStatusTypes(parameters)
+                .stream()
+                .filter(zgwStatusType -> zgwStatusType.volgnummer == volgnummer)
+                .findFirst()
+                .orElse(null);
+    }
+
+    public List<ZgwRol> getRollenByZaakUrl(String zaakUrl) {
+        Map<String, String> parameters = new HashMap();
+        parameters.put("zaak", zaakUrl);
+
+        return this.getRollen(parameters);
+    }
+
+    public ZgwRol getRolByZaakUrlAndOmschrijvingGeneriek(String zaakUrl, String omschrijvingGeneriek) {
+        Map<String, String> parameters = new HashMap();
+        parameters.put("zaak", zaakUrl);
+        parameters.put("omschrijvingGeneriek", omschrijvingGeneriek);
+
+        return this.getRollen(parameters)
+                .stream()
+                .findFirst()
+                .orElse(null);
+    }
+
+    public List<ZgwStatus> getStatussenByZaakUrl(String zaakUrl){
+        Map<String, String> parameters = new HashMap();
+        parameters.put("zaak", zaakUrl);
+
+        return this.getStatussen(parameters);
+    }
+
+    public ZgwZaakType getZgwZaakTypeByIdentificatie(String identificatie){
+        Map<String, String> parameters = new HashMap<>();
+        parameters.put("identificatie", identificatie);
+
+        return this.getZaakTypes(parameters).get(0);
+    }
 }
