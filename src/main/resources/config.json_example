@@ -86,7 +86,15 @@
       "template": "",
       "implementation": "nl.haarlem.translations.zdstozgw.converter.impl.VoegZaakdocumentToeConverter",
       "legacyService" : ""
-    }
+    },
+    {
+      "translation": "ZDS 1.1 Generic UpdateZaak",
+      "soapAction": "http://www.egem.nl/StUF/sector/zkn/0310/updateZaak_Lk01",
+      "applicatie": "",
+      "template": "",
+      "implementation": "nl.haarlem.translations.zdstozgw.converter.impl.UpdateZaakConverter",
+      "legacyService" : ""
+     }
   ],
   "zgwRolOmschrijving": {
     "heeftAlsBelanghebbende": "Belanghebbende",
