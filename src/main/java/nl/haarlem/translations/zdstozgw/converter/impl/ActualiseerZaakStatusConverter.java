@@ -18,7 +18,7 @@ public class ActualiseerZaakStatusConverter extends Converter {
     public String convert(String request) {
         ZakLk01ActualiseerZaakstatus zakLk01 = new ZakLk01ActualiseerZaakstatus();
         try {
-            XmlUtils.getStUFObject(request, ZakLk01ActualiseerZaakstatus.class);
+            zakLk01 = (ZakLk01ActualiseerZaakstatus) XmlUtils.getStUFObject(request, ZakLk01ActualiseerZaakstatus.class);
             this.getZaakService().actualiseerZaakstatus(zakLk01);
             var bv03 = new Bv03(zakLk01.stuurgegevens);
             return XmlUtils.getSOAPMessageFromObject(bv03, false);
