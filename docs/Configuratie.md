@@ -3,7 +3,7 @@ In de resource map van het project staat het bestand config.json
 
 ## RequestHandlerImplementation
 Hier wordt de klasse naam opgegeven van de requestHandlerImplementatie die gebruikt moet worden, bv: nl.haarlem.translations.zdstozgw.requesthandler.impl.BasicRequestHandler
-Voor uitleg over de requesthandler, zie [ReplicationHandler.md](./ReplicationHandler.md).
+Voor uitleg over de requesthandler, zie [ReplicationHandler.md](ReplicationHandler.md).
 
 ## Replication
 Wanneer de openzaakbrug in replicatiemodus moet draaien, moet gebruik gemaakt worden van de ReplicationRequestHandler implementatie. Tevens moeten het een en ander geconfigureerd worden, namelijk:
