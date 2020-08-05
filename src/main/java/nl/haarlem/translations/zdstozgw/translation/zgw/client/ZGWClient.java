@@ -30,28 +30,28 @@ public class ZGWClient {
     @Value("${openzaak.baseUrl}")
     private String baseUrl;
 
-    @Value("${zgw.endpoint.roltype}")
+    @Value("${zgw.endpoint.roltype:/catalogi/api/v1/roltypen}")
     private String endpointRolType;
 
-    @Value("${zgw.endpoint.rol}")
+    @Value("${zgw.endpoint.rol:/zaken/api/v1/rollen}")
     private String endpointRol;
 
-    @Value("${zgw.endpoint.zaaktype}")
+    @Value("${zgw.endpoint.zaaktype:/catalogi/api/v1/zaaktypen}")
     private String endpointZaaktype;
 
-    @Value("${zgw.endpoint.status}")
+    @Value("${zgw.endpoint.status:/zaken/api/v1/statussen}")
     private String endpointStatus;
 
-    @Value("${zgw.endpoint.statustype}")
+    @Value("${zgw.endpoint.statustype:/catalogi/api/v1/statustypen}")
     private String endpointStatustype;
 
-    @Value("${zgw.endpoint.zaakinformatieobject}")
+    @Value("${zgw.endpoint.zaakinformatieobject:/zaken/api/v1/zaakinformatieobjecten}")
     private String endpointZaakinformatieobject;
 
-    @Value("${zgw.endpoint.enkelvoudiginformatieobject}")
+    @Value("${zgw.endpoint.enkelvoudiginformatieobject:/documenten/api/v1/enkelvoudiginformatieobjecten}")
     private String endpointEnkelvoudiginformatieobject;
 
-    @Value("${zgw.endpoint.zaak}")
+    @Value("${zgw.endpoint.zaak:/zaken/api/v1/zaken}")
     private String endpointZaak;
 
     @Autowired
