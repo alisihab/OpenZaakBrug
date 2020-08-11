@@ -48,32 +48,23 @@ public class ZaakService {
         zgwZaak.zaaktype = zgwClient.getZgwZaakTypeByIdentificatie(zaak.isVan.gerelateerde.code).url;
         zgwZaak.bronorganisatie = getRSIN(zakLk01CreeerZaak.stuurgegevens.zender.organisatie);
         zgwZaak.verantwoordelijkeOrganisatie = getRSIN(zakLk01CreeerZaak.stuurgegevens.ontvanger.organisatie);
-        if(zaak.getKenmerk() != null && !zaak.getKenmerk().isEmpty()){
-            zgwZaak.kenmerken =  new ArrayList<>();
+        if (zaak.getKenmerk() != null && !zaak.getKenmerk().isEmpty()) {
+            zgwZaak.kenmerken = new ArrayList<>();
             zaak.getKenmerk().forEach(kenmerk -> {
                 zgwZaak.kenmerken.add(modelMapper.map(kenmerk, ZgwKenmerk.class));
             });
         }
 
-        try {
-            var createdZaak = zgwClient.addZaak(zgwZaak);
-            if (createdZaak.getUrl() != null) {
-                log.debug("Created a ZGW Zaak with UUID: " + createdZaak.getUuid());
-                ZgwRolOmschrijving zgwRolOmschrijving = this.configService.getConfiguratie().getZgwRolOmschrijving();
-                addRolToZgw(zaak.heeftAlsInitiator, zgwRolOmschrijving.getHeeftAlsInitiator(), createdZaak);
-                addRolToZgw(zaak.heeftAlsBelanghebbende, zgwRolOmschrijving.getHeeftAlsBelanghebbende(), createdZaak);
-                addRolToZgw(zaak.heeftAlsGemachtigde, zgwRolOmschrijving.getHeeftAlsGemachtigde(), createdZaak);
-                addRolToZgw(zaak.heeftAlsOverigBetrokkene, zgwRolOmschrijving.getHeeftAlsOverigBetrokkene(), createdZaak);
-                addRolToZgw(zaak.heeftAlsUitvoerende, zgwRolOmschrijving.getHeeftAlsUitvoerende(), createdZaak);
-                addRolToZgw(zaak.heeftAlsVerantwoordelijke, zgwRolOmschrijving.getHeeftAlsVerantwoordelijke(), createdZaak);
-                return createdZaak;
-            }
-
-        } catch (Exception e) {
-            //todo throw error, is case created; yes/no?
-            throw e;
-        }
-        return null;
+        var createdZaak = zgwClient.addZaak(zgwZaak);
+        log.debug("Created a ZGW Zaak with UUID: " + createdZaak.getUuid());
+        ZgwRolOmschrijving zgwRolOmschrijving = this.configService.getConfiguratie().getZgwRolOmschrijving();
+        addRolToZgw(zaak.heeftAlsInitiator, zgwRolOmschrijving.getHeeftAlsInitiator(), createdZaak);
+        addRolToZgw(zaak.heeftAlsBelanghebbende, zgwRolOmschrijving.getHeeftAlsBelanghebbende(), createdZaak);
+        addRolToZgw(zaak.heeftAlsGemachtigde, zgwRolOmschrijving.getHeeftAlsGemachtigde(), createdZaak);
+        addRolToZgw(zaak.heeftAlsOverigBetrokkene, zgwRolOmschrijving.getHeeftAlsOverigBetrokkene(), createdZaak);
+        addRolToZgw(zaak.heeftAlsUitvoerende, zgwRolOmschrijving.getHeeftAlsUitvoerende(), createdZaak);
+        addRolToZgw(zaak.heeftAlsVerantwoordelijke, zgwRolOmschrijving.getHeeftAlsVerantwoordelijke(), createdZaak);
+        return createdZaak;
     }
 
     private void addRolToZgw(Rol rol, String rolOmschrijvingGeneriek, ZgwZaak createdZaak){
