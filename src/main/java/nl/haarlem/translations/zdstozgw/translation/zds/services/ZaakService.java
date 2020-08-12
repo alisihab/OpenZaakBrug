@@ -112,9 +112,10 @@ public class ZaakService {
     }
 
     public ZgwZaakInformatieObject voegZaakDocumentToe(EdcLk01 edcLk01) throws Exception {
-        var informatieObjectType = configService.getConfiguratie().getDocumentTypes().get(0).getDocumentType();
+        var informatieObjectType = zgwClient.getZgwInformatieObjectTypeByOmschrijving(edcLk01.objects.get(0).omschrijving);
+        if(informatieObjectType == null) throw new RuntimeException("Documenttype not found for omschrijving: "+edcLk01.objects.get(0).omschrijving);
         ZgwEnkelvoudigInformatieObject zgwEnkelvoudigInformatieObject = modelMapper.map(edcLk01.objects.get(0), ZgwEnkelvoudigInformatieObject.class);
-        zgwEnkelvoudigInformatieObject.informatieobjecttype = informatieObjectType;
+        zgwEnkelvoudigInformatieObject.informatieobjecttype = informatieObjectType.url;
         zgwEnkelvoudigInformatieObject.bronorganisatie = getRSIN(edcLk01.stuurgegevens.zender.organisatie);
 
         zgwEnkelvoudigInformatieObject = zgwClient.addZaakDocument(zgwEnkelvoudigInformatieObject);
@@ -176,7 +177,7 @@ public class ZaakService {
         if (zakLv01.gelijk != null && zakLv01.gelijk.identificatie != null) {
             var zgwZaak = zgwClient.getZaak(zakLv01.gelijk.identificatie);
             if (zgwZaak == null)
-                throw new RuntimeException("Zaak niet gevonden voor identificatie: '" + zakLv01.gelijk.identificatie + "'");
+                throw new RuntimeException("Zaak not found for identification: '" + zakLv01.gelijk.identificatie + "'");
 
             zakLa01GeefZaakDetails.stuurgegevens = new Stuurgegevens(zakLv01.stuurgegevens);
             zakLa01GeefZaakDetails.stuurgegevens.berichtcode = "La01";

@@ -54,6 +54,9 @@ public class ZGWClient {
     @Value("${zgw.endpoint.zaak:/zaken/api/v1/zaken}")
     private String endpointZaak;
 
+    @Value("${zgw.endpoint.informatieobjecttype:/catalogi/api/v1/informatieobjecttypen}")
+    private String endpointInformatieobjecttype;
+
     @Autowired
     HttpService httpService;
 
@@ -347,5 +350,23 @@ public class ZGWClient {
         parameters.put("identificatie", identificatie);
 
         return this.getZaakTypes(parameters).get(0);
+    }
+
+    public ZgwInformatieObjectType getZgwInformatieObjectTypeByOmschrijving(String omschrijving) {
+        Map<String, String> parameters = new HashMap();
+        parameters.put("status", "definitief");
+
+        var zaakTypeJson = get(this.baseUrl + endpointInformatieobjecttype, parameters);
+        Type type = new TypeToken<QueryResult<ZgwInformatieObjectType>>() {
+        }.getType();
+        Gson gson = new Gson();
+        QueryResult<ZgwInformatieObjectType> queryResult = gson.fromJson(zaakTypeJson, type);
+        for(ZgwInformatieObjectType current: queryResult.results) {
+            log.debug("gevonden ZgwInformatieObjectType met omschrijving: '" + current.omschrijving + "'");
+            if(omschrijving.equals(current.omschrijving)) {
+                return current;
+            }
+        }
+        return null;
     }
 }
