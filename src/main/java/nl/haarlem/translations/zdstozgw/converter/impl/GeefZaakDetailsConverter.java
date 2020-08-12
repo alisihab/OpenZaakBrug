@@ -3,6 +3,7 @@ package nl.haarlem.translations.zdstozgw.converter.impl;
 import nl.haarlem.translations.zdstozgw.config.model.Translation;
 import nl.haarlem.translations.zdstozgw.converter.Converter;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.Fo03;
+import nl.haarlem.translations.zdstozgw.translation.zds.model.Parameters;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZakLa01GeefZaakDetails;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZakLv01;
 import nl.haarlem.translations.zdstozgw.translation.zds.services.ZaakService;
@@ -20,6 +21,7 @@ public class GeefZaakDetailsConverter extends Converter {
         try {
             zakLv01 = (ZakLv01) XmlUtils.getStUFObject(request, ZakLv01.class);
             ZakLa01GeefZaakDetails zakLa01GeefZaakDetails = this.getZaakService().getZaakDetails(zakLv01);
+            zakLa01GeefZaakDetails.parameters = new Parameters(zakLv01.parameters);
             return XmlUtils.getSOAPMessageFromObject(zakLa01GeefZaakDetails, false);
         } catch (Exception ex) {
             ex.printStackTrace();

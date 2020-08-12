@@ -114,7 +114,7 @@ public class XmlUtils {
         String result = "";
         try {
             Document document = marshalJAXBToXMLDocument(object);
-             SOAPMessage message = getSoapMessage(document, isSoapFault);
+            SOAPMessage message = getSoapMessage(document, isSoapFault);
             result = getStringFromSOAP(message);
         } catch (Exception e) {
             e.printStackTrace();
@@ -162,13 +162,13 @@ public class XmlUtils {
         SOAPPart part = message.getSOAPPart();
         SOAPEnvelope env = part.getEnvelope();
         SOAPBody body = env.getBody();
-        if(isSoapFault){
+        if (isSoapFault) {
             SOAPFault fault = body.addFault();
             fault.setFaultString("Object niet gevonden");
             fault.setFaultCode(SOAPConstants.SOAP_RECEIVER_FAULT);
             Detail detail = fault.addDetail();
             detail.setTextContent(xmlToString(document));
-        }else{
+        } else {
             body.addDocument(document);
         }
         return message;
@@ -186,10 +186,10 @@ public class XmlUtils {
         return object;
     }
 
-    public static String getApplicicatieFromZender(String request){
+    public static String getApplicicatieFromZender(String request) {
         Document document = convertStringToDocument(request);
         try {
-           return XPathFactory.newInstance().newXPath().evaluate("//*[local-name()='stuurgegevens']/*[local-name()='zender']/*[local-name()='applicatie']/text()", document);
+            return XPathFactory.newInstance().newXPath().evaluate("//*[local-name()='stuurgegevens']/*[local-name()='zender']/*[local-name()='applicatie']/text()", document);
         } catch (XPathExpressionException e) {
             e.printStackTrace();
         }

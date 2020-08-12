@@ -7,9 +7,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import static nl.haarlem.translations.zdstozgw.translation.zds.model.namespace.Namespace.ZKN;
 
-@XmlRootElement(namespace = ZKN, name="gelijk")
+@XmlRootElement(namespace = ZKN, name = "gelijk")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Gelijk {
-    @XmlElement(namespace = ZKN, name="identificatie")
+    @XmlElement(namespace = ZKN, name = "identificatie")
     public String identificatie;
 }

@@ -10,7 +10,7 @@ import static nl.haarlem.translations.zdstozgw.translation.zds.model.namespace.N
 
 @Data
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Stuurgegevens{
+public class Stuurgegevens {
 
     @XmlElement(namespace = STUF)
     public String berichtcode;
@@ -30,6 +30,9 @@ public class Stuurgegevens{
     @XmlElement(namespace = STUF)
     public Ontvanger ontvanger;
 
+    @XmlElement(namespace = STUF)
+    public String entiteittype;
+
     public Stuurgegevens(Stuurgegevens stuurgegevens) {
         this.zender = new Zender()
                 .setApplicatie(stuurgegevens.ontvanger.applicatie)
@@ -39,6 +42,8 @@ public class Stuurgegevens{
                 .setApplicatie(stuurgegevens.zender.applicatie)
                 .setOrganisatie(stuurgegevens.zender.organisatie)
                 .setGebruiker(stuurgegevens.zender.gebruiker);
+
+        this.entiteittype = stuurgegevens.entiteittype;
     }
 
     public Stuurgegevens() {

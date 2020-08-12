@@ -37,7 +37,8 @@
                         <ZKN:ingangsdatumObject xsi:nil="true" StUF:noValue="geenWaarde"/>
                     </ZKN:gerelateerde>
                 </ZKN:isVan>
-                <ZKN:heeft StUF:entiteittype="ZAKSTT" StUF:verwerkingssoort="T" xsi:nil="true" StUF:noValue="geenWaarde"/>
+                <ZKN:heeft StUF:entiteittype="ZAKSTT" StUF:verwerkingssoort="T" xsi:nil="true"
+                           StUF:noValue="geenWaarde"/>
             </ZKN:object>
             <ZKN:object StUF:sleutelVerzendend="273846" StUF:entiteittype="ZAK" StUF:verwerkingssoort="W">
                 <ZKN:identificatie>1900241235</ZKN:identificatie>

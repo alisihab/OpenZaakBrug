@@ -26,7 +26,7 @@ public class ConverterFactoryTests {
     ConfigService configService;
 
     @Before
-    public void setup(){
+    public void setup() {
         this.converterFactory = new ConverterFactory(configService, null);
     }
 
@@ -40,8 +40,8 @@ public class ConverterFactoryTests {
                 .getResourceAsStream("zds1.1/VoegZaakDocumentToe"), "UTF-8");
 
         Translation translation = new Translation()
-                        .setSoapAction(soapAction)
-                        .setImplementation(implementation);
+                .setSoapAction(soapAction)
+                .setImplementation(implementation);
         doReturn(translation).when(configService).getDefaultOrApplicationSpecificTranslationBySoapActionAndApplication(any(), any());
 
         //act

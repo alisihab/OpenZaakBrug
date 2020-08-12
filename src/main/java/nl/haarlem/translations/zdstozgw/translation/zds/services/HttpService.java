@@ -22,13 +22,13 @@ public class HttpService {
     @Autowired
     JWTService jwtService;
 
-    public  String downloadFile(String fileURL) throws IOException {
+    public String downloadFile(String fileURL) throws IOException {
         URL url = new URL(fileURL);
         URLConnection connection = url.openConnection();
         HttpURLConnection httpConn = (HttpURLConnection) connection;
-        httpConn.setRequestProperty ("Authorization", "Bearer "+ jwtService.getJWT());
-        httpConn.setRequestProperty ("Accept-Crs", "EPSG:4326");
-        httpConn.setRequestProperty ("Content-Crs", "EPSG:4326");
+        httpConn.setRequestProperty("Authorization", "Bearer " + jwtService.getJWT());
+        httpConn.setRequestProperty("Accept-Crs", "EPSG:4326");
+        httpConn.setRequestProperty("Content-Crs", "EPSG:4326");
 
         int responseCode = httpConn.getResponseCode();
         String result = null;
@@ -46,9 +46,9 @@ public class HttpService {
             is.close();
 
             byte[] encoded = Base64.getEncoder().encode(byteArray);
-            result =  new String(encoded);
+            result = new String(encoded);
         } else {
-            log.error("Error downloading file: "+fileURL);
+            log.error("Error downloading file: " + fileURL);
         }
         httpConn.disconnect();
         return result;

@@ -17,7 +17,7 @@ public class RequestHandlerFactory {
 
     public RequestHandler getRequestHandler(Converter converter) {
         try {
-            Class<?> c = Class.forName( this.configService.getConfiguratie().getRequestHandlerImplementation());
+            Class<?> c = Class.forName(this.configService.getConfiguratie().getRequestHandlerImplementation());
             java.lang.reflect.Constructor<?> ctor = c.getConstructor(Converter.class, ConfigService.class);
             Object object = ctor.newInstance(new Object[]{converter, this.configService});
             return (RequestHandler) object;

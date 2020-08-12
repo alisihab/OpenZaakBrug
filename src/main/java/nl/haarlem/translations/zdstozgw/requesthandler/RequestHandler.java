@@ -10,7 +10,7 @@ public abstract class RequestHandler {
     protected Converter converter;
     protected ConfigService configService;
 
-    public RequestHandler(Converter converter, ConfigService configService){
+    public RequestHandler(Converter converter, ConfigService configService) {
         this.converter = converter;
         this.configService = configService;
     }

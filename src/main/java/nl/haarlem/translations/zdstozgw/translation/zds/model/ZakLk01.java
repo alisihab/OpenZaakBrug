@@ -11,14 +11,14 @@ import java.util.List;
 import static nl.haarlem.translations.zdstozgw.translation.zds.model.namespace.Namespace.ZKN;
 
 @Data
-@XmlRootElement(namespace = ZKN, name="zakLk01")
+@XmlRootElement(namespace = ZKN, name = "zakLk01")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ZakLk01 {
 
-    @XmlElement(namespace = ZKN, name="object")
+    @XmlElement(namespace = ZKN, name = "object")
     public List<Zaak> objects;
 
-    @XmlElement(namespace = ZKN, name="stuurgegevens")
+    @XmlElement(namespace = ZKN, name = "stuurgegevens")
     public Stuurgegevens stuurgegevens;
 
 }

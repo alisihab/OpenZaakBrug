@@ -11,7 +11,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import static nl.haarlem.translations.zdstozgw.translation.zds.model.namespace.Namespace.STUF;
 
 @Data
-@XmlRootElement(name="Fo03Bericht", namespace = STUF)
+@XmlRootElement(name = "Fo03Bericht", namespace = STUF)
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Fo03 {
 
@@ -21,9 +21,10 @@ public class Fo03 {
     @XmlElement(namespace = STUF)
     public Body body;
 
-    public Fo03(){}
+    public Fo03() {
+    }
 
-    public Fo03(Stuurgegevens stuurgegevens){
+    public Fo03(Stuurgegevens stuurgegevens) {
         this.stuurgegevens = stuurgegevens;
         this.stuurgegevens.tijdstipBericht = StufUtils.getStufDateTime();
         this.stuurgegevens.berichtcode = "Fo03";
@@ -32,7 +33,7 @@ public class Fo03 {
 
     @Data
     @XmlAccessorType(XmlAccessType.FIELD)
-    public static class Body{
+    public static class Body {
 
         @XmlElement(namespace = STUF)
         public String plek;
@@ -43,9 +44,10 @@ public class Fo03 {
         @XmlElement(namespace = STUF)
         public String details;
 
-        public Body(){}
+        public Body() {
+        }
 
-        public Body(Exception ex){
+        public Body(Exception ex) {
             this.code = "StUF046";
             this.details = "Object was not saved";
             this.omschrijving = "Object niet opgeslagen";

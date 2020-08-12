@@ -22,7 +22,7 @@ public class LoggingRequestInterceptor implements ClientHttpRequestInterceptor {
     public ClientHttpResponse intercept(HttpRequest request, byte[] body, ClientHttpRequestExecution execution) throws IOException {
         requestResponseCycleService = SpringContext.getBean(RequestResponseCycleService.class);
         this.currentRequestResponseCycle = this.requestResponseCycleService.getRequestResponseCycleSession();
-        addRequestToDatabase(request,body);
+        addRequestToDatabase(request, body);
         ClientHttpResponse response = execution.execute(request, body);
         addResponseToDatabase(response);
         return response;

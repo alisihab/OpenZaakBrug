@@ -16,9 +16,9 @@ public class JWTController {
     private boolean enabled;
 
     @GetMapping("/jwt")
-    public String JWT(){
+    public String JWT() {
         String jwt = "This endpoint is dissabled. Enable by setting: nl.haarlem.transtlations.zdstozgw.enableJWTEntpoint = true";
-        if(enabled){
+        if (enabled) {
 
             jwt = jwtService.getJWT();
         }

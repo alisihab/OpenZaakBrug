@@ -46,7 +46,7 @@ public class OrganisatorischeEenheid {
 
     @Data
     @XmlAccessorType(XmlAccessType.FIELD)
-    public static class IsGehuisvestIn{
+    public static class IsGehuisvestIn {
 
         @XmlElement(namespace = ZKN)
         Rol isEen;

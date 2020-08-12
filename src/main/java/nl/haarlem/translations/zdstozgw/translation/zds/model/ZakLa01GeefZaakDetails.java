@@ -9,12 +9,16 @@ import static nl.haarlem.translations.zdstozgw.translation.zds.model.namespace.N
 import static nl.haarlem.translations.zdstozgw.translation.zds.model.namespace.Namespace.ZKN;
 
 @Data
-@XmlRootElement(namespace = ZKN)
+@XmlRootElement(namespace = ZKN, name = "zakLa01")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ZakLa01GeefZaakDetails {
 
-    @XmlElement(namespace = STUF)
+    @XmlElement(namespace = ZKN)
     public Stuurgegevens stuurgegevens;
+
+    @XmlElement(namespace = ZKN)
+    public Parameters parameters;
+
 
     @XmlElement(namespace = ZKN)
     public Antwoord antwoord;

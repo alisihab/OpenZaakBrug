@@ -9,13 +9,13 @@ import static nl.haarlem.translations.zdstozgw.translation.zds.model.namespace.N
 import static nl.haarlem.translations.zdstozgw.translation.zds.model.namespace.Namespace.ZKN;
 
 @Data
-@XmlRootElement(namespace = ZKN, name="zakLk01")
+@XmlRootElement(namespace = ZKN, name = "zakLk01")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ZakLk01ActualiseerZaakstatus {
 
     @Data
     @XmlAccessorType(XmlAccessType.FIELD)
-    public static class Object{
+    public static class Object {
         @XmlAttribute(namespace = STUF)
         public String entiteittype;
 
@@ -30,10 +30,10 @@ public class ZakLk01ActualiseerZaakstatus {
     }
 
 
-    @XmlElement(namespace = ZKN, name="object")
+    @XmlElement(namespace = ZKN, name = "object")
     public List<Object> objects;
 
-    @XmlElement(namespace = ZKN, name="stuurgegevens")
+    @XmlElement(namespace = ZKN, name = "stuurgegevens")
     public Stuurgegevens stuurgegevens;
 
 }

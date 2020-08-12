@@ -58,15 +58,14 @@ public class XpathDocument {
         });
     }
 
-    public void insertNode(String expression,Node node){
+    public void insertNode(String expression, Node node) {
         Node target = null;
 
         try {
             target = (Node) xPath.compile(expression).evaluate(document, XPathConstants.NODE);
 
 
-
-            target.appendChild((Element)node);
+            target.appendChild((Element) node);
 
         } catch (XPathExpressionException e) {
             log.error(e.getMessage());

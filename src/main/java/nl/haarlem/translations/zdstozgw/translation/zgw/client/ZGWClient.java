@@ -267,7 +267,7 @@ public class ZGWClient {
         return this.getRolTypen(parameters).get(0);
     }
 
-    public void updateZaak(String zaakUuid, ZgwZaak zaak) {
+    public void updateZaak(String zaakUuid, ZgwZaakPut zaak) {
         Gson gson = new Gson();
         String json = gson.toJson(zaak);
         this.put(baseUrl + endpointZaak + "/" + zaakUuid, json);
@@ -291,11 +291,11 @@ public class ZGWClient {
 
         //When Verlenging/Opschorting not set, zgw returns object with empty values, in stead of null.
         //This will cause issues when response of getzaakdetails is used for updatezaak.
-        if (zgwZaak.getZgwVerlenging().getDuur() == null || zgwZaak.getZgwVerlenging().getReden().equals("")) {
-            zgwZaak.setZgwVerlenging(null);
+        if (zgwZaak.getVerlenging().getDuur() == null || zgwZaak.getVerlenging().getReden().equals("")) {
+            zgwZaak.setVerlenging(null);
         }
-        if (zgwZaak.getZgwOpschorting().getReden().equals("")) {
-            zgwZaak.setZgwOpschorting(null);
+        if (zgwZaak.getOpschorting().getReden().equals("")) {
+            zgwZaak.setOpschorting(null);
         }
         return zgwZaak;
     }

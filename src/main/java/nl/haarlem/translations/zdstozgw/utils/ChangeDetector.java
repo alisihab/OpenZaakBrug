@@ -14,7 +14,8 @@ public class ChangeDetector {
 
     private Map<Change, ChangeType> changes = new HashMap<>();
 
-    public ChangeDetector(){}
+    public ChangeDetector() {
+    }
 
     public void detect(Object currentState, Object newState) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException, InstantiationException {
 
@@ -31,13 +32,13 @@ public class ChangeDetector {
                 changeType = ChangeType.CHANGED;
             }
 
-            if(changeType != null){
-                this.changes.put(new Change(field, field.get(newState)),changeType);
+            if (changeType != null) {
+                this.changes.put(new Change(field, field.get(newState)), changeType);
             }
         }
     }
 
-    public Map<Change, ChangeType> getAllChangesByFieldType(Class classType){
+    public Map<Change, ChangeType> getAllChangesByFieldType(Class classType) {
 
         return this.changes
                 .entrySet()
@@ -46,7 +47,7 @@ public class ChangeDetector {
                 .collect(Collectors.toMap(changeTypeChangeEntry -> changeTypeChangeEntry.getKey(), changeTypeChangeEntry -> changeTypeChangeEntry.getValue()));
     }
 
-    public Map<Change, ChangeType> filterChangesByType(Map<Change, ChangeType> changes, ChangeType changeType){
+    public Map<Change, ChangeType> filterChangesByType(Map<Change, ChangeType> changes, ChangeType changeType) {
 
         return changes
                 .entrySet()
@@ -56,7 +57,7 @@ public class ChangeDetector {
 
     }
 
-    public Map<Change, ChangeType> getAllChangesByDeclaringClassAndFilter(Class classType, Class filterFieldType){
+    public Map<Change, ChangeType> getAllChangesByDeclaringClassAndFilter(Class classType, Class filterFieldType) {
 
         return this.changes
                 .entrySet()
@@ -67,17 +68,17 @@ public class ChangeDetector {
     }
 
     @Data
-    public static class Change{
+    public static class Change {
         private Field field;
         private Object value;
 
-        public Change(Field field, Object value){
+        public Change(Field field, Object value) {
             this.field = field;
             this.value = value;
         }
     }
 
-    public enum ChangeType{
+    public enum ChangeType {
         DELETED, CHANGED, NEW
     }
 

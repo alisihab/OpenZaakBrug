@@ -5,6 +5,7 @@ import nl.haarlem.translations.zdstozgw.converter.Converter;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.EdcLa01;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.EdcLv01;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.Fo03;
+import nl.haarlem.translations.zdstozgw.translation.zds.model.Parameters;
 import nl.haarlem.translations.zdstozgw.translation.zds.services.ZaakService;
 import nl.haarlem.translations.zdstozgw.utils.XmlUtils;
 
@@ -20,6 +21,7 @@ public class GeefZaakdocumentLezenConverter extends Converter {
         try {
             edcLv01 = (EdcLv01) XmlUtils.getStUFObject(request, EdcLv01.class);
             EdcLa01 edcLa01 = this.getZaakService().getZaakDocumentLezen(edcLv01);
+            edcLa01.parameters = new Parameters(edcLv01.parameters);
             return XmlUtils.getSOAPMessageFromObject(edcLa01, false);
         } catch (Exception ex) {
             ex.printStackTrace();

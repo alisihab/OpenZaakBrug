@@ -7,9 +7,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import static nl.haarlem.translations.zdstozgw.translation.zds.model.namespace.Namespace.ZKN;
 
-@XmlRootElement(namespace = ZKN, name="scope")
+@XmlRootElement(namespace = ZKN, name = "scope")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Scope {
-    @XmlElement(namespace = ZKN, name="object")
+    @XmlElement(namespace = ZKN, name = "object")
     public EdcLk01.Object object;
 }

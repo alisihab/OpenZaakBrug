@@ -18,16 +18,16 @@ public class RequestResponseCycleService {
 
     @Autowired
     public RequestResponseCycleService(RequestResponseCycleRepository requestResponseCycleRepository,
-                                       InterimRequestResponseCycleRepository interimRequestResponseCycleRepository){
+                                       InterimRequestResponseCycleRepository interimRequestResponseCycleRepository) {
         this.requestResponseCycleRepository = requestResponseCycleRepository;
         this.interimRequestResponseCycleRepository = interimRequestResponseCycleRepository;
     }
 
-    public RequestResponseCycle add(RequestResponseCycle requestResponseCycle){
+    public RequestResponseCycle add(RequestResponseCycle requestResponseCycle) {
         return this.requestResponseCycleRepository.save(requestResponseCycle);
     }
 
-    public InterimRequestResponseCycle add(InterimRequestResponseCycle interimRequestResponseCycle){
+    public InterimRequestResponseCycle add(InterimRequestResponseCycle interimRequestResponseCycle) {
         return this.interimRequestResponseCycleRepository.save(interimRequestResponseCycle);
     }
 
