@@ -112,37 +112,22 @@ public class ZaakService {
     }
 
     public ZgwZaakInformatieObject voegZaakDocumentToe(EdcLk01 edcLk01) throws Exception {
-        ZgwZaakInformatieObject result = null;
-
         var informatieObjectType = configService.getConfiguratie().getDocumentTypes().get(0).getDocumentType();
         ZgwEnkelvoudigInformatieObject zgwEnkelvoudigInformatieObject = modelMapper.map(edcLk01.objects.get(0), ZgwEnkelvoudigInformatieObject.class);
         zgwEnkelvoudigInformatieObject.informatieobjecttype = informatieObjectType;
         zgwEnkelvoudigInformatieObject.bronorganisatie = getRSIN(edcLk01.stuurgegevens.zender.organisatie);
 
         zgwEnkelvoudigInformatieObject = zgwClient.addZaakDocument(zgwEnkelvoudigInformatieObject);
-
-        if (zgwEnkelvoudigInformatieObject.getUrl() != null) {
-            String zaakUrl = zgwClient.getZaak(edcLk01.objects.get(0).isRelevantVoor.gerelateerde.identificatie).url;
-            result = addZaakInformatieObject(zgwEnkelvoudigInformatieObject, zaakUrl);
-        } else {
-            throw new Exception("Document not added");
-        }
-        return result;
+        String zaakUrl = zgwClient.getZaak(edcLk01.objects.get(0).isRelevantVoor.gerelateerde.identificatie).url;
+        return addZaakInformatieObject(zgwEnkelvoudigInformatieObject, zaakUrl);
     }
 
     private ZgwZaakInformatieObject addZaakInformatieObject(ZgwEnkelvoudigInformatieObject doc, String zaakUrl) throws Exception {
-        ZgwZaakInformatieObject result = null;
-        try {
-            var zgwZaakInformatieObject = new ZgwZaakInformatieObject();
-            zgwZaakInformatieObject.setZaak(zaakUrl);
-            zgwZaakInformatieObject.setInformatieobject(doc.getUrl());
-            zgwZaakInformatieObject.setTitel(doc.getTitel());
-            result = zgwClient.addDocumentToZaak(zgwZaakInformatieObject);
-
-        } catch (Exception e) {
-            throw e;
-        }
-        return result;
+        var zgwZaakInformatieObject = new ZgwZaakInformatieObject();
+        zgwZaakInformatieObject.setZaak(zaakUrl);
+        zgwZaakInformatieObject.setInformatieobject(doc.getUrl());
+        zgwZaakInformatieObject.setTitel(doc.getTitel());
+        return zgwClient.addDocumentToZaak(zgwZaakInformatieObject);
     }
 
     public EdcLa01 getZaakDocumentLezen(EdcLv01 edcLv01) throws IOException {
@@ -313,7 +298,6 @@ public class ZaakService {
             changeDetector.filterChangesByType(rolChanges, ChangeDetector.ChangeType.CHANGED).forEach((change, changeType) -> {
                 updateRolInZgw(getRolOmschrijvingGeneriekByRolName(change.getField().getName()), zgwZaak, change.getValue());
             });
-
         }
 
     }
