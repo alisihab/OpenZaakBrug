@@ -13,18 +13,18 @@ import static nl.haarlem.translations.zdstozgw.translation.zds.model.namespace.N
 @Data
 @XmlRootElement(name = "Bv03Bericht", namespace = STUF)
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Bv03 {
+public class ZdsBv03 {
 
     @XmlElement(namespace = STUF)
-    public Stuurgegevens stuurgegevens;
+    public ZdsStuurgegevens zdsStuurgegevens;
 
-    public Bv03() {
+    public ZdsBv03() {
     }
 
-    public Bv03(Stuurgegevens stuurgegevens) {
-        this.stuurgegevens = new Stuurgegevens(stuurgegevens);
-        this.stuurgegevens.tijdstipBericht = StufUtils.getStufDateTime();
-        this.stuurgegevens.berichtcode = "Bv03";
-        this.stuurgegevens.referentienummer = stuurgegevens.referentienummer;
+    public ZdsBv03(ZdsStuurgegevens zdsStuurgegevens) {
+        this.zdsStuurgegevens = new ZdsStuurgegevens(zdsStuurgegevens);
+        this.zdsStuurgegevens.tijdstipBericht = StufUtils.getStufDateTime();
+        this.zdsStuurgegevens.berichtcode = "Bv03";
+        this.zdsStuurgegevens.referentienummer = zdsStuurgegevens.referentienummer;
     }
 }

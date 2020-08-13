@@ -11,7 +11,7 @@ import static nl.haarlem.translations.zdstozgw.translation.zds.model.namespace.N
 @Data
 @XmlRootElement(namespace = ZKN, name = "zakLk01")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ZakLk01ActualiseerZaakstatus {
+public class ZdsZakLk01ActualiseerZaakstatus {
 
     @Data
     @XmlAccessorType(XmlAccessType.FIELD)
@@ -26,7 +26,7 @@ public class ZakLk01ActualiseerZaakstatus {
         public String omschrijving;
 
         @XmlElement(namespace = ZKN)
-        public Heeft heeft;
+        public ZdsHeeft zdsHeeft;
     }
 
 
@@ -34,6 +34,6 @@ public class ZakLk01ActualiseerZaakstatus {
     public List<Object> objects;
 
     @XmlElement(namespace = ZKN, name = "stuurgegevens")
-    public Stuurgegevens stuurgegevens;
+    public ZdsStuurgegevens zdsStuurgegevens;
 
 }

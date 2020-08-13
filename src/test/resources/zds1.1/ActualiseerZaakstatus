@@ -5,8 +5,8 @@
                    xsi:schemaLocation="http://www.egem.nl/StUF/sector/zkn/0310 zkn0310-p28\mutatie\zkn0310_msg_mutatie_resolved.xsd">
     <SOAP-ENV:Header/>
     <SOAP-ENV:Body>
-        <ZKN:zakLk01>
-            <ZKN:stuurgegevens>
+        <ZKN:zdsZakLk01>
+            <ZKN:zdsStuurgegevens>
                 <StUF:berichtcode>Lk01</StUF:berichtcode>
                 <StUF:zender>
                     <StUF:organisatie>1900</StUF:organisatie>
@@ -20,11 +20,11 @@
                 <StUF:referentienummer>e4c81a3f-47ca-44d9-a149-1edd50ec764e</StUF:referentienummer>
                 <StUF:tijdstipBericht>2020031109251794</StUF:tijdstipBericht>
                 <StUF:entiteittype>ZAK</StUF:entiteittype>
-            </ZKN:stuurgegevens>
-            <ZKN:parameters>
+            </ZKN:zdsStuurgegevens>
+            <ZKN:zdsParameters>
                 <StUF:mutatiesoort>W</StUF:mutatiesoort>
                 <StUF:indicatorOvername>V</StUF:indicatorOvername>
-            </ZKN:parameters>
+            </ZKN:zdsParameters>
             <ZKN:object StUF:sleutelVerzendend="273846" StUF:entiteittype="ZAK" StUF:verwerkingssoort="W">
                 <ZKN:identificatie>1900241235</ZKN:identificatie>
                 <ZKN:omschrijving>Aanvraag minimaregelingen (Z)</ZKN:omschrijving>
@@ -73,6 +73,6 @@
                     </ZKN:isGezetDoor>
                 </ZKN:heeft>
             </ZKN:object>
-        </ZKN:zakLk01>
+        </ZKN:zdsZakLk01>
     </SOAP-ENV:Body>
 </SOAP-ENV:Envelope>

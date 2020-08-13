@@ -2,9 +2,9 @@ package nl.haarlem.translations.zdstozgw.converter.impl;
 
 import nl.haarlem.translations.zdstozgw.config.model.Translation;
 import nl.haarlem.translations.zdstozgw.converter.Converter;
-import nl.haarlem.translations.zdstozgw.translation.zds.model.Bv03;
-import nl.haarlem.translations.zdstozgw.translation.zds.model.EdcLk01;
-import nl.haarlem.translations.zdstozgw.translation.zds.model.Fo03;
+import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsBv03;
+import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsEdcLk01;
+import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsFo03;
 import nl.haarlem.translations.zdstozgw.translation.zds.services.ZaakService;
 import nl.haarlem.translations.zdstozgw.utils.XmlUtils;
 
@@ -16,16 +16,16 @@ public class VoegZaakdocumentToeConverter extends Converter {
 
     @Override
     public String convert(String request) {
-        EdcLk01 edcLk01 = new EdcLk01();
+        ZdsEdcLk01 zdsEdcLk01 = new ZdsEdcLk01();
         try {
-            edcLk01 = (EdcLk01) XmlUtils.getStUFObject(request, EdcLk01.class);
-            this.getZaakService().voegZaakDocumentToe(edcLk01);
-            var bv03 = new Bv03(edcLk01.stuurgegevens);
+            zdsEdcLk01 = (ZdsEdcLk01) XmlUtils.getStUFObject(request, ZdsEdcLk01.class);
+            this.getZaakService().voegZaakDocumentToe(zdsEdcLk01);
+            var bv03 = new ZdsBv03(zdsEdcLk01.zdsStuurgegevens);
             return XmlUtils.getSOAPMessageFromObject(bv03, false);
         } catch (Exception ex) {
             ex.printStackTrace();
-            var fo03 = new Fo03(edcLk01.stuurgegevens);
-            fo03.body = new Fo03.Body(ex);
+            var fo03 = new ZdsFo03(zdsEdcLk01.zdsStuurgegevens);
+            fo03.body = new ZdsFo03.Body(ex);
             return XmlUtils.getSOAPMessageFromObject(fo03, true);
         }
     }

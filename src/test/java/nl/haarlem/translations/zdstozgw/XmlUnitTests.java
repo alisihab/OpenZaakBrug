@@ -1,6 +1,6 @@
 package nl.haarlem.translations.zdstozgw;
 
-import nl.haarlem.translations.zdstozgw.translation.zds.model.ZakLk01ActualiseerZaakstatus;
+import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsZakLk01ActualiseerZaakstatus;
 import nl.haarlem.translations.zdstozgw.utils.XmlUtils;
 import org.apache.commons.io.IOUtils;
 import org.junit.Assert;
@@ -27,13 +27,13 @@ public class XmlUnitTests {
                     .getResourceAsStream("zds1.1/ActualiseerZaakstatus"), "UTF-8");
 
             //actheb
-            ZakLk01ActualiseerZaakstatus zakLk01ActualiseerZaakstatus = (ZakLk01ActualiseerZaakstatus) XmlUtils.getStUFObject(content, ZakLk01ActualiseerZaakstatus.class);
-            ZakLk01ActualiseerZaakstatus.Object object = zakLk01ActualiseerZaakstatus.objects.get(1);
+            ZdsZakLk01ActualiseerZaakstatus zdsZakLk01ActualiseerZaakstatus = (ZdsZakLk01ActualiseerZaakstatus) XmlUtils.getStUFObject(content, ZdsZakLk01ActualiseerZaakstatus.class);
+            ZdsZakLk01ActualiseerZaakstatus.Object object = zdsZakLk01ActualiseerZaakstatus.objects.get(1);
 
             //assert
             assumeTrue(object.identificatie != null);
-            assumeTrue(object.heeft.datumStatusGezet != null);
-            assumeTrue(object.heeft.gerelateerde.volgnummer != null);
+            assumeTrue(object.zdsHeeft.datumStatusGezet != null);
+            assumeTrue(object.zdsHeeft.zdsGerelateerde.volgnummer != null);
 
         } catch (IOException e) {
             e.printStackTrace();

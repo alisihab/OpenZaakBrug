@@ -6,8 +6,8 @@
                    xsi:schemaLocation="http://www.egem.nl/StUF/sector/zkn/0310 zkn0310-p28\mutatie\zkn0310_msg_mutatie_resolved.xsd">
     <SOAP-ENV:Header/>
     <SOAP-ENV:Body>
-        <ZKN:edcLk01>
-            <ZKN:stuurgegevens>
+        <ZKN:zdsEdcLk01>
+            <ZKN:zdsStuurgegevens>
                 <StUF:berichtcode>Lk01</StUF:berichtcode>
                 <StUF:zender>
                     <StUF:organisatie>1900</StUF:organisatie>
@@ -21,11 +21,11 @@
                 <StUF:referentienummer>ca99db2d-632e-47b3-aecf-165ae61eefd4</StUF:referentienummer>
                 <StUF:tijdstipBericht>2020031108510008</StUF:tijdstipBericht>
                 <StUF:entiteittype>EDC</StUF:entiteittype>
-            </ZKN:stuurgegevens>
-            <ZKN:parameters>
+            </ZKN:zdsStuurgegevens>
+            <ZKN:zdsParameters>
                 <StUF:mutatiesoort>T</StUF:mutatiesoort>
                 <StUF:indicatorOvername>V</StUF:indicatorOvername>
-            </ZKN:parameters>
+            </ZKN:zdsParameters>
             <ZKN:object StUF:entiteittype="EDC" StUF:verwerkingssoort="T">
                 <ZKN:identificatie>1900294468</ZKN:identificatie>
                 <ZKN:dct.omschrijving>Brief</ZKN:dct.omschrijving>
@@ -55,6 +55,6 @@
                     <ZKN:sta.datumStatusGezet>20200311</ZKN:sta.datumStatusGezet>
                 </ZKN:isRelevantVoor>
             </ZKN:object>
-        </ZKN:edcLk01>
+        </ZKN:zdsEdcLk01>
     </SOAP-ENV:Body>
 </SOAP-ENV:Envelope>
