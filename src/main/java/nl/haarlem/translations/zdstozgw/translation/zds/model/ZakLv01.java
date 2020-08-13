@@ -13,9 +13,12 @@ import static nl.haarlem.translations.zdstozgw.translation.zds.model.namespace.N
 @XmlRootElement(namespace = ZKN, name = "zakLv01")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ZakLv01 {
-    @XmlElement(namespace = ZKN, name = "stuurgegevens")
+    @XmlElement(namespace = ZKN)
     public Stuurgegevens stuurgegevens;
 
-    @XmlElement(namespace = ZKN, name = "gelijk")
+    @XmlElement(namespace = ZKN)
+    public Parameters parameters;
+
+    @XmlElement(namespace = ZKN)
     public Gelijk gelijk;
 }

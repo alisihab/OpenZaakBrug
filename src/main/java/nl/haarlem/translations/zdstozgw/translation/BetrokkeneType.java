@@ -9,11 +9,11 @@ public enum BetrokkeneType {
 
     String description;
 
-    BetrokkeneType(String description){
+    BetrokkeneType(String description) {
         this.description = description;
     }
 
-    public String getDescription(){
+    public String getDescription() {
         return this.description;
     }
 }

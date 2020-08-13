@@ -2,7 +2,10 @@ package nl.haarlem.translations.zdstozgw.converter.impl;
 
 import nl.haarlem.translations.zdstozgw.config.model.Translation;
 import nl.haarlem.translations.zdstozgw.converter.Converter;
-import nl.haarlem.translations.zdstozgw.translation.zds.model.*;
+import nl.haarlem.translations.zdstozgw.translation.zds.model.EdcLa01;
+import nl.haarlem.translations.zdstozgw.translation.zds.model.EdcLv01;
+import nl.haarlem.translations.zdstozgw.translation.zds.model.Fo03;
+import nl.haarlem.translations.zdstozgw.translation.zds.model.Parameters;
 import nl.haarlem.translations.zdstozgw.translation.zds.services.ZaakService;
 import nl.haarlem.translations.zdstozgw.utils.XmlUtils;
 
@@ -14,21 +17,17 @@ public class GeefZaakdocumentLezenConverter extends Converter {
 
     @Override
     public String convert(String request) {
-        String result = "";
+        EdcLv01 edcLv01 = new EdcLv01();
         try {
-            EdcLv01 edcLv01 = (EdcLv01) XmlUtils.getStUFObject(request, EdcLv01.class);
-            EdcLa01 edcLa01 = this.getZaakService().getZaakDocumentLezen((EdcLv01) edcLv01);
-
-            return XmlUtils.getSOAPMessageFromObject(edcLa01);
-
+            edcLv01 = (EdcLv01) XmlUtils.getStUFObject(request, EdcLv01.class);
+            EdcLa01 edcLa01 = this.getZaakService().getZaakDocumentLezen(edcLv01);
+            edcLa01.parameters = new Parameters(edcLv01.parameters);
+            return XmlUtils.getSOAPMessageFromObject(edcLa01, false);
         } catch (Exception ex) {
             ex.printStackTrace();
-            var f03 = new nl.haarlem.translations.zdstozgw.translation.zds.model.F03();
-            f03.setFaultString("Object was not saved");
-            f03.setCode("StUF046");
-            f03.setOmschrijving("Object niet opgeslagen");
-            f03.setDetails(ex.getMessage());
-            return f03.getSoapMessageAsString();
+            var fo03 = new Fo03(edcLv01.stuurgegevens);
+            fo03.body = new Fo03.Body(ex);
+            return XmlUtils.getSOAPMessageFromObject(fo03, true);
         }
     }
 

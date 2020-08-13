@@ -9,25 +9,28 @@ import static nl.haarlem.translations.zdstozgw.translation.zds.model.namespace.N
 import static nl.haarlem.translations.zdstozgw.translation.zds.model.namespace.Namespace.ZKN;
 
 @Data
-@XmlRootElement(namespace = ZKN, name = "ZakLa01")
+@XmlRootElement(namespace = ZKN, name = "zakLa01")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ZakLa01LijstZaakdocumenten {
 
-    @XmlElement(namespace = STUF)
+    @XmlElement(namespace = ZKN)
     public Stuurgegevens stuurgegevens;
+
+    @XmlElement(namespace = ZKN)
+    public Parameters parameters;
 
     @XmlElement(namespace = ZKN)
     public Antwoord antwoord;
 
     @Data
     @XmlAccessorType(XmlAccessType.FIELD)
-    public static class Antwoord{
+    public static class Antwoord {
         @XmlElement(namespace = ZKN)
         public ZakLa01LijstZaakdocumenten.Antwoord.Object object;
 
         @Data
         @XmlAccessorType(XmlAccessType.FIELD)
-        public static class Object{
+        public static class Object {
 
             @XmlElement(namespace = ZKN)
             public String identificatie;

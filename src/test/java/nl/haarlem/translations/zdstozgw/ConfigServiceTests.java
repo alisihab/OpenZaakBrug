@@ -19,7 +19,7 @@ public class ConfigServiceTests {
     ConfigService configService;
 
     @Test
-    public void getTranslationBySoapActionAndApplicatie_whenApplicatieAvailable_shouldReturnApplicationSpecificTranslation(){
+    public void getTranslationBySoapActionAndApplicatie_whenApplicatieAvailable_shouldReturnApplicationSpecificTranslation() {
         //assign
         String soapAction = "http://www.egem.nl/StUF/sector/zkn/0310/genereerDocumentIdentificatie_Di02";
         String applicatie = "GWS4all";
@@ -33,7 +33,7 @@ public class ConfigServiceTests {
     }
 
     @Test
-    public void getTranslationBySoapActionAndApplicatie_whenApplicatieNull_shouldReturnDefaultTranslation(){
+    public void getTranslationBySoapActionAndApplicatie_whenApplicatieNull_shouldReturnDefaultTranslation() {
         //assign
         String soapAction = "http://www.egem.nl/StUF/sector/zkn/0310/voegZaakdocumentToe_Lk01";
 
@@ -46,7 +46,7 @@ public class ConfigServiceTests {
     }
 
     @Test
-    public void getReplication_shouldReturnCorrectObject(){
+    public void getReplication_shouldReturnCorrectObject() {
         //assign
         Replication expectedResult = new Replication()
                 .setEnableZDS(true)

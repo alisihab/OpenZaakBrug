@@ -24,7 +24,7 @@ public class SoapController {
     private String response = "NOT IMPLEMENTED";
 
     @Autowired
-    public SoapController(ConverterFactory converterFactory, ConfigService configService, RequestHandlerFactory requestHandlerFactory){
+    public SoapController(ConverterFactory converterFactory, ConfigService configService, RequestHandlerFactory requestHandlerFactory) {
         this.converterFactory = converterFactory;
         this.configService = configService;
         this.requestHandlerFactory = requestHandlerFactory;
@@ -32,10 +32,10 @@ public class SoapController {
 
     @PostMapping(value = "/{requestUrl}", consumes = MediaType.TEXT_XML_VALUE, produces = MediaType.TEXT_XML_VALUE)
     public String HandleRequest(@PathVariable("requestUrl") String requestUrl,
-                                           @RequestHeader(name = "SOAPAction", required = true) String soapAction,
-                                           @RequestBody String body) {
+                                @RequestHeader(name = "SOAPAction", required = true) String soapAction,
+                                @RequestBody String body) {
 
         RequestHandler requestHandler = requestHandlerFactory.getRequestHandler(this.converterFactory.getConverter(soapAction.replace("\"", ""), body));
-        return requestHandler.execute(body,requestUrl,soapAction);
+        return requestHandler.execute(body, requestUrl, soapAction);
     }
 }

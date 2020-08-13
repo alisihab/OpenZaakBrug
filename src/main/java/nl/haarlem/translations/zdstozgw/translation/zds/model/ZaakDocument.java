@@ -16,36 +16,36 @@ public class ZaakDocument {
     @XmlAttribute(namespace = STUF)
     public String entiteittype;
 
-    @XmlElement(namespace = ZKN, nillable =  true)
+    @XmlElement(namespace = ZKN, nillable = true)
     public String identificatie;
 
-    @XmlElement(namespace = ZKN, nillable =  true)
+    @XmlElement(namespace = ZKN, nillable = true)
     public String creatiedatum;
 
-    @XmlElement(namespace = ZKN, nillable =  true)
+    @XmlElement(namespace = ZKN, nillable = true)
     public String ontvangstdatum;
 
-    @XmlElement(namespace = ZKN, nillable =  true)
+    @XmlElement(namespace = ZKN, nillable = true)
     public String titel;
 
-    @XmlElement(namespace = ZKN, nillable =  true)
+    @XmlElement(namespace = ZKN, nillable = true)
     public String taal;
 
-    @XmlElement(namespace = ZKN, nillable =  true)
+    @XmlElement(namespace = ZKN, nillable = true)
     public String versie;
 
-    @XmlElement(namespace = ZKN, nillable =  true)
+    @XmlElement(namespace = ZKN, nillable = true)
     public String status;
 
-    @XmlElement(namespace = ZKN, nillable =  true)
+    @XmlElement(namespace = ZKN, nillable = true)
     public String vezenddatum;
 
-    @XmlElement(namespace = ZKN, nillable =  true)
+    @XmlElement(namespace = ZKN, nillable = true)
     public String vertrouwelijkheidAanduiding;
 
-    @XmlElement(namespace = ZKN,nillable = true)
+    @XmlElement(namespace = ZKN, nillable = true)
     public String auteur;
 
-    @XmlElement(namespace = ZKN, nillable =  true)
+    @XmlElement(namespace = ZKN, nillable = true)
     public String link;
 }

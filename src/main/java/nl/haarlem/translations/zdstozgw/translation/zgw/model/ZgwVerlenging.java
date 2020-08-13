@@ -5,13 +5,13 @@ import com.google.gson.annotations.SerializedName;
 import lombok.Data;
 
 @Data
-public class Opschorting {
+public class ZgwVerlenging {
 
-    @SerializedName("indicatie")
-    @Expose
-    public Boolean indicatie;
     @SerializedName("reden")
     @Expose
     public String reden;
+    @SerializedName("duur")
+    @Expose
+    public String duur;
 
 }

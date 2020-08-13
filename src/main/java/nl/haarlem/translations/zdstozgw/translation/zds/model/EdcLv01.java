@@ -7,16 +7,19 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import static nl.haarlem.translations.zdstozgw.translation.zds.model.namespace.Namespace.ZKN;
 
-@XmlRootElement(namespace = ZKN, name="edcLv01")
+@XmlRootElement(namespace = ZKN, name = "edcLv01")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class EdcLv01 {
 
-    @XmlElement(namespace = ZKN, name="stuurgegevens")
+    @XmlElement(namespace = ZKN)
     public Stuurgegevens stuurgegevens;
 
-    @XmlElement(namespace = ZKN, name="scope")
+    @XmlElement(namespace = ZKN)
+    public Parameters parameters;
+
+    @XmlElement(namespace = ZKN)
     public Scope scope;
 
-    @XmlElement(namespace = ZKN, name="gelijk")
+    @XmlElement(namespace = ZKN)
     public Gelijk gelijk;
 }

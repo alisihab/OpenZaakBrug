@@ -22,13 +22,13 @@ public class ReplicationRequestHandlerTests {
     ConfigService configService;
 
     @Before
-    public void setup(){
+    public void setup() {
         this.replicationRequestHandler = new ReplicationRequestHandler(null, configService);
     }
 
 
     @Test(expected = RuntimeException.class)
-    public void execute_whenModusDisabled_shouldThrowError(){
+    public void execute_whenModusDisabled_shouldThrowError() {
         //assign
         Configuratie configuratie = new Configuratie()
                 .setReplication(new Replication()
@@ -42,13 +42,13 @@ public class ReplicationRequestHandlerTests {
     }
 
     @Test(expected = RuntimeException.class)
-    public void execute_whenResponseTypeZGWDoesNotMatchModus_shouldThrowError(){
+    public void execute_whenResponseTypeZGWDoesNotMatchModus_shouldThrowError() {
         //assign
         Configuratie configuratie = new Configuratie()
                 .setReplication(new Replication()
                         .setEnableZDS(true)
                         .setEnableZGW(false)
-                .setResponseType(ResponseType.ZGW));
+                        .setResponseType(ResponseType.ZGW));
 
         doReturn(configuratie).when(configService).getConfiguratie();
 
@@ -57,7 +57,7 @@ public class ReplicationRequestHandlerTests {
     }
 
     @Test(expected = RuntimeException.class)
-    public void execute_whenResponseTypeZDSDoesNotMatchModus_shouldThrowError(){
+    public void execute_whenResponseTypeZDSDoesNotMatchModus_shouldThrowError() {
         //assign
         Configuratie configuratie = new Configuratie()
                 .setReplication(new Replication()
@@ -72,7 +72,7 @@ public class ReplicationRequestHandlerTests {
     }
 
     @Test(expected = RuntimeException.class)
-    public void execute_whenResponseTypeIsNull_shouldThrowError(){
+    public void execute_whenResponseTypeIsNull_shouldThrowError() {
         //assign
         Configuratie configuratie = new Configuratie()
                 .setReplication(new Replication()

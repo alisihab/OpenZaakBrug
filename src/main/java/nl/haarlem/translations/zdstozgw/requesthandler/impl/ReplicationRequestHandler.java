@@ -52,7 +52,7 @@ public class ReplicationRequestHandler extends RequestHandler {
         this.request = request;
         String responseZDS = null, responseZGW = null, response = null;
 
-        try{
+        try {
             if (configuratie.getReplication().enableZDS) {
                 responseZDS = this.postZdsRequest();
             }
@@ -62,20 +62,24 @@ public class ReplicationRequestHandler extends RequestHandler {
             }
 
             switch (configuratie.getReplication().getResponseType()) {
-                case ZDS: response = responseZDS; break;
-                case ZGW: response = responseZGW; break;
+                case ZDS:
+                    response = responseZDS;
+                    break;
+                case ZGW:
+                    response = responseZGW;
+                    break;
             }
 
             requestResponseCycle.setClientResponseBodyZDS(responseZDS);
             requestResponseCycle.setClientResponseBodyZGW(responseZGW);
 
-        }catch(Exception e){
+        } catch (Exception e) {
             StringWriter sw = new StringWriter();
             e.printStackTrace(new PrintWriter(sw));
             String exceptionAsString = sw.toString();
             requestResponseCycle.setStackTrace(exceptionAsString);
             throw e;
-        }finally {
+        } finally {
             requestResponseCycle.setDurationInMilliseconds(Duration.between(start, LocalDateTime.now()).toMillis());
             this.requestResponseCycleService.add(requestResponseCycle);
         }

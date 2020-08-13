@@ -18,7 +18,6 @@ import java.util.Scanner;
 import java.util.stream.Collectors;
 
 
-
 @Service
 @Data
 public class ConfigService {
@@ -33,7 +32,7 @@ public class ConfigService {
         try {
             File resource = new ClassPathResource("config.json").getFile();
             scanner = new Scanner(resource);
-        } catch (Exception ex){
+        } catch (Exception ex) {
             log.error("######################################################################################");
             log.error("#####                                                                            #####");
             log.error("##### Unable to load configuration. Make sure 'config.json' is on the classpath  #####");
@@ -44,19 +43,19 @@ public class ConfigService {
 
         try {
             String result = "";
-            while (scanner.hasNextLine()){
+            while (scanner.hasNextLine()) {
                 result += scanner.nextLine();
             }
             Gson gson = new Gson();
-            configuratie = gson.fromJson(result,Configuratie.class);
+            configuratie = gson.fromJson(result, Configuratie.class);
 
-        } catch (Exception ex){
+        } catch (Exception ex) {
             throwException();
         }
         validateConfiguration();
     }
 
-    private  void throwException() throws Exception {
+    private void throwException() throws Exception {
         log.error("##########################################################################################");
         log.error("#####                                                                                #####");
         log.error("##### Unable to load configuration. Make sure 'config.json' contains a valid config  #####");
@@ -68,33 +67,33 @@ public class ConfigService {
     private void validateConfiguration() throws Exception {
         try {
             configuratie.getOrganisaties().size();
-            for(Organisatie organisatie:configuratie.getOrganisaties()){
+            for (Organisatie organisatie : configuratie.getOrganisaties()) {
                 organisatie.getGemeenteCode();
                 organisatie.getRSIN();
             }
             configuratie.getZaakTypes().size();
-            for(ZaakType zaakType:configuratie.getZaakTypes()){
+            for (ZaakType zaakType : configuratie.getZaakTypes()) {
                 zaakType.getZaakType();
                 zaakType.getCode();
             }
-        } catch (Exception ex){
+        } catch (Exception ex) {
             throwException();
         }
 
     }
 
-    public Translation getDefaultOrApplicationSpecificTranslationBySoapActionAndApplication(String soapAction, String application){
+    public Translation getDefaultOrApplicationSpecificTranslationBySoapActionAndApplication(String soapAction, String application) {
         Translation foundTranslation;
         List<Translation> translations = this.getConfiguratie().getTranslations().stream()
                 .filter(translation -> translation.getSoapAction().equalsIgnoreCase(soapAction))
                 .collect(Collectors.toList());
 
         foundTranslation = translations.stream()
-                    .filter(translation -> translation.getApplicatie().equalsIgnoreCase(application))
-                    .findFirst()
+                .filter(translation -> translation.getApplicatie().equalsIgnoreCase(application))
+                .findFirst()
                 .orElse(null);
 
-        if(foundTranslation == null){
+        if (foundTranslation == null) {
             foundTranslation = translations.stream()
                     .filter(translation -> translation.getApplicatie().equalsIgnoreCase(""))
                     .findFirst()

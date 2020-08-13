@@ -22,26 +22,26 @@ public class Vestiging {
 
     @Data
     @XmlAccessorType(XmlAccessType.FIELD)
-    public static class VerblijfsAdres{
-        @XmlElement(namespace = BG, name="wpl.woonplaatsNaam")
+    public static class VerblijfsAdres {
+        @XmlElement(namespace = BG, name = "wpl.woonplaatsNaam")
         public String woonplaatsNaam;
 
-        @XmlElement(namespace = BG, name="gor.openbareRuimteNaam")
+        @XmlElement(namespace = BG, name = "gor.openbareRuimteNaam")
         public String openbareRuimteNaam;
 
-        @XmlElement(namespace = BG, name="gor.straatnaam")
+        @XmlElement(namespace = BG, name = "gor.straatnaam")
         public String straatNaam;
 
-        @XmlElement(namespace = BG, name="aoa.postcode")
+        @XmlElement(namespace = BG, name = "aoa.postcode")
         public String postcode;
 
-        @XmlElement(namespace = BG, name="aoa.huisnummer")
+        @XmlElement(namespace = BG, name = "aoa.huisnummer")
         public String huisnummer;
 
-        @XmlElement(namespace = BG, name="aoa.huisletter")
+        @XmlElement(namespace = BG, name = "aoa.huisletter")
         public String huisletter;
 
-        @XmlElement(namespace = BG, name="aoa.huisnummertoevoeging")
+        @XmlElement(namespace = BG, name = "aoa.huisnummertoevoeging")
         public String huisnummertoevoeging;
     }
 }

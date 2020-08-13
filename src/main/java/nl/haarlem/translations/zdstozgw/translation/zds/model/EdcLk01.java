@@ -9,20 +9,20 @@ import static nl.haarlem.translations.zdstozgw.translation.zds.model.namespace.N
 import static nl.haarlem.translations.zdstozgw.translation.zds.model.namespace.Namespace.ZKN;
 
 @Data
-@XmlRootElement(namespace = ZKN, name="edcLk01")
+@XmlRootElement(namespace = ZKN, name = "edcLk01")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class EdcLk01 {
 
     @Data
     @XmlAccessorType(XmlAccessType.FIELD)
-    public static class Object{
+    public static class Object {
         @XmlAttribute(namespace = STUF)
         public String entiteittype;
 
         @XmlElement(namespace = ZKN)
         public String identificatie;
 
-        @XmlElement(namespace = ZKN, name="dct.omschrijving")
+        @XmlElement(namespace = ZKN, name = "dct.omschrijving")
         public String omschrijving;
 
         @XmlElement(namespace = ZKN)
@@ -46,25 +46,24 @@ public class EdcLk01 {
         @XmlElement(namespace = ZKN)
         public String vertrouwelijkAanduiding;
 
-        @XmlElement(namespace = ZKN, name="isRelevantVoor")
+        @XmlElement(namespace = ZKN, name = "isRelevantVoor")
         public Rol isRelevantVoor;
 
-        @XmlElement(namespace = ZKN, name="isVan")
+        @XmlElement(namespace = ZKN, name = "isVan")
         public Rol isVan;
 
-        @XmlElement(namespace = ZKN, name="heeft")
+        @XmlElement(namespace = ZKN, name = "heeft")
         public Rol heeft;
 
-        @XmlElement(namespace = ZKN, name="heeftAlsInitiator")
+        @XmlElement(namespace = ZKN, name = "heeftAlsInitiator")
         public HeeftAlsInitiator heeftAlsInitiator;
     }
 
 
-
-    @XmlElement(namespace = ZKN, name="object")
+    @XmlElement(namespace = ZKN, name = "object")
     public List<EdcLk01.Object> objects;
 
-    @XmlElement(namespace = ZKN, name="stuurgegevens")
+    @XmlElement(namespace = ZKN, name = "stuurgegevens")
     public Stuurgegevens stuurgegevens;
 
 }

@@ -8,25 +8,25 @@
     {
       "code": "1",
       "zaakType": "https://fieldlab.westeurope.cloudapp.azure.com/catalogi/api/v1/zaaktypen/cb47385c-d954-47fc-a696-14b694f648f1",
-      "zaakTypeOmschrijving" : "Melding openbare ruimte",
-      "ingangsdatumObject" : "20170901",
-      "initiatorRolTypeUrl" : "https://fieldlab.westeurope.cloudapp.azure.com/catalogi/api/v1/roltypen/c8d9bd56-2abb-4ef1-bbd6-bf404b31869e"
+      "zaakTypeOmschrijving": "Melding openbare ruimte",
+      "ingangsdatumObject": "20170901",
+      "initiatorRolTypeUrl": "https://fieldlab.westeurope.cloudapp.azure.com/catalogi/api/v1/roltypen/c8d9bd56-2abb-4ef1-bbd6-bf404b31869e"
     }
   ],
   "organisaties": [
     {
-      "gemeenteCode" : "0392",
-      "RSIN" : "001005650"
+      "gemeenteCode": "0392",
+      "RSIN": "001005650"
     },
     {
-      "gemeenteCode" : "0478",
-      "RSIN" : "001509962"
+      "gemeenteCode": "0478",
+      "RSIN": "001509962"
     }
   ],
-  "documentTypes" : [
+  "documentTypes": [
     {
-      "documentType" : "https://fieldlab.westeurope.cloudapp.azure.com/catalogi/api/v1/informatieobjecttypen/b380e35f-3b10-4d76-81b5-58f8013dca4a",
-      "omschrijving" : "Overig stuk inkomend"
+      "documentType": "https://fieldlab.westeurope.cloudapp.azure.com/catalogi/api/v1/informatieobjecttypen/b380e35f-3b10-4d76-81b5-58f8013dca4a",
+      "omschrijving": "Overig stuk inkomend"
     }
   ],
   "translations": [
@@ -36,7 +36,7 @@
       "applicatie": "GWS4all",
       "template": "src/main/java/nl/haarlem/translations/zdstozgw/converter/impl/genereerDocumentIdentificatie_Du02.xml",
       "implementation": "nl.haarlem.translations.zdstozgw.converter.impl.GenereerDocumentIdentificatieConverter",
-      "legacyService" : "http://localhost:8181/zds/VrijBerichtService"
+      "legacyService": "http://localhost:8181/zds/VrijBerichtService"
     },
     {
       "translation": "ZDS 1.1 GWS4all genereerDocumentIdentificatie_Di02 default",
@@ -44,7 +44,7 @@
       "applicatie": "",
       "template": "src/main/java/nl/haarlem/translations/zdstozgw/converter/impl/genereerDocumentIdentificatie_Du02.xml",
       "implementation": "nl.haarlem.translations.zdstozgw.converter.impl.GenereerDocumentIdentificatieConverter",
-      "legacyService" : "http://localhost:8181/zds/VrijBerichtService"
+      "legacyService": "http://localhost:8181/zds/VrijBerichtService"
     },
     {
       "translation": "ZDS 1.1 Generic voegZaakdocumentToe_Lk01",
@@ -52,7 +52,7 @@
       "applicatie": "",
       "template": "",
       "implementation": "nl.haarlem.translations.zdstozgw.converter.impl.VoegZaakdocumentToeConverter",
-      "legacyservice" : ""
+      "legacyservice": ""
     }
   ]
 }

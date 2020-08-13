@@ -23,6 +23,10 @@ public class ZgwBetrokkeneIdentificatie {
     @Expose
     public String geslachtsnaam;
 
+    @SerializedName("achternaam")
+    @Expose
+    public String achternaam;
+
     @SerializedName("voorvoegselGeslachtsnaam")
     @Expose
     public String voorvoegselGeslachtsnaam;
@@ -45,7 +49,7 @@ public class ZgwBetrokkeneIdentificatie {
 
     @SerializedName("verblijfsadres")
     @Expose
-    public String verblijfsadres;
+    public ZgwAdres verblijfsadres;
 
     @SerializedName("sub")
     @Expose

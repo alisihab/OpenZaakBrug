@@ -22,16 +22,16 @@ public class RequestHandlerConverterTests {
     ConfigService configService;
 
     @Before
-    public void setup(){
+    public void setup() {
         this.requestHandlerFactory = new RequestHandlerFactory(configService);
     }
 
     @Test
-    public void getRequestHandler_shouldReturnCorrectRequestHandler(){
+    public void getRequestHandler_shouldReturnCorrectRequestHandler() {
         //assign
         String expectedClass = "nl.haarlem.translations.zdstozgw.requesthandler.impl.BasicRequestHandler";
         Configuratie configuratie = new Configuratie()
-            .setRequestHandlerImplementation(expectedClass);
+                .setRequestHandlerImplementation(expectedClass);
         doReturn(configuratie).when(configService).getConfiguratie();
 
         //act

@@ -7,3 +7,13 @@ openzaak.baseUrl = https://openzaak.local
 nl.haarlem.translations.zdstozgw.trustAllCerts = false
 
 nl.haarlem.translations.zdstozgw.enableJWTEntpoint = false
+
+#openzaak endpoints
+zgw.endpoint.roltype = /catalogi/api/v1/roltypen
+zgw.endpoint.rol = /zaken/api/v1/rollen
+zgw.endpoint.zaaktype = /catalogi/api/v1/zaaktypen
+zgw.endpoint.status = /zaken/api/v1/statussen
+zgw.endpoint.statustype = /catalogi/api/v1/statustypen
+zgw.endpoint.zaakinformatieobject = /zaken/api/v1/zaakinformatieobjecten
+zgw.endpoint.enkelvoudiginformatieobject = /documenten/api/v1/enkelvoudiginformatieobjecten
+zgw.endpoint.zaak = /zaken/api/v1/zaken
