@@ -9,18 +9,18 @@ import static nl.haarlem.translations.zdstozgw.translation.zds.model.namespace.N
 
 @XmlRootElement(namespace = ZKN, name = "edcLa01")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class EdcLa01 {
+public class ZdsEdcLa01 {
     @XmlElement(namespace = ZKN, name = "stuurgegevens")
-    public Stuurgegevens stuurgegevens;
+    public ZdsStuurgegevens zdsStuurgegevens;
 
     @XmlElement(namespace = ZKN)
-    public Parameters parameters;
+    public ZdsParameters zdsParameters;
 
     @XmlElement(namespace = ZKN, name = "antwoord")
     public Antwoord antwoord;
 
     @XmlElement(namespace = ZKN, name = "isRelevantVoor")
-    public IsRelevantVoor isRelevantVoor;
+    public ZdsIsRelevantVoor zdsIsRelevantVoor;
 
     @Data
     @XmlAccessorType(XmlAccessType.FIELD)
@@ -32,7 +32,7 @@ public class EdcLa01 {
 
     @Data
     @XmlAccessorType(XmlAccessType.FIELD)
-    public static class Object extends ZaakDocument {
+    public static class Object extends ZdsZaakDocument {
 
         @XmlElement(namespace = ZKN, name = "dct.omschrijving")
         public String omschrijving;

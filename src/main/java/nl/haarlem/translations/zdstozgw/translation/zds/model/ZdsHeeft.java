@@ -5,20 +5,21 @@ import lombok.Data;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import java.util.List;
 
 import static nl.haarlem.translations.zdstozgw.translation.zds.model.namespace.Namespace.ZKN;
 
 @Data
-@XmlRootElement(namespace = ZKN, name = "zakLk01")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ZakLk01 {
+public class ZdsHeeft {
+    @XmlElement(namespace = ZKN)
+    public ZdsGerelateerde zdsGerelateerde;
 
-    @XmlElement(namespace = ZKN, name = "object")
-    public List<Zaak> objects;
+    @XmlElement(namespace = ZKN)
+    public String datumStatusGezet;
 
-    @XmlElement(namespace = ZKN, name = "stuurgegevens")
-    public Stuurgegevens stuurgegevens;
+    @XmlElement(namespace = ZKN)
+    public String statustoelichting;
 
+    @XmlElement(namespace = ZKN)
+    public ZdsRol isGezetDoor;
 }

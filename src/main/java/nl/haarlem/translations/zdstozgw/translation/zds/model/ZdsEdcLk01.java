@@ -11,7 +11,7 @@ import static nl.haarlem.translations.zdstozgw.translation.zds.model.namespace.N
 @Data
 @XmlRootElement(namespace = ZKN, name = "edcLk01")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class EdcLk01 {
+public class ZdsEdcLk01 {
 
     @Data
     @XmlAccessorType(XmlAccessType.FIELD)
@@ -32,7 +32,7 @@ public class EdcLk01 {
         public String taal;
 
         @XmlElement(namespace = ZKN)
-        public Inhoud inhoud;
+        public ZdsInhoud zdsInhoud;
 
         @XmlElement(namespace = ZKN)
         public String auteur;
@@ -47,23 +47,23 @@ public class EdcLk01 {
         public String vertrouwelijkAanduiding;
 
         @XmlElement(namespace = ZKN, name = "isRelevantVoor")
-        public Rol isRelevantVoor;
+        public ZdsRol isRelevantVoor;
 
         @XmlElement(namespace = ZKN, name = "isVan")
-        public Rol isVan;
+        public ZdsRol isVan;
 
         @XmlElement(namespace = ZKN, name = "heeft")
-        public Rol heeft;
+        public ZdsRol heeft;
 
         @XmlElement(namespace = ZKN, name = "heeftAlsInitiator")
-        public HeeftAlsInitiator heeftAlsInitiator;
+        public ZdsHeeftAlsInitiator zdsHeeftAlsInitiator;
     }
 
 
     @XmlElement(namespace = ZKN, name = "object")
-    public List<EdcLk01.Object> objects;
+    public List<ZdsEdcLk01.Object> objects;
 
     @XmlElement(namespace = ZKN, name = "stuurgegevens")
-    public Stuurgegevens stuurgegevens;
+    public ZdsStuurgegevens zdsStuurgegevens;
 
 }

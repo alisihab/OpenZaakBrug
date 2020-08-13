@@ -7,7 +7,7 @@ import javax.xml.bind.annotation.XmlElement;
 import static nl.haarlem.translations.zdstozgw.translation.zds.model.namespace.Namespace.BG;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Adres {
+public class ZdsAdres {
     @XmlElement(namespace = BG, name = "aoa.identificatie")
     public String identificatie;
 

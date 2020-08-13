@@ -12,7 +12,7 @@ import static nl.haarlem.translations.zdstozgw.translation.zds.model.namespace.N
 
 @Data
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Gerelateerde {
+public class ZdsGerelateerde {
 
     @XmlAttribute(namespace = STUF)
     public String entiteittype;
@@ -42,11 +42,11 @@ public class Gerelateerde {
     public String volgnummer;
 
     @XmlElement(namespace = ZKN)
-    public Medewerker medewerker;
+    public ZdsMedewerker zdsMedewerker;
 
     @XmlElement(namespace = ZKN)
-    public NatuurlijkPersoon natuurlijkPersoon;
+    public ZdsNatuurlijkPersoon zdsNatuurlijkPersoon;
 
     @XmlElement(namespace = ZKN)
-    public Vestiging vestiging;
+    public ZdsVestiging zdsVestiging;
 }

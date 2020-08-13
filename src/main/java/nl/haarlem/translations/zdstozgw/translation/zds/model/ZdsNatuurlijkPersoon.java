@@ -12,7 +12,7 @@ import static nl.haarlem.translations.zdstozgw.translation.zds.model.namespace.N
 
 @Data
 @XmlAccessorType(XmlAccessType.FIELD)
-public class NatuurlijkPersoon {
+public class ZdsNatuurlijkPersoon {
 
     @XmlAttribute(namespace = STUF)
     public String entiteittype;
@@ -39,5 +39,5 @@ public class NatuurlijkPersoon {
     public String geboortedatum;
 
     @XmlElement(namespace = BG)
-    public Adres verblijfsadres;
+    public ZdsAdres verblijfsadres;
 }

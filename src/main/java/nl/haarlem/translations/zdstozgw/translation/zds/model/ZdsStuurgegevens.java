@@ -10,7 +10,7 @@ import static nl.haarlem.translations.zdstozgw.translation.zds.model.namespace.N
 
 @Data
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Stuurgegevens {
+public class ZdsStuurgegevens {
 
     @XmlElement(namespace = STUF)
     public String berichtcode;
@@ -25,27 +25,27 @@ public class Stuurgegevens {
     public String crossRefnummer;
 
     @XmlElement(namespace = STUF)
-    public Zender zender;
+    public ZdsZender zdsZender;
 
     @XmlElement(namespace = STUF)
-    public Ontvanger ontvanger;
+    public ZdsOntvanger zdsOntvanger;
 
     @XmlElement(namespace = STUF)
     public String entiteittype;
 
-    public Stuurgegevens(Stuurgegevens stuurgegevens) {
-        this.zender = new Zender()
-                .setApplicatie(stuurgegevens.ontvanger.applicatie)
-                .setOrganisatie(stuurgegevens.ontvanger.organisatie)
-                .setGebruiker(stuurgegevens.ontvanger.gebruiker);
-        this.ontvanger = new Ontvanger()
-                .setApplicatie(stuurgegevens.zender.applicatie)
-                .setOrganisatie(stuurgegevens.zender.organisatie)
-                .setGebruiker(stuurgegevens.zender.gebruiker);
+    public ZdsStuurgegevens(ZdsStuurgegevens zdsStuurgegevens) {
+        this.zdsZender = new ZdsZender()
+                .setApplicatie(zdsStuurgegevens.zdsOntvanger.applicatie)
+                .setOrganisatie(zdsStuurgegevens.zdsOntvanger.organisatie)
+                .setGebruiker(zdsStuurgegevens.zdsOntvanger.gebruiker);
+        this.zdsOntvanger = new ZdsOntvanger()
+                .setApplicatie(zdsStuurgegevens.zdsZender.applicatie)
+                .setOrganisatie(zdsStuurgegevens.zdsZender.organisatie)
+                .setGebruiker(zdsStuurgegevens.zdsZender.gebruiker);
 
-        this.entiteittype = stuurgegevens.entiteittype;
+        this.entiteittype = zdsStuurgegevens.entiteittype;
     }
 
-    public Stuurgegevens() {
+    public ZdsStuurgegevens() {
     }
 }

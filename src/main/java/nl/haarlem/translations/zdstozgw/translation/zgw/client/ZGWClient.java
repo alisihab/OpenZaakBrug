@@ -352,6 +352,7 @@ public class ZGWClient {
         return this.getZaakTypes(parameters).get(0);
     }
 
+    //TODO: filter by zaaktype
     public ZgwInformatieObjectType getZgwInformatieObjectTypeByOmschrijving(String omschrijving) {
         Map<String, String> parameters = new HashMap();
         parameters.put("status", "definitief");

@@ -10,19 +10,19 @@ import static nl.haarlem.translations.zdstozgw.translation.zds.model.namespace.N
 
 @Data
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Parameters {
+public class ZdsParameters {
     @XmlElement(namespace = STUF, nillable = true)
     public String indicatorVervolgvraag;
     @XmlElement(namespace = STUF, nillable = true)
     public String sortering;
 
-    public Parameters() {
+    public ZdsParameters() {
     }
 
     ;
 
-    public Parameters(Parameters parameters) {
-        this.sortering = parameters.sortering;
-        this.indicatorVervolgvraag = parameters.indicatorVervolgvraag;
+    public ZdsParameters(ZdsParameters zdsParameters) {
+        this.sortering = zdsParameters.sortering;
+        this.indicatorVervolgvraag = zdsParameters.indicatorVervolgvraag;
     }
 }

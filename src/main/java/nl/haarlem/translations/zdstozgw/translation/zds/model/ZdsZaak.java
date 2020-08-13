@@ -13,7 +13,7 @@ import static nl.haarlem.translations.zdstozgw.translation.zds.model.namespace.N
 
 @Data
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Zaak {
+public class ZdsZaak {
     @XmlAttribute(namespace = STUF)
     public String entiteittype = "ZAK";
 
@@ -78,28 +78,28 @@ public class Zaak {
     public AnderZaakObject anderZaakObject;
 
     @XmlElement(namespace = ZKN, nillable = true)
-    public Rol heeftBetrekkingOp;
+    public ZdsRol heeftBetrekkingOp;
 
     @XmlElement(namespace = ZKN, nillable = true)
-    public Rol heeftAlsBelanghebbende;
+    public ZdsRol heeftAlsBelanghebbende;
 
     @XmlElement(namespace = ZKN, nillable = true)
-    public Rol heeftAlsGemachtigde;
+    public ZdsRol heeftAlsGemachtigde;
 
     @XmlElement(namespace = ZKN, nillable = true)
-    public Rol heeftAlsInitiator;
+    public ZdsRol heeftAlsInitiator;
 
     @XmlElement(namespace = ZKN, nillable = true)
-    public Rol heeftAlsUitvoerende;
+    public ZdsRol heeftAlsUitvoerende;
 
     @XmlElement(namespace = ZKN, nillable = true)
-    public Rol heeftAlsVerantwoordelijke;
+    public ZdsRol heeftAlsVerantwoordelijke;
 
     @XmlElement(namespace = ZKN, nillable = true)
-    public Rol heeftAlsOverigBetrokkene;
+    public ZdsRol heeftAlsOverigBetrokkene;
 
     @XmlElement(namespace = ZKN)
-    public Rol isVan;
+    public ZdsRol isVan;
 
     @Data
     @XmlAccessorType(XmlAccessType.FIELD)

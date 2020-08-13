@@ -11,13 +11,13 @@ import static nl.haarlem.translations.zdstozgw.translation.zds.model.namespace.N
 @Data
 @XmlRootElement(namespace = ZKN, name = "zakLa01")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ZakLa01LijstZaakdocumenten {
+public class ZdsZakLa01LijstZaakdocumenten {
 
     @XmlElement(namespace = ZKN)
-    public Stuurgegevens stuurgegevens;
+    public ZdsStuurgegevens zdsStuurgegevens;
 
     @XmlElement(namespace = ZKN)
-    public Parameters parameters;
+    public ZdsParameters zdsParameters;
 
     @XmlElement(namespace = ZKN)
     public Antwoord antwoord;
@@ -26,7 +26,7 @@ public class ZakLa01LijstZaakdocumenten {
     @XmlAccessorType(XmlAccessType.FIELD)
     public static class Antwoord {
         @XmlElement(namespace = ZKN)
-        public ZakLa01LijstZaakdocumenten.Antwoord.Object object;
+        public ZdsZakLa01LijstZaakdocumenten.Antwoord.Object object;
 
         @Data
         @XmlAccessorType(XmlAccessType.FIELD)
@@ -45,7 +45,7 @@ public class ZakLa01LijstZaakdocumenten {
                 public String entiteittype;
 
                 @XmlElement(namespace = ZKN)
-                public ZaakDocument gerelateerde;
+                public ZdsZaakDocument gerelateerde;
 
                 @XmlElement(namespace = ZKN)
                 public String titel;
