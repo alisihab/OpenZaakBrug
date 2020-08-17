@@ -1,4 +1,4 @@
-package nl.haarlem.translations.zdstozgw.converter.impl;
+package nl.haarlem.translations.zdstozgw.converter.impl.translate;
 
 import nl.haarlem.translations.zdstozgw.config.model.Translation;
 import nl.haarlem.translations.zdstozgw.converter.Converter;
@@ -10,9 +10,9 @@ import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsZakLv01;
 import nl.haarlem.translations.zdstozgw.translation.zds.services.ZaakService;
 import nl.haarlem.translations.zdstozgw.utils.XmlUtils;
 
-public class GeefLijstZaakdocumentenConverter extends Converter {
+public class GeefLijstZaakdocumentenTranslator extends Converter {
 
-    public GeefLijstZaakdocumentenConverter(Translation translation, ZaakService zaakService) {
+    public GeefLijstZaakdocumentenTranslator(Translation translation, ZaakService zaakService) {
         super(translation, zaakService);
     }
 

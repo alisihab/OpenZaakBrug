@@ -1,25 +1,25 @@
-package nl.haarlem.translations.zdstozgw.converter.impl;
+package nl.haarlem.translations.zdstozgw.converter.impl.translate;
 
 import nl.haarlem.translations.zdstozgw.config.model.Translation;
 import nl.haarlem.translations.zdstozgw.converter.Converter;
 import nl.haarlem.translations.zdstozgw.converter.ConverterException;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsBv03;
-import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsEdcLk01;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsFo03;
+import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsZakLk01;
 import nl.haarlem.translations.zdstozgw.translation.zds.services.ZaakService;
 import nl.haarlem.translations.zdstozgw.utils.XmlUtils;
 
-public class VoegZaakdocumentToeConverter extends Converter {
+public class UpdateZaakTranslator extends Converter {
 
-    public VoegZaakdocumentToeConverter(Translation translation, ZaakService zaakService) {
+    public UpdateZaakTranslator(Translation translation, ZaakService zaakService) {
         super(translation, zaakService);
     }
 
     @Override
     public String convert(String action, String request) throws ConverterException {
-        var zdsEdcLk01 = (ZdsEdcLk01) XmlUtils.getStUFObject(request, ZdsEdcLk01.class);
-        this.getZaakService().voegZaakDocumentToe(zdsEdcLk01);
-        var bv03 = new ZdsBv03(zdsEdcLk01.zdsStuurgegevens);
+        var zdsZakLk01 = (ZdsZakLk01) XmlUtils.getStUFObject(request, ZdsZakLk01.class);
+        this.getZaakService().updateZaak(zdsZakLk01);
+        var bv03 = new ZdsBv03(zdsZakLk01.zdsStuurgegevens);
         return XmlUtils.getSOAPMessageFromObject(bv03);
     }
 }

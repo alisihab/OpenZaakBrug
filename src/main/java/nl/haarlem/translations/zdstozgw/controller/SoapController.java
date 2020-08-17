@@ -46,7 +46,7 @@ public class SoapController {
 		log.info("Processing request for path: /" + path + "/ with soapaction: " + soapAction);		
 		try {
 			var converter = this.converterFactory.getConverter(path, soapAction.replace("\"", ""));
-			RequestHandler requestHandler = requestHandlerFactory.getRequestHandler(converter);        
+			RequestHandler requestHandler = requestHandlerFactory.getRequestHandler(converter);     
 			var response = requestHandler.execute(body, path, soapAction);
 			return new ResponseEntity<>(response, HttpStatus.OK);
 		}
