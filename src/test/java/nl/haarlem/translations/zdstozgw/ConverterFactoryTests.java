@@ -31,7 +31,7 @@ public class ConverterFactoryTests {
     }
 
     @Test
-    public void getConverter_shouldInitiateCorrectConverter() throws IOException {
+    public void getConverter_shouldInitiateCorrectConverter() throws Exception {
         //assign
         String soapAction = "http://www.egem.nl/StUF/sector/zkn/0310/voegZaakdocumentToe_Lk01";
         String implementation = "nl.haarlem.translations.zdstozgw.converter.impl.VoegZaakdocumentToeConverter";
