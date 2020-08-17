@@ -15,7 +15,7 @@ public class ActualiseerZaakStatusConverter extends Converter {
     }
 
     @Override
-    public String convert(String request) {
+    public String convert(String action, String request) {
         ZdsZakLk01ActualiseerZaakstatus zakLk01 = new ZdsZakLk01ActualiseerZaakstatus();
         try {
             zakLk01 = (ZdsZakLk01ActualiseerZaakstatus) XmlUtils.getStUFObject(request, ZdsZakLk01ActualiseerZaakstatus.class);

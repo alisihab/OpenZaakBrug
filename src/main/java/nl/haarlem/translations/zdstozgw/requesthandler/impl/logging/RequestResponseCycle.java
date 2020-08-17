@@ -32,8 +32,6 @@ public class RequestResponseCycle {
     @Lob
     private String stackTrace;
 
-    // Welke modus draaiden we en hadden we een fout?
-    private String replicationModus;
     private String converterImplementation;
     private String converterTemplate;
 

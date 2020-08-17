@@ -15,6 +15,5 @@ public abstract class Converter {
         this.zaakService = zaakService;
     }
 
-    public abstract String convert(String request);
-
+	public abstract String convert(String soapAction, String request);    
 }

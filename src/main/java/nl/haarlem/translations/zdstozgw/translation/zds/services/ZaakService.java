@@ -46,7 +46,8 @@ public class ZaakService {
         var zaak = zdsZakLk01CreeerZaak.objects.get(0);
 
         ZgwZaak zgwZaak = modelMapper.map(zaak, ZgwZaak.class);
-        zgwZaak.zaaktype = zgwClient.getZgwZaakTypeByIdentificatie(zaak.isVan.zdsGerelateerde.code).url;
+        var zaaktypecode = zaak.isVan.zdsGerelateerde.code;
+        zgwZaak.zaaktype = zgwClient.getZgwZaakTypeByIdentificatie(zaaktypecode).url;
         zgwZaak.bronorganisatie = getRSIN(zdsZakLk01CreeerZaak.zdsStuurgegevens.zdsZender.organisatie);
         zgwZaak.verantwoordelijkeOrganisatie = getRSIN(zdsZakLk01CreeerZaak.zdsStuurgegevens.zdsOntvanger.organisatie);
         if (zaak.getKenmerk() != null && !zaak.getKenmerk().isEmpty()) {

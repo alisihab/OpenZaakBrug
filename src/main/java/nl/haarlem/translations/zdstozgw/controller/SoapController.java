@@ -7,7 +7,9 @@ import nl.haarlem.translations.zdstozgw.requesthandler.RequestHandlerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.lang.invoke.MethodHandles;
@@ -21,7 +23,7 @@ public class SoapController {
     private final ConfigService configService;
     private final RequestHandlerFactory requestHandlerFactory;
 
-    private String response = "NOT IMPLEMENTED";
+//    private String response = "NOT IMPLEMENTED";
 
     @Autowired
     public SoapController(ConverterFactory converterFactory, ConfigService configService, RequestHandlerFactory requestHandlerFactory) {
@@ -30,12 +32,18 @@ public class SoapController {
         this.requestHandlerFactory = requestHandlerFactory;
     }
 
-    @PostMapping(value = "/{requestUrl}", consumes = MediaType.TEXT_XML_VALUE, produces = MediaType.TEXT_XML_VALUE)
-    public String HandleRequest(@PathVariable("requestUrl") String requestUrl,
-                                @RequestHeader(name = "SOAPAction", required = true) String soapAction,
-                                @RequestBody String body) {
-
-        RequestHandler requestHandler = requestHandlerFactory.getRequestHandler(this.converterFactory.getConverter(soapAction.replace("\"", ""), body));
-        return requestHandler.execute(body, requestUrl, soapAction);
+	@PostMapping(path = {"/{path}", "/{path}/{path2}"}, consumes = MediaType.TEXT_XML_VALUE, produces = MediaType.TEXT_XML_VALUE)    
+    public ResponseEntity<?> HandleRequest(
+			// we dont use path2, only used so it can be used as wildcard
+			@PathVariable String path,
+			@RequestHeader(name = "SOAPAction", required = true) String soapAction, 
+			@RequestBody String body) {
+		
+		log.info("Starting with a request for path: /" + path + "/ with soapaction: " + soapAction);
+		var converter = this.converterFactory.getConverter(path, soapAction.replace("\"", ""));
+        RequestHandler requestHandler = requestHandlerFactory.getRequestHandler(converter);
+        
+        var response = requestHandler.execute(body, path, soapAction);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

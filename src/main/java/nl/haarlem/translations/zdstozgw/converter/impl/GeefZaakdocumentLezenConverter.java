@@ -16,7 +16,7 @@ public class GeefZaakdocumentLezenConverter extends Converter {
     }
 
     @Override
-    public String convert(String request) {
+    public String convert(String action, String request) {
         ZdsEdcLv01 zdsEdcLv01 = new ZdsEdcLv01();
         try {
             zdsEdcLv01 = (ZdsEdcLv01) XmlUtils.getStUFObject(request, ZdsEdcLv01.class);

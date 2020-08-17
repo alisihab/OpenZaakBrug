@@ -8,28 +8,16 @@ import java.util.List;
 
 @Data
 public class Configuratie {
-
-    @SerializedName("zaakTypes")
+    @SerializedName("requestHandlerImplementation")
     @Expose
-    public List<ZaakType> zaakTypes = null;
-    @SerializedName("organisaties")
-    @Expose
+    public String requestHandlerImplementation = null;    
+	@SerializedName("organisaties")
+    @Expose    
     public List<Organisatie> organisaties = null;
-    @SerializedName("documentTypes")
+    @SerializedName("zgwRolOmschrijving")
     @Expose
-    public List<DocumentType> documentTypes = null;
+    public ZgwRolOmschrijving zgwRolOmschrijving = null;	
     @SerializedName("translations")
     @Expose
     public List<Translation> translations = null;
-    @SerializedName("replication")
-    @Expose
-    public Replication replication = null;
-    @SerializedName("requestHandlerImplementation")
-    @Expose
-    public String requestHandlerImplementation = null;
-    @SerializedName("zgwRolOmschrijving")
-    @Expose
-    public ZgwRolOmschrijving zgwRolOmschrijving = null;
-
-
 }

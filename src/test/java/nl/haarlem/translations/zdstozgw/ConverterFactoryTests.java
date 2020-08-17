@@ -42,7 +42,7 @@ public class ConverterFactoryTests {
         Translation translation = new Translation()
                 .setSoapAction(soapAction)
                 .setImplementation(implementation);
-        doReturn(translation).when(configService).getDefaultOrApplicationSpecificTranslationBySoapActionAndApplication(any(), any());
+        doReturn(translation).when(configService).getTranslationByPathAndSoapAction(any(), any());
 
         //act
         Converter converter = converterFactory.getConverter(soapAction, content);

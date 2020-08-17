@@ -9,7 +9,10 @@ public class Translation {
     @SerializedName("translation")
     @Expose
     public String translation;
-    @SerializedName("soapAction")
+    @SerializedName("path")
+    @Expose
+    public String path;
+    @SerializedName("soapaction")
     @Expose
     public String soapAction;
     @SerializedName("applicatie")

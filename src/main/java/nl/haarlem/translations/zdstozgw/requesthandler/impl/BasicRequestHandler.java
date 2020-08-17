@@ -14,7 +14,7 @@ public class BasicRequestHandler extends RequestHandler {
     }
 
     @Override
-    public String execute(String request, String requestUrl, String requestSoapAction) {
-        return this.converter.convert(request);
+    public String execute(String path, String soapAction, String request) {
+        return this.converter.convert(soapAction, request);
     }
 }

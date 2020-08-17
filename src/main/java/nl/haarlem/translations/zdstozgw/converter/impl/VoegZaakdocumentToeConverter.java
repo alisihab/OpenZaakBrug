@@ -15,7 +15,7 @@ public class VoegZaakdocumentToeConverter extends Converter {
     }
 
     @Override
-    public String convert(String request) {
+    public String convert(String action, String request) {
         ZdsEdcLk01 zdsEdcLk01 = new ZdsEdcLk01();
         try {
             zdsEdcLk01 = (ZdsEdcLk01) XmlUtils.getStUFObject(request, ZdsEdcLk01.class);

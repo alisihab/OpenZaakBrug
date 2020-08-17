@@ -5,13 +5,14 @@ import lombok.Data;
 import nl.haarlem.translations.zdstozgw.config.model.Configuratie;
 import nl.haarlem.translations.zdstozgw.config.model.Organisatie;
 import nl.haarlem.translations.zdstozgw.config.model.Translation;
-import nl.haarlem.translations.zdstozgw.config.model.ZaakType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.lang.invoke.MethodHandles;
 import java.util.List;
 import java.util.Scanner;
@@ -26,80 +27,102 @@ public class ConfigService {
 
     private Configuratie configuratie;
 
-    public ConfigService() throws Exception {
+    public ConfigService() throws Exception {   
+    	var cpr = new ClassPathResource("config.json");
+    	var filename = cpr.getFile().getAbsoluteFile();
+    	log.info("Loading config from:" + filename);
+        BufferedReader bufferedReader = new BufferedReader(new FileReader(filename));
 
-        Scanner scanner = null;
-        try {
-            File resource = new ClassPathResource("config.json").getFile();
-            scanner = new Scanner(resource);
-        } catch (Exception ex) {
-            log.error("######################################################################################");
-            log.error("#####                                                                            #####");
-            log.error("##### Unable to load configuration. Make sure 'config.json' is on the classpath  #####");
-            log.error("#####                                                                            #####");
-            log.error("######################################################################################");
-            throw ex;
-        }
+        Gson gson = new Gson();
+        this.configuratie = gson.fromJson(bufferedReader, Configuratie.class);
 
-        try {
-            String result = "";
-            while (scanner.hasNextLine()) {
-                result += scanner.nextLine();
-            }
-            Gson gson = new Gson();
-            configuratie = gson.fromJson(result, Configuratie.class);
-
-        } catch (Exception ex) {
-            throwException();
-        }
+//    	
+//        Scanner scanner = null;
+//        try {
+//            File resource = new ClassPathResource("config.json").getFile();
+//            scanner = new Scanner(resource);
+//        } catch (Exception ex) {
+//        	log.error("error loading content from file", ex);
+//        	log.error("######################################################################################");
+//            log.error("#####                                                                            #####");
+//            log.error("##### Unable to load configuration. Make sure 'config.json' is on the classpath  #####");
+//            log.error("#####                                                                            #####");
+//            log.error("######################################################################################");
+//            throw ex;
+//        }
+//        try {
+//            String result = "";
+//            while (scanner.hasNextLine()) {
+//                result += scanner.nextLine();
+//            }
+//            Gson gson = new Gson();
+//            this.configuratie = gson.fromJson(result, Configuratie.class);
+//            
+//            if(configuratie == null) {
+//            	log.error("configuratie == null");
+//            	log.error("json:" + result);
+//            	throwException();
+//            }
+//
+//        } catch (Exception ex) {
+//        	log.error("error loading json from string", ex);
+//        	throwException();
+//        }
         validateConfiguration();
     }
 
-    private void throwException() throws Exception {
-        log.error("##########################################################################################");
-        log.error("#####                                                                                #####");
-        log.error("##### Unable to load configuration. Make sure 'config.json' contains a valid config  #####");
-        log.error("#####                                                                                #####");
-        log.error("##########################################################################################");
-        throw new Exception();
-    }
-
+//    private void throwException() throws Exception {
+//        log.error("##########################################################################################");
+//        log.error("#####                                                                                #####");
+//        log.error("##### Unable to load configuration. Make sure 'config.json' contains a valid config  #####");
+//        log.error("#####                                                                                #####");
+//        log.error("##########################################################################################");
+//        throw new Exception();
+//    }
+//
     private void validateConfiguration() throws Exception {
-        try {
-            configuratie.getOrganisaties().size();
-            for (Organisatie organisatie : configuratie.getOrganisaties()) {
-                organisatie.getGemeenteCode();
-                organisatie.getRSIN();
-            }
-            configuratie.getZaakTypes().size();
-            for (ZaakType zaakType : configuratie.getZaakTypes()) {
-                zaakType.getZaakType();
-                zaakType.getCode();
-            }
-        } catch (Exception ex) {
-            throwException();
+//        try {
+    	this.configuratie.getRequestHandlerImplementation();
+    	
+    	this.configuratie.getOrganisaties().size();
+        for (Organisatie organisatie : this.configuratie.getOrganisaties()) {
+        	organisatie.getGemeenteNaam();
+            organisatie.getGemeenteCode();
+            organisatie.getRSIN();
         }
+        
+        var rolomschrijving = this.configuratie.getZgwRolOmschrijving();            
+        rolomschrijving.getHeeftAlsBelanghebbende();
+        rolomschrijving.getHeeftAlsInitiator();
+        rolomschrijving.getHeeftAlsUitvoerende();
+        rolomschrijving.getHeeftAlsVerantwoordelijke();
+        rolomschrijving.getHeeftAlsGemachtigde();
+        rolomschrijving.getHeeftAlsOverigBetrokkene();
+        
+        this.configuratie.getTranslations().size();
+        for (Translation translation: this.configuratie.getTranslations()) {
+        	translation.getTranslation();
+        	translation.getPath();
+        	translation.getSoapAction();
+        	translation.getTemplate();
+        	translation.getImplementation();
+        	translation.getLegacyservice();
+        }
+//        } catch (Exception ex) {
+//        	log.error("error validating config", ex);
+//            throwException();
+//        }
 
     }
 
-    public Translation getDefaultOrApplicationSpecificTranslationBySoapActionAndApplication(String soapAction, String application) {
-        Translation foundTranslation;
-        List<Translation> translations = this.getConfiguratie().getTranslations().stream()
-                .filter(translation -> translation.getSoapAction().equalsIgnoreCase(soapAction))
-                .collect(Collectors.toList());
-
-        foundTranslation = translations.stream()
-                .filter(translation -> translation.getApplicatie().equalsIgnoreCase(application))
-                .findFirst()
-                .orElse(null);
-
-        if (foundTranslation == null) {
-            foundTranslation = translations.stream()
-                    .filter(translation -> translation.getApplicatie().equalsIgnoreCase(""))
-                    .findFirst()
-                    .orElseThrow(() -> new RuntimeException("No default or application specif translation found for soapAction:" + soapAction + " and application: " + application));
-        }
-
-        return foundTranslation;
+    public Translation getTranslationByPathAndSoapAction(String path, String soapAction) {
+		log.debug("searching first translaton for : /" + path + "/ with soapaction: " + soapAction);
+		for (Translation translation : configuratie.getTranslations()) {
+			log.debug("\t checking path '" + translation.getPath() + "' with action: '" + translation.getSoapAction() + "'");
+			if (path.equals(translation.getPath()) && soapAction.equals(translation.getSoapAction())) {
+				return translation;
+			}
+		}
+    	return null;
     }
 }

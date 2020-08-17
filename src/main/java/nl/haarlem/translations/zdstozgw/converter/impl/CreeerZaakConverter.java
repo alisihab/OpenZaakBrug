@@ -15,7 +15,7 @@ public class CreeerZaakConverter extends Converter {
     }
 
     @Override
-    public String convert(String request) {
+    public String convert(String action, String request) {
         ZdsZakLk01 zdsZakLk01 = new ZdsZakLk01();
         try {
             zdsZakLk01 = (ZdsZakLk01) XmlUtils.getStUFObject(request, ZdsZakLk01.class);
