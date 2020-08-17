@@ -3,6 +3,7 @@ package nl.haarlem.translations.zdstozgw;
 
 import nl.haarlem.translations.zdstozgw.config.ConfigService;
 import nl.haarlem.translations.zdstozgw.config.model.Configuratie;
+import nl.haarlem.translations.zdstozgw.converter.ConverterException;
 import nl.haarlem.translations.zdstozgw.requesthandler.RequestHandler;
 import nl.haarlem.translations.zdstozgw.requesthandler.RequestHandlerFactory;
 import org.junit.Assert;
@@ -27,7 +28,7 @@ public class RequestHandlerConverterTests {
     }
 
     @Test
-    public void getRequestHandler_shouldReturnCorrectRequestHandler() {
+    public void getRequestHandler_shouldReturnCorrectRequestHandler() throws Exception {
         //assign
         String expectedClass = "nl.haarlem.translations.zdstozgw.requesthandler.impl.BasicRequestHandler";
         Configuratie configuratie = new Configuratie()
