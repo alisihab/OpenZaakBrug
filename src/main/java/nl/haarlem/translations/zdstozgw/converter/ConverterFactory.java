@@ -26,7 +26,7 @@ public class ConverterFactory {
         this.zaakService = zaakService;
     }
 
-    public Converter getConverter(String path, String soapAction) {
+    public Converter getConverter(String path, String soapAction) throws ConverterException {
         Translation translation = this.configService.getTranslationByPathAndSoapAction(path, soapAction);
         
         if(translation == null) {
@@ -34,10 +34,10 @@ public class ConverterFactory {
         	for(Translation t : this.configService.getConfiguratie().getTranslations()) {
         		combinations += "\n\tpath: '" + t.getPath()+ "' soapaction: '" + t.getSoapAction() + "'";
         	}
+        	log.error("Could not load a convertor for path: '" + path + "' with soapaction: '" + soapAction + "'");        	
+        	throw new ConverterException("Could not load a convertor for path: '" + path + "' with soapaction: '" + soapAction + "'\navailable services:" + combinations);
         }
-
         String classname = translation.implementation;
-
         try {
             Class<?> c = Class.forName(classname);
             java.lang.reflect.Constructor<?> ctor = c.getConstructor(Translation.class, ZaakService.class);
@@ -46,9 +46,7 @@ public class ConverterFactory {
         } 
         catch (Exception e) {        	
         	log.error("error loading class:" + classname, e);
-            // e.printStackTrace();
-            // return null;
-        	throw new RuntimeException(e);
+        	throw new ConverterException("Error loading class:" + classname, e);
         }
     }
 }

@@ -15,5 +15,5 @@ public abstract class RequestHandler {
         this.configService = configService;
     }
 
-    public abstract String execute(String path, String soapAction, String request);
+    public abstract String execute(String path, String soapAction, String request) throws nl.haarlem.translations.zdstozgw.converter.ConverterException;
 }

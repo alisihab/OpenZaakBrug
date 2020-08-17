@@ -3,6 +3,7 @@ package nl.haarlem.translations.zdstozgw.translation.zds.services;
 import nl.haarlem.translations.zdstozgw.config.ConfigService;
 import nl.haarlem.translations.zdstozgw.config.model.Organisatie;
 import nl.haarlem.translations.zdstozgw.config.model.ZgwRolOmschrijving;
+import nl.haarlem.translations.zdstozgw.converter.ConverterException;
 import nl.haarlem.translations.zdstozgw.translation.BetrokkeneType;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.*;
 import nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient;
@@ -42,7 +43,7 @@ public class ZaakService {
         this.configService = configService;
     }
 
-    public ZgwZaak creeerZaak(ZdsZakLk01 zdsZakLk01CreeerZaak) throws Exception {
+    public ZgwZaak creeerZaak(ZdsZakLk01 zdsZakLk01CreeerZaak) {
         var zaak = zdsZakLk01CreeerZaak.objects.get(0);
 
         ZgwZaak zgwZaak = modelMapper.map(zaak, ZgwZaak.class);
@@ -87,7 +88,7 @@ public class ZaakService {
         zgwClient.addZgwRol(zgwRol);
     }
 
-    public ZdsZakLa01LijstZaakdocumenten geefLijstZaakdocumenten(ZdsZakLv01 zdsZakLv01) throws Exception {
+    public ZdsZakLa01LijstZaakdocumenten geefLijstZaakdocumenten(ZdsZakLv01 zdsZakLv01)  {
         ZgwZaak zgwZaak = zgwClient.getZaak(zdsZakLv01.zdsGelijk.identificatie);
 
         ZdsZakLa01LijstZaakdocumenten zdsZakLa01LijstZaakdocumenten = new ZdsZakLa01LijstZaakdocumenten();
@@ -112,7 +113,7 @@ public class ZaakService {
         return zdsZakLa01LijstZaakdocumenten;
     }
 
-    public ZgwZaakInformatieObject voegZaakDocumentToe(ZdsEdcLk01 zdsEdcLk01) throws Exception {
+    public ZgwZaakInformatieObject voegZaakDocumentToe(ZdsEdcLk01 zdsEdcLk01)  throws ConverterException {
         var informatieObjectType = zgwClient.getZgwInformatieObjectTypeByOmschrijving(zdsEdcLk01.objects.get(0).omschrijving);
         if(informatieObjectType == null) throw new RuntimeException("Documenttype not found for omschrijving: "+ zdsEdcLk01.objects.get(0).omschrijving);
         ZgwEnkelvoudigInformatieObject zgwEnkelvoudigInformatieObject = modelMapper.map(zdsEdcLk01.objects.get(0), ZgwEnkelvoudigInformatieObject.class);
@@ -124,7 +125,7 @@ public class ZaakService {
         return addZaakInformatieObject(zgwEnkelvoudigInformatieObject, zaakUrl);
     }
 
-    private ZgwZaakInformatieObject addZaakInformatieObject(ZgwEnkelvoudigInformatieObject doc, String zaakUrl) throws Exception {
+    private ZgwZaakInformatieObject addZaakInformatieObject(ZgwEnkelvoudigInformatieObject doc, String zaakUrl) throws ConverterException {
         var zgwZaakInformatieObject = new ZgwZaakInformatieObject();
         zgwZaakInformatieObject.setZaak(zaakUrl);
         zgwZaakInformatieObject.setInformatieobject(doc.getUrl());
@@ -132,7 +133,7 @@ public class ZaakService {
         return zgwClient.addDocumentToZaak(zgwZaakInformatieObject);
     }
 
-    public ZdsEdcLa01 getZaakDocumentLezen(ZdsEdcLv01 zdsEdcLv01) throws IOException {
+    public ZdsEdcLa01 getZaakDocumentLezen(ZdsEdcLv01 zdsEdcLv01) throws ConverterException {
         //Get Enkelvoudig informatie object. This contains document meta data and a link to the document
         ZgwEnkelvoudigInformatieObject zgwEnkelvoudigInformatieObject = zgwClient.getZgwEnkelvoudigInformatieObject(zdsEdcLv01.zdsGelijk.identificatie);
         var inhoud = zgwClient.getBas64Inhoud(zgwEnkelvoudigInformatieObject.getInhoud());
@@ -268,7 +269,7 @@ public class ZaakService {
         return "";
     }
 
-    public void updateZaak(ZdsZakLk01 ZdsZakLk01) throws IllegalAccessException, NoSuchMethodException, InstantiationException, InvocationTargetException {
+    public void updateZaak(ZdsZakLk01 ZdsZakLk01) throws ConverterException {
         var zdsWasZaak = ZdsZakLk01.objects.get(0);
         var zdsWijzigingInZaak = ZdsZakLk01.objects.get(1);
         ZgwZaak zgwZaak = zgwClient.getZaak(zdsWasZaak.identificatie);

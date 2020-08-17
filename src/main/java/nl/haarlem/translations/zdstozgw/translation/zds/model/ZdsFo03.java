@@ -22,12 +22,13 @@ public class ZdsFo03 {
     public Body body;
 
     public ZdsFo03() {
+        this.zdsStuurgegevens = new ZdsStuurgegevens();
+    	this.zdsStuurgegevens.tijdstipBericht = StufUtils.getStufDateTime();    	
+    	this.zdsStuurgegevens.berichtcode = "Fo03";
     }
 
     public ZdsFo03(ZdsStuurgegevens zdsStuurgegevens) {
-        this.zdsStuurgegevens = zdsStuurgegevens;
-        this.zdsStuurgegevens.tijdstipBericht = StufUtils.getStufDateTime();
-        this.zdsStuurgegevens.berichtcode = "Fo03";
+    	this();
         this.zdsStuurgegevens.referentienummer = zdsStuurgegevens.referentienummer;
     }
 
@@ -43,16 +44,12 @@ public class ZdsFo03 {
         public String omschrijving;
         @XmlElement(namespace = STUF)
         public String details;
+        @XmlElement(namespace = STUF)
+		public String entiteittype;
+        @XmlElement(namespace = STUF)        
+		public String detailsXML;
 
         public Body() {
         }
-
-        public Body(Exception ex) {
-            this.code = "StUF046";
-            this.details = "Object was not saved";
-            this.omschrijving = "Object niet opgeslagen";
-            this.details = ex.getMessage();
-        }
-
     }
 }

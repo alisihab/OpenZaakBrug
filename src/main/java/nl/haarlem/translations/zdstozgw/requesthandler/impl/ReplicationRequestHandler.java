@@ -4,6 +4,7 @@ import nl.haarlem.translations.zdstozgw.config.ConfigService;
 import nl.haarlem.translations.zdstozgw.config.SpringContext;
 import nl.haarlem.translations.zdstozgw.config.model.Configuratie;
 import nl.haarlem.translations.zdstozgw.converter.Converter;
+import nl.haarlem.translations.zdstozgw.converter.ConverterException;
 import nl.haarlem.translations.zdstozgw.requesthandler.RequestHandler;
 import nl.haarlem.translations.zdstozgw.requesthandler.impl.logging.RequestResponseCycle;
 import nl.haarlem.translations.zdstozgw.requesthandler.impl.logging.RequestResponseCycleService;
@@ -33,7 +34,7 @@ public class ReplicationRequestHandler extends RequestHandler {
     }
 
     @Override
-    public String execute(String path, String soapAction, String request) {
+    public String execute(String path, String soapAction, String request) throws ConverterException {
         Configuratie configuratie = configService.getConfiguratie();
         //validateReplicationConfiguration(configuratie);
         LocalDateTime start = LocalDateTime.now();
@@ -50,7 +51,7 @@ public class ReplicationRequestHandler extends RequestHandler {
 //      this.request = request;
 //        String responseZDS = null, responseZGW = null, response = null;
 
-        String response;
+        //String response;
         try {
 //            if (configuratie.getReplication().enableZDS) {
 //                responseZDS = this.postZdsRequest();
@@ -68,8 +69,12 @@ public class ReplicationRequestHandler extends RequestHandler {
 //                    response = responseZGW;
 //                    break;
 //            }
-        	response = this.converter.convert(soapAction, request);
+        	String response = this.converter.convert(soapAction, request);
             requestResponseCycle.setClientResponseBodyZDS(response);
+            requestResponseCycle.setDurationInMilliseconds(Duration.between(start, LocalDateTime.now()).toMillis());
+            this.requestResponseCycleService.add(requestResponseCycle);
+            
+            return response;
             //requestResponseCycle.setClientResponseBodyZGW(responseZGW);
         } 
         catch (Exception e) {
@@ -77,12 +82,12 @@ public class ReplicationRequestHandler extends RequestHandler {
             e.printStackTrace(new PrintWriter(sw));
             String exceptionAsString = sw.toString();
             requestResponseCycle.setStackTrace(exceptionAsString);
-            throw e;
-        } finally {
+
             requestResponseCycle.setDurationInMilliseconds(Duration.between(start, LocalDateTime.now()).toMillis());
             this.requestResponseCycleService.add(requestResponseCycle);
+            
+            throw new ConverterException("fout bij teruggeven bij ???", e);
         }
-        return response;
     }
 
 

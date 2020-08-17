@@ -8,6 +8,9 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
+import nl.haarlem.translations.zdstozgw.converter.ConverterException;
+import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsFo03;
+
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
@@ -108,18 +111,29 @@ public class XmlUtils {
         return result;
     }
 
+    public static String getSOAPMessageFromObject(Object object) throws ConverterException {
 
-    public static String getSOAPMessageFromObject(Object object, boolean isSoapFault) {
-
-        String result = "";
         try {
             Document document = marshalJAXBToXMLDocument(object);
-            SOAPMessage message = getSoapMessage(document, isSoapFault);
-            result = getStringFromSOAP(message);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return result;
+            SOAPMessage message = getSoapMessage(document);
+            return getStringFromSOAP(message);
+		}
+		catch(Exception e) {
+			throw new ConverterException("kon niet het soap resulaat maken", e);
+		}
+    }
+
+    
+    public static String getSOAPFaultMessageFromObject(Object object) {
+		try {
+			Document document = marshalJAXBToXMLDocument(object);
+			SOAPMessage message = getSoapFaultMessage(document);
+			return getStringFromSOAP(message);
+		}
+		catch(Exception e) {
+			log.error("kon niet het soapfault resulaat maken", e);
+			throw new RuntimeException("kon niet het soapfault resulaat maken", e);
+		}
     }
 
     private static String getStringFromSOAP(SOAPMessage message) throws SOAPException, IOException {
@@ -155,25 +169,39 @@ public class XmlUtils {
         return db.newDocument();
     }
 
-    private static SOAPMessage getSoapMessage(Document document, boolean isSoapFault) throws SOAPException {
+    private static SOAPMessage getSoapMessage(Document document) throws SOAPException {
         //SOAP
         MessageFactory mf = MessageFactory.newInstance();
         SOAPMessage message = mf.createMessage();
         SOAPPart part = message.getSOAPPart();
         SOAPEnvelope env = part.getEnvelope();
         SOAPBody body = env.getBody();
-        if (isSoapFault) {
-            SOAPFault fault = body.addFault();
-            fault.setFaultString("Object niet gevonden");
-            fault.setFaultCode(SOAPConstants.SOAP_RECEIVER_FAULT);
-            Detail detail = fault.addDetail();
-            detail.setTextContent(xmlToString(document));
-        } else {
-            body.addDocument(document);
-        }
+
+        body.addDocument(document);
+        
         return message;
     }
 
+    private static SOAPMessage getSoapFaultMessage(Document document) throws SOAPException {
+        //SOAP
+        MessageFactory mf = MessageFactory.newInstance();
+        SOAPMessage message = mf.createMessage();
+        SOAPPart part = message.getSOAPPart();
+        SOAPEnvelope env = part.getEnvelope();
+        SOAPBody body = env.getBody();
+
+        SOAPFault fault = body.addFault();
+        fault.setFaultString("Object niet gevonden");
+        fault.setFaultCode(SOAPConstants.SOAP_RECEIVER_FAULT);
+        Detail detail = fault.addDetail();
+        
+        Node imported = detail.getOwnerDocument().importNode(document.getFirstChild(), true);
+        detail.appendChild(imported);
+
+        return message;
+    }
+    
+    
     public static Object getStUFObject(String body, Class c) {
         Object object = null;
         try {
