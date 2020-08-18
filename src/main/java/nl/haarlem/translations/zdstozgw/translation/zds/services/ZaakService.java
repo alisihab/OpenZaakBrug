@@ -43,9 +43,48 @@ public class ZaakService {
         this.configService = configService;
     }
 
-    public ZgwZaak creeerZaak(ZdsZakLk01 zdsZakLk01CreeerZaak) {
+	private String getDateStringFromZdsDate(String zdsDate) {
+		if(zdsDate == null) return null;
+		if(zdsDate.length() == 0) return null;
+		var year = zdsDate.substring(0, 4);
+		var month = zdsDate.substring(4, 6);
+		var day = zdsDate.substring(6, 8);
+		return year + "-" + month + "-" + day;
+	}	
+
+	private String getDateStringFromZgwDate(String zgwDate) {
+		if(zgwDate ==null) return null;
+		return zgwDate.replace("-", "");
+	}	
+	
+	
+	private String getArchiefNominatieFromZds(String archiefNominatie) {
+		if(archiefNominatie == null) return null;
+		if (archiefNominatie.toUpperCase().equals("J")) {
+			return "vernietigen";
+		} else {
+			return "blijvend_bewaren";
+		}
+	}
+
+	private String getArchiefNominatieFromZgw(String archiefNominatie) {
+		if (archiefNominatie == null) return null;
+		if(archiefNominatie.equals("vernietigen")) {
+			return "J";
+		} else {
+			return "N";
+		}
+	}    
+    
+    public ZgwZaak creeerZaak(ZdsZakLk01 zdsZakLk01CreeerZaak)   {
         var zaak = zdsZakLk01CreeerZaak.objects.get(0);
 
+        // TODO: vraag Aster wat te doen hier!
+        zaak.registratiedatum = getDateStringFromZdsDate(zaak.registratiedatum);
+        zaak.startdatum = getDateStringFromZdsDate(zaak.startdatum);
+        zaak.einddatumGepland = getDateStringFromZdsDate(zaak.einddatumGepland);
+        zaak.archiefnominatie = getArchiefNominatieFromZds(zaak.archiefnominatie);
+        
         ZgwZaak zgwZaak = modelMapper.map(zaak, ZgwZaak.class);
         var zaaktypecode = zaak.isVan.gerelateerde.code;
         zgwZaak.zaaktype = zgwClient.getZgwZaakTypeByIdentificatie(zaaktypecode).url;
@@ -70,7 +109,7 @@ public class ZaakService {
         return createdZaak;
     }
 
-    private void addRolToZgw(ZdsRol zdsRol, String rolOmschrijvingGeneriek, ZgwZaak createdZaak) {
+    private void addRolToZgw(ZdsRol zdsRol, String rolOmschrijvingGeneriek, ZgwZaak createdZaak)   {
         if (zdsRol == null) return;
         ZgwRol zgwRol = new ZgwRol();
         if (zdsRol.gerelateerde.zdsMedewerker != null) {
@@ -113,7 +152,7 @@ public class ZaakService {
         return zdsZakLa01LijstZaakdocumenten;
     }
 
-    public ZgwZaakInformatieObject voegZaakDocumentToe(ZdsEdcLk01 zdsEdcLk01)  throws ConverterException {
+    public ZgwZaakInformatieObject voegZaakDocumentToe(ZdsEdcLk01 zdsEdcLk01)   {
         var informatieObjectType = zgwClient.getZgwInformatieObjectTypeByOmschrijving(zdsEdcLk01.objects.get(0).omschrijving);
         if(informatieObjectType == null) throw new RuntimeException("Documenttype not found for omschrijving: "+ zdsEdcLk01.objects.get(0).omschrijving);
         ZgwEnkelvoudigInformatieObject zgwEnkelvoudigInformatieObject = modelMapper.map(zdsEdcLk01.objects.get(0), ZgwEnkelvoudigInformatieObject.class);
@@ -125,7 +164,7 @@ public class ZaakService {
         return addZaakInformatieObject(zgwEnkelvoudigInformatieObject, zaakUrl);
     }
 
-    private ZgwZaakInformatieObject addZaakInformatieObject(ZgwEnkelvoudigInformatieObject doc, String zaakUrl) throws ConverterException {
+    private ZgwZaakInformatieObject addZaakInformatieObject(ZgwEnkelvoudigInformatieObject doc, String zaakUrl)  {
         var zgwZaakInformatieObject = new ZgwZaakInformatieObject();
         zgwZaakInformatieObject.setZaak(zaakUrl);
         zgwZaakInformatieObject.setInformatieobject(doc.getUrl());
@@ -133,7 +172,7 @@ public class ZaakService {
         return zgwClient.addDocumentToZaak(zgwZaakInformatieObject);
     }
 
-    public ZdsEdcLa01 getZaakDocumentLezen(ZdsEdcLv01 zdsEdcLv01) throws ConverterException {
+    public ZdsEdcLa01 getZaakDocumentLezen(ZdsEdcLv01 zdsEdcLv01)  {
         //Get Enkelvoudig informatie object. This contains document meta data and a link to the document
         ZgwEnkelvoudigInformatieObject zgwEnkelvoudigInformatieObject = zgwClient.getZgwEnkelvoudigInformatieObject(zdsEdcLv01.zdsGelijk.identificatie);
         var inhoud = zgwClient.getBas64Inhoud(zgwEnkelvoudigInformatieObject.getInhoud());
@@ -161,7 +200,7 @@ public class ZaakService {
         return edcLa01;
     }
 
-    public ZgwZaak actualiseerZaakstatus(ZdsZakLk01ActualiseerZaakstatus zakLk01) {
+    public ZgwZaak actualiseerZaakstatus(ZdsZakLk01ActualiseerZaakstatus zakLk01)   {
         ZdsZakLk01ActualiseerZaakstatus.Object object = zakLk01.objects.get(1);
         ZgwZaak zgwZaak = zgwClient.getZaak(object.identificatie);
 
@@ -269,7 +308,7 @@ public class ZaakService {
         return "";
     }
 
-    public void updateZaak(ZdsZakLk01 ZdsZakLk01) throws ConverterException {
+    public void updateZaak(ZdsZakLk01 ZdsZakLk01) {
         var zdsWasZaak = ZdsZakLk01.objects.get(0);
         var zdsWijzigingInZaak = ZdsZakLk01.objects.get(1);
         ZgwZaak zgwZaak = zgwClient.getZaak(zdsWasZaak.identificatie);
@@ -291,7 +330,7 @@ public class ZaakService {
 
         if (rolChanges.size() > 0) {
             changeDetector.filterChangesByType(rolChanges, ChangeDetector.ChangeType.NEW).forEach((change, changeType) -> {
-                addRolToZgw((ZdsRol) change.getValue(), getRolOmschrijvingGeneriekByRolName(change.getField().getName()), zgwZaak);
+            	addRolToZgw((ZdsRol) change.getValue(), getRolOmschrijvingGeneriekByRolName(change.getField().getName()), zgwZaak);
             });
 
             changeDetector.filterChangesByType(rolChanges, ChangeDetector.ChangeType.DELETED).forEach((change, changeType) -> {
@@ -299,13 +338,13 @@ public class ZaakService {
             });
 
             changeDetector.filterChangesByType(rolChanges, ChangeDetector.ChangeType.CHANGED).forEach((change, changeType) -> {
-                updateRolInZgw(getRolOmschrijvingGeneriekByRolName(change.getField().getName()), zgwZaak, change.getValue());
+            	updateRolInZgw(getRolOmschrijvingGeneriekByRolName(change.getField().getName()), zgwZaak, change.getValue());
             });
         }
 
     }
 
-    private void updateRolInZgw(String omschrijvingGeneriek, ZgwZaak zgwZaak, Object value) {
+    private void updateRolInZgw(String omschrijvingGeneriek, ZgwZaak zgwZaak, Object value)   {
         //no put action for rollen, so first delete then add
         log.debug("Attempting to update rol by deleting and adding as new");
         deleteRolFromZgw(omschrijvingGeneriek, zgwZaak);

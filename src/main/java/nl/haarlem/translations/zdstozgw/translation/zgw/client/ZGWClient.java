@@ -65,16 +65,27 @@ public class ZGWClient {
     @Autowired
     RestTemplateService restTemplateService;
 
-    private String post(String url, String json) throws HttpStatusCodeException {
+    private String post(String url, String json)   {
         log.debug("POST: " + url + ", json: " + json);
         HttpEntity<String> request = new HttpEntity<String>(json, restTemplateService.getHeaders());
         String zgwResponse = null;
-        zgwResponse = restTemplateService.getRestTemplate().postForObject(url, request, String.class);
-        log.debug("POST response: " + zgwResponse);
-        return zgwResponse;
+        try {
+        	zgwResponse = restTemplateService.getRestTemplate().postForObject(url, request, String.class);
+        	log.debug("POST response: " + zgwResponse);
+        	return zgwResponse;
+		} catch (HttpStatusCodeException hsce) {
+			json = json.replace("{", "{\n").replace("\",", "\",\n").replace("\"}", "\"\n}");
+			var response = hsce.getResponseBodyAsString().replace("{", "{\n").replace("\",", "\",\n").replace("\"}", "\"\n}");
+			var details = "--------------POST:\n" + json + "\n--------------RESPONSE:\n" + response; 
+			log.warn("POST naar OpenZaak: " + url + " gaf foutmelding:\n" + details, hsce);
+			throw new ConverterException("POST naar OpenZaak: " + url + " gaf foutmelding:" + hsce.toString(), details, hsce);
+		} catch (org.springframework.web.client.ResourceAccessException rae) {
+			log.warn("POST naar OpenZaak: " + url + " niet geslaagd", rae);
+			throw new ConverterException("POST naar OpenZaak: " + url + " niet geslaagd", rae);
+		}
     }
 
-    private String get(String url, Map<String, String> parameters) throws HttpStatusCodeException {
+    private String get(String url, Map<String, String> parameters)  {
         log.debug("GET: " + url);
 
         if (parameters != null) {
@@ -90,7 +101,7 @@ public class ZGWClient {
         return response.getBody();
     }
 
-    public void delete(String url) throws HttpStatusCodeException {
+    public void delete(String url)  {
         log.debug("DELETE: " + url);
         HttpEntity entity = new HttpEntity(restTemplateService.getHeaders());
 
@@ -99,7 +110,7 @@ public class ZGWClient {
         log.debug("DELETE response: " + response.getBody());
     }
 
-    public String put(String url, String json) throws HttpStatusCodeException {
+    public String put(String url, String json)  {
         log.debug("PUT: " + url + ", json: " + json);
         HttpEntity<String> request = new HttpEntity<String>(json, restTemplateService.getHeaders());
 
@@ -144,7 +155,7 @@ public class ZGWClient {
         return result;
     }
 
-    public String getBas64Inhoud(String url) throws ConverterException {
+    public String getBas64Inhoud(String url)  {
         return httpService.downloadFile(url);
     }
 
@@ -163,28 +174,28 @@ public class ZGWClient {
         return result;
     }
 
-    public ZgwZaak addZaak(ZgwZaak zgwZaak) throws HttpStatusCodeException {
+    public ZgwZaak addZaak(ZgwZaak zgwZaak)  {
         Gson gson = new Gson();
         String json = gson.toJson(zgwZaak);
         String response = this.post(baseUrl + endpointZaak, json);
         return gson.fromJson(response, ZgwZaak.class);
     }
 
-    public ZgwRol addZgwRol(ZgwRol zgwRol) {
+    public ZgwRol addZgwRol(ZgwRol zgwRol)  {
         Gson gson = new Gson();
         String json = gson.toJson(zgwRol);
         String response = this.post(baseUrl + endpointRol, json);
         return gson.fromJson(response, ZgwRol.class);
     }
 
-    public ZgwEnkelvoudigInformatieObject addZaakDocument(ZgwEnkelvoudigInformatieObject zgwEnkelvoudigInformatieObject) {
+    public ZgwEnkelvoudigInformatieObject addZaakDocument(ZgwEnkelvoudigInformatieObject zgwEnkelvoudigInformatieObject)   {
         Gson gson = new Gson();
         String json = gson.toJson(zgwEnkelvoudigInformatieObject);
         String response = this.post(baseUrl + endpointEnkelvoudiginformatieobject, json);
         return gson.fromJson(response, ZgwEnkelvoudigInformatieObject.class);
     }
 
-    public ZgwZaakInformatieObject addDocumentToZaak(ZgwZaakInformatieObject zgwZaakInformatieObject) {
+    public ZgwZaakInformatieObject addDocumentToZaak(ZgwZaakInformatieObject zgwZaakInformatieObject)   {
         Gson gson = new Gson();
         String json = gson.toJson(zgwZaakInformatieObject);
         String response = this.post(baseUrl + endpointZaakinformatieobject, json);
@@ -231,7 +242,7 @@ public class ZGWClient {
         return gson.fromJson(response, resourceType);
     }
 
-    public ZgwStatus actualiseerZaakStatus(ZgwStatus zgwSatus) {
+    public ZgwStatus actualiseerZaakStatus(ZgwStatus zgwSatus)   {
         Gson gson = new Gson();
         String json = gson.toJson(zgwSatus);
         String response = this.post(baseUrl + endpointStatus, json);

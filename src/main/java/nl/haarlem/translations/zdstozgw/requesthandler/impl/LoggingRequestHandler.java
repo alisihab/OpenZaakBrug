@@ -80,7 +80,14 @@ public class LoggingRequestHandler extends RequestHandler {
 	        fo03.body.plek = "server";
 	        fo03.body.omschrijving = ex.toString();
 	        fo03.body.entiteittype = "";
-	        fo03.body.details = stacktrace;
+	        
+	        if (ex instanceof ConverterException) {
+	        	var ce = (ConverterException) ex;
+	        	fo03.body.details = ce.details;
+	        }	        
+	        else {
+	        	fo03.body.details = stacktrace;
+	        }
 	        fo03.body.detailsXML = request;                    	        
 
 	        var response = XmlUtils.getSOAPFaultMessageFromObject(SOAPConstants.SOAP_RECEIVER_FAULT, ex.toString(), fo03);
