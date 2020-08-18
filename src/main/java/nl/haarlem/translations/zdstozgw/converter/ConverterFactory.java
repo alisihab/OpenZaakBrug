@@ -10,7 +10,9 @@ import java.lang.invoke.MethodHandles;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
+import org.springframework.web.server.ResponseStatusException;
 
 @Component
 public class ConverterFactory {
@@ -26,7 +28,7 @@ public class ConverterFactory {
         this.zaakService = zaakService;
     }
 
-    public Converter getConverter(String path, String soapAction) throws ConverterException {
+    public Converter getConverter(String path, String soapAction) throws ResponseStatusException {
         Translation translation = this.configService.getTranslationByPathAndSoapAction(path, soapAction);
         
         if(translation == null) {
@@ -34,8 +36,8 @@ public class ConverterFactory {
         	for(Translation t : this.configService.getConfiguratie().getTranslations()) {
         		combinations += "\n\tpath: '" + t.getPath()+ "' soapaction: '" + t.getSoapAction() + "'";
         	}
-        	log.error("Could not load a convertor for path: '" + path + "' with soapaction: '" + soapAction + "'");        	
-        	throw new ConverterException("Could not load a convertor for path: '" + path + "' with soapaction: '" + soapAction + "'\navailable services:" + combinations);
+        	log.error("Could not load a convertor for path: '" + path + "' with soapaction: '" + soapAction + "'");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Could not load a convertor for path: '" + path + "' with soapaction: '" + soapAction + "'\navailable services:" + combinations);
         }
         String classname = translation.implementation;
         try {
@@ -46,7 +48,7 @@ public class ConverterFactory {
         } 
         catch (Exception e) {        	
         	log.error("error loading class:" + classname, e);
-        	throw new ConverterException("Error loading class:" + classname, e);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Error loading class:" + classname, e);        	
         }
     }
 }

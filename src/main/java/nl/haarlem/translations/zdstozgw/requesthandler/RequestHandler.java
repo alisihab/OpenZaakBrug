@@ -1,5 +1,7 @@
 package nl.haarlem.translations.zdstozgw.requesthandler;
 
+import org.springframework.http.ResponseEntity;
+
 import lombok.Data;
 import nl.haarlem.translations.zdstozgw.config.ConfigService;
 import nl.haarlem.translations.zdstozgw.converter.Converter;
@@ -15,5 +17,5 @@ public abstract class RequestHandler {
         this.configService = configService;
     }
 
-    public abstract String execute(String path, String soapAction, String request) throws nl.haarlem.translations.zdstozgw.converter.ConverterException;
+    public abstract ResponseEntity<?> execute(String path, String soapAction, String request);
 }

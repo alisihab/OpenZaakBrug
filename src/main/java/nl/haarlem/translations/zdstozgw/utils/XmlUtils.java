@@ -2,6 +2,8 @@ package nl.haarlem.translations.zdstozgw.utils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -14,6 +16,7 @@ import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsFo03;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
+import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -124,15 +127,15 @@ public class XmlUtils {
     }
 
     
-    public static String getSOAPFaultMessageFromObject(Object object) {
+    public static String getSOAPFaultMessageFromObject(QName faultcode, String faultstring, Object detail) {
 		try {
-			Document document = marshalJAXBToXMLDocument(object);
-			SOAPMessage message = getSoapFaultMessage(document);
+			Document detailDocument = marshalJAXBToXMLDocument(detail);
+			SOAPMessage message = getSoapFaultMessage(faultcode, faultstring, detailDocument);
 			return getStringFromSOAP(message);
 		}
 		catch(Exception e) {
 			log.error("kon niet het soapfault resulaat maken", e);
-			throw new RuntimeException("kon niet het soapfault resulaat maken", e);
+			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "kon niet het soapfault resulaat maken", e);
 		}
     }
 
@@ -182,7 +185,7 @@ public class XmlUtils {
         return message;
     }
 
-    private static SOAPMessage getSoapFaultMessage(Document document) throws SOAPException {
+    private static SOAPMessage getSoapFaultMessage(QName faultcode, String faultstring, Document detailDocument) throws SOAPException {
         //SOAP
         MessageFactory mf = MessageFactory.newInstance();
         SOAPMessage message = mf.createMessage();
@@ -190,12 +193,12 @@ public class XmlUtils {
         SOAPEnvelope env = part.getEnvelope();
         SOAPBody body = env.getBody();
 
-        SOAPFault fault = body.addFault();
-        fault.setFaultString("Object niet gevonden");
-        fault.setFaultCode(SOAPConstants.SOAP_RECEIVER_FAULT);
+        SOAPFault fault = body.addFault();        
+        fault.setFaultCode(faultcode);
+        fault.setFaultString(faultstring);
         Detail detail = fault.addDetail();
         
-        Node imported = detail.getOwnerDocument().importNode(document.getFirstChild(), true);
+        Node imported = detail.getOwnerDocument().importNode(detailDocument.getFirstChild(), true);
         detail.appendChild(imported);
 
         return message;

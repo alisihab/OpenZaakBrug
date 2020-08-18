@@ -1,5 +1,5 @@
 {
-	"requestHandlerImplementation": "nl.haarlem.translations.zdstozgw.requesthandler.impl.ReplicationRequestHandler",
+	"requestHandlerImplementation": "nl.haarlem.translations.zdstozgw.requesthandler.impl.LoggingRequestHandler",
 	"organisaties": [
 		{
 			"gemeenteNaam": "Haarlem",

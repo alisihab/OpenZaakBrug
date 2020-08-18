@@ -9,7 +9,9 @@ import java.lang.invoke.MethodHandles;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
+import org.springframework.web.server.ResponseStatusException;
 
 @Component
 public class RequestHandlerFactory {
@@ -22,7 +24,7 @@ public class RequestHandlerFactory {
         this.configService = configService;
     }
 
-    public RequestHandler getRequestHandler(Converter converter) throws ConverterException {
+    public RequestHandler getRequestHandler(Converter converter) throws ResponseStatusException {
     	var classname = this.configService.getConfiguratie().getRequestHandlerImplementation();
         try {
             Class<?> c = Class.forName(classname);
@@ -32,7 +34,7 @@ public class RequestHandlerFactory {
         }
         catch (Exception e) {        	
         	log.error("error loading class:" + classname, e);
-        	throw new ConverterException("Error loading class:" + classname, e);
+        	throw new  ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error loading class:" + classname, e);
         }
     }
 }
