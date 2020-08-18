@@ -17,3 +17,16 @@ zgw.endpoint.statustype = /catalogi/api/v1/statustypen
 zgw.endpoint.zaakinformatieobject = /zaken/api/v1/zaakinformatieobjecten
 zgw.endpoint.enkelvoudiginformatieobject = /documenten/api/v1/enkelvoudiginformatieobjecten
 zgw.endpoint.zaak = /zaken/api/v1/zaken
+
+#spring.datasource.initialize=true
+spring.datasource.url=jdbc:h2:./data/OpenZaakBrug
+spring.datasource.driverClassName=org.h2.Driver
+spring.datasource.username=sa
+spring.datasource.password=
+spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
+spring.jpa.hibernate.ddl-auto=update
+# Enabling H2 Console on http://localhost:8080/h2-console
+spring.h2.console.enabled=true
+spring.h2.console.path=/h2-console
+spring.h2.console.settings.trace=true
+spring.h2.console.settings.web-allow-others=true

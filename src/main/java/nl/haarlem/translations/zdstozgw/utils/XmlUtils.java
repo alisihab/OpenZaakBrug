@@ -121,11 +121,22 @@ public class XmlUtils {
             SOAPMessage message = getSoapMessage(document);
             return getStringFromSOAP(message);
 		}
-		catch(Exception e) {
-			throw new ConverterException("kon niet het soap resulaat maken", e);
+		catch(JAXBException jaxbe) {
+			throw new ConverterException("SoapXml from object (JAXBException):" + jaxbe.getMessage(),  jaxbe);
 		}
+		catch(ParserConfigurationException pce) {
+			throw new ConverterException("SoapXml from object (ParserConfigurationException):" + pce.getMessage(),  pce);
+		}
+		catch(TransformerException te) {
+			throw new ConverterException("SoapXml from object (TransformerException):" + te.getMessage(),  te);
+		} 
+        catch (SOAPException se) {
+        	throw new ConverterException("SoapXml from object (SOAPException):" + se.getMessage(),  se);
+		} 
+        catch (IOException ioe) {
+        	throw new ConverterException("SoapXml from object (IOException):" + ioe.getMessage(),  ioe);
+		}        
     }
-
     
     public static String getSOAPFaultMessageFromObject(QName faultcode, String faultstring, Object detail) {
 		try {

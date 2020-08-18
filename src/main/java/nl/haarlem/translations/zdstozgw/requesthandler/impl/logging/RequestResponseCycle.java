@@ -15,7 +15,9 @@ public class RequestResponseCycle {
     @GeneratedValue
     private long id;
 
-    // Wat heeft de client gevraagd en gekregen
+    private String converterImplementation;
+    private String converterTemplate;
+
     private LocalDateTime timestamp;
     private long durationInMilliseconds;
     private String clientUrl;
@@ -23,16 +25,10 @@ public class RequestResponseCycle {
     @Lob
     private String clientRequestBody;
     @Lob
-    private String clientResponseBodyZGW;
-    @Lob
-    private String clientResponseBodyZDS;
-    private String clientResponseCode;
+    private String clientResponseBody;
+    private int clientResponseCode;
 
     // Wanneer we ergens in het proces een fout hebben, dan willen we die bewaren
     @Lob
     private String stackTrace;
-
-    private String converterImplementation;
-    private String converterTemplate;
-
 }

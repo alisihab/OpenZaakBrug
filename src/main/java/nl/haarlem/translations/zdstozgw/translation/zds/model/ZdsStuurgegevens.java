@@ -18,7 +18,10 @@ public class ZdsStuurgegevens {
 
     @XmlElement(namespace = STUF)
     public Endpoint zender;
-	
+
+    @XmlElement(namespace = STUF)
+    public Endpoint ontvanger;
+    
     @XmlElement(namespace = STUF)
     public String referentienummer;
 
@@ -28,13 +31,12 @@ public class ZdsStuurgegevens {
     @XmlElement(namespace = STUF)
     public String crossRefnummer;
 
-
-    @XmlElement(namespace = STUF)
-    public Endpoint ontvanger;
-
     @XmlElement(namespace = STUF)
     public String entiteittype;
 
+    @XmlElement(namespace = STUF)
+    public String functie;   
+    
     private ZdsStuurgegevens() {    	
     }
     

@@ -12,6 +12,8 @@ public class ConverterException extends RuntimeException {
 	}	
 	public ConverterException(String omschrijving, Throwable cause) {
 		super(omschrijving);
+		// TODO: voor nu wel handig, later maar weg?
+		cause.printStackTrace();
 	}
 	public ConverterException(String omschrijving, String details, Throwable cause) {
 		super(omschrijving);

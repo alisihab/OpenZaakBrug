@@ -56,7 +56,8 @@ public class LoggingRequestHandler extends RequestHandler {
 
         try {
         	String response = this.converter.convert(soapAction, request);
-        	session.setClientResponseBodyZDS(response);
+        	session.setClientResponseBody(response);
+        	session.setClientResponseCode(HttpStatus.OK.value());
         	session.setDurationInMilliseconds(Duration.between(start, LocalDateTime.now()).toMillis());
             this.sessionService.save(session);
             
@@ -93,7 +94,9 @@ public class LoggingRequestHandler extends RequestHandler {
 	        var response = XmlUtils.getSOAPFaultMessageFromObject(SOAPConstants.SOAP_RECEIVER_FAULT, ex.toString(), fo03);
 	        
 	        // log this response
-	        session.setClientResponseBodyZDS(response);
+        	session.setClientResponseBody(response);
+        	// TODO: use the correct response code
+        	session.setClientResponseCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
 	        session.setDurationInMilliseconds(Duration.between(start, LocalDateTime.now()).toMillis());
 	        sessionService.save(session);
 
