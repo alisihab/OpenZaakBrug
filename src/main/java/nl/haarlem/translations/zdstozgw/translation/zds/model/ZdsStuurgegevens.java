@@ -1,6 +1,7 @@
 package nl.haarlem.translations.zdstozgw.translation.zds.model;
 
 import lombok.Data;
+import nl.haarlem.translations.zdstozgw.utils.StufUtils;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -16,6 +17,9 @@ public class ZdsStuurgegevens {
     public String berichtcode;
 
     @XmlElement(namespace = STUF)
+    public Endpoint zender;
+	
+    @XmlElement(namespace = STUF)
     public String referentienummer;
 
     @XmlElement(namespace = STUF)
@@ -24,28 +28,26 @@ public class ZdsStuurgegevens {
     @XmlElement(namespace = STUF)
     public String crossRefnummer;
 
-    @XmlElement(namespace = STUF)
-    public ZdsZender zdsZender;
 
     @XmlElement(namespace = STUF)
-    public ZdsOntvanger zdsOntvanger;
+    public Endpoint ontvanger;
 
     @XmlElement(namespace = STUF)
     public String entiteittype;
 
-    public ZdsStuurgegevens(ZdsStuurgegevens zdsStuurgegevens) {
-        this.zdsZender = new ZdsZender()
-                .setApplicatie(zdsStuurgegevens.zdsOntvanger.applicatie)
-                .setOrganisatie(zdsStuurgegevens.zdsOntvanger.organisatie)
-                .setGebruiker(zdsStuurgegevens.zdsOntvanger.gebruiker);
-        this.zdsOntvanger = new ZdsOntvanger()
-                .setApplicatie(zdsStuurgegevens.zdsZender.applicatie)
-                .setOrganisatie(zdsStuurgegevens.zdsZender.organisatie)
-                .setGebruiker(zdsStuurgegevens.zdsZender.gebruiker);
-
-        this.entiteittype = zdsStuurgegevens.entiteittype;
+    private ZdsStuurgegevens() {    	
+    }
+    
+    public ZdsStuurgegevens(ZdsStuurgegevens stuurgegevens) {
+    	this.zender = new Endpoint(stuurgegevens.ontvanger);        
+    	this.ontvanger = new Endpoint(stuurgegevens.zender);
+    	this.referentienummer = stuurgegevens.referentienummer;
+    	this.tijdstipBericht = StufUtils.getStufDateTime();
+        this.entiteittype = stuurgegevens.entiteittype;
     }
 
-    public ZdsStuurgegevens() {
-    }
+	public ZdsStuurgegevens(String berichtcode) {
+        // WORKAROUND ongewenst om aan te roepen: resulteerd in een ongeldige xml
+		this.berichtcode = berichtcode;
+	}
 }

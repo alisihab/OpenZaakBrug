@@ -47,10 +47,10 @@ public class ZaakService {
         var zaak = zdsZakLk01CreeerZaak.objects.get(0);
 
         ZgwZaak zgwZaak = modelMapper.map(zaak, ZgwZaak.class);
-        var zaaktypecode = zaak.isVan.zdsGerelateerde.code;
+        var zaaktypecode = zaak.isVan.gerelateerde.code;
         zgwZaak.zaaktype = zgwClient.getZgwZaakTypeByIdentificatie(zaaktypecode).url;
-        zgwZaak.bronorganisatie = getRSIN(zdsZakLk01CreeerZaak.zdsStuurgegevens.zdsZender.organisatie);
-        zgwZaak.verantwoordelijkeOrganisatie = getRSIN(zdsZakLk01CreeerZaak.zdsStuurgegevens.zdsOntvanger.organisatie);
+        zgwZaak.bronorganisatie = getRSIN(zdsZakLk01CreeerZaak.stuurgegevens.zender.organisatie);
+        zgwZaak.verantwoordelijkeOrganisatie = getRSIN(zdsZakLk01CreeerZaak.stuurgegevens.ontvanger.organisatie);
         if (zaak.getKenmerk() != null && !zaak.getKenmerk().isEmpty()) {
             zgwZaak.kenmerk = new ArrayList<>();
             zaak.getKenmerk().forEach(kenmerk -> {
@@ -73,11 +73,11 @@ public class ZaakService {
     private void addRolToZgw(ZdsRol zdsRol, String rolOmschrijvingGeneriek, ZgwZaak createdZaak) {
         if (zdsRol == null) return;
         ZgwRol zgwRol = new ZgwRol();
-        if (zdsRol.zdsGerelateerde.zdsMedewerker != null) {
-            zgwRol.betrokkeneIdentificatie = modelMapper.map(zdsRol.zdsGerelateerde.zdsMedewerker, ZgwBetrokkeneIdentificatie.class);
+        if (zdsRol.gerelateerde.zdsMedewerker != null) {
+            zgwRol.betrokkeneIdentificatie = modelMapper.map(zdsRol.gerelateerde.zdsMedewerker, ZgwBetrokkeneIdentificatie.class);
             zgwRol.betrokkeneType = BetrokkeneType.MEDEWERKER.getDescription();
-        } else if (zdsRol.zdsGerelateerde.zdsNatuurlijkPersoon != null) {
-            zgwRol.betrokkeneIdentificatie = modelMapper.map(zdsRol.zdsGerelateerde.zdsNatuurlijkPersoon, ZgwBetrokkeneIdentificatie.class);
+        } else if (zdsRol.gerelateerde.zdsNatuurlijkPersoon != null) {
+            zgwRol.betrokkeneIdentificatie = modelMapper.map(zdsRol.gerelateerde.zdsNatuurlijkPersoon, ZgwBetrokkeneIdentificatie.class);
             zgwRol.betrokkeneType = BetrokkeneType.NATUURLIJK_PERSOON.getDescription();
         } else {
             throw new RuntimeException("Natuurlijkpersoon or medewerker missing for adding roltype to case");
@@ -118,10 +118,10 @@ public class ZaakService {
         if(informatieObjectType == null) throw new RuntimeException("Documenttype not found for omschrijving: "+ zdsEdcLk01.objects.get(0).omschrijving);
         ZgwEnkelvoudigInformatieObject zgwEnkelvoudigInformatieObject = modelMapper.map(zdsEdcLk01.objects.get(0), ZgwEnkelvoudigInformatieObject.class);
         zgwEnkelvoudigInformatieObject.informatieobjecttype = informatieObjectType.url;
-        zgwEnkelvoudigInformatieObject.bronorganisatie = getRSIN(zdsEdcLk01.zdsStuurgegevens.zdsZender.organisatie);
+        zgwEnkelvoudigInformatieObject.bronorganisatie = getRSIN(zdsEdcLk01.zdsStuurgegevens.zender.organisatie);
 
         zgwEnkelvoudigInformatieObject = zgwClient.addZaakDocument(zgwEnkelvoudigInformatieObject);
-        String zaakUrl = zgwClient.getZaak(zdsEdcLk01.objects.get(0).isRelevantVoor.zdsGerelateerde.identificatie).url;
+        String zaakUrl = zgwClient.getZaak(zdsEdcLk01.objects.get(0).isRelevantVoor.gerelateerde.identificatie).url;
         return addZaakInformatieObject(zgwEnkelvoudigInformatieObject, zaakUrl);
     }
 
@@ -217,10 +217,10 @@ public class ZaakService {
             ZgwZaakType zgwZaakType = this.getZaakTypeByUrl(zgwZaak.zaaktype);
             zdsZakLa01GeefZaakDetails.antwoord.zaak.isVan = new ZdsRol();
             zdsZakLa01GeefZaakDetails.antwoord.zaak.isVan.entiteittype = "ZAKZKT";
-            zdsZakLa01GeefZaakDetails.antwoord.zaak.isVan.zdsGerelateerde = new ZdsGerelateerde();
-            zdsZakLa01GeefZaakDetails.antwoord.zaak.isVan.zdsGerelateerde.entiteittype = "ZKT";
-            zdsZakLa01GeefZaakDetails.antwoord.zaak.isVan.zdsGerelateerde.code = zgwZaakType.identificatie;
-            zdsZakLa01GeefZaakDetails.antwoord.zaak.isVan.zdsGerelateerde.omschrijving = zgwZaakType.omschrijving;
+            zdsZakLa01GeefZaakDetails.antwoord.zaak.isVan.gerelateerde = new ZdsGerelateerde();
+            zdsZakLa01GeefZaakDetails.antwoord.zaak.isVan.gerelateerde.entiteittype = "ZKT";
+            zdsZakLa01GeefZaakDetails.antwoord.zaak.isVan.gerelateerde.code = zgwZaakType.identificatie;
+            zdsZakLa01GeefZaakDetails.antwoord.zaak.isVan.gerelateerde.omschrijving = zgwZaakType.omschrijving;
 
             if (zgwZaak.getKenmerk() != null && !zgwZaak.getKenmerk().isEmpty()) {
                 zdsZakLa01GeefZaakDetails.antwoord.zaak.kenmerk = new ArrayList<>();

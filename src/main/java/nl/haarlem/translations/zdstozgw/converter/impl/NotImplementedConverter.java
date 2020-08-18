@@ -13,7 +13,7 @@ public class NotImplementedConverter extends Converter {
 
 	@Override
 	public String convert(String soapAction, String request) throws ConverterException {
-		throw new ConverterException("not implemented");
+		throw new ConverterException("soapaction: '" + soapAction  + "' not implemented");
 	}
 
 }

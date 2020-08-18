@@ -213,13 +213,13 @@ public class ModelMapperConfig {
             @Override
             protected ZdsRol convert(ZgwRol zgwRol) {
                 ZdsRol zdsRol = new ZdsRol();
-                zdsRol.zdsGerelateerde = new ZdsGerelateerde();
+                zdsRol.gerelateerde = new ZdsGerelateerde();
                 if (zgwRol.getBetrokkeneType().equalsIgnoreCase(NATUURLIJK_PERSOON.getDescription())) {
-                    zdsRol.zdsGerelateerde.zdsNatuurlijkPersoon = modelMapper().map(zgwRol.betrokkeneIdentificatie, ZdsNatuurlijkPersoon.class);
-                    zdsRol.zdsGerelateerde.zdsNatuurlijkPersoon.entiteittype = "NPS";
+                    zdsRol.gerelateerde.zdsNatuurlijkPersoon = modelMapper().map(zgwRol.betrokkeneIdentificatie, ZdsNatuurlijkPersoon.class);
+                    zdsRol.gerelateerde.zdsNatuurlijkPersoon.entiteittype = "NPS";
                 } else if (zgwRol.getBetrokkeneType().equalsIgnoreCase(MEDEWERKER.getDescription())) {
-                    zdsRol.zdsGerelateerde.zdsMedewerker = modelMapper().map(zgwRol.betrokkeneIdentificatie, ZdsMedewerker.class);
-                    zdsRol.zdsGerelateerde.zdsMedewerker.entiteittype = "MDW";
+                    zdsRol.gerelateerde.zdsMedewerker = modelMapper().map(zgwRol.betrokkeneIdentificatie, ZdsMedewerker.class);
+                    zdsRol.gerelateerde.zdsMedewerker.entiteittype = "MDW";
                 } else {
                     throw new RuntimeException("Betrokkene type nog niet geïmplementeerd");
                 }

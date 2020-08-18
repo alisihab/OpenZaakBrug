@@ -16,30 +16,28 @@ import static nl.haarlem.translations.zdstozgw.translation.zds.model.namespace.N
 public class ZdsFo03 {
 
     @XmlElement(namespace = STUF)
-    public ZdsStuurgegevens zdsStuurgegevens;
+    public ZdsStuurgegevens stuurgegevens;
 
     @XmlElement(namespace = STUF)
     public Body body;
 
+    public ZdsFo03(ZdsStuurgegevens stuurgegevens) {    	
+    	this.stuurgegevens = new ZdsStuurgegevens(stuurgegevens);    	
+    	this.stuurgegevens.berichtcode = "Fo03";
+    }
+
     public ZdsFo03() {
-        this.zdsStuurgegevens = new ZdsStuurgegevens();
-    	this.zdsStuurgegevens.tijdstipBericht = StufUtils.getStufDateTime();    	
-    	this.zdsStuurgegevens.berichtcode = "Fo03";
-    }
+        // WORKAROUND ongewenst om aan te roepen: resulteerd in een ongeldige xml
+    	this.stuurgegevens = new ZdsStuurgegevens("Fo03");
+	}
 
-    public ZdsFo03(ZdsStuurgegevens zdsStuurgegevens) {
-    	this();
-        this.zdsStuurgegevens.referentienummer = zdsStuurgegevens.referentienummer;
-    }
-
-    @Data
+	@Data
     @XmlAccessorType(XmlAccessType.FIELD)
     public static class Body {
-
-        @XmlElement(namespace = STUF)
-        public String plek;
         @XmlElement(namespace = STUF)
         public String code;
+        @XmlElement(namespace = STUF)
+        public String plek;        
         @XmlElement(namespace = STUF)
         public String omschrijving;
         @XmlElement(namespace = STUF)

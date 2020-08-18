@@ -10,9 +10,9 @@ import static nl.haarlem.translations.zdstozgw.translation.zds.model.namespace.N
 
 @Data
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ZdsOntvanger {
+public class ObsoleteZdsZender {
 
-    @XmlElement(namespace = STUF)
+	@XmlElement(namespace = STUF)
     public String organisatie;
 
     @XmlElement(namespace = STUF)
@@ -20,4 +20,10 @@ public class ZdsOntvanger {
 
     @XmlElement(namespace = STUF)
     public String gebruiker;
+    
+    public ObsoleteZdsZender(Endpoint ontvanger) {
+        applicatie = ontvanger.applicatie;
+        organisatie = ontvanger.organisatie;
+        gebruiker = ontvanger.gebruiker;
+	}    
 }

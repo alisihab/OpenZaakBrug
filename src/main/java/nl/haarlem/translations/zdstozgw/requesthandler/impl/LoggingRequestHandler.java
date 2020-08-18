@@ -63,7 +63,7 @@ public class LoggingRequestHandler extends RequestHandler {
             return new ResponseEntity<>(response, HttpStatus.OK);
         }
 		catch(Exception ex) {
-			log.warn("request for path: /" + path + "/ with soapaction: " + soapAction);
+			log.warn("request for path: /" + path + "/ with soapaction: " + soapAction, ex);
 			
 			// get the stacktrace
 			var swriter = new java.io.StringWriter();

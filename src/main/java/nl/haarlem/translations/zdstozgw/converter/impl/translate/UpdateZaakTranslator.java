@@ -19,7 +19,7 @@ public class UpdateZaakTranslator extends Converter {
     public String convert(String action, String request) throws ConverterException {
         var zdsZakLk01 = (ZdsZakLk01) XmlUtils.getStUFObject(request, ZdsZakLk01.class);
         this.getZaakService().updateZaak(zdsZakLk01);
-        var bv03 = new ZdsBv03(zdsZakLk01.zdsStuurgegevens);
+        var bv03 = new ZdsBv03(zdsZakLk01.stuurgegevens);
         return XmlUtils.getSOAPMessageFromObject(bv03);
     }
 }

@@ -10,9 +10,9 @@ import static nl.haarlem.translations.zdstozgw.translation.zds.model.namespace.N
 
 @Data
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ZdsZender {
+public class Endpoint {
 
-    @XmlElement(namespace = STUF)
+	@XmlElement(namespace = STUF)
     public String organisatie;
 
     @XmlElement(namespace = STUF)
@@ -20,4 +20,13 @@ public class ZdsZender {
 
     @XmlElement(namespace = STUF)
     public String gebruiker;
+    
+    private Endpoint() {
+    }
+    
+    public Endpoint(Endpoint zender) {
+        applicatie = zender.applicatie;
+        organisatie = zender.organisatie;
+        gebruiker = zender.gebruiker;
+	}    
 }
