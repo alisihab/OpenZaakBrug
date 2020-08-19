@@ -12,14 +12,14 @@ import static nl.haarlem.translations.zdstozgw.translation.zds.model.namespace.N
 public class ZdsEdcLv01 {
 
     @XmlElement(namespace = ZKN)
-    public ZdsStuurgegevens zdsStuurgegevens;
+    public ZdsStuurgegevens stuurgegevens;
 
     @XmlElement(namespace = ZKN)
-    public ZdsParameters zdsParameters;
+    public ZdsParameters parameters;
 
     @XmlElement(namespace = ZKN)
     public ZdsScope zdsScope;
 
     @XmlElement(namespace = ZKN)
-    public ZdsGelijk zdsGelijk;
+    public ZdsZaakDocument gelijk;
 }

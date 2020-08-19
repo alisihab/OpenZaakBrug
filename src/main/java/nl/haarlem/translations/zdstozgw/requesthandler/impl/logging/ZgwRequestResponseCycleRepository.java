@@ -5,5 +5,5 @@ import org.springframework.stereotype.Repository;
 
 
 @Repository
-public interface InterimRequestResponseCycleRepository extends JpaRepository<InterimRequestResponseCycle, Long> {
+public interface ZgwRequestResponseCycleRepository extends JpaRepository<ZgwRequestResponseCycle, Long> {
 }

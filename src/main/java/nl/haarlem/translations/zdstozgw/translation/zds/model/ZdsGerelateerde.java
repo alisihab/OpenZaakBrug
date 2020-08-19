@@ -42,10 +42,10 @@ public class ZdsGerelateerde {
     public String volgnummer;
 
     @XmlElement(namespace = ZKN)
-    public ZdsMedewerker zdsMedewerker;
+    public ZdsMedewerker medewerker;
 
     @XmlElement(namespace = ZKN)
-    public ZdsNatuurlijkPersoon zdsNatuurlijkPersoon;
+    public ZdsNatuurlijkPersoon natuurlijkPersoon;
 
     @XmlElement(namespace = ZKN)
     public ZdsVestiging zdsVestiging;

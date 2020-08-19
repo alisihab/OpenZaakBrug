@@ -10,7 +10,7 @@ public class RequestResponseCycleService {
 
     private final RequestResponseCycleRepository requestResponseCycleRepository;
 
-    private final InterimRequestResponseCycleRepository interimRequestResponseCycleRepository;
+    private final ZgwRequestResponseCycleRepository interimRequestResponseCycleRepository;
 
     private RequestResponseCycle requestResponseCycleSession;
 
@@ -18,7 +18,7 @@ public class RequestResponseCycleService {
 
     @Autowired
     public RequestResponseCycleService(RequestResponseCycleRepository requestResponseCycleRepository,
-                                       InterimRequestResponseCycleRepository interimRequestResponseCycleRepository) {
+                                       ZgwRequestResponseCycleRepository interimRequestResponseCycleRepository) {
         this.requestResponseCycleRepository = requestResponseCycleRepository;
         this.interimRequestResponseCycleRepository = interimRequestResponseCycleRepository;
     }
@@ -27,7 +27,7 @@ public class RequestResponseCycleService {
         return this.requestResponseCycleRepository.save(requestResponseCycle);
     }
 
-    public InterimRequestResponseCycle add(InterimRequestResponseCycle interimRequestResponseCycle) {
+    public ZgwRequestResponseCycle add(ZgwRequestResponseCycle interimRequestResponseCycle) {
         return this.interimRequestResponseCycleRepository.save(interimRequestResponseCycle);
     }
 

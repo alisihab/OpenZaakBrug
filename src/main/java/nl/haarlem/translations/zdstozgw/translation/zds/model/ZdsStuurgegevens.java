@@ -39,13 +39,12 @@ public class ZdsStuurgegevens {
     
     private ZdsStuurgegevens() {    	
     }
-    
+
     public ZdsStuurgegevens(ZdsStuurgegevens stuurgegevens) {
     	this.zender = new Endpoint(stuurgegevens.ontvanger);        
     	this.ontvanger = new Endpoint(stuurgegevens.zender);
     	this.referentienummer = stuurgegevens.referentienummer;
     	this.tijdstipBericht = StufUtils.getStufDateTime();
-        this.entiteittype = stuurgegevens.entiteittype;
     }
 
 	public ZdsStuurgegevens(String berichtcode) {

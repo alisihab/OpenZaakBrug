@@ -6,7 +6,7 @@ import javax.persistence.*;
 
 @Entity
 @Data
-public class InterimRequestResponseCycle {
+public class ZgwRequestResponseCycle {
     @Id
     @GeneratedValue
     private long id;
@@ -15,14 +15,13 @@ public class InterimRequestResponseCycle {
     @JoinColumn(name = "request_response_cycle_id")
     private RequestResponseCycle requestResponseCycle;
 
+    private String zgwMethod;    
     @Lob
     private String zgwUrl;
     @Lob
-    private String zgwMethod;
-    @Lob
     private String zgwRequestBody;
     @Lob
-    private String zgwResponseBody;
-    @Lob
     private String zgwResponseCode;
+    @Lob
+    private String zgwResponseBody;
 }

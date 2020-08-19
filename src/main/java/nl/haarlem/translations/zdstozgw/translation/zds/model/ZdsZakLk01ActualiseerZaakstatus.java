@@ -26,7 +26,7 @@ public class ZdsZakLk01ActualiseerZaakstatus {
         public String omschrijving;
 
         @XmlElement(namespace = ZKN)
-        public ZdsHeeft zdsHeeft;
+        public ZdsHeeft heeft;
     }
 
 

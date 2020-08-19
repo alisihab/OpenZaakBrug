@@ -32,8 +32,8 @@ public class XmlUnitTests {
 
             //assert
             assumeTrue(object.identificatie != null);
-            assumeTrue(object.zdsHeeft.datumStatusGezet != null);
-            assumeTrue(object.zdsHeeft.zdsGerelateerde.volgnummer != null);
+            assumeTrue(object.heeft.datumStatusGezet != null);
+            assumeTrue(object.heeft.gerelateerde.volgnummer != null);
 
         } catch (IOException e) {
             e.printStackTrace();

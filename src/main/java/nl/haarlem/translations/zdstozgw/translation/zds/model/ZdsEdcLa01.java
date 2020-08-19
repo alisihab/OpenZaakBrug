@@ -14,7 +14,7 @@ public class ZdsEdcLa01 {
     public ZdsStuurgegevens zdsStuurgegevens;
 
     @XmlElement(namespace = ZKN)
-    public ZdsParameters zdsParameters;
+    public ZdsParameters parameters;
 
     @XmlElement(namespace = ZKN, name = "antwoord")
     public Antwoord antwoord;

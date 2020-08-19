@@ -23,8 +23,8 @@ public class GenereerZaakIdentificatieEmulator extends NotImplementedConverter {
     public String convert(String action, String request) throws ConverterException {
     	EmulateParameterRepository repository = SpringContext.getBean(EmulateParameterRepository.class);
     	
-		var prefixparam = repository.getOne("DocumentIdentificatiePrefix");
-		var idparam = repository.getOne("DocumentIdentificatieHuidige");
+		var prefixparam = repository.getOne("ZaakIdentificatiePrefix");
+		var idparam = repository.getOne("ZaakIdentificatieHuidige");
 		var identificatie = Long.parseLong(idparam.getParameterValue()) + 1;
 		idparam.setParameterValue(Long.toString(identificatie));
 		repository.save(idparam);
