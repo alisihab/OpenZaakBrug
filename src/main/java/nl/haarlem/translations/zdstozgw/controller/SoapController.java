@@ -1,9 +1,15 @@
 package nl.haarlem.translations.zdstozgw.controller;
 
 import nl.haarlem.translations.zdstozgw.config.ConfigService;
+import nl.haarlem.translations.zdstozgw.converter.ConverterException;
 import nl.haarlem.translations.zdstozgw.converter.ConverterFactory;
 import nl.haarlem.translations.zdstozgw.requesthandler.RequestHandler;
 import nl.haarlem.translations.zdstozgw.requesthandler.RequestHandlerFactory;
+import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsFo03;
+import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsStuurgegevens;
+import nl.haarlem.translations.zdstozgw.utils.StufUtils;
+import nl.haarlem.translations.zdstozgw.utils.XmlUtils;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +29,6 @@ public class SoapController {
     private final ConfigService configService;
     private final RequestHandlerFactory requestHandlerFactory;
 
-//    private String response = "NOT IMPLEMENTED";
-
     @Autowired
     public SoapController(ConverterFactory converterFactory, ConfigService configService, RequestHandlerFactory requestHandlerFactory) {
         this.converterFactory = converterFactory;
@@ -39,11 +43,10 @@ public class SoapController {
 			@RequestHeader(name = "SOAPAction", required = true) String soapAction, 
 			@RequestBody String body) {
 		
-		log.info("Starting with a request for path: /" + path + "/ with soapaction: " + soapAction);
+		log.info("Processing request for path: /" + path + "/ with soapaction: " + soapAction);		
+
 		var converter = this.converterFactory.getConverter(path, soapAction.replace("\"", ""));
-        RequestHandler requestHandler = requestHandlerFactory.getRequestHandler(converter);
-        
-        var response = requestHandler.execute(body, path, soapAction);
-        return new ResponseEntity<>(response, HttpStatus.OK);
+		RequestHandler requestHandler = requestHandlerFactory.getRequestHandler(converter);     
+		return requestHandler.execute(path, soapAction, body); 
     }
 }

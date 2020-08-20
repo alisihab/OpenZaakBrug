@@ -17,6 +17,6 @@ public class ZdsRol {
     public String entiteittype;
 
     @XmlElement(namespace = ZKN)
-    public ZdsGerelateerde zdsGerelateerde;
+    public ZdsGerelateerde gerelateerde;
 
 }

@@ -23,7 +23,7 @@ public class RequestResponseCycleService {
         this.interimRequestResponseCycleRepository = interimRequestResponseCycleRepository;
     }
 
-    public RequestResponseCycle add(RequestResponseCycle requestResponseCycle) {
+    public RequestResponseCycle save(RequestResponseCycle requestResponseCycle) {
         return this.requestResponseCycleRepository.save(requestResponseCycle);
     }
 

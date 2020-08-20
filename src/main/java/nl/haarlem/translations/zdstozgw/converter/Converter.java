@@ -2,6 +2,7 @@ package nl.haarlem.translations.zdstozgw.converter;
 
 import lombok.Data;
 import nl.haarlem.translations.zdstozgw.config.model.Translation;
+import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsStuurgegevens;
 import nl.haarlem.translations.zdstozgw.translation.zds.services.ZaakService;
 
 @Data
@@ -15,5 +16,5 @@ public abstract class Converter {
         this.zaakService = zaakService;
     }
 
-	public abstract String convert(String soapAction, String request);    
+	public abstract String convert(String soapAction, String request) throws ConverterException;    
 }

@@ -19,6 +19,6 @@ public class ZdsZakLk01 {
     public List<ZdsZaak> objects;
 
     @XmlElement(namespace = ZKN, name = "stuurgegevens")
-    public ZdsStuurgegevens zdsStuurgegevens;
+    public ZdsStuurgegevens stuurgegevens;
 
 }

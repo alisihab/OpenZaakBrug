@@ -4,7 +4,7 @@ import nl.haarlem.translations.zdstozgw.config.ConfigService;
 import nl.haarlem.translations.zdstozgw.config.model.Configuratie;
 //import nl.haarlem.translations.zdstozgw.config.model.Replication;
 //import nl.haarlem.translations.zdstozgw.config.model.ResponseType;
-import nl.haarlem.translations.zdstozgw.requesthandler.impl.ReplicationRequestHandler;
+import nl.haarlem.translations.zdstozgw.requesthandler.impl.LoggingRequestHandler;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,14 +16,14 @@ import static org.mockito.Mockito.doReturn;
 @RunWith(SpringRunner.class)
 public class ReplicationRequestHandlerTests {
 
-    ReplicationRequestHandler replicationRequestHandler;
+    LoggingRequestHandler replicationRequestHandler;
 
     @Mock
     ConfigService configService;
 
     @Before
     public void setup() {
-        this.replicationRequestHandler = new ReplicationRequestHandler(null, configService);
+        this.replicationRequestHandler = new LoggingRequestHandler(null, configService);
     }
 
 

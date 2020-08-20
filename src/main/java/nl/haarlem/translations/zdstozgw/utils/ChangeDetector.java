@@ -1,6 +1,7 @@
 package nl.haarlem.translations.zdstozgw.utils;
 
 import lombok.Data;
+import nl.haarlem.translations.zdstozgw.converter.ConverterException;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -17,25 +18,30 @@ public class ChangeDetector {
     public ChangeDetector() {
     }
 
-    public void detect(Object currentState, Object newState) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException, InstantiationException {
+    public void detect(Object currentState, Object newState) throws ConverterException {
 
-        for (Field field : List.of(currentState.getClass().getDeclaredFields())) {
-            Object currentValue = field.get(currentState);
-            Object newValue = field.get(newState);
-            ChangeType changeType = null;
-
-            if (currentValue == null && newValue != null) {
-                changeType = ChangeType.NEW;
-            } else if (currentValue != null && newValue == null) {
-                changeType = ChangeType.DELETED;
-            } else if (currentValue != null && !currentValue.equals(newValue)) {
-                changeType = ChangeType.CHANGED;
-            }
-
-            if (changeType != null) {
-                this.changes.put(new Change(field, field.get(newState)), changeType);
-            }
-        }
+    	try {
+	        for (Field field : List.of(currentState.getClass().getDeclaredFields())) {
+	            Object currentValue = field.get(currentState);
+	            Object newValue = field.get(newState);
+	            ChangeType changeType = null;
+	
+	            if (currentValue == null && newValue != null) {
+	                changeType = ChangeType.NEW;
+	            } else if (currentValue != null && newValue == null) {
+	                changeType = ChangeType.DELETED;
+	            } else if (currentValue != null && !currentValue.equals(newValue)) {
+	                changeType = ChangeType.CHANGED;
+	            }
+	
+	            if (changeType != null) {
+	                this.changes.put(new Change(field, field.get(newState)), changeType);
+	            }
+	        }
+    	}
+    	catch(IllegalAccessException iae) {
+    		throw new ConverterException("fout bij het detecteren van de verschillende tussen de objecten", iae);
+    	}
     }
 
     public Map<Change, ChangeType> getAllChangesByFieldType(Class classType) {

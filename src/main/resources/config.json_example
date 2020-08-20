@@ -1,5 +1,5 @@
 {
-	"requestHandlerImplementation": "nl.haarlem.translations.zdstozgw.requesthandler.impl.ReplicationRequestHandler",
+	"requestHandlerImplementation": "nl.haarlem.translations.zdstozgw.requesthandler.impl.LoggingRequestHandler",
 	"organisaties": [
 		{
 			"gemeenteNaam": "Haarlem",
@@ -31,7 +31,7 @@
 			"path": "translate",
 			"soapaction": "http://www.egem.nl/StUF/sector/zkn/0310/genereerZaakIdentificatie_Di02",
 			"template": "src/main/java/nl/haarlem/translations/zdstozgw/converter/impl/genereerZaakIdentificatie_Du02.xml",
-			"implementation": "nl.haarlem.translations.zdstozgw.converter.impl.GenereerZaakIdentificatieConverter",
+			"implementation": "nl.haarlem.translations.zdstozgw.converter.impl.emulate.GenereerZaakIdentificatieEmulator",
 			"legacyservice": "http://localhost:8181/zds/VrijBerichtService"
 		},
 		{
@@ -39,7 +39,7 @@
 			"path": "translate",
 			"soapaction": "http://www.egem.nl/StUF/sector/zkn/0310/creeerZaak_Lk01",
 			"template": "src/main/java/nl/haarlem/translations/zdstozgw/converter/impl/CreeerZaak_Bv03.xml",
-			"implementation": "nl.haarlem.translations.zdstozgw.converter.impl.CreeerZaakConverter",
+			"implementation": "nl.haarlem.translations.zdstozgw.converter.impl.translate.CreeerZaakTranslator",
 			"legacyservice": "nvt"
 		},
 		{
@@ -47,7 +47,7 @@
 			"path": "translate",
 			"soapaction": "http://www.egem.nl/StUF/sector/zkn/0310/updateZaak_Lk01",
 			"template": "src/main/java/nl/haarlem/translations/zdstozgw/converter/impl/UpdateZaak_Bv03.xml",
-			"implementation": "nl.haarlem.translations.zdstozgw.converter.impl.UpdateZaakConverter",
+			"implementation": "nl.haarlem.translations.zdstozgw.converter.impl.translate.UpdateZaakTranslator",
 			"legacyservice": "http://localhost:8181/zds/OntvangAsynchroon"
 		},
 		{
@@ -55,7 +55,7 @@
 			"path": "translate",
 			"soapaction": "http://www.egem.nl/StUF/sector/zkn/0310/genereerDocumentIdentificatie_Di02",
 			"template": "src/main/java/nl/haarlem/translations/zdstozgw/converter/impl/genereerDocumentIdentificatie_Du02.xml",
-			"implementation": "nl.haarlem.translations.zdstozgw.converter.impl.GenereerDocumentIdentificatieConverter",
+			"implementation": "nl.haarlem.translations.zdstozgw.converter.impl.emulate.GenereerDocumentIdentificatieEmulator",
 			"legacyservice": "http://localhost:8181/zds/VrijBerichtService"
 		},
 		{
@@ -64,7 +64,7 @@
 			"soapaction": "http://www.egem.nl/StUF/sector/zkn/0310/voegZaakdocumentToe_Lk01",
 			"requestcontains": "",
 			"template": "src/main/java/nl/haarlem/translations/zdstozgw/converter/impl/VoegZaakdocumentToeConverter_Bv03.xml",
-			"implementation": "nl.haarlem.translations.zdstozgw.converter.impl.VoegZaakdocumentToeConverter",
+			"implementation": "nl.haarlem.translations.zdstozgw.converter.impl.translate.VoegZaakdocumentToeTranslator",
 			"legacyservice": "http://localhost:8181/zds/OntvangAsynchroon"
 		},
 		{
@@ -72,7 +72,7 @@
 			"path": "translate",
 			"soapaction": "http://www.egem.nl/StUF/sector/zkn/0310/geefLijstZaakdocumenten_Lv01",
 			"template": "nvt.",
-			"implementation": "nl.haarlem.translations.zdstozgw.converter.impl.GeefLijstZaakdocumentenConverter",
+			"implementation": "nl.haarlem.translations.zdstozgw.converter.impl.translate.GeefLijstZaakdocumentenTranslator",
 			"legacyservice": "http://localhost:8181/zds/BeantwoordVraag"
 		},
 		{
@@ -80,7 +80,7 @@
 			"path": "translate",
 			"soapaction": "http://www.egem.nl/StUF/sector/zkn/0310/geefZaakdocumentLezen_Lv01",
 			"template": "src/main/java/nl/haarlem/translations/zdstozgw/converter/impl/GeefZaakdocumentLezen_La01.xml",
-			"implementation": "nl.haarlem.translations.zdstozgw.converter.impl.GeefZaakdocumentLezenConverter",
+			"implementation": "nl.haarlem.translations.zdstozgw.converter.impl.translate.GeefZaakdocumentLezenTranslator",
 			"legacyservice": "http://localhost:8181/zds/BeantwoordVraag"
 		},
 		{
@@ -88,7 +88,7 @@
 			"path": "translate",
 			"soapaction": "http://www.egem.nl/StUF/sector/zkn/0310/actualiseerZaakstatus_Lk01",
 			"template": "src/main/java/nl/haarlem/translations/zdstozgw/converter/impl/ActualiseerZaakstatus_La01.xml",
-			"implementation": "nl.haarlem.translations.zdstozgw.converter.impl.ActualiseerZaakStatusConverter",
+			"implementation": "nl.haarlem.translations.zdstozgw.converter.impl.translate.ActualiseerZaakStatusTranslator",
 			"legacyservice": "http://localhost:8181/zds/BeantwoordVraag"
 		},
 		{
@@ -96,7 +96,7 @@
 			"path": "translate",
 			"soapaction": "http://www.egem.nl/StUF/sector/zkn/0310/geefZaakdetails_Lv01",
 			"template": "nvt.",
-			"implementation": "nl.haarlem.translations.zdstozgw.converter.impl.GeefZaakDetailsConverter",
+			"implementation": "nl.haarlem.translations.zdstozgw.converter.impl.translate.GeefZaakDetailsTranslator",
 			"legacyservice": "http://localhost:8181/zds/BeantwoordVraag"
 		},
 		{

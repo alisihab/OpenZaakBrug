@@ -3,6 +3,7 @@ package nl.haarlem.translations.zdstozgw.translation.zds.services;
 import nl.haarlem.translations.zdstozgw.config.ConfigService;
 import nl.haarlem.translations.zdstozgw.config.model.Organisatie;
 import nl.haarlem.translations.zdstozgw.config.model.ZgwRolOmschrijving;
+import nl.haarlem.translations.zdstozgw.converter.ConverterException;
 import nl.haarlem.translations.zdstozgw.translation.BetrokkeneType;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.*;
 import nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient;
@@ -42,14 +43,53 @@ public class ZaakService {
         this.configService = configService;
     }
 
-    public ZgwZaak creeerZaak(ZdsZakLk01 zdsZakLk01CreeerZaak) throws Exception {
+	private String getDateStringFromZdsDate(String zdsDate) {
+		if(zdsDate == null) return null;
+		if(zdsDate.length() == 0) return null;
+		var year = zdsDate.substring(0, 4);
+		var month = zdsDate.substring(4, 6);
+		var day = zdsDate.substring(6, 8);
+		return year + "-" + month + "-" + day;
+	}	
+
+	private String getDateStringFromZgwDate(String zgwDate) {
+		if(zgwDate ==null) return null;
+		return zgwDate.replace("-", "");
+	}	
+	
+	
+	private String getArchiefNominatieFromZds(String archiefNominatie) {
+		if(archiefNominatie == null) return null;
+		if (archiefNominatie.toUpperCase().equals("J")) {
+			return "vernietigen";
+		} else {
+			return "blijvend_bewaren";
+		}
+	}
+
+	private String getArchiefNominatieFromZgw(String archiefNominatie) {
+		if (archiefNominatie == null) return null;
+		if(archiefNominatie.equals("vernietigen")) {
+			return "J";
+		} else {
+			return "N";
+		}
+	}    
+    
+    public ZgwZaak creeerZaak(ZdsZakLk01 zdsZakLk01CreeerZaak)   {
         var zaak = zdsZakLk01CreeerZaak.objects.get(0);
 
+        // TODO: vraag Aster wat te doen hier!
+        zaak.registratiedatum = getDateStringFromZdsDate(zaak.registratiedatum);
+        zaak.startdatum = getDateStringFromZdsDate(zaak.startdatum);
+        zaak.einddatumGepland = getDateStringFromZdsDate(zaak.einddatumGepland);
+        zaak.archiefnominatie = getArchiefNominatieFromZds(zaak.archiefnominatie);
+        
         ZgwZaak zgwZaak = modelMapper.map(zaak, ZgwZaak.class);
-        var zaaktypecode = zaak.isVan.zdsGerelateerde.code;
+        var zaaktypecode = zaak.isVan.gerelateerde.code;
         zgwZaak.zaaktype = zgwClient.getZgwZaakTypeByIdentificatie(zaaktypecode).url;
-        zgwZaak.bronorganisatie = getRSIN(zdsZakLk01CreeerZaak.zdsStuurgegevens.zdsZender.organisatie);
-        zgwZaak.verantwoordelijkeOrganisatie = getRSIN(zdsZakLk01CreeerZaak.zdsStuurgegevens.zdsOntvanger.organisatie);
+        zgwZaak.bronorganisatie = getRSIN(zdsZakLk01CreeerZaak.stuurgegevens.zender.organisatie);
+        zgwZaak.verantwoordelijkeOrganisatie = getRSIN(zdsZakLk01CreeerZaak.stuurgegevens.ontvanger.organisatie);
         if (zaak.getKenmerk() != null && !zaak.getKenmerk().isEmpty()) {
             zgwZaak.kenmerk = new ArrayList<>();
             zaak.getKenmerk().forEach(kenmerk -> {
@@ -69,14 +109,14 @@ public class ZaakService {
         return createdZaak;
     }
 
-    private void addRolToZgw(ZdsRol zdsRol, String rolOmschrijvingGeneriek, ZgwZaak createdZaak) {
+    private void addRolToZgw(ZdsRol zdsRol, String rolOmschrijvingGeneriek, ZgwZaak createdZaak)   {
         if (zdsRol == null) return;
         ZgwRol zgwRol = new ZgwRol();
-        if (zdsRol.zdsGerelateerde.zdsMedewerker != null) {
-            zgwRol.betrokkeneIdentificatie = modelMapper.map(zdsRol.zdsGerelateerde.zdsMedewerker, ZgwBetrokkeneIdentificatie.class);
+        if (zdsRol.gerelateerde.zdsMedewerker != null) {
+            zgwRol.betrokkeneIdentificatie = modelMapper.map(zdsRol.gerelateerde.zdsMedewerker, ZgwBetrokkeneIdentificatie.class);
             zgwRol.betrokkeneType = BetrokkeneType.MEDEWERKER.getDescription();
-        } else if (zdsRol.zdsGerelateerde.zdsNatuurlijkPersoon != null) {
-            zgwRol.betrokkeneIdentificatie = modelMapper.map(zdsRol.zdsGerelateerde.zdsNatuurlijkPersoon, ZgwBetrokkeneIdentificatie.class);
+        } else if (zdsRol.gerelateerde.zdsNatuurlijkPersoon != null) {
+            zgwRol.betrokkeneIdentificatie = modelMapper.map(zdsRol.gerelateerde.zdsNatuurlijkPersoon, ZgwBetrokkeneIdentificatie.class);
             zgwRol.betrokkeneType = BetrokkeneType.NATUURLIJK_PERSOON.getDescription();
         } else {
             throw new RuntimeException("Natuurlijkpersoon or medewerker missing for adding roltype to case");
@@ -87,7 +127,7 @@ public class ZaakService {
         zgwClient.addZgwRol(zgwRol);
     }
 
-    public ZdsZakLa01LijstZaakdocumenten geefLijstZaakdocumenten(ZdsZakLv01 zdsZakLv01) throws Exception {
+    public ZdsZakLa01LijstZaakdocumenten geefLijstZaakdocumenten(ZdsZakLv01 zdsZakLv01)  {
         ZgwZaak zgwZaak = zgwClient.getZaak(zdsZakLv01.zdsGelijk.identificatie);
 
         ZdsZakLa01LijstZaakdocumenten zdsZakLa01LijstZaakdocumenten = new ZdsZakLa01LijstZaakdocumenten();
@@ -112,19 +152,19 @@ public class ZaakService {
         return zdsZakLa01LijstZaakdocumenten;
     }
 
-    public ZgwZaakInformatieObject voegZaakDocumentToe(ZdsEdcLk01 zdsEdcLk01) throws Exception {
+    public ZgwZaakInformatieObject voegZaakDocumentToe(ZdsEdcLk01 zdsEdcLk01)   {
         var informatieObjectType = zgwClient.getZgwInformatieObjectTypeByOmschrijving(zdsEdcLk01.objects.get(0).omschrijving);
         if(informatieObjectType == null) throw new RuntimeException("Documenttype not found for omschrijving: "+ zdsEdcLk01.objects.get(0).omschrijving);
         ZgwEnkelvoudigInformatieObject zgwEnkelvoudigInformatieObject = modelMapper.map(zdsEdcLk01.objects.get(0), ZgwEnkelvoudigInformatieObject.class);
         zgwEnkelvoudigInformatieObject.informatieobjecttype = informatieObjectType.url;
-        zgwEnkelvoudigInformatieObject.bronorganisatie = getRSIN(zdsEdcLk01.zdsStuurgegevens.zdsZender.organisatie);
+        zgwEnkelvoudigInformatieObject.bronorganisatie = getRSIN(zdsEdcLk01.zdsStuurgegevens.zender.organisatie);
 
         zgwEnkelvoudigInformatieObject = zgwClient.addZaakDocument(zgwEnkelvoudigInformatieObject);
-        String zaakUrl = zgwClient.getZaak(zdsEdcLk01.objects.get(0).isRelevantVoor.zdsGerelateerde.identificatie).url;
+        String zaakUrl = zgwClient.getZaak(zdsEdcLk01.objects.get(0).isRelevantVoor.gerelateerde.identificatie).url;
         return addZaakInformatieObject(zgwEnkelvoudigInformatieObject, zaakUrl);
     }
 
-    private ZgwZaakInformatieObject addZaakInformatieObject(ZgwEnkelvoudigInformatieObject doc, String zaakUrl) throws Exception {
+    private ZgwZaakInformatieObject addZaakInformatieObject(ZgwEnkelvoudigInformatieObject doc, String zaakUrl)  {
         var zgwZaakInformatieObject = new ZgwZaakInformatieObject();
         zgwZaakInformatieObject.setZaak(zaakUrl);
         zgwZaakInformatieObject.setInformatieobject(doc.getUrl());
@@ -132,7 +172,7 @@ public class ZaakService {
         return zgwClient.addDocumentToZaak(zgwZaakInformatieObject);
     }
 
-    public ZdsEdcLa01 getZaakDocumentLezen(ZdsEdcLv01 zdsEdcLv01) throws IOException {
+    public ZdsEdcLa01 getZaakDocumentLezen(ZdsEdcLv01 zdsEdcLv01)  {
         //Get Enkelvoudig informatie object. This contains document meta data and a link to the document
         ZgwEnkelvoudigInformatieObject zgwEnkelvoudigInformatieObject = zgwClient.getZgwEnkelvoudigInformatieObject(zdsEdcLv01.zdsGelijk.identificatie);
         var inhoud = zgwClient.getBas64Inhoud(zgwEnkelvoudigInformatieObject.getInhoud());
@@ -160,7 +200,7 @@ public class ZaakService {
         return edcLa01;
     }
 
-    public ZgwZaak actualiseerZaakstatus(ZdsZakLk01ActualiseerZaakstatus zakLk01) {
+    public ZgwZaak actualiseerZaakstatus(ZdsZakLk01ActualiseerZaakstatus zakLk01)   {
         ZdsZakLk01ActualiseerZaakstatus.Object object = zakLk01.objects.get(1);
         ZgwZaak zgwZaak = zgwClient.getZaak(object.identificatie);
 
@@ -216,10 +256,10 @@ public class ZaakService {
             ZgwZaakType zgwZaakType = this.getZaakTypeByUrl(zgwZaak.zaaktype);
             zdsZakLa01GeefZaakDetails.antwoord.zaak.isVan = new ZdsRol();
             zdsZakLa01GeefZaakDetails.antwoord.zaak.isVan.entiteittype = "ZAKZKT";
-            zdsZakLa01GeefZaakDetails.antwoord.zaak.isVan.zdsGerelateerde = new ZdsGerelateerde();
-            zdsZakLa01GeefZaakDetails.antwoord.zaak.isVan.zdsGerelateerde.entiteittype = "ZKT";
-            zdsZakLa01GeefZaakDetails.antwoord.zaak.isVan.zdsGerelateerde.code = zgwZaakType.identificatie;
-            zdsZakLa01GeefZaakDetails.antwoord.zaak.isVan.zdsGerelateerde.omschrijving = zgwZaakType.omschrijving;
+            zdsZakLa01GeefZaakDetails.antwoord.zaak.isVan.gerelateerde = new ZdsGerelateerde();
+            zdsZakLa01GeefZaakDetails.antwoord.zaak.isVan.gerelateerde.entiteittype = "ZKT";
+            zdsZakLa01GeefZaakDetails.antwoord.zaak.isVan.gerelateerde.code = zgwZaakType.identificatie;
+            zdsZakLa01GeefZaakDetails.antwoord.zaak.isVan.gerelateerde.omschrijving = zgwZaakType.omschrijving;
 
             if (zgwZaak.getKenmerk() != null && !zgwZaak.getKenmerk().isEmpty()) {
                 zdsZakLa01GeefZaakDetails.antwoord.zaak.kenmerk = new ArrayList<>();
@@ -268,7 +308,7 @@ public class ZaakService {
         return "";
     }
 
-    public void updateZaak(ZdsZakLk01 ZdsZakLk01) throws IllegalAccessException, NoSuchMethodException, InstantiationException, InvocationTargetException {
+    public void updateZaak(ZdsZakLk01 ZdsZakLk01) {
         var zdsWasZaak = ZdsZakLk01.objects.get(0);
         var zdsWijzigingInZaak = ZdsZakLk01.objects.get(1);
         ZgwZaak zgwZaak = zgwClient.getZaak(zdsWasZaak.identificatie);
@@ -290,7 +330,7 @@ public class ZaakService {
 
         if (rolChanges.size() > 0) {
             changeDetector.filterChangesByType(rolChanges, ChangeDetector.ChangeType.NEW).forEach((change, changeType) -> {
-                addRolToZgw((ZdsRol) change.getValue(), getRolOmschrijvingGeneriekByRolName(change.getField().getName()), zgwZaak);
+            	addRolToZgw((ZdsRol) change.getValue(), getRolOmschrijvingGeneriekByRolName(change.getField().getName()), zgwZaak);
             });
 
             changeDetector.filterChangesByType(rolChanges, ChangeDetector.ChangeType.DELETED).forEach((change, changeType) -> {
@@ -298,13 +338,13 @@ public class ZaakService {
             });
 
             changeDetector.filterChangesByType(rolChanges, ChangeDetector.ChangeType.CHANGED).forEach((change, changeType) -> {
-                updateRolInZgw(getRolOmschrijvingGeneriekByRolName(change.getField().getName()), zgwZaak, change.getValue());
+            	updateRolInZgw(getRolOmschrijvingGeneriekByRolName(change.getField().getName()), zgwZaak, change.getValue());
             });
         }
 
     }
 
-    private void updateRolInZgw(String omschrijvingGeneriek, ZgwZaak zgwZaak, Object value) {
+    private void updateRolInZgw(String omschrijvingGeneriek, ZgwZaak zgwZaak, Object value)   {
         //no put action for rollen, so first delete then add
         log.debug("Attempting to update rol by deleting and adding as new");
         deleteRolFromZgw(omschrijvingGeneriek, zgwZaak);
