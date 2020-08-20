@@ -13,10 +13,7 @@ import static nl.haarlem.translations.zdstozgw.translation.zds.model.namespace.N
 @Data
 @XmlRootElement(name = "Fo03Bericht", namespace = STUF)
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ZdsFo03 {
-
-    @XmlElement(namespace = STUF)
-    public ZdsStuurgegevens stuurgegevens;
+public class ZdsFo03 extends ZdsDocument {
 
     @XmlElement(namespace = STUF)
     public Body body;
@@ -26,9 +23,7 @@ public class ZdsFo03 {
     	this.stuurgegevens.berichtcode = "Fo03";
     }
 
-    public ZdsFo03() {
-        // WORKAROUND ongewenst om aan te roepen: resulteerd in een ongeldige xml
-    	this.stuurgegevens = new ZdsStuurgegevens("Fo03");
+    private ZdsFo03() {
 	}
 
 	@Data

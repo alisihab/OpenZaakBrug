@@ -11,7 +11,7 @@ import static nl.haarlem.translations.zdstozgw.translation.zds.model.namespace.N
 
 @Data
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ZdsStuurgegevens {
+public class ZdsStuurgegevens  extends ZdsObject {
 
     @XmlElement(namespace = STUF)
     public String berichtcode;
@@ -32,11 +32,11 @@ public class ZdsStuurgegevens {
     public String crossRefnummer;
 
     @XmlElement(namespace = STUF)
+    public String functie;       
+    
+    @XmlElement(namespace = STUF)
     public String entiteittype;
 
-    @XmlElement(namespace = STUF)
-    public String functie;   
-    
     private ZdsStuurgegevens() {    	
     }
 
@@ -46,9 +46,4 @@ public class ZdsStuurgegevens {
     	this.referentienummer = stuurgegevens.referentienummer;
     	this.tijdstipBericht = StufUtils.getStufDateTime();
     }
-
-	public ZdsStuurgegevens(String berichtcode) {
-        // WORKAROUND ongewenst om aan te roepen: resulteerd in een ongeldige xml
-		this.berichtcode = berichtcode;
-	}
 }

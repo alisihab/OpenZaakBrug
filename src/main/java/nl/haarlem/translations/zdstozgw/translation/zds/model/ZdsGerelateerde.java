@@ -12,7 +12,7 @@ import static nl.haarlem.translations.zdstozgw.translation.zds.model.namespace.N
 
 @Data
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ZdsGerelateerde {
+public class ZdsGerelateerde  extends ZdsObject {
 
     @XmlAttribute(namespace = STUF)
     public String entiteittype;

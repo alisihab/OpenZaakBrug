@@ -1,7 +1,10 @@
 package nl.haarlem.translations.zdstozgw.converter;
 
+import org.springframework.web.server.ResponseStatusException;
+
 import lombok.Data;
 import nl.haarlem.translations.zdstozgw.config.model.Translation;
+import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsDocument;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsStuurgegevens;
 import nl.haarlem.translations.zdstozgw.translation.zds.services.ZaakService;
 
@@ -15,6 +18,7 @@ public abstract class Converter {
         this.translation = translation;
         this.zaakService = zaakService;
     }
-
-	public abstract String convert(String soapAction, String request) throws ConverterException;    
+    
+	public abstract ZdsDocument load(String request) throws ResponseStatusException;
+	public abstract ZdsDocument execute(ZdsDocument document) throws ConverterException;
 }

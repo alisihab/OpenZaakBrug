@@ -53,9 +53,11 @@ public class LoggingRequestHandler extends RequestHandler {
                 .setConverterTemplate(this.getConverter().getTranslation().getTemplate());
         sessionService.save(session);
         this.sessionService.setRequestResponseCycleSession(session);
-
+        
+        var zdsRequest = this.converter.load(request);
         try {
-        	String response = this.converter.convert(soapAction, request);
+			var zdsResponse = this.converter.execute(zdsRequest);
+			var response = XmlUtils.getSOAPMessageFromObject(zdsResponse);
         	session.setClientResponseBody(response);
         	session.setClientResponseCode(HttpStatus.OK.value());
         	session.setDurationInMilliseconds(Duration.between(start, LocalDateTime.now()).toMillis());
@@ -74,7 +76,7 @@ public class LoggingRequestHandler extends RequestHandler {
 			session.setStackTrace(stacktrace);
 			 
 			// stuf-error-message
-	        var fo03 = new ZdsFo03();
+	        var fo03 = new ZdsFo03(zdsRequest.stuurgegevens);
 	        fo03.body = new ZdsFo03.Body();
 	        https://www.gemmaonline.nl/images/gemmaonline/4/4f/Stuf0301_-_ONV0347_%28zonder_renvooi%29.pdf
 	        fo03.body.code = "StUF058";

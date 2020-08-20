@@ -4,11 +4,16 @@ import nl.haarlem.translations.zdstozgw.config.ConfigService;
 import nl.haarlem.translations.zdstozgw.converter.Converter;
 import nl.haarlem.translations.zdstozgw.converter.ConverterException;
 import nl.haarlem.translations.zdstozgw.requesthandler.RequestHandler;
+import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsBv03;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsFo03;
+import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsZakLk01;
 import nl.haarlem.translations.zdstozgw.utils.XmlUtils;
 
+import java.io.StringReader;
 import java.lang.invoke.MethodHandles;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.soap.SOAPConstants;
 
 import org.slf4j.Logger;
@@ -16,6 +21,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.w3c.dom.Document;
+import org.xml.sax.InputSource;
 
 public class BasicRequestHandler extends RequestHandler {
 
@@ -25,11 +32,13 @@ public class BasicRequestHandler extends RequestHandler {
     public BasicRequestHandler(Converter converter, ConfigService configService) {
         super(converter, configService);
     }
-
+    
     @Override
     public ResponseEntity<?> execute(String path, String soapAction, String request)  {
-		try {
-			var response = this.converter.convert(soapAction, request);
+    	var zdsRequest = this.converter.load(request);    	
+    	try {
+			var zdsResponse = this.converter.execute(zdsRequest);
+			var response = XmlUtils.getSOAPMessageFromObject(zdsResponse);
 			return new ResponseEntity<>(response, HttpStatus.OK);	        
 		}
 		catch(Exception ex) {
@@ -41,7 +50,7 @@ public class BasicRequestHandler extends RequestHandler {
 			ex.printStackTrace(pwriter);
 			var stacktrace = swriter.toString();			
 			 
-	        var fo03 = new ZdsFo03();
+	        var fo03 = new ZdsFo03(zdsRequest.stuurgegevens);
 	        fo03.body = new ZdsFo03.Body();
 	        https://www.gemmaonline.nl/images/gemmaonline/4/4f/Stuf0301_-_ONV0347_%28zonder_renvooi%29.pdf
 	        fo03.body.code = "StUF058";

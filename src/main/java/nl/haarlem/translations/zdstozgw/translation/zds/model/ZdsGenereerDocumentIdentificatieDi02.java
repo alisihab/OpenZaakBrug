@@ -12,10 +12,7 @@ import static nl.haarlem.translations.zdstozgw.translation.zds.model.namespace.N
 @Data
 @XmlRootElement(namespace = ZKN, name = "genereerDocumentIdentificatie_Di02")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ZdsGenereerDocumentIdentificatieDi02 {
-
-    @XmlElement(namespace = ZKN)
-    public ZdsStuurgegevens stuurgegevens;
+public class ZdsGenereerDocumentIdentificatieDi02 extends ZdsDocument {
 
     public ZdsGenereerDocumentIdentificatieDi02() {
     }

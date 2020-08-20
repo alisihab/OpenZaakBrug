@@ -8,10 +8,12 @@ import java.util.List;
 import static nl.haarlem.translations.zdstozgw.translation.zds.model.namespace.Namespace.STUF;
 import static nl.haarlem.translations.zdstozgw.translation.zds.model.namespace.Namespace.ZKN;
 
+
+// TODO: used?
 @Data
 @XmlRootElement(namespace = ZKN, name = "zakLa01")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ZdsZakLa01LijstZaakdocumenten {
+public class ZdsZakLa01LijstZaakdocumenten extends ZdsDocument {
 
     @XmlElement(namespace = ZKN)
     public ZdsStuurgegevens stuurgegevens;

@@ -201,7 +201,12 @@ public class ZaakService {
 
     public ZdsEdcLa01 getZaakDocumentLezen(ZdsEdcLv01 zdsEdcLv01)  {
         //Get Enkelvoudig informatie object. This contains document meta data and a link to the document
-        ZgwEnkelvoudigInformatieObject zgwEnkelvoudigInformatieObject = zgwClient.getZgwEnkelvoudigInformatieObject(zdsEdcLv01.gelijk.identificatie);
+    	var documentIdentificatie = zdsEdcLv01.gelijk.identificatie;
+    	log.info("getZgwEnkelvoudigInformatieObject:" + documentIdentificatie);
+        ZgwEnkelvoudigInformatieObject zgwEnkelvoudigInformatieObject = zgwClient.getZgwEnkelvoudigInformatieObject(documentIdentificatie);
+        if(zgwEnkelvoudigInformatieObject == null) {
+        	throw new ConverterException("ZgwEnkelvoudigInformatieObject #" + documentIdentificatie + " could not be found");
+        }
         var inhoud = zgwClient.getBas64Inhoud(zgwEnkelvoudigInformatieObject.getInhoud());
 
         //Get zaakinformatieobject, this contains the link to the zaak
@@ -210,18 +215,18 @@ public class ZaakService {
         var zgwZaak = zgwClient.getZaakByUrl(zgwZaakInformatieObject.getZaak());
 
         var edcLa01 = new ZdsEdcLa01();
-        edcLa01.zdsStuurgegevens = new ZdsStuurgegevens(zdsEdcLv01.stuurgegevens);
-        edcLa01.zdsStuurgegevens.berichtcode = "La01";
+        edcLa01.stuurgegevens = new ZdsStuurgegevens(zdsEdcLv01.stuurgegevens);
+        edcLa01.stuurgegevens.berichtcode = "La01";
 
         edcLa01.antwoord = new ZdsEdcLa01.Antwoord();
         edcLa01.antwoord.object = modelMapper.map(zgwEnkelvoudigInformatieObject, ZdsEdcLa01.Object.class);
 
         //Add Inhoud
-        edcLa01.zdsIsRelevantVoor = new ZdsIsRelevantVoor();
-        edcLa01.zdsIsRelevantVoor.gerelateerde = new ZdsGerelateerde();
-        edcLa01.zdsIsRelevantVoor.entiteittype = "EDCZAK";
-        edcLa01.zdsIsRelevantVoor.gerelateerde.entiteittype = "ZAK";
-        edcLa01.zdsIsRelevantVoor.gerelateerde.identificatie = zgwZaak.getIdentificatie();
+        edcLa01.isRelevantVoor = new ZdsIsRelevantVoor();
+        edcLa01.isRelevantVoor.gerelateerde = new ZdsGerelateerde();
+        edcLa01.isRelevantVoor.entiteittype = "EDCZAK";
+        edcLa01.isRelevantVoor.gerelateerde.entiteittype = "ZAK";
+        edcLa01.isRelevantVoor.gerelateerde.identificatie = zgwZaak.getIdentificatie();
         edcLa01.antwoord.object.inhoud = inhoud;
 
         return edcLa01;
@@ -250,8 +255,8 @@ public class ZaakService {
             if (zgwZaak == null) {
                 throw new ConverterException("Zaak not found for identification: '" + zdsZakLv01.gelijk.identificatie + "'");
             }
-            zdsZakLa01GeefZaakDetails.zdsStuurgegevens = new ZdsStuurgegevens(zdsZakLv01.stuurgegevens);
-            zdsZakLa01GeefZaakDetails.zdsStuurgegevens.berichtcode = "La01";
+            zdsZakLa01GeefZaakDetails.stuurgegevens = new ZdsStuurgegevens(zdsZakLv01.stuurgegevens);
+            zdsZakLa01GeefZaakDetails.stuurgegevens.berichtcode = "La01";
 
             zdsZakLa01GeefZaakDetails.antwoord = new ZdsZakLa01GeefZaakDetails.Antwoord();
             zdsZakLa01GeefZaakDetails.antwoord.zaak = new ZdsZakLa01GeefZaakDetails.Antwoord.Object();

@@ -9,10 +9,7 @@ import static nl.haarlem.translations.zdstozgw.translation.zds.model.namespace.N
 
 @XmlRootElement(namespace = ZKN, name = "edcLv01")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ZdsEdcLv01 {
-
-    @XmlElement(namespace = ZKN)
-    public ZdsStuurgegevens stuurgegevens;
+public class ZdsEdcLv01 extends ZdsDocument {
 
     @XmlElement(namespace = ZKN)
     public ZdsParameters parameters;

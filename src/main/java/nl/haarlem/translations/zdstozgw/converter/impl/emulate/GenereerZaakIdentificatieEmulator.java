@@ -1,11 +1,14 @@
 package nl.haarlem.translations.zdstozgw.converter.impl.emulate;
 
+import org.springframework.web.server.ResponseStatusException;
+
 import nl.haarlem.translations.zdstozgw.config.SpringContext;
 import nl.haarlem.translations.zdstozgw.config.model.Translation;
 import nl.haarlem.translations.zdstozgw.converter.ConverterException;
 import nl.haarlem.translations.zdstozgw.converter.impl.NotImplementedConverter;
 import nl.haarlem.translations.zdstozgw.jpa.EmulateParameterRepository;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsBv03;
+import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsDocument;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsGenereerZaakIdentificatieDi02;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsGenereerZaakIdentificatieDu02;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsZaak;
@@ -19,20 +22,24 @@ public class GenereerZaakIdentificatieEmulator extends NotImplementedConverter {
 		super(translation, zaakService);
 	}
 
-    @Override
-    public String convert(String action, String request) throws ConverterException {
-    	EmulateParameterRepository repository = SpringContext.getBean(EmulateParameterRepository.class);
-    	
+	@Override
+	public ZdsDocument load(String request) throws ResponseStatusException {
+        return (ZdsGenereerZaakIdentificatieDi02) XmlUtils.getStUFObject(request, ZdsGenereerZaakIdentificatieDi02.class);
+	}
+
+	@Override
+	public ZdsDocument execute(ZdsDocument document) throws ConverterException {
+    	EmulateParameterRepository repository = SpringContext.getBean(EmulateParameterRepository.class); 	
 		var prefixparam = repository.getOne("ZaakIdentificatiePrefix");
 		var idparam = repository.getOne("ZaakIdentificatieHuidige");
 		var identificatie = Long.parseLong(idparam.getParameterValue()) + 1;
 		idparam.setParameterValue(Long.toString(identificatie));
 		repository.save(idparam);
-    	
-        var di02 = (ZdsGenereerZaakIdentificatieDi02) XmlUtils.getStUFObject(request, ZdsGenereerZaakIdentificatieDi02.class);
-        var du02 = new ZdsGenereerZaakIdentificatieDu02(di02.stuurgegevens);
-        du02.zaak = new ZdsZaak();
-        du02.zaak.identificatie = prefixparam.getParameterValue() + identificatie;        
-        return XmlUtils.getSOAPMessageFromObject(du02);
-    }		
+		
+		var di02 = (ZdsGenereerZaakIdentificatieDi02) document;
+		var du02 = new ZdsGenereerZaakIdentificatieDu02(di02.stuurgegevens);
+      	du02.zaak = new ZdsZaak();
+      	du02.zaak.identificatie = prefixparam.getParameterValue() + identificatie;        
+		return du02;		
+	}    
 }

@@ -9,7 +9,8 @@ import static nl.haarlem.translations.zdstozgw.translation.zds.model.namespace.N
 
 @XmlRootElement(namespace = ZKN, name = "scope")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ZdsScope {
+public class ZdsScope  extends ZdsObject {
     @XmlElement(namespace = ZKN, name = "object")
-    public ZdsEdcLk01.Object object;
+    //public ZdsEdcLk01.Object object;
+    public ZdsZaakDocument object;
 }

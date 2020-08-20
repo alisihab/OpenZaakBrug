@@ -10,7 +10,7 @@ import static nl.haarlem.translations.zdstozgw.translation.zds.model.namespace.N
 
 @Data
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ZdsParameters {
+public class ZdsParameters  extends ZdsObject {
     @XmlElement(namespace = STUF, nillable = true)
     public String indicatorVervolgvraag;
     @XmlElement(namespace = STUF, nillable = true)

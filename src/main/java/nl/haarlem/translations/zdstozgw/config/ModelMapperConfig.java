@@ -45,8 +45,7 @@ public class ModelMapperConfig {
         addZgwZaakToZdsZaakTypeMapping(modelMapper);
         addZgwBetrokkeneIdentificatieToNatuurlijkPersoonTypeMapping(modelMapper);
         addZgwEnkelvoudigInformatieObjectToZaakDocumentTypeMapping(modelMapper);
-        addZgwEnkelvoudigInformatieObjectToZdsZaakDocumentDetailTypeMapping(modelMapper);
-        addZdsZaakToZgwZaakTypeMapping(modelMapper);
+        addZgwEnkelvoudigInformatieObjectToZdsZaakDocumentDetailTypeMapping(modelMapper);        
         addZdsNatuurlijkPersoonToZgwBetrokkeneIdentificatieTypeMapping(modelMapper);
         addZdsZaakDocumentToZgwEnkelvoudigInformatieObjectTypeMapping(modelMapper);
         addZgwZaakToGeefZaakDetailsTypeMappingTypeMapping(modelMapper);
@@ -90,6 +89,7 @@ public class ModelMapperConfig {
     }
 
     public void addZdsZaakToZgwZaakTypeMapping(ModelMapper modelMapper) {
+    	//TODO: kijken hoe werkt met inheritance!!
         modelMapper.typeMap(ZdsZaak.class, ZgwZaakPut.class)
                 .addMappings(mapper -> mapper.using(convertStufDateToDateString()).map(ZdsZaak::getRegistratiedatum, ZgwZaakPut::setRegistratiedatum))
                 .addMappings(mapper -> mapper.using(convertStufDateToDateString()).map(ZdsZaak::getStartdatum, ZgwZaakPut::setStartdatum))
@@ -105,14 +105,14 @@ public class ModelMapperConfig {
     }
 
     public void addZgwEnkelvoudigInformatieObjectToZdsZaakDocumentDetailTypeMapping(ModelMapper modelMapper) {
-        modelMapper.typeMap(ZgwEnkelvoudigInformatieObject.class, ZdsEdcLa01.Object.class)
+        modelMapper.typeMap(ZgwEnkelvoudigInformatieObject.class, ZdsZaakDocument.class)
                 .includeBase(ZgwEnkelvoudigInformatieObject.class, ZdsZaakDocument.class);
     }
 
     public void addZdsZaakDocumentToZgwEnkelvoudigInformatieObjectTypeMapping(ModelMapper modelMapper) {
-        modelMapper.typeMap(ZdsEdcLk01.Object.class, ZgwEnkelvoudigInformatieObject.class)
-                .addMappings(mapper -> mapper.using(convertStufDateToDateString()).map(ZdsEdcLk01.Object::getCreatiedatum, ZgwEnkelvoudigInformatieObject::setCreatiedatum))
-                .addMappings(mapper -> mapper.using(convertToLowerCase()).map(ZdsEdcLk01.Object::getVertrouwelijkAanduiding, ZgwEnkelvoudigInformatieObject::setVertrouwelijkheidaanduiding))
+    	modelMapper.typeMap(ZdsZaakDocument.class, ZgwEnkelvoudigInformatieObject.class)
+                .addMappings(mapper -> mapper.using(convertStufDateToDateString()).map(ZdsZaakDocument::getCreatiedatum, ZgwEnkelvoudigInformatieObject::setCreatiedatum))
+                .addMappings(mapper -> mapper.using(convertToLowerCase()).map(ZdsZaakDocument::getVertrouwelijkheidAanduiding, ZgwEnkelvoudigInformatieObject::setVertrouwelijkheidaanduiding))
                 .addMapping(src -> src.getInhoud().getValue(), ZgwEnkelvoudigInformatieObject::setInhoud)
                 .addMapping(src -> src.getInhoud().getBestandsnaam(), ZgwEnkelvoudigInformatieObject::setBestandsnaam);
     }
