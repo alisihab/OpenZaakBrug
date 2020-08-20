@@ -66,33 +66,7 @@ public class LoggingRequestHandler extends RequestHandler {
             return new ResponseEntity<>(response, HttpStatus.OK);
         }
 		catch(Exception ex) {
-			log.warn("request for path: /" + path + "/ with soapaction: " + soapAction, ex);
-			
-			// get the stacktrace
-			var swriter = new java.io.StringWriter();
-			var pwriter = new java.io.PrintWriter(swriter);
-			ex.printStackTrace(pwriter);
-			var stacktrace = swriter.toString();
-			session.setStackTrace(stacktrace);
-			 
-			// stuf-error-message
-	        var fo03 = new ZdsFo03(zdsRequest.stuurgegevens);
-	        fo03.body = new ZdsFo03.Body();
-	        https://www.gemmaonline.nl/images/gemmaonline/4/4f/Stuf0301_-_ONV0347_%28zonder_renvooi%29.pdf
-	        fo03.body.code = "StUF058";
-	        fo03.body.plek = "server";
-	        fo03.body.omschrijving = ex.toString();
-	        fo03.body.entiteittype = "";
-	        
-	        if (ex instanceof ConverterException) {
-	        	var ce = (ConverterException) ex;
-	        	fo03.body.details = ce.details;
-	        }	        
-	        else {
-	        	fo03.body.details = stacktrace;
-	        }
-	        fo03.body.detailsXML = request;                    	        
-
+			var fo03 = getErrorZdsDocument(ex,path, soapAction, request, zdsRequest.stuurgegevens);
 	        var response = XmlUtils.getSOAPFaultMessageFromObject(SOAPConstants.SOAP_RECEIVER_FAULT, ex.toString(), fo03);
 	        
 	        // log this response
@@ -102,12 +76,7 @@ public class LoggingRequestHandler extends RequestHandler {
 	        session.setDurationInMilliseconds(Duration.between(start, LocalDateTime.now()).toMillis());
 	        sessionService.save(session);
 
-	        if (ex instanceof ConverterException) {
-	            // TODO: nog niet duidelijk of we dit ook gaan gebruiken
-	        	var ce = (ConverterException) ex;
-	        	return new ResponseEntity<>(response, ce.getHttpStatus());
-	        }	        
-	        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+	        return new ResponseEntity<>(response, ex instanceof ConverterException ? ((ConverterException) ex).getHttpStatus() : HttpStatus.INTERNAL_SERVER_ERROR);
 		}
     }
     
