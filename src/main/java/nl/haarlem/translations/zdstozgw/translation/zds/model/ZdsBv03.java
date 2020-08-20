@@ -16,15 +16,15 @@ import static nl.haarlem.translations.zdstozgw.translation.zds.model.namespace.N
 public class ZdsBv03 {
 
     @XmlElement(namespace = STUF)
-    public ZdsStuurgegevens zdsStuurgegevens;
+    public ZdsStuurgegevens stuurgegevens;
 
     public ZdsBv03() {
     }
 
     public ZdsBv03(ZdsStuurgegevens zdsStuurgegevens) {
-        this.zdsStuurgegevens = new ZdsStuurgegevens(zdsStuurgegevens);
-        this.zdsStuurgegevens.tijdstipBericht = StufUtils.getStufDateTime();
-        this.zdsStuurgegevens.berichtcode = "Bv03";
-        this.zdsStuurgegevens.referentienummer = zdsStuurgegevens.referentienummer;
+        this.stuurgegevens = new ZdsStuurgegevens(zdsStuurgegevens);
+        this.stuurgegevens.tijdstipBericht = StufUtils.getStufDateTime();
+        this.stuurgegevens.berichtcode = "Bv03";
+        this.stuurgegevens.crossRefnummer = zdsStuurgegevens.referentienummer;
     }
 }

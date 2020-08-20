@@ -20,7 +20,7 @@ public class GeefLijstZaakdocumentenTranslator extends Converter {
     public String convert(String action, String request) throws ConverterException {
         var zdsZakLv01 = (ZdsZakLv01) XmlUtils.getStUFObject(request, ZdsZakLv01.class);
         ZdsZakLa01LijstZaakdocumenten zdsZakLa01LijstZaakdocumenten = this.getZaakService().geefLijstZaakdocumenten(zdsZakLv01);
-        zdsZakLa01LijstZaakdocumenten.zdsParameters = new ZdsParameters(zdsZakLv01.zdsParameters);
+        zdsZakLa01LijstZaakdocumenten.parameters = new ZdsParameters(zdsZakLv01.parameters);
         return XmlUtils.getSOAPMessageFromObject(zdsZakLa01LijstZaakdocumenten);
     }
 }

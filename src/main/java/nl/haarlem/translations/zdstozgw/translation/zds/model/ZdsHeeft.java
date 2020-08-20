@@ -12,7 +12,7 @@ import static nl.haarlem.translations.zdstozgw.translation.zds.model.namespace.N
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ZdsHeeft {
     @XmlElement(namespace = ZKN)
-    public ZdsGerelateerde zdsGerelateerde;
+    public ZdsGerelateerde gerelateerde;
 
     @XmlElement(namespace = ZKN)
     public String datumStatusGezet;

@@ -15,7 +15,7 @@ public class LoggingRequestInterceptor implements ClientHttpRequestInterceptor {
 
     private RequestResponseCycleService requestResponseCycleService;
     private RequestResponseCycle currentRequestResponseCycle;
-    private InterimRequestResponseCycle currentInterimRequestResponseCycle;
+    private ZgwRequestResponseCycle currentInterimRequestResponseCycle;
 
 
     @Override
@@ -29,7 +29,7 @@ public class LoggingRequestInterceptor implements ClientHttpRequestInterceptor {
     }
 
     private void addRequestToDatabase(HttpRequest request, byte[] body) throws UnsupportedEncodingException {
-        this.currentInterimRequestResponseCycle = new InterimRequestResponseCycle()
+        this.currentInterimRequestResponseCycle = new ZgwRequestResponseCycle()
                 .setRequestResponseCycle(this.currentRequestResponseCycle)
                 .setZgwRequestBody(new String(body, "UTF-8"))
                 .setZgwUrl(request.getURI().toString())

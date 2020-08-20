@@ -6,15 +6,21 @@ import org.modelmapper.AbstractConverter;
 import org.modelmapper.Conditions;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import static nl.haarlem.translations.zdstozgw.translation.BetrokkeneType.MEDEWERKER;
 import static nl.haarlem.translations.zdstozgw.translation.BetrokkeneType.NATUURLIJK_PERSOON;
 
+import java.lang.invoke.MethodHandles;
+
 @Configuration
 public class ModelMapperConfig {
 
+	private static final Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+	
     @Bean
     public ModelMapper modelMapper() {
         ModelMapper modelMapper = new ModelMapper();
@@ -35,6 +41,7 @@ public class ModelMapperConfig {
         modelMapper.typeMap(ZdsZaak.Opschorting.class, ZgwOpschorting.class)
                 .addMappings(mapper -> mapper.using(convertStringToBoolean()).map(ZdsZaak.Opschorting::getIndicatie, ZgwOpschorting::setIndicatie));
 
+        addZdsZaakToZgwZaakTypeMapping(modelMapper);
         addZgwZaakToZdsZaakTypeMapping(modelMapper);
         addZgwBetrokkeneIdentificatieToNatuurlijkPersoonTypeMapping(modelMapper);
         addZgwEnkelvoudigInformatieObjectToZaakDocumentTypeMapping(modelMapper);
@@ -55,7 +62,7 @@ public class ModelMapperConfig {
                 .addMappings(mapper -> mapper.using(convertToLowerCase()).map(ZgwBetrokkeneIdentificatie::getGeslachtsaanduiding, ZdsNatuurlijkPersoon::setGeslachtsaanduiding))
                 .addMappings(mapper -> mapper.using(convertToLowerCase()).map(ZgwBetrokkeneIdentificatie::getInpBsn, ZdsNatuurlijkPersoon::setBsn));
     }
-
+    
     private void addZgwZaakToZdsZaakTypeMapping(ModelMapper modelMapper) {
         modelMapper.typeMap(ZgwZaak.class, ZdsZaak.class)
                 .addMappings(mapper -> mapper.using(convertDateStringToStufDate()).map(ZgwZaak::getStartdatum, ZdsZaak::setStartdatum))
@@ -106,28 +113,30 @@ public class ModelMapperConfig {
         modelMapper.typeMap(ZdsEdcLk01.Object.class, ZgwEnkelvoudigInformatieObject.class)
                 .addMappings(mapper -> mapper.using(convertStufDateToDateString()).map(ZdsEdcLk01.Object::getCreatiedatum, ZgwEnkelvoudigInformatieObject::setCreatiedatum))
                 .addMappings(mapper -> mapper.using(convertToLowerCase()).map(ZdsEdcLk01.Object::getVertrouwelijkAanduiding, ZgwEnkelvoudigInformatieObject::setVertrouwelijkheidaanduiding))
-                .addMapping(src -> src.getZdsInhoud().getValue(), ZgwEnkelvoudigInformatieObject::setInhoud)
-                .addMapping(src -> src.getZdsInhoud().getBestandsnaam(), ZgwEnkelvoudigInformatieObject::setBestandsnaam);
+                .addMapping(src -> src.getInhoud().getValue(), ZgwEnkelvoudigInformatieObject::setInhoud)
+                .addMapping(src -> src.getInhoud().getBestandsnaam(), ZgwEnkelvoudigInformatieObject::setBestandsnaam);
     }
 
     private AbstractConverter<String, String> convertStufDateToDateString() {
         return new AbstractConverter<>() {
-            @Override
+        	
+			@Override
             protected String convert(String stufDate) {
-
                 var year = stufDate.substring(0, 4);
                 var month = stufDate.substring(4, 6);
                 var day = stufDate.substring(6, 8);
-                return year + "-" + month + "-" + day;
+                var result = year + "-" + month + "-" + day;
+            	log.info("convertStufDateToDateString: " + stufDate + " --> " + result);
+                return result;
             }
         };
     }
 
     private AbstractConverter<String, String> convertStufDateToDateTimeString() {
         return new AbstractConverter<>() {
+        	
             @Override
             protected String convert(String stufDate) {
-
                 var year = stufDate.substring(0, 4);
                 var month = stufDate.substring(4, 6);
                 var day = stufDate.substring(6, 8);
@@ -135,66 +144,75 @@ public class ModelMapperConfig {
                 var minutes = stufDate.substring(10, 12);
                 var seconds = stufDate.substring(12, 14);
                 var milliseconds = stufDate.substring(14);
-                return year + "-" + month + "-" + day + "T" + hours + ":" + minutes + ":" + seconds + "." + milliseconds + "Z";
+                var result = year + "-" + month + "-" + day + "T" + hours + ":" + minutes + ":" + seconds + "." + milliseconds + "Z";
+            	log.info("convertStufDateToDateTimeString: " + stufDate + " --> " + result);
+                return result;                
             }
         };
     }
 
     private AbstractConverter<String, String> getZGWArchiefNominatie() {
         return new AbstractConverter<>() {
+        	
             @Override
             protected String convert(String archiefNominatie) {
-                if (archiefNominatie.toUpperCase().equals("J")) {
-                    return "vernietigen";
-                } else {
-                    return "blijvend_bewaren";
-                }
+                var result = archiefNominatie.toUpperCase().equals("J") ? "vernietigen" : "blijvend_bewaren";
+            	log.info("getZGWArchiefNominatie: " + archiefNominatie + " --> " + result);
+                return result;                
             }
         };
     }
 
     private AbstractConverter<String, String> convertDateStringToStufDate() {
         return new AbstractConverter<>() {
+        	
             @Override
-            protected String convert(String s) {
-                if (s == null) {
+            protected String convert(String zgwDate) {
+                if (zgwDate == null) {
                     return null;
                 }
-                var year = s.substring(0, 4);
-                var month = s.substring(5, 7);
-                var day = s.substring(8, 10);
-                return year + month + day;
+                var year = zgwDate.substring(0, 4);
+                var month = zgwDate.substring(5, 7);
+                var day = zgwDate.substring(8, 10);
+                var result = year + month + day;
+            	log.info("convertDateStringToStufDate: " + zgwDate + " --> " + result);
+                return result;                   
             }
         };
     }
 
     private AbstractConverter<String, Boolean> convertStringToBoolean() {
         return new AbstractConverter<>() {
+        	
             @Override
             protected Boolean convert(String s) {
-                return s.toLowerCase().equals("j");
+                var result = s.toLowerCase().equals("j");
+            	log.info("convertStringToBoolean: " + s + " --> " + result);
+                return result;                   
             }
         };
     }
 
     private AbstractConverter<String, String> convertZgwArchiefNomitieToZdsArchiefNominatie() {
         return new AbstractConverter<>() {
-            @Override
+
+        	@Override
             protected String convert(String s) {
-                if (s.toUpperCase().equals("vernietigen")) {
-                    return "J";
-                } else {
-                    return "N";
-                }
+            	var result = s.toUpperCase().equals("vernietigen") ? "J" :  "N";
+            	log.info("convertZgwArchiefNomitieToZdsArchiefNominatie: " + s + " --> " + result);
+                return result;                   
             }
         };
     }
 
     private AbstractConverter<String, String> convertToLowerCase() {
         return new AbstractConverter<>() {
+        	
             @Override
             protected String convert(String s) {
-                return s.toLowerCase();
+                var result =  s.toLowerCase();
+            	log.info("convertToLowerCase: " + s + " --> " + result);
+                return result;                  
             }
         };
     }
@@ -215,14 +233,15 @@ public class ModelMapperConfig {
                 ZdsRol zdsRol = new ZdsRol();
                 zdsRol.gerelateerde = new ZdsGerelateerde();
                 if (zgwRol.getBetrokkeneType().equalsIgnoreCase(NATUURLIJK_PERSOON.getDescription())) {
-                    zdsRol.gerelateerde.zdsNatuurlijkPersoon = modelMapper().map(zgwRol.betrokkeneIdentificatie, ZdsNatuurlijkPersoon.class);
-                    zdsRol.gerelateerde.zdsNatuurlijkPersoon.entiteittype = "NPS";
+                    zdsRol.gerelateerde.natuurlijkPersoon = modelMapper().map(zgwRol.betrokkeneIdentificatie, ZdsNatuurlijkPersoon.class);
+                    zdsRol.gerelateerde.natuurlijkPersoon.entiteittype = "NPS";
                 } else if (zgwRol.getBetrokkeneType().equalsIgnoreCase(MEDEWERKER.getDescription())) {
-                    zdsRol.gerelateerde.zdsMedewerker = modelMapper().map(zgwRol.betrokkeneIdentificatie, ZdsMedewerker.class);
-                    zdsRol.gerelateerde.zdsMedewerker.entiteittype = "MDW";
+                    zdsRol.gerelateerde.medewerker = modelMapper().map(zgwRol.betrokkeneIdentificatie, ZdsMedewerker.class);
+                    zdsRol.gerelateerde.medewerker.entiteittype = "MDW";
                 } else {
                     throw new RuntimeException("Betrokkene type nog niet geïmplementeerd");
                 }
+            	log.info("convertToLowerCase: " + zgwRol.roltoelichting + " --> " + zdsRol.toString());                
                 return zdsRol;
             }
         };

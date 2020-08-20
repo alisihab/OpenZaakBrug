@@ -32,7 +32,7 @@ public class ZdsEdcLk01 {
         public String taal;
 
         @XmlElement(namespace = ZKN)
-        public ZdsInhoud zdsInhoud;
+        public ZdsInhoud inhoud;
 
         @XmlElement(namespace = ZKN)
         public String auteur;
@@ -64,6 +64,6 @@ public class ZdsEdcLk01 {
     public List<ZdsEdcLk01.Object> objects;
 
     @XmlElement(namespace = ZKN, name = "stuurgegevens")
-    public ZdsStuurgegevens zdsStuurgegevens;
+    public ZdsStuurgegevens stuurgegevens;
 
 }

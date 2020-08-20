@@ -19,7 +19,7 @@ public class VoegZaakdocumentToeTranslator extends Converter {
     public String convert(String action, String request) throws ConverterException {
         var zdsEdcLk01 = (ZdsEdcLk01) XmlUtils.getStUFObject(request, ZdsEdcLk01.class);
         this.getZaakService().voegZaakDocumentToe(zdsEdcLk01);
-        var bv03 = new ZdsBv03(zdsEdcLk01.zdsStuurgegevens);
+        var bv03 = new ZdsBv03(zdsEdcLk01.stuurgegevens);
         return XmlUtils.getSOAPMessageFromObject(bv03);
     }
 }

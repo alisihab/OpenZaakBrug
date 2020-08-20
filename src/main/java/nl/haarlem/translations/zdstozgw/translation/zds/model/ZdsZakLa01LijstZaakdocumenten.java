@@ -14,10 +14,10 @@ import static nl.haarlem.translations.zdstozgw.translation.zds.model.namespace.N
 public class ZdsZakLa01LijstZaakdocumenten {
 
     @XmlElement(namespace = ZKN)
-    public ZdsStuurgegevens zdsStuurgegevens;
+    public ZdsStuurgegevens stuurgegevens;
 
     @XmlElement(namespace = ZKN)
-    public ZdsParameters zdsParameters;
+    public ZdsParameters parameters;
 
     @XmlElement(namespace = ZKN)
     public Antwoord antwoord;
