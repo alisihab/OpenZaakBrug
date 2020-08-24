@@ -35,15 +35,15 @@ public class BasicRequestHandler extends RequestHandler {
     }
     
     @Override
-    public ResponseEntity<?> execute(String path, String soapAction, String request)  {
-    	var zdsRequest = this.converter.load(request);    	
+    public ResponseEntity<?> execute()  {
+    	this.converter.load();    	
     	try {
-			var zdsResponse = this.converter.execute(zdsRequest);
+			var zdsResponse = this.converter.execute();
 			var response = XmlUtils.getSOAPMessageFromObject(zdsResponse);
 			return new ResponseEntity<>(response, HttpStatus.OK);	        
 		}
 		catch(Exception ex) {
-			var fo03 = getErrorZdsDocument(ex,path, soapAction, request, zdsRequest.stuurgegevens);
+			var fo03 = getErrorZdsDocument(ex, converter);
 	        var response = XmlUtils.getSOAPFaultMessageFromObject(SOAPConstants.SOAP_RECEIVER_FAULT, ex.toString(), fo03);
 	        return new ResponseEntity<>(response, ex instanceof ConverterException ? ((ConverterException) ex).getHttpStatus() : HttpStatus.INTERNAL_SERVER_ERROR);
 		}

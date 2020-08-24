@@ -27,8 +27,8 @@ public abstract class RequestHandler {
     }
 
 
-	protected ZdsFo03 getErrorZdsDocument(Exception ex, String path, String soapAction, String request, ZdsStuurgegevens stuurgegevens) {
-		log.warn("request for path: /" + path + "/ with soapaction: " + soapAction, ex);
+	protected ZdsFo03 getErrorZdsDocument(Exception ex, Converter convertor) {
+		log.warn("request for path: /" + converter.getContext().getUrl()+ "/ with soapaction: " + converter.getContext().getSoapAction(), ex);
 		
 		// get the stacktrace
 		var swriter = new java.io.StringWriter();
@@ -36,7 +36,7 @@ public abstract class RequestHandler {
 		ex.printStackTrace(pwriter);
 		var stacktrace = swriter.toString();			
 		 
-        var fo03 = new ZdsFo03(stuurgegevens);
+        var fo03 = new ZdsFo03(converter.getZdsDocument().stuurgegevens);
         fo03.body = new ZdsFo03.Body();
         https://www.gemmaonline.nl/images/gemmaonline/4/4f/Stuf0301_-_ONV0347_%28zonder_renvooi%29.pdf
         fo03.body.code = "StUF058";
@@ -50,9 +50,9 @@ public abstract class RequestHandler {
         else {
         	fo03.body.details = stacktrace;
         }
-        fo03.body.detailsXML = request;                    	        
+        fo03.body.detailsXML = converter.getContext().getRequestBody();
         return fo03;
 	}    
     
-    public abstract ResponseEntity<?> execute(String path, String soapAction, String request);
+    public abstract ResponseEntity<?> execute();
 }

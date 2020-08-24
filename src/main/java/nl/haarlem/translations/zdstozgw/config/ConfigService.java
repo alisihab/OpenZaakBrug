@@ -36,52 +36,10 @@ public class ConfigService {
         Gson gson = new Gson();
         this.configuratie = gson.fromJson(bufferedReader, Configuratie.class);
 
-//    	
-//        Scanner scanner = null;
-//        try {
-//            File resource = new ClassPathResource("config.json").getFile();
-//            scanner = new Scanner(resource);
-//        } catch (Exception ex) {
-//        	log.error("error loading content from file", ex);
-//        	log.error("######################################################################################");
-//            log.error("#####                                                                            #####");
-//            log.error("##### Unable to load configuration. Make sure 'config.json' is on the classpath  #####");
-//            log.error("#####                                                                            #####");
-//            log.error("######################################################################################");
-//            throw ex;
-//        }
-//        try {
-//            String result = "";
-//            while (scanner.hasNextLine()) {
-//                result += scanner.nextLine();
-//            }
-//            Gson gson = new Gson();
-//            this.configuratie = gson.fromJson(result, Configuratie.class);
-//            
-//            if(configuratie == null) {
-//            	log.error("configuratie == null");
-//            	log.error("json:" + result);
-//            	throwException();
-//            }
-//
-//        } catch (Exception ex) {
-//        	log.error("error loading json from string", ex);
-//        	throwException();
-//        }
         validateConfiguration();
     }
 
-//    private void throwException() throws Exception {
-//        log.error("##########################################################################################");
-//        log.error("#####                                                                                #####");
-//        log.error("##### Unable to load configuration. Make sure 'config.json' contains a valid config  #####");
-//        log.error("#####                                                                                #####");
-//        log.error("##########################################################################################");
-//        throw new Exception();
-//    }
-//
     private void validateConfiguration() throws Exception {
-//        try {
     	this.configuratie.getRequestHandlerImplementation();
     	
     	this.configuratie.getOrganisaties().size();
@@ -108,11 +66,6 @@ public class ConfigService {
         	translation.getImplementation();
         	translation.getLegacyservice();
         }
-//        } catch (Exception ex) {
-//        	log.error("error validating config", ex);
-//            throwException();
-//        }
-
     }
 
     public Translation getTranslationByPathAndSoapAction(String path, String soapAction) {

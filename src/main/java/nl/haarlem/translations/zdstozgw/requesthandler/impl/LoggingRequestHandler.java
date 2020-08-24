@@ -39,34 +39,33 @@ public class LoggingRequestHandler extends RequestHandler {
     }
 
     @Override
-    public ResponseEntity<?> execute(String path, String soapAction, String request)  {
+    public ResponseEntity<?> execute()  {
         Configuratie configuratie = configService.getConfiguratie();
 
         // TODO: netter
         LocalDateTime start = LocalDateTime.now();
         RequestResponseCycle session = new RequestResponseCycle()
                 .setTimestamp(start)
-                .setClientUrl(path)
-                .setClientSoapAction(soapAction)
-                .setClientRequestBody(request)
+                .setClientUrl(this.getConverter().getContext().getUrl())
+                .setClientSoapAction(this.getConverter().getContext().getSoapAction())
+                .setClientRequestBody(this.getConverter().getContext().getRequestBody())
                 .setConverterImplementation(this.getConverter().getTranslation().getImplementation())
                 .setConverterTemplate(this.getConverter().getTranslation().getTemplate());
         sessionService.save(session);
         this.sessionService.setRequestResponseCycleSession(session);
         
-        var zdsRequest = this.converter.load(request);
+        this.converter.load();
         try {
-			var zdsResponse = this.converter.execute(zdsRequest);
-			var response = XmlUtils.getSOAPMessageFromObject(zdsResponse);
-        	session.setClientResponseBody(response);
-        	session.setClientResponseCode(HttpStatus.OK.value());
+			var response = this.converter.execute();
+        	session.setClientResponseBody(response.getBody().toString());
+        	session.setClientResponseCode(response.getStatusCodeValue());
         	session.setDurationInMilliseconds(Duration.between(start, LocalDateTime.now()).toMillis());
             this.sessionService.save(session);
             
-            return new ResponseEntity<>(response, HttpStatus.OK);
+            return response;
         }
 		catch(Exception ex) {
-			var fo03 = getErrorZdsDocument(ex,path, soapAction, request, zdsRequest.stuurgegevens);
+			var fo03 = getErrorZdsDocument(ex, this.getConverter());
 	        var response = XmlUtils.getSOAPFaultMessageFromObject(SOAPConstants.SOAP_RECEIVER_FAULT, ex.toString(), fo03);
 	        
 	        // log this response

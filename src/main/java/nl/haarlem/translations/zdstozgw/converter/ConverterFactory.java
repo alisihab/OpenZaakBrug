@@ -2,6 +2,7 @@ package nl.haarlem.translations.zdstozgw.converter;
 
 import nl.haarlem.translations.zdstozgw.config.ConfigService;
 import nl.haarlem.translations.zdstozgw.config.model.Translation;
+import nl.haarlem.translations.zdstozgw.requesthandler.RequestHandlerContext;
 import nl.haarlem.translations.zdstozgw.translation.zds.services.ZaakService;
 import nl.haarlem.translations.zdstozgw.utils.XmlUtils;
 
@@ -22,29 +23,33 @@ public class ConverterFactory {
     private final ConfigService configService;
     private final ZaakService zaakService;
 
+	private Object requestHandlerFactory;
+
     @Autowired
     public ConverterFactory(ConfigService configService, ZaakService zaakService) {
         this.configService = configService;
         this.zaakService = zaakService;
     }
 
-    public Converter getConverter(String path, String soapAction) throws ResponseStatusException {
-        Translation translation = this.configService.getTranslationByPathAndSoapAction(path, soapAction);
+    public Converter getConverter(RequestHandlerContext context) throws ResponseStatusException {
+        Translation translation = this.configService.getTranslationByPathAndSoapAction(context.getUrl(), context.getSoapAction());
         
         if(translation == null) {
         	String combinations = "";
         	for(Translation t : this.configService.getConfiguratie().getTranslations()) {
         		combinations += "\n\tpath: '" + t.getPath()+ "' soapaction: '" + t.getSoapAction() + "'";
         	}
-        	log.error("Could not load a convertor for path: '" + path + "' with soapaction: '" + soapAction + "'");
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Could not load a convertor for path: '" + path + "' with soapaction: '" + soapAction + "'\navailable services:" + combinations);
+        	log.error("Could not load a convertor for path: '" + context.getUrl() + "' with soapaction: '" + context.getSoapAction() + "'");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Could not load a convertor for path: '" + context.getUrl() + "' with soapaction: '" + context.getSoapAction() + "'\navailable services:" + combinations);
         }
         String classname = translation.implementation;
         try {
             Class<?> c = Class.forName(classname);
-            java.lang.reflect.Constructor<?> ctor = c.getConstructor(Translation.class, ZaakService.class);
-            Object object = ctor.newInstance(new Object[]{translation, zaakService});
-            return (Converter) object;
+            java.lang.reflect.Constructor<?> ctor = c.getConstructor(RequestHandlerContext.class, Translation.class, ZaakService.class);
+            Object object = ctor.newInstance(new Object[]{context, translation, zaakService});
+            
+            var converter = (Converter) object;            
+            return converter;
         } 
         catch (Exception e) {        	
         	log.error("error loading class:" + classname, e);

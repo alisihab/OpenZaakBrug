@@ -79,15 +79,7 @@ public class ZaakService {
     // STOP: Zou moeten gebeuren in de ModelMapperConfig	
     
     public ZgwZaak creeerZaak(ZdsZakLk01 zdsZakLk01CreeerZaak)   {
-        var zdsZaak = zdsZakLk01CreeerZaak.objects.get(0);
-
-        // START: Zou moeten gebeuren in de ModelMapperConfig
-        zdsZaak.registratiedatum = getDateStringFromZdsDate(zdsZaak.registratiedatum);
-        zdsZaak.startdatum = getDateStringFromZdsDate(zdsZaak.startdatum);
-        zdsZaak.einddatumGepland = getDateStringFromZdsDate(zdsZaak.einddatumGepland);
-        zdsZaak.archiefnominatie = getArchiefNominatieFromZds(zdsZaak.archiefnominatie);
-        // STOP: Zou moeten gebeuren in de ModelMapperConfig        
-                
+        ZdsZaak zdsZaak = zdsZakLk01CreeerZaak.objects.get(0);
         ZgwZaak zgwZaak = modelMapper.map(zdsZaak, ZgwZaak.class);
         
         var zaaktypecode = zdsZaak.isVan.gerelateerde.code;

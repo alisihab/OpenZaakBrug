@@ -1,12 +1,19 @@
 package nl.haarlem.translations.zdstozgw.converter.impl.emulate;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.server.ResponseStatusException;
 
 import nl.haarlem.translations.zdstozgw.config.SpringContext;
 import nl.haarlem.translations.zdstozgw.config.model.Translation;
+import nl.haarlem.translations.zdstozgw.converter.Converter;
 import nl.haarlem.translations.zdstozgw.converter.ConverterException;
 import nl.haarlem.translations.zdstozgw.converter.impl.NotImplementedConverter;
 import nl.haarlem.translations.zdstozgw.jpa.EmulateParameterRepository;
+import nl.haarlem.translations.zdstozgw.requesthandler.RequestHandlerContext;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsBv03;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsDocument;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsGenereerZaakIdentificatieDi02;
@@ -16,19 +23,19 @@ import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsZakLk01;
 import nl.haarlem.translations.zdstozgw.translation.zds.services.ZaakService;
 import nl.haarlem.translations.zdstozgw.utils.XmlUtils;
 
-public class GenereerZaakIdentificatieEmulator extends NotImplementedConverter {
+public class GenereerZaakIdentificatieEmulator extends Converter {
 
-	public GenereerZaakIdentificatieEmulator(Translation translation, ZaakService zaakService) {
-		super(translation, zaakService);
+	public GenereerZaakIdentificatieEmulator(RequestHandlerContext context, Translation translation, ZaakService zaakService) {
+		super(context, translation, zaakService);
 	}
 
 	@Override
-	public ZdsDocument load(String request) throws ResponseStatusException {
-        return (ZdsGenereerZaakIdentificatieDi02) XmlUtils.getStUFObject(request, ZdsGenereerZaakIdentificatieDi02.class);
+	public void load() throws ResponseStatusException {
+        this.zdsDocument =  (ZdsGenereerZaakIdentificatieDi02) XmlUtils.getStUFObject(this.getContext().getRequestBody(), ZdsGenereerZaakIdentificatieDi02.class);
 	}
 
 	@Override
-	public ZdsDocument execute(ZdsDocument document) throws ConverterException {
+	public ResponseEntity<?> execute() throws ConverterException {
     	EmulateParameterRepository repository = SpringContext.getBean(EmulateParameterRepository.class); 	
 		var prefixparam = repository.getOne("ZaakIdentificatiePrefix");
 		var idparam = repository.getOne("ZaakIdentificatieHuidige");
@@ -36,10 +43,12 @@ public class GenereerZaakIdentificatieEmulator extends NotImplementedConverter {
 		idparam.setParameterValue(Long.toString(identificatie));
 		repository.save(idparam);
 		
-		var di02 = (ZdsGenereerZaakIdentificatieDi02) document;
+		var di02 = (ZdsGenereerZaakIdentificatieDi02) this.zdsDocument;
 		var du02 = new ZdsGenereerZaakIdentificatieDu02(di02.stuurgegevens);
       	du02.zaak = new ZdsZaak();
-      	du02.zaak.identificatie = prefixparam.getParameterValue() + identificatie;        
-		return du02;		
+      	du02.zaak.identificatie = prefixparam.getParameterValue() + identificatie;
+      	
+		var response = XmlUtils.getSOAPMessageFromObject(du02);        
+        return new ResponseEntity<>(response, HttpStatus.OK);      	
 	}    
 }
