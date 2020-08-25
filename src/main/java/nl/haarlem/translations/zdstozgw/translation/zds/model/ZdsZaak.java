@@ -94,6 +94,9 @@ public class ZdsZaak extends ZdsZaakIdentificatie {
 
     @XmlElement(namespace = ZKN)
     public ZdsRol isVan;
+    
+    @XmlElement(namespace = ZKN)
+    public List<ZdsHeeft> heeft;
 
     @Data
     @XmlAccessorType(XmlAccessType.FIELD)

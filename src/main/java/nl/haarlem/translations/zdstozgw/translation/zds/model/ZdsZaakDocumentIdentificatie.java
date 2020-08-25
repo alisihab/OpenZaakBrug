@@ -17,7 +17,7 @@ public class ZdsZaakDocumentIdentificatie extends ZdsObject{
 	public String entiteittype = "EDC";
 
 	@XmlAttribute(namespace = STUF)
-	public String functie = "entiteit";    
+	public String functie;    
 
     @XmlElement(namespace = ZKN, nillable = true)
     public String identificatie;

@@ -28,12 +28,12 @@ public class XmlUnitTests {
 
             //actheb
             ZdsZakLk01ActualiseerZaakstatus zdsZakLk01ActualiseerZaakstatus = (ZdsZakLk01ActualiseerZaakstatus) XmlUtils.getStUFObject(content, ZdsZakLk01ActualiseerZaakstatus.class);
-            ZdsZakLk01ActualiseerZaakstatus.Object object = zdsZakLk01ActualiseerZaakstatus.objects.get(1);
+            var object = zdsZakLk01ActualiseerZaakstatus.object.get(1);
 
             //assert
             assumeTrue(object.identificatie != null);
-            assumeTrue(object.heeft.datumStatusGezet != null);
-            assumeTrue(object.heeft.gerelateerde.volgnummer != null);
+            assumeTrue(object.heeft.get(0).datumStatusGezet != null);
+            assumeTrue(object.heeft.get(0).gerelateerde.volgnummer != null);
 
         } catch (IOException e) {
             e.printStackTrace();

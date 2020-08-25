@@ -11,6 +11,7 @@ import nl.haarlem.translations.zdstozgw.requesthandler.RequestHandlerContext;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsBv03;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsZknDocument;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsFo03;
+import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsZaak;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsZakLk01;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsZakLk01ActualiseerZaakstatus;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsZakLv01;
@@ -30,9 +31,11 @@ public class CreeerZaakTranslator extends Converter {
 	
 	@Override
 	public ResponseEntity<?> execute() throws ResponseStatusException {
-      	var document = this.zdsDocument;
-      	var zgwZaak = this.getZaakService().creeerZaak((ZdsZakLk01) document);
-      	var bv03 = new ZdsBv03(document.stuurgegevens);	
+		ZdsZakLk01 zdsZakLk01 = (ZdsZakLk01) this.zdsDocument;
+		String rsin = this.getZaakService().getRSIN(zdsZakLk01.stuurgegevens.zender.organisatie);
+		ZdsZaak zdsZaak = zdsZakLk01.objects.get(0);   
+      	var zgwZaak = this.getZaakService().creeerZaak(rsin, zdsZaak);
+      	var bv03 = new ZdsBv03(zdsZakLk01.stuurgegevens);
 		var response = XmlUtils.getSOAPMessageFromObject(bv03);   
         return new ResponseEntity<>(response, HttpStatus.OK);	
 	}

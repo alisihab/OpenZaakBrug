@@ -29,8 +29,7 @@ public class ZdsZakLk01ActualiseerZaakstatus extends ZdsZknDocument {
         public ZdsHeeft heeft;
     }
 
-
     @XmlElement(namespace = ZKN, name = "object")
-    public List<Object> objects;
+    public List<ZdsZaak> object;
 
 }

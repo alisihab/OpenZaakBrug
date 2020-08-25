@@ -29,8 +29,8 @@ public class ModelMapperConfig {
                 .setSkipNullEnabled(true)
                 .setPropertyCondition(Conditions.isNotNull());
 
-        modelMapper.typeMap(ZgwStatus.class, ZdsZakLa01GeefZaakDetails.Status.class)
-                .addMappings(mapper -> mapper.map(ZgwStatus::getStatustoelichting, ZdsZakLa01GeefZaakDetails.Status::setToelichting));
+        modelMapper.typeMap(ZgwStatus.class, ZdsHeeft.class)
+                .addMappings(mapper -> mapper.map(ZgwStatus::getStatustoelichting, ZdsHeeft::setToelichting));
 
         modelMapper.typeMap(ZgwZaakInformatieObject.class, ZdsZakLa01LijstZaakdocumenten.Antwoord.Object.HeeftRelevant.class)
                 .addMappings(mapper -> mapper.using(convertDateStringToStufDate()).map(ZgwZaakInformatieObject::getRegistratiedatum, ZdsZakLa01LijstZaakdocumenten.Antwoord.Object.HeeftRelevant::setRegistratiedatum));
@@ -75,8 +75,9 @@ public class ModelMapperConfig {
     }
 
     private void addZgwZaakToGeefZaakDetailsTypeMappingTypeMapping(ModelMapper modelMapper) {
-        modelMapper.typeMap(ZgwZaak.class, ZdsZakLa01GeefZaakDetails.Antwoord.Object.class)
-                .includeBase(ZgwZaak.class, ZdsZaak.class);
+        //modelMapper.typeMap(ZgwZaak.class, ZdsZakLa01GeefZaakDetails.Antwoord.Object.class)
+    	//	.includeBase(ZgwZaak.class, ZdsZaak.class);
+        modelMapper.typeMap(ZgwZaak.class, ZdsZaak.class);    	    	
     }
 
     private void addZgwEnkelvoudigInformatieObjectToZaakDocumentTypeMapping(ModelMapper modelMapper) {

@@ -47,6 +47,7 @@ public class GenereerDocumentIdentificatieEmulator extends Converter {
 		var di02 = (ZdsGenereerDocumentIdentificatieDi02) this.zdsDocument;
 		var du02 = new ZdsGenereerDocumentIdentificatieDu02(di02.stuurgegevens);
       	du02.document = new ZdsZaakDocument();
+      	du02.document.functie = "entiteit";
       	du02.document.identificatie = prefixparam.getParameterValue() + identificatie;        
 
       	var response = XmlUtils.getSOAPMessageFromObject(du02);        

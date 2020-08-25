@@ -15,10 +15,7 @@ import static nl.haarlem.translations.zdstozgw.translation.zds.model.namespace.N
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ZdsZakLa01LijstZaakdocumenten extends ZdsZknDocument {
 
-    @XmlElement(namespace = ZKN)
-    public ZdsStuurgegevens stuurgegevens;
-
-    @XmlElement(namespace = ZKN)
+	@XmlElement(namespace = ZKN)
     public ZdsParameters parameters;
 
     @XmlElement(namespace = ZKN)
@@ -27,12 +24,11 @@ public class ZdsZakLa01LijstZaakdocumenten extends ZdsZknDocument {
     private ZdsZakLa01LijstZaakdocumenten() {
     }
 
-    public ZdsZakLa01LijstZaakdocumenten(ZdsStuurgegevens zdsStuurgegevens) {
-        this.stuurgegevens = new ZdsStuurgegevens(zdsStuurgegevens);
-        this.stuurgegevens.tijdstipBericht = StufUtils.getStufDateTime();
+    public ZdsZakLa01LijstZaakdocumenten(ZdsStuurgegevens fromRequest) {
+    	super(fromRequest);
+        this.stuurgegevens.entiteittype = "ZAK";    	
         this.stuurgegevens.berichtcode = "Bv03";
-        this.stuurgegevens.crossRefnummer = zdsStuurgegevens.referentienummer;
-        this.stuurgegevens.entiteittype = "ZAK";
+        this.stuurgegevens.crossRefnummer = fromRequest.referentienummer;
     }
     
 
@@ -45,7 +41,9 @@ public class ZdsZakLa01LijstZaakdocumenten extends ZdsZknDocument {
         @Data
         @XmlAccessorType(XmlAccessType.FIELD)
         public static class Object {
-
+            @XmlAttribute(namespace = STUF)
+            public String entiteittype = "ZAK";     	
+        	
             @XmlElement(namespace = ZKN)
             public String identificatie;
 
@@ -56,8 +54,8 @@ public class ZdsZakLa01LijstZaakdocumenten extends ZdsZknDocument {
             @XmlAccessorType(XmlAccessType.FIELD)
             public static class HeeftRelevant {
                 @XmlAttribute(namespace = STUF)
-                public String entiteittype;
-
+                public String entiteittype = "ZAKEDC";     
+                
                 @XmlElement(namespace = ZKN)
                 public ZdsZaakDocument gerelateerde;
 

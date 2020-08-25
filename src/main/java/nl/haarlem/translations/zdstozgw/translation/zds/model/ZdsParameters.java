@@ -13,16 +13,14 @@ import static nl.haarlem.translations.zdstozgw.translation.zds.model.namespace.N
 public class ZdsParameters  extends ZdsObject {
     @XmlElement(namespace = STUF, nillable = true)
     public String indicatorVervolgvraag;
-    @XmlElement(namespace = STUF, nillable = true)
-    public String sortering;
+//    @XmlElement(namespace = STUF, nillable = true)
+//    public String sortering;
 
     public ZdsParameters() {
     }
 
-    ;
-
     public ZdsParameters(ZdsParameters zdsParameters) {
-        this.sortering = zdsParameters.sortering;
+//        this.sortering = zdsParameters.sortering;
         this.indicatorVervolgvraag = zdsParameters.indicatorVervolgvraag;
     }
 }

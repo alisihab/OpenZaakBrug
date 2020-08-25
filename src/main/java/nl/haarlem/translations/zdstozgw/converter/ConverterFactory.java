@@ -48,7 +48,7 @@ public class ConverterFactory {
             java.lang.reflect.Constructor<?> ctor = c.getConstructor(RequestHandlerContext.class, Translation.class, ZaakService.class);
             Object object = ctor.newInstance(new Object[]{context, translation, zaakService});
             
-            var converter = (Converter) object;            
+            var converter = (Converter) object;	            
             return converter;
         } 
         catch (Exception e) {        	

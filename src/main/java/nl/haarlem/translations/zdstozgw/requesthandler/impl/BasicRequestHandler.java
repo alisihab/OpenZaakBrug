@@ -36,6 +36,8 @@ public class BasicRequestHandler extends RequestHandler {
     
     @Override
     public ResponseEntity<?> execute()  {
+    	log.info("Executing request with handler: " + this.getClass().getCanonicalName() + " and converter: " + this.converter.getClass().getCanonicalName());
+    	
     	this.converter.load();    	
     	try {
 			var zdsResponse = this.converter.execute();

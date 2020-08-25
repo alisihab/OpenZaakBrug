@@ -40,6 +40,7 @@ public class LoggingRequestHandler extends RequestHandler {
 
     @Override
     public ResponseEntity<?> execute()  {
+    	log.info("Executing request with handler: " + this.getClass().getCanonicalName() + " and converter: " + this.converter.getClass().getCanonicalName());    	
         Configuratie configuratie = configService.getConfiguratie();
 
         // TODO: netter
