@@ -374,6 +374,8 @@ public class ZGWClient {
 
         ZgwZaak zgwZaak = this.getZaak(parameters);
 
+        if(zgwZaak == null) return null;
+        
         //When Verlenging/Opschorting not set, zgw returns object with empty values, in stead of null.
         //This will cause issues when response of getzaakdetails is used for updatezaak.
         if (zgwZaak.getVerlenging().getDuur() == null || zgwZaak.getVerlenging().getReden().equals("")) {

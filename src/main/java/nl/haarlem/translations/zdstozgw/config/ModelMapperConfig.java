@@ -97,7 +97,7 @@ public class ModelMapperConfig {
             .addMappings(mapper -> mapper.using(convertStufDateToDateString()).map(ZdsZaak::getUiterlijkeEinddatum, ZgwZaak::setUiterlijkeEinddatumAfdoening))
             .addMappings(mapper -> mapper.using(convertStufDateToDateString()).map(ZdsZaak::getEinddatum, ZgwZaak::setEinddatum))
             .addMappings(mapper -> mapper.using(convertStufDateToDateString()).map(ZdsZaak::getDatumVernietigingDossier, ZgwZaak::setArchiefactiedatum))
-    		.addMappings(mapper -> mapper.using(getZGWArchiefNominatie()).map(ZdsZaak::getArchiefnominatie, ZgwZaakPut::setArchiefnominatie));    	
+    		.addMappings(mapper -> mapper.using(getZGWArchiefNominatie()).map(ZdsZaak::getArchiefnominatie, ZgwZaakPut::setArchiefnominatie));
     }
 
     public void addZdsNatuurlijkPersoonToZgwBetrokkeneIdentificatieTypeMapping(ModelMapper modelMapper) {

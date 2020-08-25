@@ -9,7 +9,7 @@ import nl.haarlem.translations.zdstozgw.converter.Converter;
 import nl.haarlem.translations.zdstozgw.converter.ConverterException;
 import nl.haarlem.translations.zdstozgw.jpa.EmulateParameterRepository;
 import nl.haarlem.translations.zdstozgw.requesthandler.RequestHandlerContext;
-import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsDocument;
+import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsZknDocument;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsGenereerDocumentIdentificatieDi02;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsGenereerDocumentIdentificatieDu02;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsZaakDocument;

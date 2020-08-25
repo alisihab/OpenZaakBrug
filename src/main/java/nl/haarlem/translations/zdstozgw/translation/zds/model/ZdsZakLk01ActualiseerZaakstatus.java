@@ -11,7 +11,7 @@ import static nl.haarlem.translations.zdstozgw.translation.zds.model.namespace.N
 @Data
 @XmlRootElement(namespace = ZKN, name = "zakLk01")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ZdsZakLk01ActualiseerZaakstatus extends ZdsDocument {
+public class ZdsZakLk01ActualiseerZaakstatus extends ZdsZknDocument {
 
     @Data
     @XmlAccessorType(XmlAccessType.FIELD)

@@ -6,7 +6,7 @@ import org.springframework.web.server.ResponseStatusException;
 import lombok.Data;
 import nl.haarlem.translations.zdstozgw.config.model.Translation;
 import nl.haarlem.translations.zdstozgw.requesthandler.RequestHandlerContext;
-import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsDocument;
+import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsZknDocument;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsStuurgegevens;
 import nl.haarlem.translations.zdstozgw.translation.zds.services.ZaakService;
 
@@ -15,7 +15,7 @@ public abstract class Converter {
     private Translation translation;
     private ZaakService zaakService;
     private RequestHandlerContext context;
-    protected ZdsDocument zdsDocument;
+    protected ZdsZknDocument zdsDocument;
     
     public Converter(RequestHandlerContext context, Translation translation, ZaakService zaakService) {
     	this.context = context;

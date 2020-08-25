@@ -13,7 +13,7 @@ import static nl.haarlem.translations.zdstozgw.translation.zds.model.namespace.N
 @Data
 @XmlRootElement(name = "Bv03Bericht", namespace = STUF)
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ZdsBv03 extends ZdsDocument {
+public class ZdsBv03 extends ZdsStufDocument {
 
     public ZdsBv03() {
     }

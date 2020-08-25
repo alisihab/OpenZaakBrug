@@ -12,7 +12,7 @@ import static nl.haarlem.translations.zdstozgw.translation.zds.model.namespace.N
 @Data
 @XmlRootElement(namespace = ZKN, name = "zakLv01")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ZdsZakLv01 extends ZdsDocument {
+public class ZdsZakLv01 extends ZdsZknDocument {
     @XmlElement(namespace = ZKN)
     public ZdsParameters parameters;
 

@@ -144,7 +144,7 @@ public class ZaakService {
     public ZdsZakLa01LijstZaakdocumenten geefLijstZaakdocumenten(ZdsZakLv01 zdsZakLv01)  {
         ZgwZaak zgwZaak = zgwClient.getZaak(zdsZakLv01.gelijk.identificatie);
 
-        ZdsZakLa01LijstZaakdocumenten zdsZakLa01LijstZaakdocumenten = new ZdsZakLa01LijstZaakdocumenten();
+        ZdsZakLa01LijstZaakdocumenten zdsZakLa01LijstZaakdocumenten = new ZdsZakLa01LijstZaakdocumenten(zdsZakLv01.stuurgegevens);
         zdsZakLa01LijstZaakdocumenten.antwoord = new ZdsZakLa01LijstZaakdocumenten.Antwoord();
         zdsZakLa01LijstZaakdocumenten.antwoord.object = new ZdsZakLa01LijstZaakdocumenten.Antwoord.Object();
         zdsZakLa01LijstZaakdocumenten.antwoord.object.identificatie = zgwZaak.identificatie;
@@ -206,9 +206,7 @@ public class ZaakService {
         //Get the zaak, to get the zaakidentificatie
         var zgwZaak = zgwClient.getZaakByUrl(zgwZaakInformatieObject.getZaak());
 
-        var edcLa01 = new ZdsEdcLa01();
-        edcLa01.stuurgegevens = new ZdsStuurgegevens(zdsEdcLv01.stuurgegevens);
-        edcLa01.stuurgegevens.berichtcode = "La01";
+        var edcLa01 = new ZdsEdcLa01(zdsEdcLv01.stuurgegevens);
 
         edcLa01.antwoord = new ZdsEdcLa01.Antwoord();
         edcLa01.antwoord.object = modelMapper.map(zgwEnkelvoudigInformatieObject, ZdsEdcLa01.Object.class);
@@ -360,9 +358,9 @@ public class ZaakService {
         var zdsWasZaak = ZdsZakLk01.objects.get(0);
         var zdsWijzigingInZaak = ZdsZakLk01.objects.get(1);
         ZgwZaak zgwZaak = zgwClient.getZaak(zdsWasZaak.identificatie);
-        if (zgwZaak == null)
+        if (zgwZaak == null) {
             throw new RuntimeException("Zaak with identification " + zdsWasZaak.identificatie + " not found in ZGW");
-
+        }
         ChangeDetector changeDetector = new ChangeDetector();
         changeDetector.detect(zdsWasZaak, zdsWijzigingInZaak);
 

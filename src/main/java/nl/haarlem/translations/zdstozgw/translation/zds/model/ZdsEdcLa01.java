@@ -1,6 +1,7 @@
 package nl.haarlem.translations.zdstozgw.translation.zds.model;
 
 import lombok.Data;
+import nl.haarlem.translations.zdstozgw.utils.StufUtils;
 
 import javax.xml.bind.annotation.*;
 
@@ -9,7 +10,7 @@ import static nl.haarlem.translations.zdstozgw.translation.zds.model.namespace.N
 
 @XmlRootElement(namespace = ZKN, name = "edcLa01")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ZdsEdcLa01 extends ZdsDocument {
+public class ZdsEdcLa01 extends ZdsZknDocument {
     @XmlElement(namespace = ZKN)
     public ZdsParameters parameters;
 
@@ -19,6 +20,15 @@ public class ZdsEdcLa01 extends ZdsDocument {
     @XmlElement(namespace = ZKN, name = "isRelevantVoor")
     public ZdsIsRelevantVoor isRelevantVoor;
 
+    private ZdsEdcLa01() {
+    }
+        
+	public ZdsEdcLa01(ZdsStuurgegevens fromRequest) {
+		super(fromRequest);
+	    this.stuurgegevens.crossRefnummer = fromRequest.referentienummer;
+	    this.stuurgegevens.berichtcode = "La01";
+	}       
+    
     @Data
     @XmlAccessorType(XmlAccessType.FIELD)
     public static class Antwoord {

@@ -9,7 +9,7 @@ import nl.haarlem.translations.zdstozgw.converter.Converter;
 import nl.haarlem.translations.zdstozgw.converter.ConverterException;
 import nl.haarlem.translations.zdstozgw.requesthandler.RequestHandlerContext;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsBv03;
-import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsDocument;
+import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsZknDocument;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsFo03;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsParameters;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsZakLa01LijstZaakdocumenten;
@@ -32,7 +32,6 @@ public class GeefLijstZaakdocumentenTranslator extends Converter {
 
 	@Override
 	public ResponseEntity<?> execute() throws ResponseStatusException {
-      	var document = this.zdsDocument;
 		ZdsZakLv01 zdsZakLv01 = (ZdsZakLv01) this.getZdsDocument();
 		ZdsZakLa01LijstZaakdocumenten zdsResponse = this.getZaakService().geefLijstZaakdocumenten(zdsZakLv01);
 		zdsResponse.parameters  = new ZdsParameters(zdsZakLv01.parameters);        

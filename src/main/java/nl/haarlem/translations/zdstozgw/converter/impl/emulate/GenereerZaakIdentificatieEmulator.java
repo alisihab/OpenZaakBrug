@@ -15,10 +15,11 @@ import nl.haarlem.translations.zdstozgw.converter.impl.NotImplementedConverter;
 import nl.haarlem.translations.zdstozgw.jpa.EmulateParameterRepository;
 import nl.haarlem.translations.zdstozgw.requesthandler.RequestHandlerContext;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsBv03;
-import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsDocument;
+import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsZknDocument;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsGenereerZaakIdentificatieDi02;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsGenereerZaakIdentificatieDu02;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsZaak;
+import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsZaakIdentificatie;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsZakLk01;
 import nl.haarlem.translations.zdstozgw.translation.zds.services.ZaakService;
 import nl.haarlem.translations.zdstozgw.utils.XmlUtils;
@@ -45,7 +46,7 @@ public class GenereerZaakIdentificatieEmulator extends Converter {
 		
 		var di02 = (ZdsGenereerZaakIdentificatieDi02) this.zdsDocument;
 		var du02 = new ZdsGenereerZaakIdentificatieDu02(di02.stuurgegevens);
-      	du02.zaak = new ZdsZaak();
+      	du02.zaak = new ZdsZaakIdentificatie();
       	du02.zaak.identificatie = prefixparam.getParameterValue() + identificatie;
       	
 		var response = XmlUtils.getSOAPMessageFromObject(du02);        

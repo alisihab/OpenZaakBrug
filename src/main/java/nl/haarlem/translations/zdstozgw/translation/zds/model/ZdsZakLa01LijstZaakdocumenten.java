@@ -1,6 +1,7 @@
 package nl.haarlem.translations.zdstozgw.translation.zds.model;
 
 import lombok.Data;
+import nl.haarlem.translations.zdstozgw.utils.StufUtils;
 
 import javax.xml.bind.annotation.*;
 import java.util.List;
@@ -9,11 +10,10 @@ import static nl.haarlem.translations.zdstozgw.translation.zds.model.namespace.N
 import static nl.haarlem.translations.zdstozgw.translation.zds.model.namespace.Namespace.ZKN;
 
 
-// TODO: used?
 @Data
 @XmlRootElement(namespace = ZKN, name = "zakLa01")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ZdsZakLa01LijstZaakdocumenten extends ZdsDocument {
+public class ZdsZakLa01LijstZaakdocumenten extends ZdsZknDocument {
 
     @XmlElement(namespace = ZKN)
     public ZdsStuurgegevens stuurgegevens;
@@ -23,6 +23,18 @@ public class ZdsZakLa01LijstZaakdocumenten extends ZdsDocument {
 
     @XmlElement(namespace = ZKN)
     public Antwoord antwoord;
+    
+    private ZdsZakLa01LijstZaakdocumenten() {
+    }
+
+    public ZdsZakLa01LijstZaakdocumenten(ZdsStuurgegevens zdsStuurgegevens) {
+        this.stuurgegevens = new ZdsStuurgegevens(zdsStuurgegevens);
+        this.stuurgegevens.tijdstipBericht = StufUtils.getStufDateTime();
+        this.stuurgegevens.berichtcode = "Bv03";
+        this.stuurgegevens.crossRefnummer = zdsStuurgegevens.referentienummer;
+        this.stuurgegevens.entiteittype = "ZAK";
+    }
+    
 
     @Data
     @XmlAccessorType(XmlAccessType.FIELD)
