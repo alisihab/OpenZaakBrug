@@ -36,7 +36,7 @@ public abstract class RequestHandler {
 		ex.printStackTrace(pwriter);
 		var stacktrace = swriter.toString();			
 		 
-        var fo03 = new ZdsFo03(converter.getZdsDocument().stuurgegevens);
+        var fo03 = converter.getZdsDocument() != null ? new ZdsFo03(converter.getZdsDocument().stuurgegevens) : new ZdsFo03();
         fo03.body = new ZdsFo03.Body();
         https://www.gemmaonline.nl/images/gemmaonline/4/4f/Stuf0301_-_ONV0347_%28zonder_renvooi%29.pdf
         fo03.body.code = "StUF058";

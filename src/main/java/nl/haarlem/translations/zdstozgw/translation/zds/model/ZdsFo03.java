@@ -18,7 +18,7 @@ public class ZdsFo03 extends ZdsStufDocument {
     @XmlElement(namespace = STUF)
     public Body body;
 
-    private ZdsFo03() {
+    public ZdsFo03() {
 	}
 
     public ZdsFo03(ZdsStuurgegevens stuurgegevens) {
