@@ -42,13 +42,14 @@ public class Proxy extends Converter {
 		this.zdsDocument = null;
 	}
 
-	@Override
-	public ResponseEntity<?> execute() throws ConverterException {
+	public static ResponseEntity<?> Proxy(String url, String soapaction, String requestbody) {
 		var zdsClient= new ZDSClient();
-		var url = this.getTranslation().getLegacyservice();
-		var soapaction = this.getContext().getSoapAction();
-		var requestbody = getContext().getRequestBody();
 		log.info("relaying request to url: " + url + " with soapaction: " + soapaction);
 		return zdsClient.post(url, soapaction, requestbody);		
+	}
+	
+	@Override
+	public ResponseEntity<?> execute() throws ConverterException {
+		return Proxy.Proxy(this.getTranslation().getLegacyservice(), this.getContext().getSoapAction(), getContext().getRequestBody());
 	}   
 }

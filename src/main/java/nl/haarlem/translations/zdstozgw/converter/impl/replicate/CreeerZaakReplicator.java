@@ -1,40 +1,43 @@
-package nl.haarlem.translations.zdstozgw.converter.impl.translate;
+package nl.haarlem.translations.zdstozgw.converter.impl.replicate;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.server.ResponseStatusException;
 
+import lombok.experimental.var;
 import nl.haarlem.translations.zdstozgw.config.model.Translation;
 import nl.haarlem.translations.zdstozgw.converter.Converter;
 import nl.haarlem.translations.zdstozgw.converter.ConverterException;
+import nl.haarlem.translations.zdstozgw.converter.impl.proxy.Proxy;
+import nl.haarlem.translations.zdstozgw.converter.impl.translate.CreeerZaakTranslator;
 import nl.haarlem.translations.zdstozgw.requesthandler.RequestHandlerContext;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsBv03;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsZknDocument;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsFo03;
+import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsZaak;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsZakLk01;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsZakLk01ActualiseerZaakstatus;
+import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsZakLv01;
 import nl.haarlem.translations.zdstozgw.translation.zds.services.ZaakService;
 import nl.haarlem.translations.zdstozgw.utils.XmlUtils;
 
-public class ActualiseerZaakStatusTranslator extends Converter {
+public class CreeerZaakReplicator extends CreeerZaakTranslator {
+    private Replicator replicator;	
 
-    public ActualiseerZaakStatusTranslator(RequestHandlerContext context, Translation translation, ZaakService zaakService) {
+    public CreeerZaakReplicator(RequestHandlerContext context, Translation translation, ZaakService zaakService) {
         super(context, translation, zaakService);
     }
 
 	@Override
-	public void load() throws ResponseStatusException {
-        this.zdsDocument = (ZdsZakLk01ActualiseerZaakstatus) XmlUtils.getStUFObject(this.getContext().getRequestBody(), ZdsZakLk01ActualiseerZaakstatus.class);
-	}	
-	
-	@Override
 	public ResponseEntity<?> execute() throws ResponseStatusException {
-      	var zdsZakLk01ActualiseerZaakstatus = (ZdsZakLk01ActualiseerZaakstatus) this.zdsDocument;
-      	var zdsWasZaak = zdsZakLk01ActualiseerZaakstatus.objects.get(0);
-      	var zdsWordtZaak = zdsZakLk01ActualiseerZaakstatus.objects.get(1);
-      	var zgwZaak = this.getZaakService().actualiseerZaakstatus(zdsWasZaak, zdsWordtZaak);
-      	var bv03 =  new ZdsBv03(zdsZakLk01ActualiseerZaakstatus.stuurgegevens);
-		var response = XmlUtils.getSOAPMessageFromObject(bv03);        
-        return new ResponseEntity<>(response, HttpStatus.OK);	
+		var zdsZakLk01 = (ZdsZakLk01) this.getZdsDocument();
+		// is new, no need to replicate
+		// replicator.replicateZaak(zdsZakLk01.objects.get(0).identificatie);
+		
+		// send to legacy system
+		var legacyresponse = Proxy.Proxy(this.getTranslation().getLegacyservice(), this.getContext().getSoapAction(), getContext().getRequestBody());
+		// do the translation
+		return super.execute();
+        
 	}
 }

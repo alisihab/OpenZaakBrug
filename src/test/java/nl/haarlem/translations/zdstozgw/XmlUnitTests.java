@@ -28,7 +28,7 @@ public class XmlUnitTests {
 
             //actheb
             ZdsZakLk01ActualiseerZaakstatus zdsZakLk01ActualiseerZaakstatus = (ZdsZakLk01ActualiseerZaakstatus) XmlUtils.getStUFObject(content, ZdsZakLk01ActualiseerZaakstatus.class);
-            var object = zdsZakLk01ActualiseerZaakstatus.object.get(1);
+            var object = zdsZakLk01ActualiseerZaakstatus.objects.get(1);
 
             //assert
             assumeTrue(object.identificatie != null);

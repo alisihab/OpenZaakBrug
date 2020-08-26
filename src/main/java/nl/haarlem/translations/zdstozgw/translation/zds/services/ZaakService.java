@@ -30,10 +30,8 @@ public class ZaakService {
 
     private static final Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
-    private final ZGWClient zgwClient;
-
+    public final ZGWClient zgwClient;
     private final ModelMapper modelMapper;
-
     private final ConfigService configService;
 
 
@@ -121,7 +119,7 @@ public class ZaakService {
     }
 
   public List<HeeftRelevant> geefLijstZaakdocumenten(String zaakidentificatie)  {
-	  	ZgwZaak zgwZaak = zgwClient.getZaak(zaakidentificatie);
+	  	ZgwZaak zgwZaak = zgwClient.getZaakByIdentificatie(zaakidentificatie);
 
 	  	var relevanteDocumenten = new ArrayList<HeeftRelevant>();
         zgwClient.getZaakInformatieObjectenByZaak(zgwZaak.url).forEach(zgwZaakInformatieObject -> {
@@ -150,7 +148,7 @@ public class ZaakService {
         zgwEnkelvoudigInformatieObject.bronorganisatie = getRSIN(zdsEdcLk01.stuurgegevens.zender.organisatie);        
 
         zgwEnkelvoudigInformatieObject = zgwClient.addZaakDocument(zgwEnkelvoudigInformatieObject);
-        String zaakUrl = zgwClient.getZaak(zdsEdcLk01.objects.get(0).isRelevantVoor.gerelateerde.identificatie).url;
+        String zaakUrl = zgwClient.getZaakByIdentificatie(zdsEdcLk01.objects.get(0).isRelevantVoor.gerelateerde.identificatie).url;
         return addZaakInformatieObject(zgwEnkelvoudigInformatieObject, zaakUrl);
     }
 
@@ -197,7 +195,7 @@ public class ZaakService {
 //        ZdsZakLk01ActualiseerZaakstatus.Object object = zakLk01.objects.get(1);
     public ZgwZaak actualiseerZaakstatus(ZdsZaak wasZaak, ZdsZaak wordtZaak)  {
 //      ZdsZakLk01ActualiseerZaakstatus.Object object = zakLk01.objects.get(1);    
-        ZgwZaak zgwZaak = zgwClient.getZaak(wasZaak.identificatie);
+        ZgwZaak zgwZaak = zgwClient.getZaakByIdentificatie(wasZaak.identificatie);
 
         var zdsStatus = wordtZaak.heeft.get(0).gerelateerde;
         ZgwStatus zgwStatus = modelMapper.map(wordtZaak.heeft, ZgwStatus.class);        
@@ -214,7 +212,7 @@ public class ZaakService {
 
         if (zdsZakLv01.gelijk != null && zdsZakLv01.gelijk.identificatie != null) {
         	var zaakidentificatie = zdsZakLv01.gelijk.identificatie;
-            var zgwZaak = zgwClient.getZaak(zaakidentificatie);
+            var zgwZaak = zgwClient.getZaakByIdentificatie(zaakidentificatie);
             if (zgwZaak == null) {
                 throw new ConverterException("Zaak not found for identification: '" + zdsZakLv01.gelijk.identificatie + "'");
             }
@@ -322,7 +320,7 @@ public class ZaakService {
     }
 
     public void updateZaak(ZdsZaak zdsWasZaak, ZdsZaak zdsWordtZaak) {
-        ZgwZaak zgwZaak = zgwClient.getZaak(zdsWasZaak.identificatie);
+        ZgwZaak zgwZaak = zgwClient.getZaakByIdentificatie(zdsWasZaak.identificatie);
         if (zgwZaak == null) {
             throw new RuntimeException("Zaak with identification " + zdsWasZaak.identificatie + " not found in ZGW");
         }

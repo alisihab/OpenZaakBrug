@@ -368,7 +368,7 @@ public class ZGWClient {
         return this.getZgwZaakInformatieObjects(parameters);
     }
 
-    public ZgwZaak getZaak(String zaakIdentificatie) {
+    public ZgwZaak getZaakByIdentificatie(String zaakIdentificatie) {
         Map<String, String> parameters = new HashMap();
         parameters.put("identificatie", zaakIdentificatie);
 
@@ -447,7 +447,6 @@ public class ZGWClient {
     public ZgwZaakType getZgwZaakTypeByIdentificatie(String identificatie) {
         Map<String, String> parameters = new HashMap<>();
         parameters.put("identificatie", identificatie);
-
         return this.getZaakTypes(parameters).get(0);
     }
 
