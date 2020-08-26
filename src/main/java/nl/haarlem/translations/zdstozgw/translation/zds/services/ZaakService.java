@@ -84,12 +84,12 @@ public class ZaakService {
         return createdZaak;
     }
 
-    private void addRolToZgw(ZdsRol zdsRol, String rolOmschrijvingGeneriek, ZgwZaak createdZaak)   {
+    private void addRolToZgw(ZdsRol zdsRol, String typeRolOmschrijving, ZgwZaak createdZaak)   {
         if (zdsRol == null) {
         	return;        	
         }
         if (zdsRol.gerelateerde == null) {
-        	throw new ConverterException("Rol:" + rolOmschrijvingGeneriek + " zonder gerelateerde informatie");
+        	throw new ConverterException("Rol:" + typeRolOmschrijving + " zonder gerelateerde informatie");
         }        
         
         ZgwRol zgwRol = new ZgwRol();
@@ -100,20 +100,20 @@ public class ZaakService {
         if (zdsRol.gerelateerde.natuurlijkPersoon != null) {
         	if(zgwRol.betrokkeneIdentificatie == null) {
         		if(zgwRol.betrokkeneIdentificatie != null) {
-        			throw new ConverterException("Rol: " + rolOmschrijvingGeneriek + " wordt al gebruikt voor medewerker");
+        			throw new ConverterException("Rol: " + typeRolOmschrijving + " wordt al gebruikt voor medewerker");
         		}
         	}
             zgwRol.betrokkeneIdentificatie = modelMapper.map(zdsRol.gerelateerde.natuurlijkPersoon, ZgwBetrokkeneIdentificatie.class);
             zgwRol.betrokkeneType = BetrokkeneType.NATUURLIJK_PERSOON.getDescription();
         }         
         if(zgwRol.betrokkeneIdentificatie == null) {
-        	throw new ConverterException("Rol: " + rolOmschrijvingGeneriek + " zonder Natuurlijkpersoon or Medewerker");
+        	throw new ConverterException("Rol: " + typeRolOmschrijving + " zonder Natuurlijkpersoon or Medewerker");
         }
-        zgwRol.roltoelichting = rolOmschrijvingGeneriek;
-        var roltype = zgwClient.getRolTypeByZaaktypeUrlAndOmschrijving(createdZaak.zaaktype, rolOmschrijvingGeneriek);
+        zgwRol.roltoelichting = typeRolOmschrijving;
+        var roltype = zgwClient.getRolTypeByZaaktypeUrlAndOmschrijving(createdZaak.zaaktype, typeRolOmschrijving);
         if(roltype == null) {        	
         	var zaaktype = zgwClient.getZaakTypeByUrl(createdZaak.zaaktype);
-        	throw new ConverterException("Rol: " + rolOmschrijvingGeneriek + " niet gevonden bij Zaaktype: " + zaaktype.identificatie);
+        	throw new ConverterException("Rol: " + typeRolOmschrijving + " niet gevonden bij Zaaktype: " + zaaktype.identificatie);
         }
         zgwRol.roltype = roltype.url;
         zgwRol.zaak = createdZaak.getUrl();
@@ -321,28 +321,34 @@ public class ZaakService {
         return this.modelMapper.map(zgwRol, ZdsRol.class).setEntiteittype(entiteittype);
     }
 
-    public void updateZaak(ZdsZakLk01 ZdsZakLk01) {
-        var zdsWasZaak = ZdsZakLk01.objects.get(0);
-        var zdsWijzigingInZaak = ZdsZakLk01.objects.get(1);
+    public void updateZaak(ZdsZaak zdsWasZaak, ZdsZaak zdsWordtZaak) {
         ZgwZaak zgwZaak = zgwClient.getZaak(zdsWasZaak.identificatie);
         if (zgwZaak == null) {
             throw new RuntimeException("Zaak with identification " + zdsWasZaak.identificatie + " not found in ZGW");
         }
         ChangeDetector changeDetector = new ChangeDetector();
-        changeDetector.detect(zdsWasZaak, zdsWijzigingInZaak);
+        changeDetector.detect(zdsWasZaak, zdsWordtZaak);
 
-        if (changeDetector.getAllChangesByDeclaringClassAndFilter(ZdsZaak.class, ZdsRol.class).size() > 0) {
-            ZgwZaakPut updatedZaak = this.modelMapper.map(zdsWijzigingInZaak, ZgwZaakPut.class);
+        var changed = false;
+        // var fieldChanges = changeDetector.getAllChangesByFieldType(ZdsZaak.class);
+        var fieldChanges = changeDetector.getAllChangesByDeclaringClassAndFilter(ZdsZaak.class, ZdsRol.class);
+        if (fieldChanges.size() > 0) {
+        	log.info("Update of zaakid:" + zdsWasZaak.identificatie + " has # " + fieldChanges.size() + " field changes");
+        	
+            ZgwZaakPut updatedZaak = this.modelMapper.map(zdsWordtZaak, ZgwZaakPut.class);
             updatedZaak.zaaktype = zgwZaak.zaaktype;
             updatedZaak.bronorganisatie = zgwZaak.bronorganisatie;
             updatedZaak.verantwoordelijkeOrganisatie = zgwZaak.verantwoordelijkeOrganisatie;
             zgwClient.updateZaak(zgwZaak.uuid, updatedZaak);
+            
+            changed = true;
         }
 
         Map<ChangeDetector.Change, ChangeDetector.ChangeType> rolChanges = changeDetector.getAllChangesByFieldType(ZdsRol.class);
-
         if (rolChanges.size() > 0) {
-            changeDetector.filterChangesByType(rolChanges, ChangeDetector.ChangeType.NEW).forEach((change, changeType) -> {
+        	log.info("Update of zaakid:" + zdsWasZaak.identificatie + " has # " + rolChanges.size() + " rol changes");
+
+        	changeDetector.filterChangesByType(rolChanges, ChangeDetector.ChangeType.NEW).forEach((change, changeType) -> {
             	addRolToZgw((ZdsRol) change.getValue(), getRolOmschrijvingGeneriekByRolName(change.getField().getName()), zgwZaak);
             });
 
@@ -353,20 +359,31 @@ public class ZaakService {
             changeDetector.filterChangesByType(rolChanges, ChangeDetector.ChangeType.CHANGED).forEach((change, changeType) -> {
             	updateRolInZgw(getRolOmschrijvingGeneriekByRolName(change.getField().getName()), zgwZaak, change.getValue());
             });
+            changed = true;
         }
-
+        if(!changed) {
+        	log.warn("Update of zaakid:" + zdsWasZaak.identificatie + " without any changes");
+        }
     }
 
-    private void updateRolInZgw(String omschrijvingGeneriek, ZgwZaak zgwZaak, Object value)   {
+    private void updateRolInZgw(String typeRolOmschrijving, ZgwZaak zgwZaak, Object value)   {
         //no put action for rollen, so first delete then add
         log.debug("Attempting to update rol by deleting and adding as new");
-        deleteRolFromZgw(omschrijvingGeneriek, zgwZaak);
-        addRolToZgw((ZdsRol) value, omschrijvingGeneriek, zgwZaak);
+        deleteRolFromZgw(typeRolOmschrijving, zgwZaak);
+        addRolToZgw((ZdsRol) value, typeRolOmschrijving, zgwZaak);
     }
 
-    private void deleteRolFromZgw(String rolOmschrijving, ZgwZaak zgwZaak) {
-    	//TODO
-    	throw new ConverterException("niet omschrijvingGeneriek gebruiken, hier kijken naar rol met omschrijving = " + rolOmschrijving + " en mogelijk ook nog welk type object");
+    private void deleteRolFromZgw(String typeRolOmschrijving, ZgwZaak zgwZaak) {
+        var roltype = zgwClient.getRolTypeByZaaktypeUrlAndOmschrijving(zgwZaak.zaaktype, typeRolOmschrijving);
+        if(roltype == null) {        	
+        	throw new ConverterException("Roltype: " + typeRolOmschrijving + " niet gevonden bij zaaktype voor zaak: " + zgwZaak.identificatie);
+        }
+        var rol = zgwClient.getRolByZaakUrlAndRolTypeUrl(zgwZaak.url, roltype.url);
+        if(rol == null) {
+        	throw new ConverterException("Rol: " + typeRolOmschrijving + " niet gevonden bij zaak: " + zgwZaak.identificatie);
+        }
+        zgwClient.deleteRol(roltype.uuid);
+        
 //        ZgwRol zgwRol = zgwClient.getRolByZaakUrlAndOmschrijvingGeneriek(zgwZaak.url, omschrijvingGeneriek);
 //        if (zgwRol == null) {
 //            log.warn("Attempted to delete rol " + zgwRol.roltoelichting + " from case " + zgwZaak.getUrl() + ", but rol hasn't been added to case.");
