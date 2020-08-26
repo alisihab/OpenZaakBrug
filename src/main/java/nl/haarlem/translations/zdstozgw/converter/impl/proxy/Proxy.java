@@ -45,7 +45,7 @@ public class Proxy extends Converter {
 	@Override
 	public ResponseEntity<?> execute() throws ConverterException {
 		var zdsClient= new ZDSClient();
-		var url = this.getContext().getUrl();
+		var url = this.getTranslation().getLegacyservice();
 		var soapaction = this.getContext().getSoapAction();
 		var requestbody = getContext().getRequestBody();
 		log.info("relaying request to url: " + url + " with soapaction: " + soapaction);
