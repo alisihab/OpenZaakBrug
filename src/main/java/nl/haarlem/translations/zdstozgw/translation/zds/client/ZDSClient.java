@@ -38,6 +38,7 @@ import java.util.Map;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import nl.haarlem.translations.zdstozgw.converter.ConverterException;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.QueryResult;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwBetrokkeneIdentificatie;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwEnkelvoudigInformatieObject;
@@ -72,7 +73,9 @@ public class ZDSClient {
 			
 	        return new ResponseEntity<>(zdsResponseBody, HttpStatus.valueOf(responsecode));	
 		} catch (IOException ce) {
-			throw new RuntimeException(ce);
+			throw new ConverterException("Requesting url:" + zdsUrl + " with soapaction: " + zdsSoapAction , ce);
+		} catch (java.lang.IllegalArgumentException iae) {
+			throw new ConverterException("Requesting url:" + zdsUrl + " with soapaction: " + zdsSoapAction , iae);						
 		} finally {
 			// Release current connection to the connection pool once you are done
 			post.releaseConnection();
