@@ -1,5 +1,6 @@
 package nl.haarlem.translations.zdstozgw.utils;
 
+import nl.haarlem.translations.zdstozgw.converter.ConverterException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -9,9 +10,6 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
-
-import nl.haarlem.translations.zdstozgw.converter.ConverterException;
-import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsFo03;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;

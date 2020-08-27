@@ -2,7 +2,6 @@ package nl.haarlem.translations.zdstozgw.translation.zgw.client;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-
 import nl.haarlem.translations.zdstozgw.converter.ConverterException;
 import nl.haarlem.translations.zdstozgw.translation.zds.services.HttpService;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.*;
@@ -16,7 +15,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpStatusCodeException;
 
-import java.io.IOException;
 import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Type;
 import java.util.ArrayList;

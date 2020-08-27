@@ -12,10 +12,6 @@ public class RequestResponseCycleService {
 
     private final ZgwRequestResponseCycleRepository interimRequestResponseCycleRepository;
 
-    private RequestResponseCycle requestResponseCycleSession;
-
-    private String sessionUUID;
-
     @Autowired
     public RequestResponseCycleService(RequestResponseCycleRepository requestResponseCycleRepository,
                                        ZgwRequestResponseCycleRepository interimRequestResponseCycleRepository) {

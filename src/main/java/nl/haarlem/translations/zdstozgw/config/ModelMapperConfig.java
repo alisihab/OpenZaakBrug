@@ -11,10 +11,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.lang.invoke.MethodHandles;
+
 import static nl.haarlem.translations.zdstozgw.translation.BetrokkeneType.MEDEWERKER;
 import static nl.haarlem.translations.zdstozgw.translation.BetrokkeneType.NATUURLIJK_PERSOON;
-
-import java.lang.invoke.MethodHandles;
 
 @Configuration
 public class ModelMapperConfig {
