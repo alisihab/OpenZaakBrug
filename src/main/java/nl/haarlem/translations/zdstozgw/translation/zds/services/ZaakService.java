@@ -336,6 +336,7 @@ public class ZaakService {
         	log.info("Update of zaakid:" + zdsWasZaak.identificatie + " has # " + fieldChanges.size() + " field changes");
         	
             ZgwZaakPut updatedZaak = this.modelMapper.map(zdsWordtZaak, ZgwZaakPut.class);
+            // TODO: wrom niet in de mapper?            
             updatedZaak.zaaktype = zgwZaak.zaaktype;
             updatedZaak.bronorganisatie = zgwZaak.bronorganisatie;
             updatedZaak.verantwoordelijkeOrganisatie = zgwZaak.verantwoordelijkeOrganisatie;
