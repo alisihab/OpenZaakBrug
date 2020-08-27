@@ -1,12 +1,11 @@
 package nl.haarlem.translations.zdstozgw.translation.zds.model;
 
 import lombok.Data;
-import nl.haarlem.translations.zdstozgw.utils.StufUtils;
 
-import javax.xml.bind.annotation.*;
-import java.util.List;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
 
-import static nl.haarlem.translations.zdstozgw.translation.zds.model.namespace.Namespace.STUF;
 import static nl.haarlem.translations.zdstozgw.translation.zds.model.namespace.Namespace.ZKN;
 
 @Data

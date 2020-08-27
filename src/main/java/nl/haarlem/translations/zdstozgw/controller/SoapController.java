@@ -1,20 +1,12 @@
 package nl.haarlem.translations.zdstozgw.controller;
 
 import nl.haarlem.translations.zdstozgw.config.ConfigService;
-import nl.haarlem.translations.zdstozgw.converter.ConverterException;
 import nl.haarlem.translations.zdstozgw.converter.ConverterFactory;
-import nl.haarlem.translations.zdstozgw.requesthandler.RequestHandler;
 import nl.haarlem.translations.zdstozgw.requesthandler.RequestHandlerContext;
 import nl.haarlem.translations.zdstozgw.requesthandler.RequestHandlerFactory;
-import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsFo03;
-import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsStuurgegevens;
-import nl.haarlem.translations.zdstozgw.utils.StufUtils;
-import nl.haarlem.translations.zdstozgw.utils.XmlUtils;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

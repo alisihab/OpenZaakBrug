@@ -4,26 +4,15 @@ import nl.haarlem.translations.zdstozgw.config.ConfigService;
 import nl.haarlem.translations.zdstozgw.converter.Converter;
 import nl.haarlem.translations.zdstozgw.converter.ConverterException;
 import nl.haarlem.translations.zdstozgw.requesthandler.RequestHandler;
-import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsBv03;
-import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsFo03;
-import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsStuurgegevens;
-import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsZakLk01;
 import nl.haarlem.translations.zdstozgw.utils.XmlUtils;
-
-import java.io.StringReader;
-import java.lang.invoke.MethodHandles;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.soap.SOAPConstants;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.w3c.dom.Document;
-import org.xml.sax.InputSource;
+
+import javax.xml.soap.SOAPConstants;
+import java.lang.invoke.MethodHandles;
 
 public class BasicRequestHandler extends RequestHandler {
 

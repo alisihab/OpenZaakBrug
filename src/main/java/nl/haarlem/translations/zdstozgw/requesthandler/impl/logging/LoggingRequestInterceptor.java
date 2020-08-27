@@ -5,6 +5,7 @@ import org.springframework.http.HttpRequest;
 import org.springframework.http.client.ClientHttpRequestExecution;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.http.client.ClientHttpResponse;
+import org.springframework.web.context.request.RequestContextHolder;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -14,14 +15,12 @@ import java.io.UnsupportedEncodingException;
 public class LoggingRequestInterceptor implements ClientHttpRequestInterceptor {
 
     private RequestResponseCycleService requestResponseCycleService;
-    private RequestResponseCycle currentRequestResponseCycle;
     private ZgwRequestResponseCycle currentInterimRequestResponseCycle;
 
 
     @Override
     public ClientHttpResponse intercept(HttpRequest request, byte[] body, ClientHttpRequestExecution execution) throws IOException {
         requestResponseCycleService = SpringContext.getBean(RequestResponseCycleService.class);
-        this.currentRequestResponseCycle = this.requestResponseCycleService.getRequestResponseCycleSession();
         addRequestToDatabase(request, body);
         ClientHttpResponse response = execution.execute(request, body);
         addResponseToDatabase(response);
@@ -30,9 +29,10 @@ public class LoggingRequestInterceptor implements ClientHttpRequestInterceptor {
 
     private void addRequestToDatabase(HttpRequest request, byte[] body) throws UnsupportedEncodingException {
         this.currentInterimRequestResponseCycle = new ZgwRequestResponseCycle()
-                .setRequestResponseCycle(this.currentRequestResponseCycle)
+                .setHttpSessionId(RequestContextHolder.currentRequestAttributes().getSessionId())
                 .setZgwRequestBody(new String(body, "UTF-8"))
                 .setZgwUrl(request.getURI().toString())
+                .setHttpSessionId(RequestContextHolder.currentRequestAttributes().getSessionId())
                 .setZgwMethod(request.getMethodValue());
 
         this.requestResponseCycleService.add(this.currentInterimRequestResponseCycle);

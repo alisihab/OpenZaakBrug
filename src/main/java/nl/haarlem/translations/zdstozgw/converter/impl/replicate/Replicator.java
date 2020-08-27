@@ -1,18 +1,13 @@
 package nl.haarlem.translations.zdstozgw.converter.impl.replicate;
 
-import java.lang.invoke.MethodHandles;
-
-import org.modelmapper.ModelMapper;
+import nl.haarlem.translations.zdstozgw.converter.ConverterException;
+import nl.haarlem.translations.zdstozgw.translation.zds.services.ZaakService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import nl.haarlem.translations.zdstozgw.config.ConfigService;
-import nl.haarlem.translations.zdstozgw.converter.ConverterException;
-import nl.haarlem.translations.zdstozgw.translation.zds.client.ZDSClient;
-import nl.haarlem.translations.zdstozgw.translation.zds.services.ZaakService;
-import nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient;
+import java.lang.invoke.MethodHandles;
 
 @Service
 public class Replicator {

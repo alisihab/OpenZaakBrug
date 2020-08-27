@@ -1,7 +1,6 @@
 package nl.haarlem.translations.zdstozgw.translation.zds.model;
 
 import lombok.Data;
-import nl.haarlem.translations.zdstozgw.utils.StufUtils;
 
 import javax.xml.bind.annotation.*;
 

@@ -4,16 +4,14 @@ import nl.haarlem.translations.zdstozgw.config.ConfigService;
 import nl.haarlem.translations.zdstozgw.config.model.Translation;
 import nl.haarlem.translations.zdstozgw.requesthandler.RequestHandlerContext;
 import nl.haarlem.translations.zdstozgw.translation.zds.services.ZaakService;
-import nl.haarlem.translations.zdstozgw.utils.XmlUtils;
-
-import java.lang.invoke.MethodHandles;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
+
+import java.lang.invoke.MethodHandles;
 
 @Component
 public class ConverterFactory {

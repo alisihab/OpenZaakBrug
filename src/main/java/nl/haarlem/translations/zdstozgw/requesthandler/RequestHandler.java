@@ -1,17 +1,15 @@
 package nl.haarlem.translations.zdstozgw.requesthandler;
 
-import java.lang.invoke.MethodHandles;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.http.ResponseEntity;
-
 import lombok.Data;
 import nl.haarlem.translations.zdstozgw.config.ConfigService;
 import nl.haarlem.translations.zdstozgw.converter.Converter;
 import nl.haarlem.translations.zdstozgw.converter.ConverterException;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsFo03;
-import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsStuurgegevens;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.ResponseEntity;
+
+import java.lang.invoke.MethodHandles;
 
 @Data
 public abstract class RequestHandler {

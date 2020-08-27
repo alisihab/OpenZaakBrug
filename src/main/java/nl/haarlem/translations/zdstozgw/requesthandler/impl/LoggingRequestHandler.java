@@ -8,24 +8,17 @@ import nl.haarlem.translations.zdstozgw.converter.ConverterException;
 import nl.haarlem.translations.zdstozgw.requesthandler.RequestHandler;
 import nl.haarlem.translations.zdstozgw.requesthandler.impl.logging.RequestResponseCycle;
 import nl.haarlem.translations.zdstozgw.requesthandler.impl.logging.RequestResponseCycleService;
-import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsFo03;
 import nl.haarlem.translations.zdstozgw.utils.XmlUtils;
-
-import org.apache.commons.httpclient.methods.PostMethod;
-import org.apache.commons.httpclient.methods.StringRequestEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.context.request.RequestContextHolder;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
+import javax.xml.soap.SOAPConstants;
 import java.lang.invoke.MethodHandles;
 import java.time.Duration;
 import java.time.LocalDateTime;
-
-import javax.xml.soap.SOAPConstants;
 
 public class LoggingRequestHandler extends RequestHandler {
 
@@ -47,13 +40,13 @@ public class LoggingRequestHandler extends RequestHandler {
         LocalDateTime start = LocalDateTime.now();
         RequestResponseCycle session = new RequestResponseCycle()
                 .setTimestamp(start)
+                .setHttpSessionId(RequestContextHolder.getRequestAttributes().getSessionId())
                 .setClientUrl(this.getConverter().getContext().getUrl())
                 .setClientSoapAction(this.getConverter().getContext().getSoapAction())
                 .setClientRequestBody(this.getConverter().getContext().getRequestBody())
                 .setConverterImplementation(this.getConverter().getTranslation().getImplementation())
                 .setConverterTemplate(this.getConverter().getTranslation().getTemplate());
         sessionService.save(session);
-        this.sessionService.setRequestResponseCycleSession(session);
         
         this.converter.load();
         try {

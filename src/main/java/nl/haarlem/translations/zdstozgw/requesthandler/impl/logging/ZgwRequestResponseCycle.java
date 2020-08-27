@@ -11,10 +11,6 @@ public class ZgwRequestResponseCycle {
     @GeneratedValue
     private long id;
 
-    @ManyToOne()
-    @JoinColumn(name = "request_response_cycle_id")
-    private RequestResponseCycle requestResponseCycle;
-
     private String zgwMethod;    
     @Lob
     private String zgwUrl;
@@ -24,4 +20,6 @@ public class ZgwRequestResponseCycle {
     private String zgwResponseCode;
     @Lob
     private String zgwResponseBody;
+
+    private String httpSessionId;
 }

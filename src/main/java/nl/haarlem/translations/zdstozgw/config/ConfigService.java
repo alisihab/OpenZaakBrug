@@ -11,12 +11,8 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileReader;
 import java.lang.invoke.MethodHandles;
-import java.util.List;
-import java.util.Scanner;
-import java.util.stream.Collectors;
 
 
 @Service

@@ -1,28 +1,19 @@
 package nl.haarlem.translations.zdstozgw.converter.impl.emulate;
 
-import java.time.Duration;
-import java.time.LocalDateTime;
-
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.server.ResponseStatusException;
-
 import nl.haarlem.translations.zdstozgw.config.SpringContext;
 import nl.haarlem.translations.zdstozgw.config.model.Translation;
 import nl.haarlem.translations.zdstozgw.converter.Converter;
 import nl.haarlem.translations.zdstozgw.converter.ConverterException;
-import nl.haarlem.translations.zdstozgw.converter.impl.NotImplementedConverter;
 import nl.haarlem.translations.zdstozgw.jpa.EmulateParameterRepository;
 import nl.haarlem.translations.zdstozgw.requesthandler.RequestHandlerContext;
-import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsBv03;
-import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsZknDocument;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsGenereerZaakIdentificatieDi02;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsGenereerZaakIdentificatieDu02;
-import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsZaak;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsZaakIdentificatie;
-import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsZakLk01;
 import nl.haarlem.translations.zdstozgw.translation.zds.services.ZaakService;
 import nl.haarlem.translations.zdstozgw.utils.XmlUtils;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.server.ResponseStatusException;
 
 public class GenereerZaakIdentificatieEmulator extends Converter {
 
