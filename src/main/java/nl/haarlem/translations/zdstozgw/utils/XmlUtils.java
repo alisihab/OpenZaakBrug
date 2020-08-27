@@ -160,17 +160,20 @@ public class XmlUtils {
         Document document = getNewDocument();
         JAXBContext context = JAXBContext.newInstance(object.getClass());
         Marshaller marshaller = context.createMarshaller();
+        // pretty print
         marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
         marshaller.setProperty(Marshaller.JAXB_FRAGMENT, true);
         marshaller.marshal(object, document);
 
-        TransformerFactory tf = TransformerFactory.newInstance();
-        Transformer transformer = tf.newTransformer();
-        transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
-        StringWriter writer = new StringWriter();
-        transformer.transform(new DOMSource(document), new StreamResult(writer));
-        String output = writer.getBuffer().toString().replaceAll("\n|\r", "");
-        log.debug(output);
+//        TransformerFactory tf = TransformerFactory.newInstance();
+//        Transformer transformer = tf.newTransformer();
+//        transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
+//        StringWriter writer = new StringWriter();
+//        transformer.transform(new DOMSource(document), new StreamResult(writer));
+//        // Waarom volgende regel: marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true); 
+//        // String output = writer.getBuffer().toString().replaceAll("\n|\r", "");
+//        String output = writer.getBuffer().toString();
+//        log.debug(output);
 
         return document;
     }
@@ -227,14 +230,14 @@ public class XmlUtils {
         }
         return object;
     }
-
-    public static String getApplicicatieFromZender(String request) {
-        Document document = convertStringToDocument(request);
-        try {
-            return XPathFactory.newInstance().newXPath().evaluate("//*[local-name()='stuurgegevens']/*[local-name()='zender']/*[local-name()='applicatie']/text()", document);
-        } catch (XPathExpressionException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
+//
+//    public static String getApplicicatieFromZender(String request) {
+//        Document document = convertStringToDocument(request);
+//        try {
+//            return XPathFactory.newInstance().newXPath().evaluate("//*[local-name()='stuurgegevens']/*[local-name()='zender']/*[local-name()='applicatie']/text()", document);
+//        } catch (XPathExpressionException e) {
+//            e.printStackTrace();
+//        }
+//        return null;
+//    }
 }

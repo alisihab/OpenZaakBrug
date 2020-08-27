@@ -37,7 +37,6 @@ public class CreeerZaakReplicator extends CreeerZaakTranslator {
 		// send to legacy system
 		var legacyresponse = Proxy.Proxy(this.getTranslation().getLegacyservice(), this.getContext().getSoapAction(), getContext().getRequestBody());
 		// do the translation
-		return super.execute();
-        
+		return super.execute();        
 	}
 }

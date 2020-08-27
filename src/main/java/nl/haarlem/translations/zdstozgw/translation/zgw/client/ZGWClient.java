@@ -160,8 +160,8 @@ public class ZGWClient {
         return url;
     }
 
-    public ZgwEnkelvoudigInformatieObject getZgwEnkelvoudigInformatieObject(String identificatie) {
-        ZgwEnkelvoudigInformatieObject result = null;
+    public ZgwEnkelvoudigInformatieObject getZgwEnkelvoudigInformatieObjectByIdentiticatie(String identificatie) {
+    	log.info("get zaakdocument #" + identificatie);
         var documentJson = get(baseUrl + endpointEnkelvoudiginformatieobject + "?identificatie=" + identificatie, null);
         Type type = new TypeToken<QueryResult<ZgwEnkelvoudigInformatieObject>>() {
         }.getType();
@@ -169,9 +169,10 @@ public class ZGWClient {
         QueryResult<ZgwEnkelvoudigInformatieObject> queryResult = gson.fromJson(documentJson, type);
 
         if (queryResult.getResults().size() == 1) {
-            result = queryResult.getResults().get(0);
+            return queryResult.getResults().get(0);
         }
-        return result;
+        log.info("zaakdocument #" + identificatie + " not found!");
+        return null;
     }
 
     public ZgwRolType getRolTypeByUrl(String url) {
@@ -447,7 +448,11 @@ public class ZGWClient {
     public ZgwZaakType getZgwZaakTypeByIdentificatie(String identificatie) {
         Map<String, String> parameters = new HashMap<>();
         parameters.put("identificatie", identificatie);
-        return this.getZaakTypes(parameters).get(0);
+        var types = this.getZaakTypes(parameters);
+		if (types.size() == 1) {
+	        return types.get(0);
+		}
+		return null;
     }
 
     //TODO: filter by zaaktype

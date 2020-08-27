@@ -60,7 +60,11 @@ public class ZaakService {
         ZgwZaak zgwZaak = modelMapper.map(zdsZaak, ZgwZaak.class);
         
         var zaaktypecode = zdsZaak.isVan.gerelateerde.code;
-        zgwZaak.zaaktype = zgwClient.getZgwZaakTypeByIdentificatie(zaaktypecode).url;
+        var zaaktype = zgwClient.getZgwZaakTypeByIdentificatie(zaaktypecode);
+        if(zaaktype == null) {
+        	throw new ConverterException("Zaaktype met code:" + zaaktypecode + " could not be found");
+        }                		
+        zgwZaak.zaaktype = zaaktype.url;
         zgwZaak.bronorganisatie = rsin;
         zgwZaak.verantwoordelijkeOrganisatie = rsin;
         if (zdsZaak.getKenmerk() != null && !zdsZaak.getKenmerk().isEmpty()) {
@@ -164,7 +168,7 @@ public class ZaakService {
         //Get Enkelvoudig informatie object. This contains document meta data and a link to the document
     	var documentIdentificatie = zdsEdcLv01.gelijk.identificatie;
     	log.info("getZgwEnkelvoudigInformatieObject:" + documentIdentificatie);
-        ZgwEnkelvoudigInformatieObject zgwEnkelvoudigInformatieObject = zgwClient.getZgwEnkelvoudigInformatieObject(documentIdentificatie);
+        ZgwEnkelvoudigInformatieObject zgwEnkelvoudigInformatieObject = zgwClient.getZgwEnkelvoudigInformatieObjectByIdentiticatie(documentIdentificatie);
         if(zgwEnkelvoudigInformatieObject == null) {
         	throw new ConverterException("ZgwEnkelvoudigInformatieObject #" + documentIdentificatie + " could not be found");
         }
