@@ -89,10 +89,6 @@ public class ZGWClient {
             url = getUrlWithParameters(url, parameters);
         }
         log.debug("GET: " + url);
-//        HttpEntity entity = new HttpEntity(restTemplateService.getHeaders());
-//        ResponseEntity<String> response = restTemplateService.getRestTemplate().exchange(url, HttpMethod.GET, entity, String.class);
-//        log.debug("GET response: " + response.getBody());
-//        return response.getBody();
         HttpEntity entity = new HttpEntity(restTemplateService.getHeaders());
         try {
         	ResponseEntity<String> response = restTemplateService.getRestTemplate().exchange(url, HttpMethod.GET, entity, String.class);
@@ -110,22 +106,43 @@ public class ZGWClient {
 		}        
     }
 
-    public void delete(String url)  {
+    private String delete(String url)  {
         log.debug("DELETE: " + url);
         HttpEntity entity = new HttpEntity(restTemplateService.getHeaders());
-
-        ResponseEntity<String> response = restTemplateService.getRestTemplate().exchange(
-                url, HttpMethod.DELETE, entity, String.class);
-        log.debug("DELETE response: " + response.getBody());
+        try {
+        	ResponseEntity<String> response = restTemplateService.getRestTemplate().exchange(url, HttpMethod.DELETE, entity, String.class);
+        	var zgwResponse = response.getBody();
+        	log.debug("DELETE response: " + zgwResponse);
+        	return zgwResponse;
+		} catch (HttpStatusCodeException hsce) {
+			var response = hsce.getResponseBodyAsString().replace("{", "{\n").replace("\",", "\",\n").replace("\"}", "\"\n}");
+			var details = "--------------DELETE:\n" + url + "\n--------------RESPONSE:\n" + response; 
+			log.warn("GET naar OpenZaak: " + url + " gaf foutmelding:\n" + details, hsce);
+			throw new ConverterException("DELETE naar OpenZaak: " + url + " gaf foutmelding:" + hsce.toString(), details, hsce);
+		} catch (org.springframework.web.client.ResourceAccessException rae) {
+			log.warn("GET naar OpenZaak: " + url + " niet geslaagd", rae);
+			throw new ConverterException("DELETE naar OpenZaak: " + url + " niet geslaagd", rae);
+		}        
     }
-
-    public String put(String url, String json)  {
-        log.debug("PUT: " + url + ", json: " + json);
-        HttpEntity<String> request = new HttpEntity<String>(json, restTemplateService.getHeaders());
-
-        ResponseEntity<String> response = restTemplateService.getRestTemplate().exchange(url, HttpMethod.PUT, request, String.class);
-        log.debug("PUT response: " + response.getBody());
-        return response.getBody();
+    
+    private String put(String url, String json)  {
+    	log.debug("PUT: " + url + ", json: " + json);
+        HttpEntity entity = new HttpEntity(restTemplateService.getHeaders());
+        try {
+        	ResponseEntity<String> response = restTemplateService.getRestTemplate().exchange(url, HttpMethod.PUT, entity, String.class);
+        	var zgwResponse = response.getBody();
+        	log.debug("PUT response: " + zgwResponse);
+        	return zgwResponse;
+		} catch (HttpStatusCodeException hsce) {
+			json = json.replace("{", "{\n").replace("\",", "\",\n").replace("\"}", "\"\n}");
+			var response = hsce.getResponseBodyAsString().replace("{", "{\n").replace("\",", "\",\n").replace("\"}", "\"\n}");
+			var details = "--------------PUT:\n" + url + "\n" + json + "\n--------------RESPONSE:\n" + response;			
+			log.warn("PUT naar OpenZaak: " + url + " gaf foutmelding:\n" + details, hsce);
+			throw new ConverterException("PUT naar OpenZaak: " + url + " gaf foutmelding:" + hsce.toString(), details, hsce);
+		} catch (org.springframework.web.client.ResourceAccessException rae) {
+			log.warn("PUT naar OpenZaak: " + url + " niet geslaagd", rae);
+			throw new ConverterException("PUT naar OpenZaak: " + url + " niet geslaagd", rae);
+		}
     }
 
     private String getUrlWithParameters(String url, Map<String, String> parameters) {
@@ -186,7 +203,6 @@ public class ZGWClient {
         if (queryResult.getResults().size() == 1) {
             result = queryResult.getResults().get(0);
         }
-
         return result;
     }
 
@@ -352,12 +368,14 @@ public class ZGWClient {
         return this.getZgwZaakInformatieObjects(parameters);
     }
 
-    public ZgwZaak getZaak(String zaakIdentificatie) {
+    public ZgwZaak getZaakByIdentificatie(String zaakIdentificatie) {
         Map<String, String> parameters = new HashMap();
         parameters.put("identificatie", zaakIdentificatie);
 
         ZgwZaak zgwZaak = this.getZaak(parameters);
 
+        if(zgwZaak == null) return null;
+        
         //When Verlenging/Opschorting not set, zgw returns object with empty values, in stead of null.
         //This will cause issues when response of getzaakdetails is used for updatezaak.
         if (zgwZaak.getVerlenging().getDuur() == null || zgwZaak.getVerlenging().getReden().equals("")) {
@@ -429,7 +447,6 @@ public class ZGWClient {
     public ZgwZaakType getZgwZaakTypeByIdentificatie(String identificatie) {
         Map<String, String> parameters = new HashMap<>();
         parameters.put("identificatie", identificatie);
-
         return this.getZaakTypes(parameters).get(0);
     }
 

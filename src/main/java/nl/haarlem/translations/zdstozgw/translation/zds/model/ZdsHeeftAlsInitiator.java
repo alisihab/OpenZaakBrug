@@ -7,7 +7,7 @@ import javax.xml.bind.annotation.XmlElement;
 import static nl.haarlem.translations.zdstozgw.translation.zds.model.namespace.Namespace.ZKN;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ZdsHeeftAlsInitiator {
+public class ZdsHeeftAlsInitiator  extends ZdsObject {
     @XmlElement(namespace = ZKN)
     public ZdsGerelateerde zdsGerelateerde;
 }

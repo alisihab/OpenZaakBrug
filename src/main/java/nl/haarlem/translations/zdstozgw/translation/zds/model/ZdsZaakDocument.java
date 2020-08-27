@@ -12,13 +12,10 @@ import static nl.haarlem.translations.zdstozgw.translation.zds.model.namespace.N
 
 @Data
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ZdsZaakDocument {
-    @XmlAttribute(namespace = STUF)
-    public String entiteittype;
-
-    @XmlElement(namespace = ZKN, nillable = true)
-    public String identificatie;
-
+public class ZdsZaakDocument extends ZdsZaakDocumentIdentificatie {
+    @XmlElement(namespace = ZKN, name = "dct.omschrijving")
+    public String omschrijving;    
+    
     @XmlElement(namespace = ZKN, nillable = true)
     public String creatiedatum;
 
@@ -31,6 +28,9 @@ public class ZdsZaakDocument {
     @XmlElement(namespace = ZKN, nillable = true)
     public String taal;
 
+    @XmlElement(namespace = ZKN)
+  	public ZdsInhoud inhoud;    
+    
     @XmlElement(namespace = ZKN, nillable = true)
     public String versie;
 
@@ -48,4 +48,7 @@ public class ZdsZaakDocument {
 
     @XmlElement(namespace = ZKN, nillable = true)
     public String link;
+
+    @XmlElement(namespace = ZKN, nillable = true)    
+    public ZdsIsRelevantVoor isRelevantVoor;
 }

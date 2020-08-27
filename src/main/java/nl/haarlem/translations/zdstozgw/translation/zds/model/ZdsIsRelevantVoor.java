@@ -9,7 +9,7 @@ import static nl.haarlem.translations.zdstozgw.translation.zds.model.namespace.N
 import static nl.haarlem.translations.zdstozgw.translation.zds.model.namespace.Namespace.ZKN;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ZdsIsRelevantVoor {
+public class ZdsIsRelevantVoor  extends ZdsObject {
     @XmlAttribute(namespace = STUF)
     public String entiteittype;
 

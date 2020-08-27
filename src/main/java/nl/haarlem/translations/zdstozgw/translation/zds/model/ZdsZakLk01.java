@@ -13,12 +13,8 @@ import static nl.haarlem.translations.zdstozgw.translation.zds.model.namespace.N
 @Data
 @XmlRootElement(namespace = ZKN, name = "zakLk01")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ZdsZakLk01 {
+public class ZdsZakLk01 extends ZdsZknDocument {
 
     @XmlElement(namespace = ZKN, name = "object")
     public List<ZdsZaak> objects;
-
-    @XmlElement(namespace = ZKN, name = "stuurgegevens")
-    public ZdsStuurgegevens stuurgegevens;
-
 }

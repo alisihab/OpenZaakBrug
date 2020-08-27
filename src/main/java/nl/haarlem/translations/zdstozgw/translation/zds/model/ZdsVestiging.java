@@ -10,7 +10,7 @@ import static nl.haarlem.translations.zdstozgw.translation.zds.model.namespace.N
 
 @Data
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ZdsVestiging {
+public class ZdsVestiging  extends ZdsObject {
     @XmlElement(namespace = BG)
     public String vestigingsNummer;
 

@@ -12,24 +12,18 @@ import static nl.haarlem.translations.zdstozgw.translation.zds.model.namespace.N
 @Data
 @XmlRootElement(namespace = ZKN, name = "genereerDocumentIdentificatie_Du02")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ZdsGenereerDocumentIdentificatieDu02 {
+public class ZdsGenereerDocumentIdentificatieDu02 extends ZdsZknDocument{
 
     @XmlElement(namespace = ZKN)
-    public ZdsStuurgegevens stuurgegevens;   
-        
-    @XmlElement(namespace = ZKN)
-	public ZdsZaakDocument document;
+	public ZdsZaakDocumentIdentificatie document;
     
-    private ZdsGenereerDocumentIdentificatieDu02() {    	
+    private ZdsGenereerDocumentIdentificatieDu02() {
     }
         
     public ZdsGenereerDocumentIdentificatieDu02(ZdsStuurgegevens zdsStuurgegevens) {
         this.stuurgegevens = new ZdsStuurgegevens(zdsStuurgegevens);
-        this.stuurgegevens.tijdstipBericht = StufUtils.getStufDateTime();
-        this.stuurgegevens.referentienummer = zdsStuurgegevens.referentienummer;
         this.stuurgegevens.berichtcode = "Du02";   
         this.stuurgegevens.functie = "genereerDocumentidentificatie";
-        this.stuurgegevens.entiteittype = "ZAK";
     }        
     
 }

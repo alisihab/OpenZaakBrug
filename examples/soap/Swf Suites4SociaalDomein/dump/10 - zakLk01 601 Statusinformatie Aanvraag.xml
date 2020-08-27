@@ -1,0 +1,94 @@
+<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
+   <s:Body>
+      <s:Fault>
+         <faultcode>s:server</faultcode>
+         <faultstring>POST naar OpenZaak: https://fieldlab.westeurope.cloudapp.azure.com//zaken/api/v1/statussen gaf foutmelding:500 Internal Server Error: [{"type":"https://fieldlab.westeurope.cloudapp.azure.com/ref/fouten/APIException/","code":"error","title":"Er is een serverfout opgetreden.","status":500,"detail":"Internal Server Error","instance":"urn:uuid:e4f61014-9a07-4dee-8e20-071ff68c36b1"}] json:{"zaak":"https://fieldlab.westeurope.cloudapp.azure.com/zaken/api/v1/zaken/8cbbed09-e8f8-4415-a360-4075e1660622","statustype":"https://fieldlab.westeurope.cloudapp.azure.com/catalogi/api/v1/statustypen/92988b9a-b051-4c83-a6fd-ec515da5d73a","datumStatusGezet":"2020-03-11T09:25:16.000Z","statustoelichting":"Afgehandeld"}</faultstring>
+         <detail>
+            <StUF:Fo02Bericht xmlns:StUF="http://www.egem.nl/StUF/StUF0301">
+               <StUF:stuurgegevens>
+                  <StUF:berichtcode>Fo02</StUF:berichtcode>
+               </StUF:stuurgegevens>
+               <StUF:body>
+                  <StUF:code>StUF058</StUF:code>
+                  <StUF:plek>server</StUF:plek>
+                  <StUF:omschrijving>nl.haarlem.translations.zdstozgw.converter.Converter$ConverterException: POST naar OpenZaak: https://fieldlab.westeurope.cloudapp.azure.com//zaken/api/v1/statussen gaf foutmelding:500 Internal Server Error: [{"type":"https://fieldlab.westeurope.cloudapp.azure.com/ref/fouten/APIException/","code":"error","title":"Er is een serverfout opgetreden.","status":500,"detail":"Internal Server Error","instance":"urn:uuid:e4f61014-9a07-4dee-8e20-071ff68c36b1"}] json:{"zaak":"https://fieldlab.westeurope.cloudapp.azure.com/zaken/api/v1/zaken/8cbbed09-e8f8-4415-a360-4075e1660622","statustype":"https://fieldlab.westeurope.cloudapp.azure.com/catalogi/api/v1/statustypen/92988b9a-b051-4c83-a6fd-ec515da5d73a","datumStatusGezet":"2020-03-11T09:25:16.000Z","statustoelichting":"Afgehandeld"}</StUF:omschrijving>
+                  <StUF:entiteittype/>
+                  <StUF:details>nl.haarlem.translations.zdstozgw.converter.Converter$ConverterException: POST naar OpenZaak: https://fieldlab.westeurope.cloudapp.azure.com//zaken/api/v1/statussen gaf foutmelding:500 Internal Server Error: [{"type":"https://fieldlab.westeurope.cloudapp.azure.com/ref/fouten/APIException/","code":"error","title":"Er is een serverfout opgetreden.","status":500,"detail":"Internal Server Error","instance":"urn:uuid:e4f61014-9a07-4dee-8e20-071ff68c36b1"}] json:{"zaak":"https://fieldlab.westeurope.cloudapp.azure.com/zaken/api/v1/zaken/8cbbed09-e8f8-4415-a360-4075e1660622","statustype":"https://fieldlab.westeurope.cloudapp.azure.com/catalogi/api/v1/statustypen/92988b9a-b051-4c83-a6fd-ec515da5d73a","datumStatusGezet":"2020-03-11T09:25:16.000Z","statustoelichting":"Afgehandeld"}&#13;
+	at nl.haarlem.translations.zdstozgw.converter.impl.ActualiseerZaakStatusConverter.convertToZgw(ActualiseerZaakStatusConverter.java:128)&#13;
+	at nl.haarlem.translations.zdstozgw.converter.impl.ActualiseerZaakStatusConverter.convertToZgwAndReplicateToZds(ActualiseerZaakStatusConverter.java:83)&#13;
+	at nl.haarlem.translations.zdstozgw.controller.SoapController.HandleRequest(SoapController.java:111)&#13;
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)&#13;
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)&#13;
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)&#13;
+	at java.base/java.lang.reflect.Method.invoke(Method.java:567)&#13;
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:190)&#13;
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:138)&#13;
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:106)&#13;
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:888)&#13;
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:793)&#13;
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87)&#13;
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1040)&#13;
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:943)&#13;
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1006)&#13;
+	at org.springframework.web.servlet.FrameworkServlet.doPost(FrameworkServlet.java:909)&#13;
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:660)&#13;
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:883)&#13;
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:741)&#13;
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:231)&#13;
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)&#13;
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:53)&#13;
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)&#13;
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)&#13;
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)&#13;
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)&#13;
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)&#13;
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)&#13;
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)&#13;
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)&#13;
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)&#13;
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)&#13;
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)&#13;
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)&#13;
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)&#13;
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)&#13;
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:202)&#13;
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:96)&#13;
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:541)&#13;
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:139)&#13;
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:92)&#13;
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)&#13;
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:343)&#13;
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:367)&#13;
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:65)&#13;
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:860)&#13;
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1598)&#13;
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49)&#13;
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)&#13;
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)&#13;
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)&#13;
+	at java.base/java.lang.Thread.run(Thread.java:830)&#13;
+Caused by: nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient$ZGWClientException: POST naar OpenZaak: https://fieldlab.westeurope.cloudapp.azure.com//zaken/api/v1/statussen gaf foutmelding:500 Internal Server Error: [{"type":"https://fieldlab.westeurope.cloudapp.azure.com/ref/fouten/APIException/","code":"error","title":"Er is een serverfout opgetreden.","status":500,"detail":"Internal Server Error","instance":"urn:uuid:e4f61014-9a07-4dee-8e20-071ff68c36b1"}] json:{"zaak":"https://fieldlab.westeurope.cloudapp.azure.com/zaken/api/v1/zaken/8cbbed09-e8f8-4415-a360-4075e1660622","statustype":"https://fieldlab.westeurope.cloudapp.azure.com/catalogi/api/v1/statustypen/92988b9a-b051-4c83-a6fd-ec515da5d73a","datumStatusGezet":"2020-03-11T09:25:16.000Z","statustoelichting":"Afgehandeld"}&#13;
+	at nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient.post(ZGWClient.java:100)&#13;
+	at nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient.actualiseerZaakStatus(ZGWClient.java:497)&#13;
+	at nl.haarlem.translations.zdstozgw.translation.ZaakTranslator.actualiseerZaakstatus(ZaakTranslator.java:615)&#13;
+	at nl.haarlem.translations.zdstozgw.converter.impl.ActualiseerZaakStatusConverter.convertToZgw(ActualiseerZaakStatusConverter.java:112)&#13;
+	... 52 more&#13;
+Caused by: org.springframework.web.client.HttpServerErrorException$InternalServerError: 500 Internal Server Error: [{"type":"https://fieldlab.westeurope.cloudapp.azure.com/ref/fouten/APIException/","code":"error","title":"Er is een serverfout opgetreden.","status":500,"detail":"Internal Server Error","instance":"urn:uuid:e4f61014-9a07-4dee-8e20-071ff68c36b1"}]&#13;
+	at org.springframework.web.client.HttpServerErrorException.create(HttpServerErrorException.java:100)&#13;
+	at org.springframework.web.client.DefaultResponseErrorHandler.handleError(DefaultResponseErrorHandler.java:172)&#13;
+	at org.springframework.web.client.DefaultResponseErrorHandler.handleError(DefaultResponseErrorHandler.java:112)&#13;
+	at org.springframework.web.client.ResponseErrorHandler.handleError(ResponseErrorHandler.java:63)&#13;
+	at org.springframework.web.client.RestTemplate.handleResponse(RestTemplate.java:785)&#13;
+	at org.springframework.web.client.RestTemplate.doExecute(RestTemplate.java:743)&#13;
+	at org.springframework.web.client.RestTemplate.execute(RestTemplate.java:677)&#13;
+	at org.springframework.web.client.RestTemplate.postForObject(RestTemplate.java:421)&#13;
+	at nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient.post(ZGWClient.java:95)&#13;
+	... 55 more&#13;
+</StUF:details>
+                  <StUF:detailsXML/>
+               </StUF:body>
+            </StUF:Fo02Bericht>
+         </detail>
+      </s:Fault>
+   </s:Body>
+</s:Envelope>

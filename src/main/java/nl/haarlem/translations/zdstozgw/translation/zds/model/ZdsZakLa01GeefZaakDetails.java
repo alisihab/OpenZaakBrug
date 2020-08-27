@@ -11,13 +11,10 @@ import static nl.haarlem.translations.zdstozgw.translation.zds.model.namespace.N
 @Data
 @XmlRootElement(namespace = ZKN, name = "zakLa01")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ZdsZakLa01GeefZaakDetails {
+public class ZdsZakLa01GeefZaakDetails extends ZdsZknDocument{
 
     @XmlElement(namespace = ZKN)
-    public ZdsStuurgegevens zdsStuurgegevens;
-
-    @XmlElement(namespace = ZKN)
-    public ZdsParameters zdsParameters;
+    public ZdsParameters parameters;
 
 
     @XmlElement(namespace = ZKN)
@@ -26,34 +23,35 @@ public class ZdsZakLa01GeefZaakDetails {
     @Data
     @XmlAccessorType(XmlAccessType.FIELD)
     public static class Antwoord {
-        @XmlElement(namespace = ZKN, name = "object")
-        public Object zaak;
 
-        @Data
-        @XmlAccessorType(XmlAccessType.FIELD)
-        public static class Object extends ZdsZaak {
-            @XmlElement(namespace = ZKN)
-            public List<Status> heeft;
-        }
+    	@XmlElement(namespace = ZKN, name = "object")
+        public ZdsZaak zaak;
+
+//        @Data
+//        @XmlAccessorType(XmlAccessType.FIELD)
+//        public static class Object extends ZdsZaak {
+//            @XmlElement(namespace = ZKN)
+//            public List<Status> heeft;
+//        }
     }
-
-    @Data
-    @XmlAccessorType(XmlAccessType.FIELD)
-    public static class Status {
-        @XmlAttribute(namespace = STUF)
-        public String entiteittype;
-
-        @XmlElement(namespace = ZKN)
-        public String toelichting;
-
-        @XmlElement(namespace = ZKN)
-        public String datumStatusGezet;
-
-        @XmlElement(namespace = ZKN)
-        public String indicatieLaatsteStatus;
-
-        @XmlElement(namespace = ZKN)
-        public String isGezetDoor;
-    }
+//
+//    @Data
+//    @XmlAccessorType(XmlAccessType.FIELD)
+//    public static class Status {
+//        @XmlAttribute(namespace = STUF)
+//        public String entiteittype;
+//
+//        @XmlElement(namespace = ZKN)
+//        public String toelichting;
+//
+//        @XmlElement(namespace = ZKN)
+//        public String datumStatusGezet;
+//
+//        @XmlElement(namespace = ZKN)
+//        public String indicatieLaatsteStatus;
+//
+//        @XmlElement(namespace = ZKN)
+//        public String isGezetDoor;
+//    }
 
 }
