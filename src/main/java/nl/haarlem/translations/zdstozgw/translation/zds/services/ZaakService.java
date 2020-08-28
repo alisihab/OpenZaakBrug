@@ -197,12 +197,13 @@ public class ZaakService {
 //        ZdsZakLk01ActualiseerZaakstatus.Object object = zakLk01.objects.get(1);
     public ZgwZaak actualiseerZaakstatus(ZdsZaak wasZaak, ZdsZaak wordtZaak)  {
 //      ZdsZakLk01ActualiseerZaakstatus.Object object = zakLk01.objects.get(1);    
-        ZgwZaak zgwZaak = zgwClient.getZaakByIdentificatie(wasZaak.identificatie);
-
-        var zdsStatus = wordtZaak.heeft.get(0).gerelateerde;
-        ZgwStatus zgwStatus = modelMapper.map(wordtZaak.heeft, ZgwStatus.class);        
+    	ZgwZaak zgwZaak = zgwClient.getZaakByIdentificatie(wasZaak.identificatie);
+    	var zdsHeeft = wordtZaak.heeft.get(0);
+        var zdsStatus = zdsHeeft.gerelateerde;
+    	var zgwStatusType = zgwClient.getStatusTypeByZaakTypeAndVolgnummer(zgwZaak.zaaktype, zdsStatus.volgnummer, zdsStatus.omschrijving);        
+        
+        ZgwStatus zgwStatus = modelMapper.map(zdsHeeft, ZgwStatus.class);
         zgwStatus.zaak = zgwZaak.url;
-        var zgwStatusType = zgwClient.getStatusTypeByZaakTypeAndVolgnummer(zgwZaak.zaaktype, zdsStatus.volgnummer, zdsStatus.omschrijving);        
         zgwStatus.statustype = zgwStatusType.url;
 
         zgwClient.actualiseerZaakStatus(zgwStatus);
