@@ -10,6 +10,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -21,8 +22,10 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.soap.*;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.TransformerFactoryConfigurationError;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.xpath.XPathExpressionException;
@@ -149,9 +152,36 @@ public class XmlUtils {
     }
 
     private static String getStringFromSOAP(SOAPMessage message) throws SOAPException, IOException {
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        message.writeTo(out);
-        return new String(out.toByteArray());
+    	try {    	
+	    	ByteArrayOutputStream out = new ByteArrayOutputStream();
+	    	message.writeTo(out);    	
+	    	var unformattedxml = new String(out.toByteArray());
+	    	
+	        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+	        DocumentBuilder builder = factory.newDocumentBuilder();
+	        Document doc = builder.parse(new InputSource(new StringReader(unformattedxml)));
+	        
+	        Transformer transformer = TransformerFactory.newInstance().newTransformer();
+	    	transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+	    	transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
+	    	//initialize StreamResult with File object to save to file
+	    	StreamResult result = new StreamResult(new StringWriter());
+	    	DOMSource source = new DOMSource(doc);
+	    	transformer.transform(source, result);
+	    	String formattedxml = result.getWriter().toString();    	
+	    	return formattedxml;
+    	}
+    	catch (ParserConfigurationException e) {
+	    	throw new ConverterException("Kon de xml niet formetteren, ParserConfigurationException:" + e.toString(), e);
+    	} catch (TransformerConfigurationException e) {
+	    	throw new ConverterException("Kon de xml niet formetteren, TransformerConfigurationException:" + e.toString(), e);
+    	} catch (TransformerFactoryConfigurationError e) {
+	    	throw new ConverterException("Kon de xml niet formetteren, TransformerFactoryConfigurationError:" + e.toString(), e);
+		} catch (SAXException e) {
+	    	throw new ConverterException("Kon de xml niet formetteren, SAXException:" + e.toString(), e);
+		} catch (TransformerException e) {
+	    	throw new ConverterException("Kon de xml niet formetteren, TransformerException:" + e.toString(), e);
+		}
     }
 
     private static Document marshalJAXBToXMLDocument(Object object) throws JAXBException, ParserConfigurationException, TransformerException {
