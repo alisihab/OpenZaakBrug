@@ -1,6 +1,9 @@
 package nl.haarlem.translations.zdstozgw.translation.zds.client;
 
 import nl.haarlem.translations.zdstozgw.converter.ConverterException;
+import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsObject;
+import nl.haarlem.translations.zdstozgw.utils.XmlUtils;
+
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.methods.StringRequestEntity;
 import org.slf4j.Logger;
@@ -19,10 +22,16 @@ public class ZDSClient {
 
 	private static final Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
+	public ResponseEntity<?> post(String zdsUrl, String zdsSoapAction, ZdsObject zdsRequest) {
+		var request = XmlUtils.getSOAPMessageFromObject(zdsRequest);
+		return post(zdsUrl, zdsSoapAction, request);
+	}
+	
 	public ResponseEntity<?> post(String zdsUrl, String zdsSoapAction, String zdsRequest) {
 		// what are we going to do?
 		//session.addZdsRequest(zdsUrl, zdsSoapAction, zdsRequest);
 		log.info("Performing ZDS request to: '" + zdsUrl + "' for soapaction:" + zdsSoapAction);
+		log.debug("Requestbody:\n" + zdsRequest);
 		var post = new PostMethod(zdsUrl);
 		try { 			
 			post.setRequestHeader("SOAPAction", zdsSoapAction);
