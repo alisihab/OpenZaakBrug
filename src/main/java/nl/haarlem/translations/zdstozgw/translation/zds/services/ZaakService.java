@@ -5,6 +5,7 @@ import nl.haarlem.translations.zdstozgw.config.model.Organisatie;
 import nl.haarlem.translations.zdstozgw.config.model.ZgwRolOmschrijving;
 import nl.haarlem.translations.zdstozgw.converter.ConverterException;
 import nl.haarlem.translations.zdstozgw.translation.BetrokkeneType;
+import nl.haarlem.translations.zdstozgw.translation.zds.client.ZDSClient;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.*;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsZakLa01LijstZaakdocumenten.Antwoord.Object.HeeftRelevant;
 import nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient;
@@ -29,13 +30,16 @@ public class ZaakService {
     private static final Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
     public final ZGWClient zgwClient;
+    public final ZDSClient zdsClient;
+
     private final ModelMapper modelMapper;
-    private final ConfigService configService;
+    public final ConfigService configService;
 
 
     @Autowired
-    public ZaakService(ZGWClient zgwClient, ModelMapper modelMapper, ConfigService configService) {
+    public ZaakService(ZGWClient zgwClient, ZDSClient zdsClient, ModelMapper modelMapper, ConfigService configService) {
         this.zgwClient = zgwClient;
+        this.zdsClient = zdsClient;
         this.modelMapper = modelMapper;
         this.configService = configService;
     }
@@ -58,7 +62,11 @@ public class ZaakService {
         ZgwZaak zgwZaak = modelMapper.map(zdsZaak, ZgwZaak.class);
         
         var zaaktypecode = zdsZaak.isVan.gerelateerde.code;
-        zgwZaak.zaaktype = zgwClient.getZgwZaakTypeByIdentificatie(zaaktypecode).url;
+        var zaaktype = zgwClient.getZgwZaakTypeByIdentificatie(zaaktypecode);
+        if(zaaktype == null) {
+        	throw new ConverterException("Zaaktype met code:" + zaaktypecode + " could not be found");
+        }                		
+        zgwZaak.zaaktype = zaaktype.url;
         zgwZaak.bronorganisatie = rsin;
         zgwZaak.verantwoordelijkeOrganisatie = rsin;
         if (zdsZaak.getKenmerk() != null && !zdsZaak.getKenmerk().isEmpty()) {
@@ -162,7 +170,7 @@ public class ZaakService {
         //Get Enkelvoudig informatie object. This contains document meta data and a link to the document
     	var documentIdentificatie = zdsEdcLv01.gelijk.identificatie;
     	log.info("getZgwEnkelvoudigInformatieObject:" + documentIdentificatie);
-        ZgwEnkelvoudigInformatieObject zgwEnkelvoudigInformatieObject = zgwClient.getZgwEnkelvoudigInformatieObject(documentIdentificatie);
+        ZgwEnkelvoudigInformatieObject zgwEnkelvoudigInformatieObject = zgwClient.getZgwEnkelvoudigInformatieObjectByIdentiticatie(documentIdentificatie);
         if(zgwEnkelvoudigInformatieObject == null) {
         	throw new ConverterException("ZgwEnkelvoudigInformatieObject #" + documentIdentificatie + " could not be found");
         }
@@ -193,12 +201,13 @@ public class ZaakService {
 //        ZdsZakLk01ActualiseerZaakstatus.Object object = zakLk01.objects.get(1);
     public ZgwZaak actualiseerZaakstatus(ZdsZaak wasZaak, ZdsZaak wordtZaak)  {
 //      ZdsZakLk01ActualiseerZaakstatus.Object object = zakLk01.objects.get(1);    
-        ZgwZaak zgwZaak = zgwClient.getZaakByIdentificatie(wasZaak.identificatie);
-
-        var zdsStatus = wordtZaak.heeft.get(0).gerelateerde;
-        ZgwStatus zgwStatus = modelMapper.map(wordtZaak.heeft, ZgwStatus.class);        
+    	ZgwZaak zgwZaak = zgwClient.getZaakByIdentificatie(wasZaak.identificatie);
+    	var zdsHeeft = wordtZaak.heeft.get(0);
+        var zdsStatus = zdsHeeft.gerelateerde;
+    	var zgwStatusType = zgwClient.getStatusTypeByZaakTypeAndVolgnummer(zgwZaak.zaaktype, zdsStatus.volgnummer, zdsStatus.omschrijving);        
+        
+        ZgwStatus zgwStatus = modelMapper.map(zdsHeeft, ZgwStatus.class);
         zgwStatus.zaak = zgwZaak.url;
-        var zgwStatusType = zgwClient.getStatusTypeByZaakTypeAndVolgnummer(zgwZaak.zaaktype, zdsStatus.volgnummer, zdsStatus.omschrijving);        
         zgwStatus.statustype = zgwStatusType.url;
 
         zgwClient.actualiseerZaakStatus(zgwStatus);
@@ -332,6 +341,7 @@ public class ZaakService {
         	log.info("Update of zaakid:" + zdsWasZaak.identificatie + " has # " + fieldChanges.size() + " field changes");
         	
             ZgwZaakPut updatedZaak = this.modelMapper.map(zdsWordtZaak, ZgwZaakPut.class);
+            // TODO: wrom niet in de mapper?            
             updatedZaak.zaaktype = zgwZaak.zaaktype;
             updatedZaak.bronorganisatie = zgwZaak.bronorganisatie;
             updatedZaak.verantwoordelijkeOrganisatie = zgwZaak.verantwoordelijkeOrganisatie;

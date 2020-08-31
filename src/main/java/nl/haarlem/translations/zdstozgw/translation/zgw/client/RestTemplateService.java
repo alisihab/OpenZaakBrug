@@ -5,6 +5,8 @@ import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.conn.ssl.TrustStrategy;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -15,11 +17,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import javax.net.ssl.SSLContext;
+
+import java.lang.invoke.MethodHandles;
 import java.security.cert.X509Certificate;
 
 @Service
 @Data
 public class RestTemplateService {
+    private static final Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
     @Autowired
     private JWTService jwtService;
@@ -67,7 +72,8 @@ public class RestTemplateService {
         headers.set("Accept-Crs", "EPSG:4326");
         headers.set("Content-Crs", "EPSG:4326");
         headers.set("Authorization", "Bearer " + jwtService.getJWT());
-
+        log.debug("headers:" + headers);
+        
         return headers;
     }
 }

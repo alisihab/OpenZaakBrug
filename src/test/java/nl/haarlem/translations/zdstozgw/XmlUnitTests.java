@@ -39,16 +39,4 @@ public class XmlUnitTests {
             e.printStackTrace();
         }
     }
-
-    @Test
-    public void getApplicicatieFromZender() throws IOException {
-        //assign
-        String content = IOUtils.toString(getClass().getClassLoader().getResourceAsStream("zds1.1/ActualiseerZaakstatus"), "UTF-8");
-
-        //act
-        String applicatie = XmlUtils.getApplicicatieFromZender(content);
-
-        //assert
-        Assert.assertEquals("GWS4all", applicatie);
-    }
 }

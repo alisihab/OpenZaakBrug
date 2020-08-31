@@ -14,7 +14,16 @@ public class Configuratie {
 	@SerializedName("organisaties")
     @Expose    
     public List<Organisatie> organisaties = null;
-    @SerializedName("zgwRolOmschrijving")
+	@SerializedName("geefZaakdetails")
+    @Expose    
+	public Service geefZaakdetails = null;
+	@SerializedName("geefLijstZaakdocumenten")
+    @Expose    	
+	public Service geefLijstZaakdocumenten = null;
+	@SerializedName("geefZaakdocumentLezen")
+    @Expose    
+	public Service geefZaakdocumentLezen = null;
+	@SerializedName("zgwRolOmschrijving")
     @Expose
     public ZgwRolOmschrijving zgwRolOmschrijving = null;	
     @SerializedName("translations")

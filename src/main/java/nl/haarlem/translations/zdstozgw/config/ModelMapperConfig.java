@@ -30,14 +30,15 @@ public class ModelMapperConfig {
                 .setPropertyCondition(Conditions.isNotNull());
 
         modelMapper.typeMap(ZgwStatus.class, ZdsHeeft.class)
-                .addMappings(mapper -> mapper.map(ZgwStatus::getStatustoelichting, ZdsHeeft::setToelichting));
-
+                .addMappings(mapper -> mapper.map(ZgwStatus::getStatustoelichting, ZdsHeeft::setToelichting))
+                .addMappings(mapper -> mapper.using(convertDateStringToStufDate()).map(ZgwStatus::getDatumStatusGezet, ZdsHeeft::setDatumStatusGezet));
+        
         modelMapper.typeMap(ZgwZaakInformatieObject.class, ZdsZakLa01LijstZaakdocumenten.Antwoord.Object.HeeftRelevant.class)
                 .addMappings(mapper -> mapper.using(convertDateStringToStufDate()).map(ZgwZaakInformatieObject::getRegistratiedatum, ZdsZakLa01LijstZaakdocumenten.Antwoord.Object.HeeftRelevant::setRegistratiedatum));
 
         modelMapper.typeMap(ZdsHeeft.class, ZgwStatus.class)
                 .addMappings(mapper -> mapper.using(convertStufDateToDateTimeString()).map(ZdsHeeft::getDatumStatusGezet, ZgwStatus::setDatumStatusGezet));
-
+        
         modelMapper.typeMap(ZdsZaak.Opschorting.class, ZgwOpschorting.class)
                 .addMappings(mapper -> mapper.using(convertStringToBoolean()).map(ZdsZaak.Opschorting::getIndicatie, ZgwOpschorting::setIndicatie));
 

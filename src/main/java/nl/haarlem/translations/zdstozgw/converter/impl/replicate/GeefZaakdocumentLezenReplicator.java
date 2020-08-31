@@ -5,6 +5,7 @@ import nl.haarlem.translations.zdstozgw.converter.impl.proxy.Proxy;
 import nl.haarlem.translations.zdstozgw.converter.impl.translate.GeefZaakdocumentLezenTranslator;
 import nl.haarlem.translations.zdstozgw.requesthandler.RequestHandlerContext;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsEdcLv01;
+import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsStuurgegevens;
 import nl.haarlem.translations.zdstozgw.translation.zds.services.ZaakService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.server.ResponseStatusException;
@@ -12,9 +13,9 @@ import org.springframework.web.server.ResponseStatusException;
 public class GeefZaakdocumentLezenReplicator extends GeefZaakdocumentLezenTranslator {
     private Replicator replicator;	
 
-    public GeefZaakdocumentLezenReplicator(RequestHandlerContext context, Translation translation, ZaakService zaakService) {
+    public GeefZaakdocumentLezenReplicator(RequestHandlerContext context, Translation translation, ZaakService zaakService, ZdsStuurgegevens stuurgegevens) {
         super(context, translation, zaakService);
-        replicator = new Replicator(zaakService);
+        replicator = new Replicator(zaakService, stuurgegevens);
     }
 
 	@Override
