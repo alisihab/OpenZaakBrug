@@ -10,8 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.server.ResponseStatusException;
 
 public class ActualiseerZaakStatusReplicator extends ActualiseerZaakStatusTranslator {
-    private Replicator replicator;	
-	
     public ActualiseerZaakStatusReplicator(RequestHandlerContext context, Translation translation, ZaakService zaakService) {
         super(context, translation, zaakService);
     }
@@ -20,8 +18,8 @@ public class ActualiseerZaakStatusReplicator extends ActualiseerZaakStatusTransl
 	public ResponseEntity<?> execute() throws ResponseStatusException {
 		var zdsZakLk01ActualiseerZaakstatus = (ZdsZakLk01ActualiseerZaakstatus) this.getZdsDocument();
 		// replicate the zaak
-		replicator.replicateZaak(zdsZakLk01ActualiseerZaakstatus.objects.get(0).identificatie);
-		
+        var replicator = new Replicator(this.getZaakService(), zdsZakLk01ActualiseerZaakstatus.stuurgegevens);		
+		replicator.replicateZaak(zdsZakLk01ActualiseerZaakstatus.objects.get(0).identificatie);		
 		// send to legacy system
 		var legacyresponse = Proxy.Proxy(this.getTranslation().getLegacyservice(), this.getContext().getSoapAction(), getContext().getRequestBody());
 		// do the translation

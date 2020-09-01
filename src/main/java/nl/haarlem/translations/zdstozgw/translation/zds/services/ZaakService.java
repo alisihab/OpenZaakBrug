@@ -11,6 +11,9 @@ import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsZakLa01LijstZaa
 import nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.*;
 import nl.haarlem.translations.zdstozgw.utils.ChangeDetector;
+import nl.haarlem.translations.zdstozgw.utils.ChangeDetector.Change;
+import nl.haarlem.translations.zdstozgw.utils.ChangeDetector.ChangeType;
+
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.lang.invoke.MethodHandles;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -335,16 +339,14 @@ public class ZaakService {
         changeDetector.detect(zdsWasZaak, zdsWordtZaak);
 
         var changed = false;
-        // var fieldChanges = changeDetector.getAllChangesByFieldType(ZdsZaak.class);
         var fieldChanges = changeDetector.getAllChangesByDeclaringClassAndFilter(ZdsZaak.class, ZdsRol.class);
         if (fieldChanges.size() > 0) {
         	log.info("Update of zaakid:" + zdsWasZaak.identificatie + " has # " + fieldChanges.size() + " field changes");
-        	
-            ZgwZaakPut updatedZaak = this.modelMapper.map(zdsWordtZaak, ZgwZaakPut.class);
-            // TODO: wrom niet in de mapper?            
-            updatedZaak.zaaktype = zgwZaak.zaaktype;
-            updatedZaak.bronorganisatie = zgwZaak.bronorganisatie;
-            updatedZaak.verantwoordelijkeOrganisatie = zgwZaak.verantwoordelijkeOrganisatie;
+            for(Change change: fieldChanges.keySet()) {
+            	log.info("change:" + change.getField().getName());
+            }            
+            ZgwZaakPut zgwWordtZaak = this.modelMapper.map(zdsWordtZaak, ZgwZaakPut.class);
+            ZgwZaakPut updatedZaak = ZgwZaakPut.merge(zgwZaak, zgwWordtZaak);
             zgwClient.updateZaak(zgwZaak.uuid, updatedZaak);
             
             changed = true;

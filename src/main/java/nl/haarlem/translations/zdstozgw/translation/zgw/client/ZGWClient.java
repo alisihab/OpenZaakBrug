@@ -127,20 +127,10 @@ public class ZGWClient {
         log.debug("PUT: " + url + ", json: " + json);
         HttpEntity<String> entity = new HttpEntity<String>(json, restTemplateService.getHeaders());
         try {
-//        	var zgwResponse = restTemplateService.getRestTemplate().postForObject(url, entity, String.class);
         	ResponseEntity<String> response = restTemplateService.getRestTemplate().exchange(url, HttpMethod.PUT, entity, String.class);
         	var zgwResponse = response.getBody();
         	log.debug("PUT response: " + zgwResponse);
         	return zgwResponse;
-//    	
-//    	
-//    	log.debug("PUT: " + url + ", json: " + json);
-//        HttpEntity entity = new HttpEntity(restTemplateService.getHeaders());
-//        try {
-//        	ResponseEntity<String> response = restTemplateService.getRestTemplate().exchange(url, HttpMethod.PUT, entity, String.class);
-//        	var zgwResponse = response.getBody();
-//        	log.debug("PUT response: " + zgwResponse);
-//        	return zgwResponse;
 		} catch (HttpStatusCodeException hsce) {
 			json = json.replace("{", "{\n").replace("\",", "\",\n").replace("\"}", "\"\n}");
 			var response = hsce.getResponseBodyAsString().replace("{", "{\n").replace("\",", "\",\n").replace("\"}", "\"\n}");

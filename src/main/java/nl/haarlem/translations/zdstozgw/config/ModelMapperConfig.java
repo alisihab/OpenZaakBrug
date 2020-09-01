@@ -1,5 +1,6 @@
 package nl.haarlem.translations.zdstozgw.config;
 
+import nl.haarlem.translations.zdstozgw.converter.ConverterException;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.*;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.*;
 import org.modelmapper.AbstractConverter;
@@ -12,6 +13,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.lang.invoke.MethodHandles;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.TimeZone;
 
 import static nl.haarlem.translations.zdstozgw.translation.BetrokkeneType.MEDEWERKER;
 import static nl.haarlem.translations.zdstozgw.translation.BetrokkeneType.NATUURLIJK_PERSOON;
@@ -31,19 +35,23 @@ public class ModelMapperConfig {
 
         modelMapper.typeMap(ZgwStatus.class, ZdsHeeft.class)
                 .addMappings(mapper -> mapper.map(ZgwStatus::getStatustoelichting, ZdsHeeft::setToelichting))
-                .addMappings(mapper -> mapper.using(convertDateStringToStufDate()).map(ZgwStatus::getDatumStatusGezet, ZdsHeeft::setDatumStatusGezet));
+                .addMappings(mapper -> mapper.using(convertZgwDateToStufDate()).map(ZgwStatus::getDatumStatusGezet, ZdsHeeft::setDatumStatusGezet));
         
         modelMapper.typeMap(ZgwZaakInformatieObject.class, ZdsZakLa01LijstZaakdocumenten.Antwoord.Object.HeeftRelevant.class)
-                .addMappings(mapper -> mapper.using(convertDateStringToStufDate()).map(ZgwZaakInformatieObject::getRegistratiedatum, ZdsZakLa01LijstZaakdocumenten.Antwoord.Object.HeeftRelevant::setRegistratiedatum));
+                .addMappings(mapper -> mapper.using(convertZgwDateToStufDate()).map(ZgwZaakInformatieObject::getRegistratiedatum, ZdsZakLa01LijstZaakdocumenten.Antwoord.Object.HeeftRelevant::setRegistratiedatum));
 
         modelMapper.typeMap(ZdsHeeft.class, ZgwStatus.class)
-                .addMappings(mapper -> mapper.using(convertStufDateToDateTimeString()).map(ZdsHeeft::getDatumStatusGezet, ZgwStatus::setDatumStatusGezet));
+                .addMappings(mapper -> mapper.using(convertStufDateTimeToZgwDateTime()).map(ZdsHeeft::getDatumStatusGezet, ZgwStatus::setDatumStatusGezet));
         
         modelMapper.typeMap(ZdsZaak.Opschorting.class, ZgwOpschorting.class)
                 .addMappings(mapper -> mapper.using(convertStringToBoolean()).map(ZdsZaak.Opschorting::getIndicatie, ZgwOpschorting::setIndicatie));
 
         addZdsZaakToZgwZaakTypeMapping(modelMapper);
         addZgwZaakToZdsZaakTypeMapping(modelMapper);
+        
+        addZdsZaakToZgwZaakPutTypeMapping(modelMapper);
+        addZgwZaakPutToZdsZaakTypeMapping(modelMapper);        
+        
         addZgwBetrokkeneIdentificatieToNatuurlijkPersoonTypeMapping(modelMapper);
         addZgwEnkelvoudigInformatieObjectToZaakDocumentTypeMapping(modelMapper);
         addZgwEnkelvoudigInformatieObjectToZdsZaakDocumentDetailTypeMapping(modelMapper);        
@@ -58,23 +66,34 @@ public class ModelMapperConfig {
 
     private void addZgwBetrokkeneIdentificatieToNatuurlijkPersoonTypeMapping(ModelMapper modelMapper) {
         modelMapper.typeMap(ZgwBetrokkeneIdentificatie.class, ZdsNatuurlijkPersoon.class)
-                .addMappings(mapper -> mapper.using(convertDateStringToStufDate()).map(ZgwBetrokkeneIdentificatie::getGeboortedatum, ZdsNatuurlijkPersoon::setGeboortedatum))
+                .addMappings(mapper -> mapper.using(convertZgwDateToStufDate()).map(ZgwBetrokkeneIdentificatie::getGeboortedatum, ZdsNatuurlijkPersoon::setGeboortedatum))
                 .addMappings(mapper -> mapper.using(convertToLowerCase()).map(ZgwBetrokkeneIdentificatie::getGeslachtsaanduiding, ZdsNatuurlijkPersoon::setGeslachtsaanduiding))
                 .addMappings(mapper -> mapper.using(convertToLowerCase()).map(ZgwBetrokkeneIdentificatie::getInpBsn, ZdsNatuurlijkPersoon::setBsn));
     }
     
     private void addZgwZaakToZdsZaakTypeMapping(ModelMapper modelMapper) { 	
         modelMapper.typeMap(ZgwZaak.class, ZdsZaak.class)
-                .addMappings(mapper -> mapper.using(convertDateStringToStufDate()).map(ZgwZaakPut::getStartdatum, ZdsZaak::setStartdatum))
-                .addMappings(mapper -> mapper.using(convertDateStringToStufDate()).map(ZgwZaakPut::getRegistratiedatum, ZdsZaak::setRegistratiedatum))
-                .addMappings(mapper -> mapper.using(convertDateStringToStufDate()).map(ZgwZaakPut::getPublicatiedatum, ZdsZaak::setPublicatiedatum))
-                .addMappings(mapper -> mapper.using(convertDateStringToStufDate()).map(ZgwZaakPut::getEinddatumGepland, ZdsZaak::setEinddatumGepland))
-                .addMappings(mapper -> mapper.using(convertDateStringToStufDate()).map(ZgwZaakPut::getUiterlijkeEinddatumAfdoening, ZdsZaak::setUiterlijkeEinddatum))
-                .addMappings(mapper -> mapper.using(convertDateStringToStufDate()).map(ZgwZaak::getEinddatum, ZdsZaak::setEinddatum))
-                .addMappings(mapper -> mapper.using(convertDateStringToStufDate()).map(ZgwZaakPut::getArchiefactiedatum, ZdsZaak::setDatumVernietigingDossier))
+                .addMappings(mapper -> mapper.using(convertZgwDateToStufDate()).map(ZgwZaakPut::getStartdatum, ZdsZaak::setStartdatum))
+                .addMappings(mapper -> mapper.using(convertZgwDateToStufDate()).map(ZgwZaakPut::getRegistratiedatum, ZdsZaak::setRegistratiedatum))
+                .addMappings(mapper -> mapper.using(convertZgwDateToStufDate()).map(ZgwZaakPut::getPublicatiedatum, ZdsZaak::setPublicatiedatum))
+                .addMappings(mapper -> mapper.using(convertZgwDateToStufDate()).map(ZgwZaakPut::getEinddatumGepland, ZdsZaak::setEinddatumGepland))
+                .addMappings(mapper -> mapper.using(convertZgwDateToStufDate()).map(ZgwZaakPut::getUiterlijkeEinddatumAfdoening, ZdsZaak::setUiterlijkeEinddatum))
+                .addMappings(mapper -> mapper.using(convertZgwDateToStufDate()).map(ZgwZaak::getEinddatum, ZdsZaak::setEinddatum))
+                .addMappings(mapper -> mapper.using(convertZgwDateToStufDate()).map(ZgwZaakPut::getArchiefactiedatum, ZdsZaak::setDatumVernietigingDossier))
                 .addMappings(mapper -> mapper.using(convertZgwArchiefNomitieToZdsArchiefNominatie()).map(ZgwZaakPut::getArchiefnominatie, ZdsZaak::setArchiefnominatie));
     }
 
+    private void addZgwZaakPutToZdsZaakTypeMapping(ModelMapper modelMapper) { 	
+        modelMapper.typeMap(ZgwZaakPut.class, ZdsZaak.class)
+                .addMappings(mapper -> mapper.using(convertZgwDateToStufDate()).map(ZgwZaakPut::getStartdatum, ZdsZaak::setStartdatum))
+                .addMappings(mapper -> mapper.using(convertZgwDateToStufDate()).map(ZgwZaakPut::getRegistratiedatum, ZdsZaak::setRegistratiedatum))
+                .addMappings(mapper -> mapper.using(convertZgwDateToStufDate()).map(ZgwZaakPut::getPublicatiedatum, ZdsZaak::setPublicatiedatum))
+                .addMappings(mapper -> mapper.using(convertZgwDateToStufDate()).map(ZgwZaakPut::getEinddatumGepland, ZdsZaak::setEinddatumGepland))
+                .addMappings(mapper -> mapper.using(convertZgwDateToStufDate()).map(ZgwZaakPut::getUiterlijkeEinddatumAfdoening, ZdsZaak::setUiterlijkeEinddatum))
+                .addMappings(mapper -> mapper.using(convertZgwDateToStufDate()).map(ZgwZaakPut::getArchiefactiedatum, ZdsZaak::setDatumVernietigingDossier))
+                .addMappings(mapper -> mapper.using(convertZgwArchiefNomitieToZdsArchiefNominatie()).map(ZgwZaakPut::getArchiefnominatie, ZdsZaak::setArchiefnominatie));
+    }
+    
     private void addZgwZaakToGeefZaakDetailsTypeMappingTypeMapping(ModelMapper modelMapper) {
         //modelMapper.typeMap(ZgwZaak.class, ZdsZakLa01GeefZaakDetails.Antwoord.Object.class)
     	//	.includeBase(ZgwZaak.class, ZdsZaak.class);
@@ -83,28 +102,37 @@ public class ModelMapperConfig {
 
     private void addZgwEnkelvoudigInformatieObjectToZaakDocumentTypeMapping(ModelMapper modelMapper) {
         modelMapper.typeMap(ZgwEnkelvoudigInformatieObject.class, ZdsZaakDocument.class)
-                .addMappings(mapper -> mapper.using(convertDateStringToStufDate()).map(ZgwEnkelvoudigInformatieObject::getCreatiedatum, ZdsZaakDocument::setCreatiedatum))
-                .addMappings(mapper -> mapper.using(convertDateStringToStufDate()).map(ZgwEnkelvoudigInformatieObject::getOntvangstdatum, ZdsZaakDocument::setOntvangstdatum))
-                .addMappings(mapper -> mapper.using(convertDateStringToStufDate()).map(ZgwEnkelvoudigInformatieObject::getVerzenddatum, ZdsZaakDocument::setVezenddatum))
+                .addMappings(mapper -> mapper.using(convertZgwDateToStufDate()).map(ZgwEnkelvoudigInformatieObject::getCreatiedatum, ZdsZaakDocument::setCreatiedatum))
+                .addMappings(mapper -> mapper.using(convertZgwDateToStufDate()).map(ZgwEnkelvoudigInformatieObject::getOntvangstdatum, ZdsZaakDocument::setOntvangstdatum))
+                .addMappings(mapper -> mapper.using(convertZgwDateToStufDate()).map(ZgwEnkelvoudigInformatieObject::getVerzenddatum, ZdsZaakDocument::setVezenddatum))
                 .addMappings(mapper -> mapper.using(convertToUpperCase()).map(ZgwEnkelvoudigInformatieObject::getVertrouwelijkheidaanduiding, ZdsZaakDocument::setVertrouwelijkheidAanduiding))
                 .addMappings(mapper -> mapper.map(ZgwEnkelvoudigInformatieObject::getUrl, ZdsZaakDocument::setLink));
     }
 
     public void addZdsZaakToZgwZaakTypeMapping(ModelMapper modelMapper) {
     	modelMapper.typeMap(ZdsZaak.class, ZgwZaak.class)
-			.addMappings(mapper -> mapper.using(convertStufDateToDateString()).map(ZdsZaak::getStartdatum, ZgwZaakPut::setStartdatum))    	
-    		.addMappings(mapper -> mapper.using(convertStufDateToDateString()).map(ZdsZaak::getRegistratiedatum, ZgwZaakPut::setRegistratiedatum))            
-    		.addMappings(mapper -> mapper.using(convertStufDateToDateString()).map(ZdsZaak::getPublicatiedatum, ZgwZaakPut::setPublicatiedatum))
-    		.addMappings(mapper -> mapper.using(convertStufDateToDateString()).map(ZdsZaak::getEinddatumGepland, ZgwZaakPut::setEinddatumGepland))    		
-            .addMappings(mapper -> mapper.using(convertStufDateToDateString()).map(ZdsZaak::getUiterlijkeEinddatum, ZgwZaak::setUiterlijkeEinddatumAfdoening))
-            .addMappings(mapper -> mapper.using(convertStufDateToDateString()).map(ZdsZaak::getEinddatum, ZgwZaak::setEinddatum))
-            .addMappings(mapper -> mapper.using(convertStufDateToDateString()).map(ZdsZaak::getDatumVernietigingDossier, ZgwZaak::setArchiefactiedatum))
+			.addMappings(mapper -> mapper.using(convertStufDateToZgwDate()).map(ZdsZaak::getStartdatum, ZgwZaakPut::setStartdatum))    	
+    		.addMappings(mapper -> mapper.using(convertStufDateToZgwDate()).map(ZdsZaak::getRegistratiedatum, ZgwZaakPut::setRegistratiedatum))            
+    		.addMappings(mapper -> mapper.using(convertStufDateToZgwDate()).map(ZdsZaak::getPublicatiedatum, ZgwZaakPut::setPublicatiedatum))
+    		.addMappings(mapper -> mapper.using(convertStufDateToZgwDate()).map(ZdsZaak::getEinddatumGepland, ZgwZaakPut::setEinddatumGepland))    		
+            .addMappings(mapper -> mapper.using(convertStufDateToZgwDate()).map(ZdsZaak::getUiterlijkeEinddatum, ZgwZaak::setUiterlijkeEinddatumAfdoening))
+            .addMappings(mapper -> mapper.using(convertStufDateToZgwDate()).map(ZdsZaak::getEinddatum, ZgwZaak::setEinddatum))
+            .addMappings(mapper -> mapper.using(convertStufDateToZgwDate()).map(ZdsZaak::getDatumVernietigingDossier, ZgwZaak::setArchiefactiedatum))
     		.addMappings(mapper -> mapper.using(getZGWArchiefNominatie()).map(ZdsZaak::getArchiefnominatie, ZgwZaakPut::setArchiefnominatie));
     }
 
+    public void addZdsZaakToZgwZaakPutTypeMapping(ModelMapper modelMapper) {
+    	modelMapper.typeMap(ZdsZaak.class, ZgwZaakPut.class)
+			.addMappings(mapper -> mapper.using(convertStufDateToZgwDate()).map(ZdsZaak::getStartdatum, ZgwZaakPut::setStartdatum))    	
+    		.addMappings(mapper -> mapper.using(convertStufDateToZgwDate()).map(ZdsZaak::getRegistratiedatum, ZgwZaakPut::setRegistratiedatum))            
+    		.addMappings(mapper -> mapper.using(convertStufDateToZgwDate()).map(ZdsZaak::getPublicatiedatum, ZgwZaakPut::setPublicatiedatum))
+    		.addMappings(mapper -> mapper.using(convertStufDateToZgwDate()).map(ZdsZaak::getEinddatumGepland, ZgwZaakPut::setEinddatumGepland))    		
+    		.addMappings(mapper -> mapper.using(getZGWArchiefNominatie()).map(ZdsZaak::getArchiefnominatie, ZgwZaakPut::setArchiefnominatie));
+    }
+    
     public void addZdsNatuurlijkPersoonToZgwBetrokkeneIdentificatieTypeMapping(ModelMapper modelMapper) {
         modelMapper.typeMap(ZdsNatuurlijkPersoon.class, ZgwBetrokkeneIdentificatie.class)
-                .addMappings(mapper -> mapper.using(convertStufDateToDateString()).map(ZdsNatuurlijkPersoon::getGeboortedatum, ZgwBetrokkeneIdentificatie::setGeboortedatum))
+                .addMappings(mapper -> mapper.using(convertStufDateToZgwDate()).map(ZdsNatuurlijkPersoon::getGeboortedatum, ZgwBetrokkeneIdentificatie::setGeboortedatum))
                 .addMappings(mapper -> mapper.map(ZdsNatuurlijkPersoon::getBsn, ZgwBetrokkeneIdentificatie::setInpBsn))
                 .addMappings(mapper -> mapper.using(convertToLowerCase()).map(ZdsNatuurlijkPersoon::getGeslachtsaanduiding, ZgwBetrokkeneIdentificatie::setGeslachtsaanduiding));
     }
@@ -116,59 +144,67 @@ public class ModelMapperConfig {
 
     public void addZdsZaakDocumentToZgwEnkelvoudigInformatieObjectTypeMapping(ModelMapper modelMapper) {
     	modelMapper.typeMap(ZdsZaakDocument.class, ZgwEnkelvoudigInformatieObject.class)
-                .addMappings(mapper -> mapper.using(convertStufDateToDateString()).map(ZdsZaakDocument::getCreatiedatum, ZgwEnkelvoudigInformatieObject::setCreatiedatum))
+                .addMappings(mapper -> mapper.using(convertStufDateToZgwDate()).map(ZdsZaakDocument::getCreatiedatum, ZgwEnkelvoudigInformatieObject::setCreatiedatum))
                 .addMappings(mapper -> mapper.using(convertToLowerCase()).map(ZdsZaakDocument::getVertrouwelijkheidAanduiding, ZgwEnkelvoudigInformatieObject::setVertrouwelijkheidaanduiding))
                 .addMapping(src -> src.getInhoud().getValue(), ZgwEnkelvoudigInformatieObject::setInhoud)
                 .addMapping(src -> src.getInhoud().getBestandsnaam(), ZgwEnkelvoudigInformatieObject::setBestandsnaam);
     }
 
-    private AbstractConverter<String, String> convertStufDateToDateString() {
+    private AbstractConverter<String, String> convertStufDateToZgwDate() {
         return new AbstractConverter<>() {
         	
 			@Override
             protected String convert(String stufDate) {
-                var year = stufDate.substring(0, 4);
-                var month = stufDate.substring(4, 6);
-                var day = stufDate.substring(6, 8);
-                var result = year + "-" + month + "-" + day;
-            	log.debug("convertStufDateToDateString: " + stufDate + " --> " + result);
-                return result;
+				if(stufDate == null) {
+					return null;
+				}
+        		var zdsDateFormatter = new SimpleDateFormat("yyyyMMdd");
+        		zdsDateFormatter.setTimeZone(TimeZone.getTimeZone("Europe/Amsterdam"));
+        		var zgwDateFormatter = new SimpleDateFormat("yyyy-MM-dd");
+        		zgwDateFormatter.setTimeZone(TimeZone.getTimeZone("UTC"));
+        		try {
+        			var date = zdsDateFormatter.parse(stufDate);
+        			var zgwDate = zgwDateFormatter.format(date); 
+        			log.debug("convertStufDateToZgwDate: " + stufDate + " --> " + zgwDate);
+        			return zgwDate;
+
+        		} catch (ParseException e) {
+        			throw new ConverterException("ongeldige stuf-datetime: '" + stufDate + "'");
+        		}				
             }
         };
     }
 
-    private AbstractConverter<String, String> convertStufDateToDateTimeString() {
+    private AbstractConverter<String, String> convertStufDateTimeToZgwDateTime() {
         return new AbstractConverter<>() {
         	
             @Override
-            protected String convert(String stufDate) {
-                var year = stufDate.substring(0, 4);
-                var month = stufDate.substring(4, 6);
-                var day = stufDate.substring(6, 8);
-                var hours = stufDate.substring(8, 10);
-                var minutes = stufDate.substring(10, 12);
-                var seconds = stufDate.substring(12, 14);
-                var milliseconds = stufDate.substring(14);
-                var result = year + "-" + month + "-" + day + "T" + hours + ":" + minutes + ":" + seconds + "." + milliseconds + "Z";
-            	log.debug("convertStufDateToDateTimeString: " + stufDate + " --> " + result);
-                return result;                
+            protected String convert(String stufDateTime) {
+            	if(stufDateTime == null) {
+            		return null;
+            	}
+        		if(stufDateTime.length() == 8) {
+        			// 
+        			stufDateTime += "000000000";
+        		}        		
+        		var zdsDateFormatter = new SimpleDateFormat("yyyyMMddHHmmssSSS");
+        		zdsDateFormatter.setTimeZone(TimeZone.getTimeZone("Europe/Amsterdam"));
+        		var zgwDateFormatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+        		zgwDateFormatter.setTimeZone(TimeZone.getTimeZone("UTC"));
+        		try {
+        			var datetime = zdsDateFormatter.parse(stufDateTime);
+        			var zgwDateTime = zgwDateFormatter.format(datetime); 
+        			log.debug("convertStufDateTimeToZgwDateTime: " + stufDateTime + " --> " + zgwDateTime);
+        			return zgwDateTime;
+
+        		} catch (ParseException e) {
+        			throw new ConverterException("ongeldige stuf-datetime: '" + stufDateTime + "'");
+        		}
             }
         };
     }
 
-    private AbstractConverter<String, String> getZGWArchiefNominatie() {
-        return new AbstractConverter<>() {
-        	
-            @Override
-            protected String convert(String archiefNominatie) {
-                var result = archiefNominatie.toUpperCase().equals("J") ? "vernietigen" : "blijvend_bewaren";
-            	log.debug("getZGWArchiefNominatie: " + archiefNominatie + " --> " + result);
-                return result;                
-            }
-        };
-    }
-
-    private AbstractConverter<String, String> convertDateStringToStufDate() {
+    private AbstractConverter<String, String> convertZgwDateToStufDate() {
         return new AbstractConverter<>() {
         	
             @Override
@@ -176,12 +212,34 @@ public class ModelMapperConfig {
                 if (zgwDate == null) {
                     return null;
                 }
-                var year = zgwDate.substring(0, 4);
-                var month = zgwDate.substring(5, 7);
-                var day = zgwDate.substring(8, 10);
-                var result = year + month + day;
-            	log.debug("convertDateStringToStufDate: " + zgwDate + " --> " + result);
-                return result;                   
+        		var zgwDateFormatter = new SimpleDateFormat("yyyy-MM-dd");
+        		zgwDateFormatter.setTimeZone(TimeZone.getTimeZone("UTC"));
+        		var zdsDateFormatter = new SimpleDateFormat("yyyyMMdd");
+        		zdsDateFormatter.setTimeZone(TimeZone.getTimeZone("Europe/Amsterdam"));
+        		try {
+        			var date = zgwDateFormatter.parse(zgwDate);
+        			var stufDate = zdsDateFormatter.format(date); 
+        			log.debug("convertZgwDateToStufDate: " + zgwDate + " --> " + stufDate);
+        			return zgwDate;
+
+        		} catch (ParseException e) {
+        			throw new ConverterException("ongeldige stuf-datetime: '" + zgwDate + "'");
+        		}				
+                
+                
+            }
+        };
+    }
+
+    
+       private AbstractConverter<String, String> getZGWArchiefNominatie() {
+        return new AbstractConverter<>() {
+        	
+            @Override
+            protected String convert(String archiefNominatie) {
+                var result = archiefNominatie.toUpperCase().equals("J") ? "vernietigen" : "blijvend_bewaren";
+            	log.debug("getZGWArchiefNominatie: " + archiefNominatie + " --> " + result);
+                return result;                
             }
         };
     }

@@ -11,19 +11,17 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.server.ResponseStatusException;
 
 public class GeefZaakdocumentLezenReplicator extends GeefZaakdocumentLezenTranslator {
-    private Replicator replicator;	
 
-    public GeefZaakdocumentLezenReplicator(RequestHandlerContext context, Translation translation, ZaakService zaakService, ZdsStuurgegevens stuurgegevens) {
+	public GeefZaakdocumentLezenReplicator(RequestHandlerContext context, Translation translation, ZaakService zaakService, ZdsStuurgegevens stuurgegevens) {
         super(context, translation, zaakService);
-        replicator = new Replicator(zaakService, stuurgegevens);
     }
 
 	@Override
 	public ResponseEntity<?> execute() throws ResponseStatusException {
 		var zdsEdcLv01 = (ZdsEdcLv01) this.getZdsDocument();
 		// replicate the zaak
-		replicator.replicateZaak(zdsEdcLv01.zdsScope.object.isRelevantVoor.gerelateerde.identificatie);
-		
+        var replicator = new Replicator(this.getZaakService(), zdsEdcLv01.stuurgegevens);		
+		replicator.replicateZaak(zdsEdcLv01.zdsScope.object.isRelevantVoor.gerelateerde.identificatie);		
 		// send to legacy system
 		var legacyresponse = Proxy.Proxy(this.getTranslation().getLegacyservice(), this.getContext().getSoapAction(), getContext().getRequestBody());
 		// do the translation

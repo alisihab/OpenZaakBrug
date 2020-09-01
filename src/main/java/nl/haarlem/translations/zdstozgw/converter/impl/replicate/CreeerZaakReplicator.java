@@ -10,8 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.server.ResponseStatusException;
 
 public class CreeerZaakReplicator extends CreeerZaakTranslator {
-    private Replicator replicator;	
-
     public CreeerZaakReplicator(RequestHandlerContext context, Translation translation, ZaakService zaakService) {
         super(context, translation, zaakService);
     }
@@ -20,8 +18,6 @@ public class CreeerZaakReplicator extends CreeerZaakTranslator {
 	public ResponseEntity<?> execute() throws ResponseStatusException {
 		var zdsZakLk01 = (ZdsZakLk01) this.getZdsDocument();
 		// is new, no need to replicate
-		// replicator.replicateZaak(zdsZakLk01.objects.get(0).identificatie);
-		
 		// send to legacy system
 		var legacyresponse = Proxy.Proxy(this.getTranslation().getLegacyservice(), this.getContext().getSoapAction(), getContext().getRequestBody());
 		// do the translation
