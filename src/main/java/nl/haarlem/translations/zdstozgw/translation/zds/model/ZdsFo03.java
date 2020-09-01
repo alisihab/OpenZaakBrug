@@ -14,7 +14,7 @@ import static nl.haarlem.translations.zdstozgw.translation.zds.model.namespace.N
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ZdsFo03 extends ZdsStufDocument {
 
-    @XmlElement(namespace = STUF)
+	@XmlElement(namespace = STUF)
     public Body body;
 
     public ZdsFo03() {
@@ -37,10 +37,8 @@ public class ZdsFo03 extends ZdsStufDocument {
         public String omschrijving;
         @XmlElement(namespace = STUF)
         public String details;
-        @XmlElement(namespace = STUF)
-		public String entiteittype;
         @XmlElement(namespace = STUF)        
-		public String detailsXML;
+		public ZdsDetailsXML detailsXML;
 
         public Body() {
         }

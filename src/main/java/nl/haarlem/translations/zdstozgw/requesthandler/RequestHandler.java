@@ -4,7 +4,9 @@ import lombok.Data;
 import nl.haarlem.translations.zdstozgw.config.ConfigService;
 import nl.haarlem.translations.zdstozgw.converter.Converter;
 import nl.haarlem.translations.zdstozgw.converter.ConverterException;
+import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsDetailsXML;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsFo03;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -39,8 +41,12 @@ public abstract class RequestHandler {
         https://www.gemmaonline.nl/images/gemmaonline/4/4f/Stuf0301_-_ONV0347_%28zonder_renvooi%29.pdf
         fo03.body.code = "StUF058";
         fo03.body.plek = "server";
-        fo03.body.omschrijving = ex.toString();
-        fo03.body.entiteittype = "";
+        var omschrijving = ex.toString();
+        // max 200 chars
+        if(omschrijving.length() > 200) {
+        	omschrijving = omschrijving.substring(omschrijving.length() - 200);
+        }
+        fo03.body.omschrijving = omschrijving;
         if (ex instanceof ConverterException) {
         	var ce = (ConverterException) ex;
         	fo03.body.details = ce.details;
@@ -48,7 +54,9 @@ public abstract class RequestHandler {
         else {
         	fo03.body.details = stacktrace;
         }
-        fo03.body.detailsXML = converter.getContext().getRequestBody();
+        fo03.body.detailsXML = new ZdsDetailsXML();
+        // TODO: put the xml in DetailsXml, without escaping
+        fo03.body.detailsXML.todo = converter.getContext().getRequestBody();
         return fo03;
 	}    
     
