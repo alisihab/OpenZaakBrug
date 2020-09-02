@@ -132,16 +132,17 @@ public class ZaakService {
 	  	ZgwZaak zgwZaak = zgwClient.getZaakByIdentificatie(zaakidentificatie);
 
 	  	var relevanteDocumenten = new ArrayList<HeeftRelevant>();
-        zgwClient.getZaakInformatieObjectenByZaak(zgwZaak.url).forEach(zgwZaakInformatieObject -> {
+	  	for(ZgwZaakInformatieObject zgwZaakInformatieObject : zgwClient.getZaakInformatieObjectenByZaak(zgwZaak.url)) {
             ZgwEnkelvoudigInformatieObject zgwEnkelvoudigInformatieObject = zgwClient.getZaakDocument(zgwZaakInformatieObject.informatieobject);
-            ZdsZaakDocument zdsZaakDocument = null;
-            if (zgwEnkelvoudigInformatieObject != null) {
-                zdsZaakDocument = modelMapper.map(zgwEnkelvoudigInformatieObject, ZdsZaakDocument.class);
+            if(zgwEnkelvoudigInformatieObject == null) {
+            	throw new ConverterException("could not get the zaakdocument: " + zgwZaakInformatieObject.informatieobject + " for zaak:" + zaakidentificatie );
             }
-            relevanteDocumenten.add(modelMapper.map(zgwZaakInformatieObject, ZdsZakLa01LijstZaakdocumenten.Antwoord.Object.HeeftRelevant.class)
-                    .setGerelateerde(zdsZaakDocument));
-        });
-
+            ZdsZaakDocument zdsZaakDocument = modelMapper.map(zgwEnkelvoudigInformatieObject, ZdsZaakDocument.class);
+            ZdsZakLa01LijstZaakdocumenten.Antwoord.Object.HeeftRelevant zdsGerelateerde = modelMapper.map(zgwZaakInformatieObject, ZdsZakLa01LijstZaakdocumenten.Antwoord.Object.HeeftRelevant.class);
+//            zdsZaakDocument.setGerelateerde(zdsGerelateerde);
+//            relevanteDocumenten.add(zdsZaakDocument);
+            throw new ConverterException("add the setgeralateerde");
+	  	}
         return relevanteDocumenten;
     }
 

@@ -9,12 +9,14 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.lang.invoke.MethodHandles;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.TimeZone;
 
 import static nl.haarlem.translations.zdstozgw.translation.BetrokkeneType.MEDEWERKER;
@@ -24,6 +26,9 @@ import static nl.haarlem.translations.zdstozgw.translation.BetrokkeneType.NATUUR
 public class ModelMapperConfig {
 
 	private static final Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+	
+    @Value("${nl.haarlem.translations.zdstozgw.timeoffset.hour}")
+    private int timeoffset;	
 	
     @Bean
     public ModelMapper modelMapper() {
@@ -157,15 +162,25 @@ public class ModelMapperConfig {
             protected String convert(String stufDate) {
 				if(stufDate == null) {
 					return null;
-				}
+				}				
         		var zdsDateFormatter = new SimpleDateFormat("yyyyMMdd");
         		zdsDateFormatter.setTimeZone(TimeZone.getTimeZone("Europe/Amsterdam"));
         		var zgwDateFormatter = new SimpleDateFormat("yyyy-MM-dd");
-        		zgwDateFormatter.setTimeZone(TimeZone.getTimeZone("UTC"));
+        		zgwDateFormatter.setTimeZone(TimeZone.getTimeZone("GMT"));
         		try {
-        			var date = zdsDateFormatter.parse(stufDate);
+        			if(stufDate.contains("-")) {
+        				throw new ConverterException("stuf date: " + stufDate + " may not contain the character '-'");
+        			}
+        			var date = zdsDateFormatter.parse(stufDate);        			
+        			//log.info("date:" + date);
+        			if(timeoffset != 0) {
+        				Calendar cal = Calendar.getInstance();
+        				cal.setTime(date);
+        				cal.add(Calendar.HOUR_OF_DAY, timeoffset); 
+        				date = cal.getTime(); 
+        			}
         			var zgwDate = zgwDateFormatter.format(date); 
-        			log.debug("convertStufDateToZgwDate: " + stufDate + " --> " + zgwDate);
+        			log.info("convertStufDateToZgwDate: " + stufDate + " (amsterdam) --> " + zgwDate + "(gmt) with offset hours:" + timeoffset + "(date:" + date + ")");
         			return zgwDate;
 
         		} catch (ParseException e) {
@@ -190,13 +205,22 @@ public class ModelMapperConfig {
         		var zdsDateFormatter = new SimpleDateFormat("yyyyMMddHHmmssSSS");
         		zdsDateFormatter.setTimeZone(TimeZone.getTimeZone("Europe/Amsterdam"));
         		var zgwDateFormatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-        		zgwDateFormatter.setTimeZone(TimeZone.getTimeZone("UTC"));
+        		zgwDateFormatter.setTimeZone(TimeZone.getTimeZone("GMT"));
         		try {
-        			var datetime = zdsDateFormatter.parse(stufDateTime);
-        			var zgwDateTime = zgwDateFormatter.format(datetime); 
-        			log.debug("convertStufDateTimeToZgwDateTime: " + stufDateTime + " --> " + zgwDateTime);
-        			return zgwDateTime;
-
+        			if(stufDateTime.contains("-")) {
+        				throw new ConverterException("stuf date: " + stufDateTime + " may not contain the character '-'");
+        			}
+        			var date = zdsDateFormatter.parse(stufDateTime);
+        			//log.info("date:" + date);
+        			if(timeoffset != 0) {
+        				Calendar cal = Calendar.getInstance();
+        				cal.setTime(date);
+        				cal.add(Calendar.HOUR_OF_DAY, timeoffset); 
+        				date = cal.getTime(); 
+        			}
+        			var zgwDate = zgwDateFormatter.format(date); 
+        			log.info("convertStufDateTimeToZgwDateTime: " + stufDateTime + " (amsterdam) --> " + zgwDate + "(gmt) with offset hours:" + timeoffset + "(date:" + date + ")");
+        			return zgwDate;
         		} catch (ParseException e) {
         			throw new ConverterException("ongeldige stuf-datetime: '" + stufDateTime + "'");
         		}
@@ -213,15 +237,24 @@ public class ModelMapperConfig {
                     return null;
                 }
         		var zgwDateFormatter = new SimpleDateFormat("yyyy-MM-dd");
-        		zgwDateFormatter.setTimeZone(TimeZone.getTimeZone("UTC"));
+        		zgwDateFormatter.setTimeZone(TimeZone.getTimeZone("GMT"));
         		var zdsDateFormatter = new SimpleDateFormat("yyyyMMdd");
         		zdsDateFormatter.setTimeZone(TimeZone.getTimeZone("Europe/Amsterdam"));
         		try {
-        			var date = zgwDateFormatter.parse(zgwDate);
-        			var stufDate = zdsDateFormatter.format(date); 
-        			log.debug("convertZgwDateToStufDate: " + zgwDate + " --> " + stufDate);
-        			return zgwDate;
-
+        			if(!zgwDate.contains("-")) {
+        				throw new ConverterException("zgw date: " + zgwDate + " must contain the character '-'");
+        			}
+        			var date = zgwDateFormatter.parse(zgwDate);        			
+        			//log.info("date:" + date);
+        			if(timeoffset != 0) {
+        				Calendar cal = Calendar.getInstance();
+        				cal.setTime(date);
+        				cal.add(Calendar.HOUR_OF_DAY, -timeoffset); 
+        				date = cal.getTime(); 
+        			}
+        			var stufDate = zgwDateFormatter.format(date); 
+        			log.debug("convertZgwDateToStufDate: " + zgwDate + " (gmt) --> " + stufDate + "(amsterdam) with offset hours: (" + timeoffset + "  * -1 )  (date:" + date + ")");
+        			return stufDate;
         		} catch (ParseException e) {
         			throw new ConverterException("ongeldige stuf-datetime: '" + zgwDate + "'");
         		}				

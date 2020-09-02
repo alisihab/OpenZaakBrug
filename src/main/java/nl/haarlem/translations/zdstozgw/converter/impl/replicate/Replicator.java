@@ -47,7 +47,7 @@ public class Replicator {
 		var zdsRequest = new ZdsZakLv01();
 		zdsRequest.stuurgegevens = stuurgegevens;
 		zdsRequest.parameters = new ZdsParameters();		
-		zdsRequest.parameters.setSortering("0");
+		//zdsRequest.parameters.setSortering("0");
 		zdsRequest.parameters.setIndicatorVervolgvraag("false");
 		zdsRequest.gelijk = new ZdsZaak();
 		zdsRequest.sope = new ZdsScope();
