@@ -17,5 +17,5 @@ public class ZdsEdcLk01 extends ZdsZknDocument {
 
     @XmlElement(namespace = ZKN, name = "object")
     //public List<ZdsEdcLk01.Object> objects;
-    public List<ZdsZaakDocument> objects;
+    public List<ZdsZaakDocumentRelevant> objects;
 }

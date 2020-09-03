@@ -137,11 +137,10 @@ public class ZaakService {
             if(zgwEnkelvoudigInformatieObject == null) {
             	throw new ConverterException("could not get the zaakdocument: " + zgwZaakInformatieObject.informatieobject + " for zaak:" + zaakidentificatie );
             }
-            ZdsZaakDocument zdsZaakDocument = modelMapper.map(zgwEnkelvoudigInformatieObject, ZdsZaakDocument.class);
-            ZdsZakLa01LijstZaakdocumenten.Antwoord.Object.HeeftRelevant zdsGerelateerde = modelMapper.map(zgwZaakInformatieObject, ZdsZakLa01LijstZaakdocumenten.Antwoord.Object.HeeftRelevant.class);
-//            zdsZaakDocument.setGerelateerde(zdsGerelateerde);
-//            relevanteDocumenten.add(zdsZaakDocument);
-            throw new ConverterException("add the setgeralateerde");
+            ZdsZaakDocument zdsZaakDocument = modelMapper.map(zgwEnkelvoudigInformatieObject, ZdsZaakDocument.class);            
+            ZdsZakLa01LijstZaakdocumenten.Antwoord.Object.HeeftRelevant heeftRelevant = modelMapper.map(zgwZaakInformatieObject, ZdsZakLa01LijstZaakdocumenten.Antwoord.Object.HeeftRelevant.class);
+            heeftRelevant.gerelateerde = zdsZaakDocument;
+            relevanteDocumenten.add(heeftRelevant);
 	  	}
         return relevanteDocumenten;
     }
@@ -391,14 +390,7 @@ public class ZaakService {
         if(rol == null) {
         	throw new ConverterException("Rol: " + typeRolOmschrijving + " niet gevonden bij zaak: " + zgwZaak.identificatie);
         }
-        zgwClient.deleteRol(roltype.uuid);
-        
-//        ZgwRol zgwRol = zgwClient.getRolByZaakUrlAndOmschrijvingGeneriek(zgwZaak.url, omschrijvingGeneriek);
-//        if (zgwRol == null) {
-//            log.warn("Attempted to delete rol " + zgwRol.roltoelichting + " from case " + zgwZaak.getUrl() + ", but rol hasn't been added to case.");
-//            return;
-//        }
-//        zgwClient.deleteRol(zgwRol.uuid);
+        zgwClient.deleteRol(rol.uuid);
     }
 
     public String getRolOmschrijvingGeneriekByRolName(String rolName) {

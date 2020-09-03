@@ -115,10 +115,10 @@ public class ZGWClient {
 		} catch (HttpStatusCodeException hsce) {
 			var response = hsce.getResponseBodyAsString().replace("{", "{\n").replace("\",", "\",\n").replace("\"}", "\"\n}");
 			var details = "--------------DELETE:\n" + url + "\n--------------RESPONSE:\n" + response; 
-			log.warn("GET naar OpenZaak: " + url + " gaf foutmelding:\n" + details, hsce);
+			log.warn("DELETE naar OpenZaak: " + url + " gaf foutmelding:\n" + details, hsce);
 			throw new ConverterException("DELETE naar OpenZaak: " + url + " gaf foutmelding:" + hsce.toString(), details, hsce);
 		} catch (org.springframework.web.client.ResourceAccessException rae) {
-			log.warn("GET naar OpenZaak: " + url + " niet geslaagd", rae);
+			log.warn("DELETE naar OpenZaak: " + url + " niet geslaagd", rae);
 			throw new ConverterException("DELETE naar OpenZaak: " + url + " niet geslaagd", rae);
 		}        
     }
@@ -357,8 +357,11 @@ public class ZGWClient {
         this.put(baseUrl + endpointZaak + "/" + zaakUuid, json);
     }
 
-    public void deleteRol(String rolUuid) {
-        delete(baseUrl + endpointRol + "/" + rolUuid);
+    public void deleteRol(String uuid) {
+    	if(uuid == null) {
+    		throw new ConverterException("rol uuid may not be null");
+    	}
+        delete(baseUrl + endpointRol + "/" + uuid);
     }
 
     public List<ZgwZaakInformatieObject> getZaakInformatieObjectenByZaak(String zaakUrl) {

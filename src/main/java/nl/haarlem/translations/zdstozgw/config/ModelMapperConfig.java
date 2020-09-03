@@ -59,9 +59,10 @@ public class ModelMapperConfig {
         
         addZgwBetrokkeneIdentificatieToNatuurlijkPersoonTypeMapping(modelMapper);
         addZgwEnkelvoudigInformatieObjectToZaakDocumentTypeMapping(modelMapper);
-        addZgwEnkelvoudigInformatieObjectToZdsZaakDocumentDetailTypeMapping(modelMapper);        
+        addZgwEnkelvoudigInformatieObjectToZdsZaakDocumentRelevantTypeMapping(modelMapper);        
         addZdsNatuurlijkPersoonToZgwBetrokkeneIdentificatieTypeMapping(modelMapper);
         addZdsZaakDocumentToZgwEnkelvoudigInformatieObjectTypeMapping(modelMapper);
+        addZdsZaakDocumentRelevantToZgwEnkelvoudigInformatieObjectTypeMapping(modelMapper);
         addZgwZaakToGeefZaakDetailsTypeMappingTypeMapping(modelMapper);
 
         modelMapper.addConverter(convertZgwRolToZdsRol());
@@ -106,13 +107,24 @@ public class ModelMapperConfig {
     }
 
     private void addZgwEnkelvoudigInformatieObjectToZaakDocumentTypeMapping(ModelMapper modelMapper) {
-        modelMapper.typeMap(ZgwEnkelvoudigInformatieObject.class, ZdsZaakDocument.class)
+        modelMapper.typeMap(ZgwEnkelvoudigInformatieObject.class, ZdsZaakDocument.class)   
                 .addMappings(mapper -> mapper.using(convertZgwDateToStufDate()).map(ZgwEnkelvoudigInformatieObject::getCreatiedatum, ZdsZaakDocument::setCreatiedatum))
                 .addMappings(mapper -> mapper.using(convertZgwDateToStufDate()).map(ZgwEnkelvoudigInformatieObject::getOntvangstdatum, ZdsZaakDocument::setOntvangstdatum))
-                .addMappings(mapper -> mapper.using(convertZgwDateToStufDate()).map(ZgwEnkelvoudigInformatieObject::getVerzenddatum, ZdsZaakDocument::setVezenddatum))
-                .addMappings(mapper -> mapper.using(convertToUpperCase()).map(ZgwEnkelvoudigInformatieObject::getVertrouwelijkheidaanduiding, ZdsZaakDocument::setVertrouwelijkheidAanduiding))
+                .addMappings(mapper -> mapper.using(convertZgwDateToStufDate()).map(ZgwEnkelvoudigInformatieObject::getVerzenddatum, ZdsZaakDocument::setVerzenddatum))
+                .addMappings(mapper -> mapper.using(convertToUpperCase()).map(ZgwEnkelvoudigInformatieObject::getVertrouwelijkheidaanduiding, ZdsZaakDocument::setVertrouwelijkAanduiding))
                 .addMappings(mapper -> mapper.map(ZgwEnkelvoudigInformatieObject::getUrl, ZdsZaakDocument::setLink));
     }
+
+    public void addZgwEnkelvoudigInformatieObjectToZdsZaakDocumentRelevantTypeMapping(ModelMapper modelMapper) {
+        modelMapper.typeMap(ZgwEnkelvoudigInformatieObject.class, ZdsZaakDocumentRelevant.class)
+                .includeBase(ZgwEnkelvoudigInformatieObject.class, ZdsZaakDocument.class)                
+                .addMappings(mapper -> mapper.using(convertZgwDateToStufDate()).map(ZgwEnkelvoudigInformatieObject::getCreatiedatum, ZdsZaakDocument::setCreatiedatum))
+                .addMappings(mapper -> mapper.using(convertZgwDateToStufDate()).map(ZgwEnkelvoudigInformatieObject::getOntvangstdatum, ZdsZaakDocument::setOntvangstdatum))
+                .addMappings(mapper -> mapper.using(convertZgwDateToStufDate()).map(ZgwEnkelvoudigInformatieObject::getVerzenddatum, ZdsZaakDocument::setVerzenddatum))
+                .addMappings(mapper -> mapper.using(convertToUpperCase()).map(ZgwEnkelvoudigInformatieObject::getVertrouwelijkheidaanduiding, ZdsZaakDocument::setVertrouwelijkAanduiding))
+                .addMappings(mapper -> mapper.map(ZgwEnkelvoudigInformatieObject::getUrl, ZdsZaakDocument::setLink));
+    }
+    
 
     public void addZdsZaakToZgwZaakTypeMapping(ModelMapper modelMapper) {
     	modelMapper.typeMap(ZdsZaak.class, ZgwZaak.class)
@@ -142,19 +154,30 @@ public class ModelMapperConfig {
                 .addMappings(mapper -> mapper.using(convertToLowerCase()).map(ZdsNatuurlijkPersoon::getGeslachtsaanduiding, ZgwBetrokkeneIdentificatie::setGeslachtsaanduiding));
     }
 
-    public void addZgwEnkelvoudigInformatieObjectToZdsZaakDocumentDetailTypeMapping(ModelMapper modelMapper) {
-        modelMapper.typeMap(ZgwEnkelvoudigInformatieObject.class, ZdsZaakDocument.class)
-                .includeBase(ZgwEnkelvoudigInformatieObject.class, ZdsZaakDocument.class);
-    }
-
     public void addZdsZaakDocumentToZgwEnkelvoudigInformatieObjectTypeMapping(ModelMapper modelMapper) {
     	modelMapper.typeMap(ZdsZaakDocument.class, ZgwEnkelvoudigInformatieObject.class)
+   
+// TODO: get/setCreatiedatum dingen
+   	
                 .addMappings(mapper -> mapper.using(convertStufDateToZgwDate()).map(ZdsZaakDocument::getCreatiedatum, ZgwEnkelvoudigInformatieObject::setCreatiedatum))
-                .addMappings(mapper -> mapper.using(convertToLowerCase()).map(ZdsZaakDocument::getVertrouwelijkheidAanduiding, ZgwEnkelvoudigInformatieObject::setVertrouwelijkheidaanduiding))
+                .addMappings(mapper -> mapper.using(convertToLowerCase()).map(ZdsZaakDocument::getVertrouwelijkAanduiding, ZgwEnkelvoudigInformatieObject::setVertrouwelijkheidaanduiding))
                 .addMapping(src -> src.getInhoud().getValue(), ZgwEnkelvoudigInformatieObject::setInhoud)
                 .addMapping(src -> src.getInhoud().getBestandsnaam(), ZgwEnkelvoudigInformatieObject::setBestandsnaam);
     }
 
+    public void addZdsZaakDocumentRelevantToZgwEnkelvoudigInformatieObjectTypeMapping(ModelMapper modelMapper) {
+        modelMapper.typeMap(ZdsZaakDocumentRelevant.class, ZgwEnkelvoudigInformatieObject.class)
+        .includeBase(ZdsZaakDocument.class, ZgwEnkelvoudigInformatieObject.class)
+        
+// TODO: get/setCreatiedatum dingen
+
+	        .addMappings(mapper -> mapper.using(convertStufDateToZgwDate()).map(ZdsZaakDocument::getCreatiedatum, ZgwEnkelvoudigInformatieObject::setCreatiedatum))
+	        .addMappings(mapper -> mapper.using(convertToLowerCase()).map(ZdsZaakDocument::getVertrouwelijkAanduiding, ZgwEnkelvoudigInformatieObject::setVertrouwelijkheidaanduiding))
+	        .addMapping(src -> src.getInhoud().getValue(), ZgwEnkelvoudigInformatieObject::setInhoud)
+	        .addMapping(src -> src.getInhoud().getBestandsnaam(), ZgwEnkelvoudigInformatieObject::setBestandsnaam);        
+    }
+    
+    
     private AbstractConverter<String, String> convertStufDateToZgwDate() {
         return new AbstractConverter<>() {
         	

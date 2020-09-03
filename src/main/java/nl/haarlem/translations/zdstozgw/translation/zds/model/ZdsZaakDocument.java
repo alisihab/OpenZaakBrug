@@ -36,17 +36,14 @@ public class ZdsZaakDocument extends ZdsZaakDocumentIdentificatie {
     public String status;
 
     @XmlElement(namespace = ZKN, nillable = true)
-    public String vezenddatum;
+    public String verzenddatum;
 
     @XmlElement(namespace = ZKN, nillable = true)
-    public String vertrouwelijkheidAanduiding;
+    public String vertrouwelijkAanduiding;
 
     @XmlElement(namespace = ZKN, nillable = true)
     public String auteur;
 
     @XmlElement(namespace = ZKN, nillable = true)
     public String link;
-
-    @XmlElement(namespace = ZKN, nillable = true)    
-    public ZdsIsRelevantVoor isRelevantVoor;
 }
