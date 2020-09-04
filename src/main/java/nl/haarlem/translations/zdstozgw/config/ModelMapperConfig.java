@@ -16,6 +16,8 @@ import org.springframework.context.annotation.Configuration;
 import java.lang.invoke.MethodHandles;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.*;
+import java.time.temporal.TemporalAccessor;
 import java.util.Calendar;
 import java.util.TimeZone;
 
@@ -221,32 +223,46 @@ public class ModelMapperConfig {
             	if(stufDateTime == null) {
             		return null;
             	}
-        		if(stufDateTime.length() == 8) {
-        			// 
-        			stufDateTime += "000000000";
-        		}        		
-        		var zdsDateFormatter = new SimpleDateFormat("yyyyMMddHHmmssSSS");
-        		zdsDateFormatter.setTimeZone(TimeZone.getTimeZone("Europe/Amsterdam"));
-        		var zgwDateFormatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-        		zgwDateFormatter.setTimeZone(TimeZone.getTimeZone("GMT"));
-        		try {
-        			if(stufDateTime.contains("-")) {
-        				throw new ConverterException("stuf date: " + stufDateTime + " may not contain the character '-'");
-        			}
-        			var date = zdsDateFormatter.parse(stufDateTime);
-        			//log.info("date:" + date);
-        			if(timeoffset != 0) {
-        				Calendar cal = Calendar.getInstance();
-        				cal.setTime(date);
-        				cal.add(Calendar.HOUR_OF_DAY, timeoffset); 
-        				date = cal.getTime(); 
-        			}
-        			var zgwDate = zgwDateFormatter.format(date); 
-        			log.info("convertStufDateTimeToZgwDateTime: " + stufDateTime + " (amsterdam) --> " + zgwDate + "(gmt) with offset hours:" + timeoffset + "(date:" + date + ")");
-        			return zgwDate;
-        		} catch (ParseException e) {
-        			throw new ConverterException("ongeldige stuf-datetime: '" + stufDateTime + "'");
-        		}
+
+                var year = Integer.parseInt(stufDateTime.substring(0, 4));
+                var month = Integer.parseInt(stufDateTime.substring(4, 6));
+                var day = Integer.parseInt(stufDateTime.substring(6, 8));
+                var hours = Integer.parseInt(stufDateTime.substring(8, 10));
+                var minutes = Integer.parseInt(stufDateTime.substring(10, 12));
+                var seconds = Integer.parseInt(stufDateTime.substring(12, 14));
+                var milliseconds = Integer.parseInt(stufDateTime.substring(14));
+                var result = year + "-" + month + "-" + day + "T" + hours + ":" + minutes + ":" + seconds + "." + milliseconds + "Z";
+                log.debug("convertStufDateToDateTimeString: " + stufDateTime + " --> " + result);
+
+                return LocalDateTime.of(year, month, day, hours, minutes, seconds).atZone(ZoneId.systemDefault()).toOffsetDateTime().toString();
+
+
+//        		if(stufDateTime.length() == 8) {
+//        			//
+//        			stufDateTime += "000000000";
+//        		}
+//        		var zdsDateFormatter = new SimpleDateFormat("yyyyMMddHHmmssSSS");
+//        		zdsDateFormatter.setTimeZone(TimeZone.getTimeZone("Europe/Amsterdam"));
+//        		var zgwDateFormatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+//        		zgwDateFormatter.setTimeZone(TimeZone.getTimeZone("GMT"));
+//        		try {
+//        			if(stufDateTime.contains("-")) {
+//        				throw new ConverterException("stuf date: " + stufDateTime + " may not contain the character '-'");
+//        			}
+//        			var date = zdsDateFormatter.parse(stufDateTime);
+//        			//log.info("date:" + date);
+//        			if(timeoffset != 0) {
+//        				Calendar cal = Calendar.getInstance();
+//        				cal.setTime(date);
+//        				cal.add(Calendar.HOUR_OF_DAY, timeoffset);
+//        				date = cal.getTime();
+//        			}
+//        			var zgwDate = zgwDateFormatter.format(date);
+//        			log.info("convertStufDateTimeToZgwDateTime: " + stufDateTime + " (amsterdam) --> " + zgwDate + "(gmt) with offset hours:" + timeoffset + "(date:" + date + ")");
+//        			return zgwDate;
+//        		} catch (ParseException e) {
+//        			throw new ConverterException("ongeldige stuf-datetime: '" + stufDateTime + "'");
+//        		}
             }
         };
     }
