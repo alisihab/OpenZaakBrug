@@ -27,7 +27,7 @@ public class ModelMapperConfig {
 
 	private static final Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 	
-    @Value("${nl.haarlem.translations.zdstozgw.timeoffset.hour}")
+    @Value("${nl.haarlem.translations.zdstozgw.timeoffset.hour:0}")
     private int timeoffset;	
 	
     @Bean
@@ -259,30 +259,17 @@ public class ModelMapperConfig {
                 if (zgwDate == null) {
                     return null;
                 }
-        		var zgwDateFormatter = new SimpleDateFormat("yyyy-MM-dd");
-        		zgwDateFormatter.setTimeZone(TimeZone.getTimeZone("GMT"));
-        		var zdsDateFormatter = new SimpleDateFormat("yyyyMMdd");
-        		zdsDateFormatter.setTimeZone(TimeZone.getTimeZone("Europe/Amsterdam"));
-        		try {
-        			if(!zgwDate.contains("-")) {
-        				throw new ConverterException("zgw date: " + zgwDate + " must contain the character '-'");
-        			}
-        			var date = zgwDateFormatter.parse(zgwDate);        			
-        			//log.info("date:" + date);
-        			if(timeoffset != 0) {
-        				Calendar cal = Calendar.getInstance();
-        				cal.setTime(date);
-        				cal.add(Calendar.HOUR_OF_DAY, -timeoffset); 
-        				date = cal.getTime(); 
-        			}
-        			var stufDate = zgwDateFormatter.format(date); 
-        			log.debug("convertZgwDateToStufDate: " + zgwDate + " (gmt) --> " + stufDate + "(amsterdam) with offset hours: (" + timeoffset + "  * -1 )  (date:" + date + ")");
-        			return stufDate;
-        		} catch (ParseException e) {
-        			throw new ConverterException("ongeldige stuf-datetime: '" + zgwDate + "'");
-        		}				
-                
-                
+
+                if(!zgwDate.contains("-")) {
+                    throw new ConverterException("zgw date: " + zgwDate + " must contain the character '-'");
+                }
+
+                var year = zgwDate.substring(0, 4);
+                var month = zgwDate.substring(5, 7);
+                var day = zgwDate.substring(8, 10);
+                var result = year + month + day;
+                log.debug("convertDateStringToStufDate: " + zgwDate + " --> " + result);
+                return result;
             }
         };
     }
