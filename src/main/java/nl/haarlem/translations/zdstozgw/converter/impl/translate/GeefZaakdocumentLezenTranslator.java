@@ -3,7 +3,7 @@ package nl.haarlem.translations.zdstozgw.converter.impl.translate;
 import nl.haarlem.translations.zdstozgw.config.model.Translation;
 import nl.haarlem.translations.zdstozgw.converter.Converter;
 import nl.haarlem.translations.zdstozgw.requesthandler.RequestHandlerContext;
-import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsEdcLa01;
+import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsEdcLa01GeefZaakdocumentLezen;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsEdcLv01;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsParameters;
 import nl.haarlem.translations.zdstozgw.translation.zds.services.ZaakService;
@@ -27,10 +27,9 @@ public class GeefZaakdocumentLezenTranslator extends Converter {
 	@Override
 	public ResponseEntity<?> execute() throws ResponseStatusException {
 		var zdsEdcLv01 = (ZdsEdcLv01) this.getZdsDocument();
-		ZdsEdcLa01 zdsResponse = this.getZaakService().getZaakDocumentLezen(zdsEdcLv01);
+		ZdsEdcLa01GeefZaakdocumentLezen zdsResponse = this.getZaakService().getZaakDocumentLezen(zdsEdcLv01);
 		zdsResponse.parameters = new ZdsParameters(zdsEdcLv01.parameters);
 		var response = XmlUtils.getSOAPMessageFromObject(zdsResponse);   
         return new ResponseEntity<>(response, HttpStatus.OK);	
 	}		
 }
-

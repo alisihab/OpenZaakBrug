@@ -46,9 +46,7 @@ public class ModelMapperTests {
                 .setVersie("versie")
                 .setVertrouwelijkheidaanduiding("vertrouwelijkheidaanduiding")
                 .setVerzenddatum("2020-05-09");
-
         String expectedCreatieDatum = "20200230";
-
 
         //act
         ZdsZaakDocument zdsZaakDocument = modelMapper.map(zgwEnkelvoudigInformatieObject, ZdsZaakDocument.class);
@@ -82,5 +80,4 @@ public class ModelMapperTests {
         //assert
         Assert.assertEquals(expectedDatum, zgwStatus.getDatumStatusGezet());
     }
-
 }

@@ -58,6 +58,4 @@ public class ZgwEnkelvoudigInformatieObject {
     @SerializedName("beschrijving")
     @Expose
     public String beschrijving;
-
-
 }

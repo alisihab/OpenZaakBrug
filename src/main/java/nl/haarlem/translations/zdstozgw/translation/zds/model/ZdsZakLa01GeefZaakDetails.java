@@ -12,21 +12,20 @@ import static nl.haarlem.translations.zdstozgw.translation.zds.model.namespace.N
 @Data
 @XmlRootElement(namespace = ZKN, name = "zakLa01")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ZdsZakLa01GeefZaakDetails extends ZdsZknDocument{
+public class ZdsZakLa01GeefZaakDetails extends ZdsZknDocument {
 
-    @XmlElement(namespace = ZKN)
-    public ZdsParameters parameters;
+	@XmlElement(namespace = ZKN)
+	public ZdsParameters parameters;
 
+	@XmlElement(namespace = ZKN)
+	public Antwoord antwoord;
 
-    @XmlElement(namespace = ZKN)
-    public Antwoord antwoord;
+	@Data
+	@XmlAccessorType(XmlAccessType.FIELD)
+	public static class Antwoord {
 
-    @Data
-    @XmlAccessorType(XmlAccessType.FIELD)
-    public static class Antwoord {
-
-    	@XmlElement(namespace = ZKN, name = "object")
-        public ZdsZaak zaak;
+		@XmlElement(namespace = ZKN, name = "object")
+		public ZdsZaak zaak;
 
 //        @Data
 //        @XmlAccessorType(XmlAccessType.FIELD)
@@ -34,7 +33,7 @@ public class ZdsZakLa01GeefZaakDetails extends ZdsZknDocument{
 //            @XmlElement(namespace = ZKN)
 //            public List<Status> heeft;
 //        }
-    }
+	}
 //
 //    @Data
 //    @XmlAccessorType(XmlAccessType.FIELD)

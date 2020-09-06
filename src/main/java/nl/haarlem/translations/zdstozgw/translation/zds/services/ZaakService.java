@@ -7,7 +7,6 @@ import nl.haarlem.translations.zdstozgw.converter.ConverterException;
 import nl.haarlem.translations.zdstozgw.translation.BetrokkeneType;
 import nl.haarlem.translations.zdstozgw.translation.zds.client.ZDSClient;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.*;
-import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsZakLa01LijstZaakdocumenten.Antwoord.Object.HeeftRelevant;
 import nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.*;
 import nl.haarlem.translations.zdstozgw.utils.ChangeDetector;
@@ -128,17 +127,17 @@ public class ZaakService {
         zgwClient.addZgwRol(zgwRol);
     }
 
-  public List<HeeftRelevant> geefLijstZaakdocumenten(String zaakidentificatie)  {
+  public List<ZdsHeeftRelevant> geefLijstZaakdocumenten(String zaakidentificatie)  {
 	  	ZgwZaak zgwZaak = zgwClient.getZaakByIdentificatie(zaakidentificatie);
 
-	  	var relevanteDocumenten = new ArrayList<HeeftRelevant>();
+	  	var relevanteDocumenten = new ArrayList<ZdsHeeftRelevant>();
 	  	for(ZgwZaakInformatieObject zgwZaakInformatieObject : zgwClient.getZaakInformatieObjectenByZaak(zgwZaak.url)) {
             ZgwEnkelvoudigInformatieObject zgwEnkelvoudigInformatieObject = zgwClient.getZaakDocument(zgwZaakInformatieObject.informatieobject);
             if(zgwEnkelvoudigInformatieObject == null) {
             	throw new ConverterException("could not get the zaakdocument: " + zgwZaakInformatieObject.informatieobject + " for zaak:" + zaakidentificatie );
             }
             ZdsZaakDocument zdsZaakDocument = modelMapper.map(zgwEnkelvoudigInformatieObject, ZdsZaakDocument.class);            
-            ZdsZakLa01LijstZaakdocumenten.Antwoord.Object.HeeftRelevant heeftRelevant = modelMapper.map(zgwZaakInformatieObject, ZdsZakLa01LijstZaakdocumenten.Antwoord.Object.HeeftRelevant.class);
+            ZdsHeeftRelevant heeftRelevant = modelMapper.map(zgwZaakInformatieObject, ZdsHeeftRelevant.class);
             heeftRelevant.gerelateerde = zdsZaakDocument;
             relevanteDocumenten.add(heeftRelevant);
 	  	}
@@ -170,7 +169,7 @@ public class ZaakService {
         return zgwClient.addDocumentToZaak(zgwZaakInformatieObject);
     }
 
-    public ZdsEdcLa01 getZaakDocumentLezen(ZdsEdcLv01 zdsEdcLv01)  {
+    public ZdsEdcLa01GeefZaakdocumentLezen getZaakDocumentLezen(ZdsEdcLv01 zdsEdcLv01)  {
         //Get Enkelvoudig informatie object. This contains document meta data and a link to the document
     	var documentIdentificatie = zdsEdcLv01.gelijk.identificatie;
     	log.info("getZgwEnkelvoudigInformatieObject:" + documentIdentificatie);
@@ -185,18 +184,20 @@ public class ZaakService {
         //Get the zaak, to get the zaakidentificatie
         var zgwZaak = zgwClient.getZaakByUrl(zgwZaakInformatieObject.getZaak());
 
-        var edcLa01 = new ZdsEdcLa01(zdsEdcLv01.stuurgegevens);
-
-        edcLa01.antwoord = new ZdsEdcLa01.Antwoord();
-        edcLa01.antwoord.object = modelMapper.map(zgwEnkelvoudigInformatieObject, ZdsEdcLa01.Object.class);
+        var edcLa01 = new ZdsEdcLa01GeefZaakdocumentLezen(zdsEdcLv01.stuurgegevens);
+        edcLa01.antwoord = new ZdsAntwoord();
+        edcLa01.antwoord.object = modelMapper.map(zgwEnkelvoudigInformatieObject, ZdsZaakDocument.class);
 
         //Add Inhoud
-        edcLa01.isRelevantVoor = new ZdsIsRelevantVoor();
-        edcLa01.isRelevantVoor.gerelateerde = new ZdsGerelateerde();
-        edcLa01.isRelevantVoor.entiteittype = "EDCZAK";
-        edcLa01.isRelevantVoor.gerelateerde.entiteittype = "ZAK";
-        edcLa01.isRelevantVoor.gerelateerde.identificatie = zgwZaak.getIdentificatie();
-        edcLa01.antwoord.object.inhoud = inhoud;
+//        edcLa01.isRelevantVoor = new ZdsIsRelevantVoor();
+//        edcLa01.isRelevantVoor.gerelateerde = new ZdsGerelateerde();
+//        edcLa01.isRelevantVoor.entiteittype = "EDCZAK";
+//        edcLa01.isRelevantVoor.gerelateerde.entiteittype = "ZAK";
+//        edcLa01.isRelevantVoor.gerelateerde.identificatie = zgwZaak.getIdentificatie();
+        edcLa01.antwoord.object.inhoud = new ZdsInhoud();
+        edcLa01.antwoord.object.inhoud.contentType = "asd";
+        edcLa01.antwoord.object.inhoud.bestandsnaam = "asd";
+        edcLa01.antwoord.object.inhoud.value = inhoud;
 
         return edcLa01;
     }
