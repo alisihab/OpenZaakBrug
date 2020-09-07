@@ -139,7 +139,7 @@ public class ZaakService {
             ZdsZaakDocument zdsZaakDocument = modelMapper.map(zgwEnkelvoudigInformatieObject, ZdsZaakDocument.class);            
             ZdsHeeftRelevant heeftRelevant = modelMapper.map(zgwZaakInformatieObject, ZdsHeeftRelevant.class);
             heeftRelevant.gerelateerde = zdsZaakDocument;
-            relevanteDocumenten.add(heeftRelevant);
+            relevanteDocumenten.add(heeftRelevant );
 	  	}
         return relevanteDocumenten;
     }

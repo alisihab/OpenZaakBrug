@@ -19,9 +19,11 @@ public class ZdsAntwoordLijstZaakdocument extends ZdsAntwoord {
     @XmlElement(namespace = ZKN)
     public String identificatie;
 
-    @XmlElement(namespace = ZKN)
-    public List<ZdsHeeftRelevant> heeftRelevant;
+    //@XmlElement(namespace = ZKN)
+    //public List<ZdsHeeftRelevant> heeftRelevant;
  
-	@XmlElement(namespace = ZKN, name = "object")
-    public List<ZdsHeeftRelevant> object;	
+	//@XmlElement(namespace = ZKN, name = "object")
+    //public List<ZdsHeeftRelevant> object;	
+    @XmlElement(namespace = ZKN, name = "object")
+    public ZdsObjectLijstZaakDocument object;
 }

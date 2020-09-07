@@ -14,7 +14,7 @@ import lombok.Data;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ZdsHeeftRelevant {
     @XmlAttribute(namespace = STUF)
-    public String entiteittype = "ZAK";
+    public String entiteittype = "ZAKEDC";
     
         @XmlElement(namespace = ZKN)
         public ZdsZaakDocument gerelateerde;

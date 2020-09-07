@@ -5,8 +5,10 @@ import nl.haarlem.translations.zdstozgw.converter.Converter;
 import nl.haarlem.translations.zdstozgw.requesthandler.RequestHandlerContext;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsAntwoordLijstZaakdocument;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsHeeftRelevant;
+import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsObjectLijstZaakDocument;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsParameters;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsStuurgegevens;
+import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsZaakDocument;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsZaakDocumentRelevant;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsZakLa01LijstZaakdocumenten;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsZakLv01;
@@ -34,7 +36,7 @@ public class GeefLijstZaakdocumentenTranslator extends Converter {
 	public ResponseEntity<?> execute() throws ResponseStatusException {
 		ZdsZakLv01 zdsZakLv01 = (ZdsZakLv01) this.getZdsDocument();
 		var zaakidentificatie = zdsZakLv01.gelijk.identificatie;
-		List<ZdsHeeftRelevant> relevanteDocumenten= this.getZaakService().geefLijstZaakdocumenten(zaakidentificatie);
+		List<ZdsHeeftRelevant> gerelateerdeDocumenten = this.getZaakService().geefLijstZaakdocumenten(zaakidentificatie);
 		
 		ZdsZakLa01LijstZaakdocumenten zdsZakLa01LijstZaakdocumenten = new ZdsZakLa01LijstZaakdocumenten(zdsZakLv01.stuurgegevens);
         zdsZakLa01LijstZaakdocumenten.antwoord = new ZdsAntwoordLijstZaakdocument();
@@ -43,7 +45,8 @@ public class GeefLijstZaakdocumentenTranslator extends Converter {
         zdsZakLa01LijstZaakdocumenten.stuurgegevens.entiteittype = "ZAK";
         zdsZakLa01LijstZaakdocumenten.parameters  = new ZdsParameters(zdsZakLv01.parameters);
         zdsZakLa01LijstZaakdocumenten.antwoord = new ZdsAntwoordLijstZaakdocument();
-        zdsZakLa01LijstZaakdocumenten.antwoord.object = relevanteDocumenten;
+        zdsZakLa01LijstZaakdocumenten.antwoord.object = new ZdsObjectLijstZaakDocument();
+        zdsZakLa01LijstZaakdocumenten.antwoord.object.heeftRelevant = gerelateerdeDocumenten;
         
       	var response = XmlUtils.getSOAPMessageFromObject(zdsZakLa01LijstZaakdocumenten);   
         return new ResponseEntity<>(response, HttpStatus.OK);        
