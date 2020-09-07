@@ -3,9 +3,11 @@ package nl.haarlem.translations.zdstozgw.converter.impl.translate;
 import nl.haarlem.translations.zdstozgw.config.model.Translation;
 import nl.haarlem.translations.zdstozgw.converter.Converter;
 import nl.haarlem.translations.zdstozgw.requesthandler.RequestHandlerContext;
+import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsAntwoord;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsEdcLa01GeefZaakdocumentLezen;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsEdcLv01;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsParameters;
+import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsZaakDocument;
 import nl.haarlem.translations.zdstozgw.translation.zds.services.ZaakService;
 import nl.haarlem.translations.zdstozgw.utils.XmlUtils;
 import org.springframework.http.HttpStatus;
@@ -27,9 +29,13 @@ public class GeefZaakdocumentLezenTranslator extends Converter {
 	@Override
 	public ResponseEntity<?> execute() throws ResponseStatusException {
 		var zdsEdcLv01 = (ZdsEdcLv01) this.getZdsDocument();
-		ZdsEdcLa01GeefZaakdocumentLezen zdsResponse = this.getZaakService().getZaakDocumentLezen(zdsEdcLv01);
-		zdsResponse.parameters = new ZdsParameters(zdsEdcLv01.parameters);
-		var response = XmlUtils.getSOAPMessageFromObject(zdsResponse);   
+		var documentIdentificatie = zdsEdcLv01.gelijk.identificatie;
+		ZdsZaakDocument document  = this.getZaakService().getZaakDocumentLezen(documentIdentificatie);
+        var edcLa01 = new ZdsEdcLa01GeefZaakdocumentLezen(zdsEdcLv01.stuurgegevens);
+        edcLa01.antwoord = new ZdsAntwoord();
+        edcLa01.antwoord.object = document;
+        edcLa01.parameters = new ZdsParameters(zdsEdcLv01.parameters);
+		var response = XmlUtils.getSOAPMessageFromObject(edcLa01);
         return new ResponseEntity<>(response, HttpStatus.OK);	
 	}		
 }

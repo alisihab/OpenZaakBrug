@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 
 import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Field;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -169,9 +170,12 @@ public class ZaakService {
         return zgwClient.addDocumentToZaak(zgwZaakInformatieObject);
     }
 
-    public ZdsEdcLa01GeefZaakdocumentLezen getZaakDocumentLezen(ZdsEdcLv01 zdsEdcLv01)  {
+//    public ZdsEdcLa01GeefZaakdocumentLezen getZaakDocumentLezen(ZdsEdcLv01 zdsEdcLv01)  {
         //Get Enkelvoudig informatie object. This contains document meta data and a link to the document
-    	var documentIdentificatie = zdsEdcLv01.gelijk.identificatie;
+//    	var documentIdentificatie = zdsEdcLv01.gelijk.identificatie;
+//    public ZdsEdcLa01GeefZaakdocumentLezen getZaakDocumentLezen(String documentIdentificatie)  {
+    public ZdsZaakDocument getZaakDocumentLezen(String documentIdentificatie)  {
+
     	log.info("getZgwEnkelvoudigInformatieObject:" + documentIdentificatie);
         ZgwEnkelvoudigInformatieObject zgwEnkelvoudigInformatieObject = zgwClient.getZgwEnkelvoudigInformatieObjectByIdentiticatie(documentIdentificatie);
         if(zgwEnkelvoudigInformatieObject == null) {
@@ -184,6 +188,15 @@ public class ZaakService {
         //Get the zaak, to get the zaakidentificatie
         var zgwZaak = zgwClient.getZaakByUrl(zgwZaakInformatieObject.getZaak());
 
+        ZdsZaakDocument result = modelMapper.map(zgwEnkelvoudigInformatieObject, ZdsZaakDocument.class);
+        result.inhoud = new ZdsInhoud();
+        var mimeType = URLConnection.guessContentTypeFromName(zgwEnkelvoudigInformatieObject.bestandsnaam);
+        result.inhoud.contentType = mimeType;
+        result.inhoud.bestandsnaam = zgwEnkelvoudigInformatieObject.bestandsnaam;
+        result.inhoud.value = inhoud;
+        return result;
+        
+/*        
         var edcLa01 = new ZdsEdcLa01GeefZaakdocumentLezen(zdsEdcLv01.stuurgegevens);
         edcLa01.antwoord = new ZdsAntwoord();
         edcLa01.antwoord.object = modelMapper.map(zgwEnkelvoudigInformatieObject, ZdsZaakDocument.class);
@@ -200,6 +213,7 @@ public class ZaakService {
         edcLa01.antwoord.object.inhoud.value = inhoud;
 
         return edcLa01;
+  */
     }
 
 //    public ZgwZaak actualiseerZaakstatus(ZdsZakLk01ActualiseerZaakstatus zakLk01)   {

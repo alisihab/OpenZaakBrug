@@ -25,9 +25,6 @@ public class ZdsZaakDocument extends ZdsZaakDocumentIdentificatie {
 
     @XmlElement(namespace = ZKN, nillable = true)
     public String taal;
-
-    @XmlElement(namespace = ZKN)
-  	public ZdsInhoud inhoud;    
     
     @XmlElement(namespace = ZKN, nillable = true)
     public String versie;
@@ -46,4 +43,7 @@ public class ZdsZaakDocument extends ZdsZaakDocumentIdentificatie {
 
     @XmlElement(namespace = ZKN, nillable = true)
     public String link;
+
+    @XmlElement(namespace = ZKN)
+  	public ZdsInhoud inhoud;        
 }
