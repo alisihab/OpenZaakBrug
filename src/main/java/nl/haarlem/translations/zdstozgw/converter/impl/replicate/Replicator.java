@@ -33,17 +33,40 @@ public class Replicator {
 		this.stuurgegevens = stuurgegevens;
 	}
 
-	public void replicateZaak(String zaakidentificatie) {
+	public void replicateZaak(String rsin, String zaakidentificatie) {
 		log.info("replicateZaak for zaakidentificatie:" + zaakidentificatie);
 		
 		var zgwZaak = this.zaakservice.zgwClient.getZaakByIdentificatie(zaakidentificatie);
-		if(zgwZaak != null)  {
-			log.info("replication: no need to copy, zaak with id #" + zaakidentificatie + " already in zgw");
-			// nothing to do here
-			return;
+
+		if(zgwZaak == null) {
+			// bestond nog niet, aanmaken
+			var zdsUrl = this.zaakservice.configService.getConfiguratie().getGeefZaakdetails().getUrl();
+			var zdsSoapAction = this.zaakservice.configService.getConfiguratie().getGeefZaakdetails().getSoapaction();
+			var zdsRequest = new ZdsZakLv01();
+			zdsRequest.stuurgegevens = stuurgegevens;
+			zdsRequest.parameters = new ZdsParameters();		
+			//zdsRequest.parameters.setSortering("0");
+			zdsRequest.parameters.setIndicatorVervolgvraag("false");
+			zdsRequest.gelijk = new ZdsZaak();
+			zdsRequest.sope = new ZdsScope();
+			var zdsResponse = this.zaakservice.zdsClient.post(zdsUrl, zdsSoapAction, zdsRequest);
+	
+			// fetch the zaak details 
+			log.info("GeefZaakDetails response:" + zdsResponse);
+			ZdsZakLa01GeefZaakDetails zakLa01 = (ZdsZakLa01GeefZaakDetails) XmlUtils.getStUFObject(zdsResponse.getBody().toString(), ZdsZakLa01GeefZaakDetails.class);
+			var zdsZaak = zakLa01.antwoord.zaak;
+	
+			log.info("received data from zds-zaaksysteem, now storing in zgw-zaaksysteem");	
+			this.zaakservice.creeerZaak(rsin, zdsZaak);
 		}
-		var zdsUrl = this.zaakservice.configService.getConfiguratie().getGeefZaakdetails().getUrl();
-		var zdsSoapAction = this.zaakservice.configService.getConfiguratie().getGeefZaakdetails().getSoapaction();
+		else {
+			log.info("replication: no need to copy, zaak with id #" + zaakidentificatie + " already in zgw");
+		}
+/////////////////////////
+
+		// documenten moeten we altijd controleren of ze bestaan		
+		var zdsUrl = this.zaakservice.configService.getConfiguratie().getGeefLijstZaakdocumenten().getUrl();
+		var zdsSoapAction = this.zaakservice.configService.getConfiguratie().getGeefLijstZaakdocumenten().getSoapaction();
 		var zdsRequest = new ZdsZakLv01();
 		zdsRequest.stuurgegevens = stuurgegevens;
 		zdsRequest.parameters = new ZdsParameters();		
@@ -53,18 +76,10 @@ public class Replicator {
 		zdsRequest.sope = new ZdsScope();
 		var zdsResponse = this.zaakservice.zdsClient.post(zdsUrl, zdsSoapAction, zdsRequest);
 
-		// get the zaak details
-		log.info("response:" + zdsResponse);
-		ZdsZakLa01GeefZaakDetails zakLa01 = (ZdsZakLa01GeefZaakDetails) XmlUtils.getStUFObject(zdsResponse.getBody().toString(), ZdsZakLa01GeefZaakDetails.class);
-		//ZdsZaak zdsZaak = zakLa01.antwoord;
-//	
-//		// use the info to create the zaak with this info
-//		creeerZaak(stuurgegevens, zdsZaak);
-//		
-//		// TODO: ook de documenten copieren!
-//		log.error("Also copy the files for zaakid:" + zaakidentificatie);
-//		
-		throw new ConverterException("not yet implemented!");
+		// fetch the zaak details 
+		log.info("GeefLijstZaakdocumenten response:" + zdsResponse);
+		var zakLa01 = (ZdsZakLa01GeefZaakDetails) XmlUtils.getStUFObject(zdsResponse.getBody().toString(), ZdsZakLa01GeefZaakDetails.class);
+		var zdsZaak = zakLa01.antwoord.zaak;
 	}
 
 	private void replicateDocuments(String zaakidentificatie, String documentidentificatie) {		

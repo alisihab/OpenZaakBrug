@@ -16,10 +16,12 @@ public class GeefZaakDetailsReplicator extends GeefZaakDetailsTranslator {
 	
 	@Override
 	public ResponseEntity<?> execute() throws ResponseStatusException {
+		String rsin = this.getZaakService().getRSIN(this.zdsDocument.stuurgegevens.zender.organisatie);
+		
 		var zdsZakLv01 = (ZdsZakLv01) this.getZdsDocument();
 		// replicate the zaak
         var replicator = new Replicator(this.getZaakService(), zdsZakLv01.stuurgegevens);
-		replicator.replicateZaak(zdsZakLv01.gelijk.identificatie);		
+		replicator.replicateZaak(rsin, zdsZakLv01.gelijk.identificatie);		
 		// send to legacy system
 		var legacyresponse = Proxy.Proxy(this.getTranslation().getLegacyservice(), this.getContext().getSoapAction(), getContext().getRequestBody());
 		// do the translation

@@ -18,10 +18,12 @@ public class GeefZaakdocumentLezenReplicator extends GeefZaakdocumentLezenTransl
 
 	@Override
 	public ResponseEntity<?> execute() throws ResponseStatusException {
+		String rsin = this.getZaakService().getRSIN(this.zdsDocument.stuurgegevens.zender.organisatie);
+				
 		var zdsEdcLv01 = (ZdsEdcLv01) this.getZdsDocument();
 		// replicate the zaak
         var replicator = new Replicator(this.getZaakService(), zdsEdcLv01.stuurgegevens);		
-		replicator.replicateZaak(zdsEdcLv01.zdsScope.object.isRelevantVoor.gerelateerde.identificatie);		
+		replicator.replicateZaak(rsin, zdsEdcLv01.zdsScope.object.isRelevantVoor.gerelateerde.identificatie);		
 		// send to legacy system
 		var legacyresponse = Proxy.Proxy(this.getTranslation().getLegacyservice(), this.getContext().getSoapAction(), getContext().getRequestBody());
 		// do the translation
