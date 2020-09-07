@@ -30,7 +30,7 @@ public class ModelMapperConfig {
 
 	private static final Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
-	@Value("${nl.haarlem.translations.zdstozgw.timeoffset.hour:0}")
+	@Value("${nl.haarlem.translations.zdstozgw.timeoffset.minutes:-5}")
 	private int timeoffset;
 
 	@Bean
@@ -251,12 +251,12 @@ public class ModelMapperConfig {
 					if (timeoffset != 0) {
 						Calendar cal = Calendar.getInstance();
 						cal.setTime(date);
-						cal.add(Calendar.HOUR_OF_DAY, timeoffset);
+						cal.add(Calendar.MINUTE, timeoffset);
 						date = cal.getTime();
 					}
 					var zgwDate = zgwDateFormatter.format(date);
 					log.info("convertStufDateToZgwDate: " + stufDate + " (amsterdam) --> " + zgwDate
-							+ "(gmt) with offset hours:" + timeoffset + "(date:" + date + ")");
+							+ "(gmt) with offset minutes:" + timeoffset + "(date:" + date + ")");
 					return zgwDate;
 
 				} catch (ParseException e) {
@@ -283,32 +283,38 @@ public class ModelMapperConfig {
 						LocalDate cetDate = LocalDate.parse(stufDateTime, stufFormatter);
 						log.info("convertStufDateTimeToZgwDateTime parsed: " + cetDate.toString());
 						DateTimeFormatter zdsFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");					
-						return cetDate.format(zdsFormatter) + "T00:00:00.000000Z"; 
+						var result = cetDate.format(zdsFormatter) + "T00:00:00.000000Z"; 
+						log.info("convertStufDateTimeToZgwDateTime result: " + result);
+						return result;
+					
 					} catch (Exception e) {
 						log.warn("error parsing the string:" + stufDateTime, e);
 						return e.toString();
 					}
 				}
-				else if(stufDateTime.length() == 16) {
+				else if(stufDateTime.length() == 17) {
 					// input a datetime
 					log.info("convertStufDateTimeToZgwDateTime input is a datetime:" + stufDateTime);
 					try {
-						DateTimeFormatter stufFormatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmssSS");
+						DateTimeFormatter stufFormatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS");
 						ZonedDateTime cetDate = LocalDateTime.parse(stufDateTime, stufFormatter).atZone(ZoneId.systemDefault());
 						log.info("convertStufDateTimeToZgwDateTime parsed: " + cetDate.toString());
-						cetDate = cetDate.plusHours(timeoffset);
-						log.info("convertStufDateTimeToZgwDateTime aded offset: " + cetDate.toString());
-						OffsetDateTime gmtDate = cetDate.toOffsetDateTime();
+						//OffsetDateTime gmtDate = cetDate.toOffsetDateTime();
+						var gmtDate = cetDate.withZoneSameInstant(ZoneOffset.UTC).toLocalDateTime();
 						log.info("convertStufDateTimeToZgwDateTime to GMT tomezone: " + gmtDate.toString());
+						gmtDate = gmtDate.plusMinutes(timeoffset);
+						log.info("convertStufDateTimeToZgwDateTime aded offset: " + gmtDate.toString() + " (offset in minutes:" + timeoffset + ")");
 						DateTimeFormatter zdsFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'");					
-						return gmtDate.format(zdsFormatter);
+						var result = gmtDate.format(zdsFormatter);
+						log.info("convertStufDateTimeToZgwDateTime result: " + result);
+						return result;
 					} catch (Exception e) {
 						log.warn("error parsing the string:" + stufDateTime, e);
 						return e.toString();
 					}
 				}
 				else {
-					throw new ConverterException("datetime string has to have lengthe of 8 or 16");
+					throw new ConverterException("datetime string: '" + stufDateTime + "' has to have lengthe of 8 or 16 (current lengt:" + stufDateTime.length() + ")");
 				}
 			}
 		};
@@ -357,14 +363,13 @@ public class ModelMapperConfig {
 				//	stufDateTime += "T00:00:00.000000Z";
 				//}
 				if (stufDateTime.length() != 27) {
-					throw new ConverterException("Verkeerde lengte(" + stufDateTime.length()
-							+ ", verwacht 27) van de datum:" + stufDateTime);
+					throw new ConverterException("Verkeerde lengte(" + stufDateTime.length() + ", verwacht 27) van de datum:" + stufDateTime);
 				}
 				try {
 					DateTimeFormatter zdsFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'");
 					ZonedDateTime gmtDate = LocalDateTime.parse(stufDateTime, zdsFormatter).atZone(ZoneId.of("GMT"));
 					log.info("convertZgwDateTimeToStufDateTime parsed: " + gmtDate.toString());
-					gmtDate = gmtDate.plusHours(-timeoffset);
+					gmtDate = gmtDate.plusMinutes(-timeoffset);
 					log.info("convertZgwDateTimeToStufDateTime substractedoffset: " + gmtDate.toString());
 					OffsetDateTime cetDate = gmtDate.toOffsetDateTime();
 					log.info("convertZgwDateTimeToStufDateTime to cet timezone: " + cetDate.toString());
