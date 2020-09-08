@@ -54,7 +54,7 @@ public class Replicator {
 			// fetch the zaak details 
 			log.info("GeefZaakDetails response:" + zdsResponse);
 			ZdsZakLa01GeefZaakDetails zakLa01 = (ZdsZakLa01GeefZaakDetails) XmlUtils.getStUFObject(zdsResponse.getBody().toString(), ZdsZakLa01GeefZaakDetails.class);
-			var zdsZaak = zakLa01.antwoord.zaak;
+			var zdsZaak = zakLa01.antwoord.zaak.get(0);
 	
 			log.info("received data from zds-zaaksysteem, now storing in zgw-zaaksysteem");	
 			this.zaakservice.creeerZaak(rsin, zdsZaak);

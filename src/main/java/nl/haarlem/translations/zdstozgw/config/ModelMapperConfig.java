@@ -292,11 +292,15 @@ public class ModelMapperConfig {
 						return e.toString();
 					}
 				}
-				else if(stufDateTime.length() == 17) {
+				else if(stufDateTime.length() == 16 || stufDateTime.length() == 17) {
+					if(stufDateTime.length() == 17) {
+						log.info("convertStufDateTimeToZgwDateTime input is a datetime of 17 characters:" + stufDateTime + " will be trimmed to 16");
+						stufDateTime = stufDateTime.substring(0, 16); 
+					}					
 					// input a datetime
 					log.info("convertStufDateTimeToZgwDateTime input is a datetime:" + stufDateTime);
 					try {
-						DateTimeFormatter stufFormatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS");
+						DateTimeFormatter stufFormatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmssSS");
 						ZonedDateTime cetDate = LocalDateTime.parse(stufDateTime, stufFormatter).atZone(ZoneId.systemDefault());
 						log.info("convertStufDateTimeToZgwDateTime parsed: " + cetDate.toString());
 						//OffsetDateTime gmtDate = cetDate.toOffsetDateTime();

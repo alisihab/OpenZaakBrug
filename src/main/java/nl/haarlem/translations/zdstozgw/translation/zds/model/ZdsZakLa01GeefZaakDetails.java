@@ -9,6 +9,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import static nl.haarlem.translations.zdstozgw.translation.zds.model.namespace.Namespace.ZKN;
 
+import java.util.List;
+
 @Data
 @XmlRootElement(namespace = ZKN, name = "zakLa01")
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -25,7 +27,7 @@ public class ZdsZakLa01GeefZaakDetails extends ZdsZknDocument {
 	public static class Antwoord {
 
 		@XmlElement(namespace = ZKN, name = "object")
-		public ZdsZaak zaak;
+		public List<ZdsZaak> zaak;
 
 //        @Data
 //        @XmlAccessorType(XmlAccessType.FIELD)

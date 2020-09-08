@@ -49,7 +49,6 @@ public class ZaakService {
     }
     
 
-
     public String getRSIN(String gemeenteCode) {
         List<Organisatie> organisaties = configService.getConfiguratie().getOrganisaties();
         for (Organisatie organisatie : organisaties) {
@@ -233,65 +232,96 @@ public class ZaakService {
         return zgwZaak;
     }
 
-    public ZdsZakLa01GeefZaakDetails getZaakDetails(ZdsZakLv01 zdsZakLv01) {
-        ZdsZakLa01GeefZaakDetails zdsZakLa01GeefZaakDetails = new ZdsZakLa01GeefZaakDetails();
+    
+    public List<ZdsZaak> getZaakDetailsByBsn(String bsn) {    	
+    	var zgwRollen = zgwClient.getRollenByBsn(bsn);
+    	var zdsZaken = new ArrayList<ZdsZaak>();
+    	var result = new ArrayList<ZdsZaak>();
+    	for(ZgwRol rol : zgwRollen) {
+    		var zgwRolType = zgwClient.getRolTypeByUrl(rol.roltype);
+    		ZgwRolOmschrijving zgwRolOmschrijving = this.configService.getConfiguratie().getZgwRolOmschrijving();
+    		if(zgwRolType.omschrijving.equals(zgwRolOmschrijving.getHeeftAlsInitiator())) {
 
-        if (zdsZakLv01.gelijk != null && zdsZakLv01.gelijk.identificatie != null) {
-        	var zaakidentificatie = zdsZakLv01.gelijk.identificatie;
+    			// TODO: hier minder overhead!
+    			// hier wordt nu 2 keer achterelkaar een getzaak op openzaak gedaan! 
+    			var zgwZaak = zgwClient.getZaakByUrl(rol.zaak);
+    			result.add(getZaakDetailsByIdentificatie(zgwZaak.identificatie));
+    		}
+    	}    
+    	return result;
+    }
+    
+    
+//    public ZdsZakLa01GeefZaakDetails getZaakDetails(ZdsZakLv01 zdsZakLv01) {
+//        ZdsZakLa01GeefZaakDetails zdsZakLa01GeefZaakDetails = new ZdsZakLa01GeefZaakDetails();
+//        if (zdsZakLv01.gelijk != null && zdsZakLv01.gelijk.identificatie != null) {
+    public ZdsZaak getZaakDetailsByIdentificatie(String zaakidentificatie) {            	
             var zgwZaak = zgwClient.getZaakByIdentificatie(zaakidentificatie);
             if (zgwZaak == null) {
-                throw new ConverterException("Zaak not found for identification: '" + zdsZakLv01.gelijk.identificatie + "'");
+                throw new ConverterException("Zaak not found for identification: '" + zaakidentificatie + "'");
             }
-            zdsZakLa01GeefZaakDetails.stuurgegevens = new ZdsStuurgegevens(zdsZakLv01.stuurgegevens);
-            zdsZakLa01GeefZaakDetails.stuurgegevens.berichtcode = "La01";
-
-            zdsZakLa01GeefZaakDetails.antwoord = new ZdsZakLa01GeefZaakDetails.Antwoord();
-            zdsZakLa01GeefZaakDetails.antwoord.zaak = new ZdsZaak();
-            zdsZakLa01GeefZaakDetails.antwoord.zaak = modelMapper.map(zgwZaak, ZdsZaak.class);
+            ZdsZaak zaak = new ZdsZaak();
+            zaak = modelMapper.map(zgwZaak, ZdsZaak.class);
 
             ZgwRolOmschrijving zgwRolOmschrijving = this.configService.getConfiguratie().getZgwRolOmschrijving();
 
-            zgwClient.getRollenByZaakUrl(zgwZaak.url).forEach(zgwRol -> {
-
-                if (zgwRolOmschrijving.getHeeftAlsInitiator() != null
-                        && zgwRolOmschrijving.getHeeftAlsInitiator().equalsIgnoreCase(zgwRol.getOmschrijvingGeneriek())) {
-                    zdsZakLa01GeefZaakDetails.antwoord.zaak.heeftAlsInitiator = getZdsRol(zgwZaak, zgwRolOmschrijving.getHeeftAlsInitiator(), "ZAKBTRINI");
-                } else if (zgwRolOmschrijving.getHeeftAlsBelanghebbende() != null
-                        && zgwRolOmschrijving.getHeeftAlsBelanghebbende().equalsIgnoreCase(zgwRol.getOmschrijvingGeneriek())) {
-                    zdsZakLa01GeefZaakDetails.antwoord.zaak.heeftAlsBelanghebbende = getZdsRol(zgwZaak, zgwRolOmschrijving.getHeeftAlsBelanghebbende(), "ZAKBTRBLH");
-                } else if (zgwRolOmschrijving.getHeeftAlsUitvoerende() != null
-                        && zgwRolOmschrijving.getHeeftAlsUitvoerende().equalsIgnoreCase(zgwRol.getOmschrijvingGeneriek())) {
-                    zdsZakLa01GeefZaakDetails.antwoord.zaak.heeftAlsUitvoerende = getZdsRol(zgwZaak, zgwRolOmschrijving.getHeeftAlsUitvoerende(), "ZAKBTRUTV");
-                } else if (zgwRolOmschrijving.getHeeftAlsVerantwoordelijke() != null
-                        && zgwRolOmschrijving.getHeeftAlsVerantwoordelijke().equalsIgnoreCase(zgwRol.getOmschrijvingGeneriek())) {
-                    zdsZakLa01GeefZaakDetails.antwoord.zaak.heeftAlsVerantwoordelijke = getZdsRol(zgwZaak, zgwRolOmschrijving.getHeeftAlsVerantwoordelijke(), "ZAKBTRVRA");
-                } else if (zgwRolOmschrijving.getHeeftAlsGemachtigde() != null
-                        && zgwRolOmschrijving.getHeeftAlsGemachtigde().equalsIgnoreCase(zgwRol.getOmschrijvingGeneriek())) {
-                    zdsZakLa01GeefZaakDetails.antwoord.zaak.heeftAlsGemachtigde = getZdsRol(zgwZaak, zgwRolOmschrijving.getHeeftAlsGemachtigde(), "ZAKBTRGMC");
-                } else if (zgwRolOmschrijving.getHeeftAlsOverigBetrokkene() != null
-                        && zgwRolOmschrijving.getHeeftAlsOverigBetrokkene().equalsIgnoreCase(zgwRol.getOmschrijvingGeneriek())) {
-                    zdsZakLa01GeefZaakDetails.antwoord.zaak.heeftAlsOverigBetrokkene = getZdsRol(zgwZaak, zgwRolOmschrijving.getHeeftAlsOverigBetrokkene(), "ZAKBTROVR");
+            for(ZgwRol zgwRol : zgwClient.getRollenByZaakUrl(zgwZaak.url)) {
+            	var rolGeconverteerd = false;
+                if (zgwRolOmschrijving.getHeeftAlsInitiator() != null 
+                		&& zgwRolOmschrijving.getHeeftAlsInitiator().equalsIgnoreCase(zgwRol.getOmschrijvingGeneriek())) {
+                    zaak.heeftAlsInitiator = getZdsRol(zgwZaak, zgwRolOmschrijving.getHeeftAlsInitiator(), "ZAKBTRINI");
+                    rolGeconverteerd  = true;
+                }            	
+				if (zgwRolOmschrijving.getHeeftAlsBelanghebbende() != null 
+                		&& zgwRolOmschrijving.getHeeftAlsBelanghebbende().equalsIgnoreCase(zgwRol.getOmschrijvingGeneriek())) {
+                    zaak.heeftAlsBelanghebbende = getZdsRol(zgwZaak, zgwRolOmschrijving.getHeeftAlsBelanghebbende(), "ZAKBTRBLH");
+                    rolGeconverteerd  = true;
                 }
-            });
-
+                if (zgwRolOmschrijving.getHeeftAlsUitvoerende() != null 
+                		&& zgwRolOmschrijving.getHeeftAlsUitvoerende().equalsIgnoreCase(zgwRol.getOmschrijvingGeneriek())) {
+                    zaak.heeftAlsUitvoerende = getZdsRol(zgwZaak, zgwRolOmschrijving.getHeeftAlsUitvoerende(), "ZAKBTRUTV");
+                    rolGeconverteerd  = true;
+                }
+                if (zgwRolOmschrijving.getHeeftAlsVerantwoordelijke() != null 
+                		&& zgwRolOmschrijving.getHeeftAlsVerantwoordelijke().equalsIgnoreCase(zgwRol.getOmschrijvingGeneriek())) {
+                    zaak.heeftAlsVerantwoordelijke = getZdsRol(zgwZaak, zgwRolOmschrijving.getHeeftAlsVerantwoordelijke(), "ZAKBTRVRA");
+                    rolGeconverteerd  = true;
+                }                
+                if (zgwRolOmschrijving.getHeeftAlsGemachtigde() != null 
+                		&& zgwRolOmschrijving.getHeeftAlsGemachtigde().equalsIgnoreCase(zgwRol.getOmschrijvingGeneriek())) {
+                    zaak.heeftAlsGemachtigde = getZdsRol(zgwZaak, zgwRolOmschrijving.getHeeftAlsGemachtigde(), "ZAKBTRGMC");
+                    rolGeconverteerd  = true;
+                }
+                if (zgwRolOmschrijving.getHeeftAlsOverigBetrokkene() != null 
+                		&& zgwRolOmschrijving.getHeeftAlsOverigBetrokkene().equalsIgnoreCase(zgwRol.getOmschrijvingGeneriek())) {
+                    zaak.heeftAlsOverigBetrokkene = getZdsRol(zgwZaak, zgwRolOmschrijving.getHeeftAlsOverigBetrokkene(), "ZAKBTROVR");
+                    rolGeconverteerd  = true;
+                }
+				if(!rolGeconverteerd) {
+					throw new ConverterException("Rol: " + zgwRol.getOmschrijvingGeneriek() + " niet geconverteerd worden");
+				}
+            }                        
             ZgwZaakType zgwZaakType = this.getZaakTypeByUrl(zgwZaak.zaaktype);
-            zdsZakLa01GeefZaakDetails.antwoord.zaak.isVan = new ZdsRol();
-            zdsZakLa01GeefZaakDetails.antwoord.zaak.isVan.entiteittype = "ZAKZKT";
-            zdsZakLa01GeefZaakDetails.antwoord.zaak.isVan.gerelateerde = new ZdsGerelateerde();
-            zdsZakLa01GeefZaakDetails.antwoord.zaak.isVan.gerelateerde.entiteittype = "ZKT";
-            zdsZakLa01GeefZaakDetails.antwoord.zaak.isVan.gerelateerde.code = zgwZaakType.identificatie;
-            zdsZakLa01GeefZaakDetails.antwoord.zaak.isVan.gerelateerde.omschrijving = zgwZaakType.omschrijving;
+            zaak.isVan = new ZdsRol();
+            zaak.isVan.entiteittype = "ZAKZKT";
+            zaak.isVan.gerelateerde = new ZdsGerelateerde();
+            zaak.isVan.gerelateerde.entiteittype = "ZKT";
+            zaak.isVan.gerelateerde.code = zgwZaakType.identificatie;
+            zaak.isVan.gerelateerde.omschrijving = zgwZaakType.omschrijving;
 
             if (zgwZaak.getKenmerk() != null && !zgwZaak.getKenmerk().isEmpty()) {
-                zdsZakLa01GeefZaakDetails.antwoord.zaak.kenmerk = new ArrayList<>();
-                zgwZaak.getKenmerk().forEach(zgwKenmerk -> zdsZakLa01GeefZaakDetails.antwoord.zaak.kenmerk.add(modelMapper.map(zgwKenmerk, ZdsZaak.Kenmerk.class)));
+                zaak.kenmerk = new ArrayList<>();
+                for(ZgwKenmerk zgwKenmerk : zgwZaak.getKenmerk()) {
+                	zaak.kenmerk.add(modelMapper.map(zgwKenmerk, ZdsZaak.Kenmerk.class));
+                }
             }
 
-            zdsZakLa01GeefZaakDetails.antwoord.zaak.opschorting = zgwZaak.getOpschorting() != null ? modelMapper.map(zgwZaak.getOpschorting(), ZdsZaak.Opschorting.class) : null;
-            zdsZakLa01GeefZaakDetails.antwoord.zaak.verlenging = zgwZaak.getVerlenging() != null ? modelMapper.map(zgwZaak.getVerlenging(), ZdsZaak.Verlenging.class) : null;
+            zaak.opschorting = zgwZaak.getOpschorting() != null ? modelMapper.map(zgwZaak.getOpschorting(), ZdsZaak.Opschorting.class) : null;
+            zaak.verlenging = zgwZaak.getVerlenging() != null ? modelMapper.map(zgwZaak.getVerlenging(), ZdsZaak.Verlenging.class) : null;
 
             var zgwStatussen = zgwClient.getStatussenByZaakUrl(zgwZaak.url);
             
+            // TODO: wat gebeurd hier?
             var zdsStatussen = zgwStatussen
             .stream()
             .map(zgwStatus -> {
@@ -302,31 +332,10 @@ public class ZaakService {
             })
             .collect(Collectors.toList());
             
-            zdsZakLa01GeefZaakDetails.antwoord.zaak.heeft = zdsStatussen;
-            return zdsZakLa01GeefZaakDetails;
+            zaak.heeft = zdsStatussen;
+            return zaak;
         }
-        else if (zdsZakLv01.gelijk != null && zdsZakLv01.gelijk.heeftAlsInitiator != null && zdsZakLv01.gelijk.heeftAlsInitiator.gerelateerde != null && zdsZakLv01.gelijk.heeftAlsInitiator.gerelateerde.identificatie != null) {
-        	var gerelateerdeidentificatie = zdsZakLv01.gelijk.heeftAlsInitiator.gerelateerde.identificatie;
-        	if(!gerelateerdeidentificatie.startsWith("11")) {
-        		throw new ConverterException("gerelateerdeidentificatie: '" + gerelateerdeidentificatie + "' moet beginnen met '11' gevolgd door het bsnnummer");
-        	}
-        	var bsn = gerelateerdeidentificatie.substring(2);
-        	var zgwRollen = zgwClient.getRollenByBsn(bsn);
-        	var zdsZaken = new ArrayList<ZdsZaak>();
-        	for(ZgwRol rol : zgwRollen) {
-        		var zgwRolType = zgwClient.getRolTypeByUrl(rol.roltype);
-        		ZgwRolOmschrijving zgwRolOmschrijving = this.configService.getConfiguratie().getZgwRolOmschrijving();
-        		if(zgwRolType.omschrijving.equals(zgwRolOmschrijving.getHeeftAlsInitiator())) {
-        			// hier moeten we dus een zaak toevoegen aan zdsZaken
-        			var zgwZaak = zgwClient.getZaakByUrl(rol.zaak);
-        			log.info("TODO: toevoegen van zaak met zaakidentificatie:" + zgwZaak.identificatie);
-        		}
-        	}        	
-        	throw new ConverterException("todo: ophalen bij bsnnummer:" + bsn);
-        }
-        else throw new ConverterException("Niet ondersteunde vraag binnengekregen");
-    }
-
+    
     private ZgwZaakType getZaakTypeByUrl(String url) {
         return zgwClient.getZaakTypes(null)
                 .stream()
