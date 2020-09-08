@@ -193,6 +193,7 @@ public class ZaakService {
         result.inhoud.contentType = mimeType;
         result.inhoud.bestandsnaam = zgwEnkelvoudigInformatieObject.bestandsnaam;
         result.inhoud.value = inhoud;
+        result.link = null;
         return result;
         
 /*        
