@@ -57,8 +57,8 @@ public class ZGWClient {
     @Value("${zgw.endpoint.informatieobjecttype:/catalogi/api/v1/informatieobjecttypen}")
     private String endpointInformatieobjecttype;
 
-    @Autowired
-    HttpService httpService;
+    //@Autowired
+    //HttpService httpService;
 
     @Autowired
     RestTemplateService restTemplateService;
@@ -188,7 +188,24 @@ public class ZGWClient {
     }
 
     public String getBas64Inhoud(String url)  {
-        return httpService.downloadFile(url);
+        log.debug("GET(BASE64): " + url);
+        HttpEntity entity = new HttpEntity(restTemplateService.getHeaders());
+        try {
+        	ResponseEntity<byte[]> response = restTemplateService.getRestTemplate().exchange(url, HttpMethod.GET, entity, byte[].class);
+
+			byte[] data =  response.getBody();
+			log.info("BASE64 INHOUD DOWNLOADED:" + data.length +  " bytes");
+			return java.util.Base64.getEncoder().encodeToString(data);        	
+
+		} catch (HttpStatusCodeException hsce) {
+			var response = hsce.getResponseBodyAsString().replace("{", "{\n").replace("\",", "\",\n").replace("\"}", "\"\n}");
+			var details = "--------------GET:\n" + url + "\n--------------RESPONSE:\n" + response; 
+			log.warn("GET(BASE64) naar OpenZaak: " + url + " gaf foutmelding:\n" + details, hsce);
+			throw new ConverterException("GET naar OpenZaak: " + url + " gaf foutmelding:" + hsce.toString(), details, hsce);
+		} catch (org.springframework.web.client.ResourceAccessException rae) {
+			log.warn("GET(BASE64) naar OpenZaak: " + url + " niet geslaagd", rae);
+			throw new ConverterException("GET naar OpenZaak: " + url + " niet geslaagd", rae);
+		}        
     }
 
 
