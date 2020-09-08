@@ -55,7 +55,10 @@ public abstract class RequestHandler {
         	fo03.body.details = stacktrace;
         }
         // maxlength
-        if(fo03.body.details.length() >= 1000) fo03.body.details = fo03.body.details.substring(0, 1000);        
+        if(fo03.body.details != null && fo03.body.details.length() >= 1000) {
+        	
+        	fo03.body.details = fo03.body.details.substring(0, 1000);        
+        }
         fo03.body.detailsXML = new ZdsDetailsXML();
         // TODO: put the xml in DetailsXml, without escaping
         fo03.body.detailsXML.todo = converter.getContext().getRequestBody();
