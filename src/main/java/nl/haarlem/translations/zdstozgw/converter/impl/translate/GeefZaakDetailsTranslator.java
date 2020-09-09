@@ -38,8 +38,7 @@ public class GeefZaakDetailsTranslator extends Converter {
 		zdsResponse.stuurgegevens.berichtcode = "La01";
 		zdsResponse.parameters = new ZdsParameters(zdsZakLv01.parameters);
 		zdsResponse.antwoord = new ZdsZakLa01GeefZaakDetails.Antwoord();
-
-        
+       
 		if (zdsZakLv01.gelijk != null && zdsZakLv01.gelijk.identificatie != null) {
 			zdsResponse.antwoord.zaak = new ArrayList<ZdsZaak>();
 			zdsResponse.antwoord.zaak.add(this.getZaakService().getZaakDetailsByIdentificatie(zdsZakLv01.gelijk.identificatie));

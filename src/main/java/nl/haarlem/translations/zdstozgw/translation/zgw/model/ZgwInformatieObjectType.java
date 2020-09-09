@@ -12,9 +12,9 @@ public class ZgwInformatieObjectType {
     @SerializedName("uuid")
     @Expose
     public String uuid;
-    @SerializedName("identificatie")
-    @Expose
-    public String identificatie;
+    //@SerializedName("identificatie")
+    //@Expose
+    //public String identificatie;
     @SerializedName("omschrijving")
     @Expose
     public String omschrijving;

@@ -406,9 +406,9 @@ public class ZGWClient {
         return zgwZaak;
     }
 
-    public ZgwZaakInformatieObject getZgwZaakInformatieObject(ZgwEnkelvoudigInformatieObject zgwEnkelvoudigInformatieObject) {
+    public ZgwZaakInformatieObject getZgwZaakInformatieObjectByEnkelvoudigInformatieObjectUrl(String url) {
         Map<String, String> parameters = new HashMap();
-        parameters.put("informatieobject", zgwEnkelvoudigInformatieObject.getUrl());
+        parameters.put("informatieobject", url);
         return this.getZgwZaakInformatieObjects(parameters).get(0);
     }
 
@@ -491,4 +491,11 @@ public class ZGWClient {
         }
         return null;
     }
+
+	public ZgwInformatieObjectType getZgwInformatieObjectTypeByÙrl(String url) {
+        var documentType = get(url, null);
+        Gson gson = new Gson();
+        ZgwInformatieObjectType result = gson.fromJson(documentType, ZgwInformatieObjectType.class);
+        return result;
+	}
 }

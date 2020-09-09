@@ -174,25 +174,36 @@ public class ZaakService {
 //    	var documentIdentificatie = zdsEdcLv01.gelijk.identificatie;
 //    public ZdsEdcLa01GeefZaakdocumentLezen getZaakDocumentLezen(String documentIdentificatie)  {
     public ZdsZaakDocumentRelevant getZaakDocumentLezen(String documentIdentificatie)  {
-
     	log.info("getZgwEnkelvoudigInformatieObject:" + documentIdentificatie);
         ZgwEnkelvoudigInformatieObject zgwEnkelvoudigInformatieObject = zgwClient.getZgwEnkelvoudigInformatieObjectByIdentiticatie(documentIdentificatie);
         if(zgwEnkelvoudigInformatieObject == null) {
         	throw new ConverterException("ZgwEnkelvoudigInformatieObject #" + documentIdentificatie + " could not be found");
-        }
-        var inhoud = zgwClient.getBas64Inhoud(zgwEnkelvoudigInformatieObject.getInhoud());
-
-        //Get zaakinformatieobject, this contains the link to the zaak
-        var zgwZaakInformatieObject = zgwClient.getZgwZaakInformatieObject(zgwEnkelvoudigInformatieObject);
-        //Get the zaak, to get the zaakidentificatie
+        }        
+        ZgwInformatieObjectType documenttype = zgwClient.getZgwInformatieObjectTypeByÙrl(zgwEnkelvoudigInformatieObject.informatieobjecttype);
+        if(documenttype == null) {
+        	throw new ConverterException("getZgwInformatieObjectType #" + zgwEnkelvoudigInformatieObject.informatieobjecttype + " could not be found");
+        }        
+        var zgwZaakInformatieObject = zgwClient.getZgwZaakInformatieObjectByEnkelvoudigInformatieObjectUrl(zgwEnkelvoudigInformatieObject.getUrl());
+        if(zgwZaakInformatieObject == null) {
+        	throw new ConverterException("getZgwZaakInformatieObjectByUrl #" + zgwEnkelvoudigInformatieObject.getUrl() + " could not be found");
+        }        
         var zgwZaak = zgwClient.getZaakByUrl(zgwZaakInformatieObject.getZaak());
+        if(zgwZaak == null) {
+        	throw new ConverterException("getZaakByUrl #" + zgwZaakInformatieObject.getZaak() + " could not be found");
+        }        
+        String inhoud = zgwClient.getBas64Inhoud(zgwEnkelvoudigInformatieObject.getInhoud());
+        if(inhoud == null) {
+        	throw new ConverterException("getBas64Inhoud #" + zgwEnkelvoudigInformatieObject.getInhoud() + " could not be found");
+        }        
+        
         
         ZdsZaakDocumentRelevant result = modelMapper.map(zgwEnkelvoudigInformatieObject, ZdsZaakDocumentRelevant.class);
         result.inhoud = new ZdsInhoud();
         var mimeType = URLConnection.guessContentTypeFromName(zgwEnkelvoudigInformatieObject.bestandsnaam);
-        result.omschrijving = zgwEnkelvoudigInformatieObject.beschrijving;
+        // documenttype
+        result.omschrijving = documenttype.omschrijving;
         result.titel = zgwEnkelvoudigInformatieObject.titel;
-        //result.beschrijving = zgwEnkelvoudigInformatieObject.beschrijving;
+        result.beschrijving = zgwEnkelvoudigInformatieObject.beschrijving;
         result.formaat = zgwEnkelvoudigInformatieObject.bestandsnaam.substring(zgwEnkelvoudigInformatieObject.bestandsnaam.lastIndexOf(".") + 1);
         result.inhoud.contentType = mimeType;
         result.inhoud.bestandsnaam = zgwEnkelvoudigInformatieObject.bestandsnaam;
