@@ -23,6 +23,12 @@ public class ZdsZaakDocument extends ZdsZaakDocumentIdentificatie {
     @XmlElement(namespace = ZKN, nillable = true)
     public String titel;
 
+	@XmlElement(namespace = ZKN, nillable = true)    
+	public String beschrijving;
+    
+	@XmlElement(namespace = ZKN, nillable = true)    
+	public String formaat;	    
+    
     @XmlElement(namespace = ZKN, nillable = true)
     public String taal;
     

@@ -15,5 +15,5 @@ public class ZdsAntwoord extends ZdsObject {
 //    public String entiteittype = "EDC";
     
     @XmlElement(namespace = ZKN, name = "object")        
-    public ZdsZaakDocument object;	
+    public ZdsZaakDocumentRelevant object;	
 }

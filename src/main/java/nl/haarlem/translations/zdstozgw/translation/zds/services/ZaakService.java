@@ -173,7 +173,7 @@ public class ZaakService {
         //Get Enkelvoudig informatie object. This contains document meta data and a link to the document
 //    	var documentIdentificatie = zdsEdcLv01.gelijk.identificatie;
 //    public ZdsEdcLa01GeefZaakdocumentLezen getZaakDocumentLezen(String documentIdentificatie)  {
-    public ZdsZaakDocument getZaakDocumentLezen(String documentIdentificatie)  {
+    public ZdsZaakDocumentRelevant getZaakDocumentLezen(String documentIdentificatie)  {
 
     	log.info("getZgwEnkelvoudigInformatieObject:" + documentIdentificatie);
         ZgwEnkelvoudigInformatieObject zgwEnkelvoudigInformatieObject = zgwClient.getZgwEnkelvoudigInformatieObjectByIdentiticatie(documentIdentificatie);
@@ -186,15 +186,40 @@ public class ZaakService {
         var zgwZaakInformatieObject = zgwClient.getZgwZaakInformatieObject(zgwEnkelvoudigInformatieObject);
         //Get the zaak, to get the zaakidentificatie
         var zgwZaak = zgwClient.getZaakByUrl(zgwZaakInformatieObject.getZaak());
-
-        ZdsZaakDocument result = modelMapper.map(zgwEnkelvoudigInformatieObject, ZdsZaakDocument.class);
+        
+        ZdsZaakDocumentRelevant result = modelMapper.map(zgwEnkelvoudigInformatieObject, ZdsZaakDocumentRelevant.class);
         result.inhoud = new ZdsInhoud();
         var mimeType = URLConnection.guessContentTypeFromName(zgwEnkelvoudigInformatieObject.bestandsnaam);
+        result.omschrijving = zgwEnkelvoudigInformatieObject.beschrijving;
+        result.titel = zgwEnkelvoudigInformatieObject.titel;
+        //result.beschrijving = zgwEnkelvoudigInformatieObject.beschrijving;
+        result.formaat = zgwEnkelvoudigInformatieObject.bestandsnaam.substring(zgwEnkelvoudigInformatieObject.bestandsnaam.lastIndexOf(".") + 1);
         result.inhoud.contentType = mimeType;
         result.inhoud.bestandsnaam = zgwEnkelvoudigInformatieObject.bestandsnaam;
         result.inhoud.value = inhoud;
         result.link = null;
+        result.isRelevantVoor = new ZdsIsRelevantVoor();
+        result.isRelevantVoor.gerelateerde = new ZdsGerelateerde();
+        result.isRelevantVoor.gerelateerde.identificatie = zgwZaak.identificatie;
+        result.isRelevantVoor.gerelateerde.omschrijving = zgwZaak.omschrijving;
+        
         return result;
+        
+/*
+               <dct.omschrijving>documenttype</dct.omschrijving>
+               <titel>titel</titel>
+               <beschrijving xsi:nil="true" noValue="geenWaarde"/>
+               <formaat>formaat</formaat>
+               
+               <isRelevantVoor entiteittype="EDCZAK">
+                  <gerelateerde entiteittype="ZAK">
+                     <identificatie>1900208787</identificatie>
+                     <omschrijving xsi:nil="true" noValue="waardeOnbekend"/>
+                  </gerelateerde>
+               </isRelevantVoor>
+                */
+        
+        
         
 /*        
         var edcLa01 = new ZdsEdcLa01GeefZaakdocumentLezen(zdsEdcLv01.stuurgegevens);
@@ -269,27 +294,27 @@ public class ZaakService {
             for(ZgwRol zgwRol : zgwClient.getRollenByZaakUrl(zgwZaak.url)) {
             	var rolGeconverteerd = false;
                 if (zgwRolOmschrijving.getHeeftAlsInitiator() != null 
-                		&& zgwRolOmschrijving.getHeeftAlsInitiator().equalsIgnoreCase(zgwRol.getOmschrijvingGeneriek())) {
+                		&& zgwRolOmschrijving.getHeeftAlsInitiator().equalsIgnoreCase(zgwRol.getRoltoelichting())) {
                     zaak.heeftAlsInitiator = getZdsRol(zgwZaak, zgwRolOmschrijving.getHeeftAlsInitiator(), "ZAKBTRINI");
                     rolGeconverteerd  = true;
                 }            	
 				if (zgwRolOmschrijving.getHeeftAlsBelanghebbende() != null 
-                		&& zgwRolOmschrijving.getHeeftAlsBelanghebbende().equalsIgnoreCase(zgwRol.getOmschrijvingGeneriek())) {
+                		&& zgwRolOmschrijving.getHeeftAlsBelanghebbende().equalsIgnoreCase(zgwRol.getRoltoelichting())) {
                     zaak.heeftAlsBelanghebbende = getZdsRol(zgwZaak, zgwRolOmschrijving.getHeeftAlsBelanghebbende(), "ZAKBTRBLH");
                     rolGeconverteerd  = true;
                 }
                 if (zgwRolOmschrijving.getHeeftAlsUitvoerende() != null 
-                		&& zgwRolOmschrijving.getHeeftAlsUitvoerende().equalsIgnoreCase(zgwRol.getOmschrijvingGeneriek())) {
+                		&& zgwRolOmschrijving.getHeeftAlsUitvoerende().equalsIgnoreCase(zgwRol.getRoltoelichting())) {
                     zaak.heeftAlsUitvoerende = getZdsRol(zgwZaak, zgwRolOmschrijving.getHeeftAlsUitvoerende(), "ZAKBTRUTV");
                     rolGeconverteerd  = true;
                 }
                 if (zgwRolOmschrijving.getHeeftAlsVerantwoordelijke() != null 
-                		&& zgwRolOmschrijving.getHeeftAlsVerantwoordelijke().equalsIgnoreCase(zgwRol.getOmschrijvingGeneriek())) {
+                		&& zgwRolOmschrijving.getHeeftAlsVerantwoordelijke().equalsIgnoreCase(zgwRol.getRoltoelichting())) {
                     zaak.heeftAlsVerantwoordelijke = getZdsRol(zgwZaak, zgwRolOmschrijving.getHeeftAlsVerantwoordelijke(), "ZAKBTRVRA");
                     rolGeconverteerd  = true;
                 }                
                 if (zgwRolOmschrijving.getHeeftAlsGemachtigde() != null 
-                		&& zgwRolOmschrijving.getHeeftAlsGemachtigde().equalsIgnoreCase(zgwRol.getOmschrijvingGeneriek())) {
+                		&& zgwRolOmschrijving.getHeeftAlsGemachtigde().equalsIgnoreCase(zgwRol.getRoltoelichting())) {
                     zaak.heeftAlsGemachtigde = getZdsRol(zgwZaak, zgwRolOmschrijving.getHeeftAlsGemachtigde(), "ZAKBTRGMC");
                     rolGeconverteerd  = true;
                 }
@@ -299,7 +324,7 @@ public class ZaakService {
                     rolGeconverteerd  = true;
                 }
 				if(!rolGeconverteerd) {
-					throw new ConverterException("Rol: " + zgwRol.getOmschrijvingGeneriek() + " niet geconverteerd worden");
+					throw new ConverterException("Rol: " + zgwRol.getOmschrijvingGeneriek() + " niet geconverteerd worden (" + zgwRol.uuid + ")");
 				}
             }                        
             ZgwZaakType zgwZaakType = this.getZaakTypeByUrl(zgwZaak.zaaktype);
@@ -322,7 +347,7 @@ public class ZaakService {
 
             var zgwStatussen = zgwClient.getStatussenByZaakUrl(zgwZaak.url);
             
-            // TODO: wat gebeurd hier?
+            // TODO: wat gebeurd hier?            
             var zdsStatussen = zgwStatussen
             .stream()
             .map(zgwStatus -> {

@@ -44,7 +44,7 @@ public class GeefZaakDetailsTranslator extends Converter {
 			zdsResponse.antwoord.zaak = new ArrayList<ZdsZaak>();
 			zdsResponse.antwoord.zaak.add(this.getZaakService().getZaakDetailsByIdentificatie(zdsZakLv01.gelijk.identificatie));
 		}
-		if(zdsZakLv01.gelijk != null && zdsZakLv01.gelijk.heeftAlsInitiator != null && zdsZakLv01.gelijk.heeftAlsInitiator.gerelateerde != null && zdsZakLv01.gelijk.heeftAlsInitiator.gerelateerde.identificatie != null) {
+		else if(zdsZakLv01.gelijk != null && zdsZakLv01.gelijk.heeftAlsInitiator != null && zdsZakLv01.gelijk.heeftAlsInitiator.gerelateerde != null && zdsZakLv01.gelijk.heeftAlsInitiator.gerelateerde.identificatie != null) {
         	var gerelateerdeidentificatie = zdsZakLv01.gelijk.heeftAlsInitiator.gerelateerde.identificatie;
         	if(!gerelateerdeidentificatie.startsWith("11")) {
         		throw new ConverterException("gerelateerdeidentificatie: '" + gerelateerdeidentificatie + "' moet beginnen met '11' gevolgd door het bsnnummer");

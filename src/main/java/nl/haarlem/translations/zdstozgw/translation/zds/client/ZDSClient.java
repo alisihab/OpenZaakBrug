@@ -40,8 +40,7 @@ public class ZDSClient {
 			post.setRequestEntity(requestEntity);
 			var httpclient = new org.apache.commons.httpclient.HttpClient();
 			int responsecode = httpclient.executeMethod(post);
-			String zdsResponseBody = post.getResponseBodyAsString();
-			
+			String zdsResponseBody = post.getResponseBodyAsString();			
 	        return new ResponseEntity<>(zdsResponseBody, HttpStatus.valueOf(responsecode));	
 		} catch (IOException ce) {
 			throw new ConverterException("Requesting url:" + zdsUrl + " with soapaction: " + zdsSoapAction , ce);

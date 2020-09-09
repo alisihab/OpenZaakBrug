@@ -14,9 +14,8 @@ import static nl.haarlem.translations.zdstozgw.translation.zds.model.namespace.N
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ZdsGerelateerde  extends ZdsObject {
 
-    @XmlAttribute(namespace = STUF)
-    public String entiteittype;
-
+	@XmlAttribute(namespace = STUF)
+	public String entiteittype = "ZAK";	
     @XmlElement(namespace = ZKN)
     public String identificatie;
 
@@ -26,7 +25,7 @@ public class ZdsGerelateerde  extends ZdsObject {
     @XmlElement(namespace = ZKN, nillable = true)
     public String omschrijving;
 
-    @XmlElement(namespace = ZKN, nillable = true)
+    @XmlElement(namespace = ZKN)
     public String code;
 
     @XmlElement(namespace = ZKN)

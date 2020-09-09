@@ -10,9 +10,10 @@ import static nl.haarlem.translations.zdstozgw.translation.zds.model.namespace.N
 
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ZdsIsRelevantVoor  extends ZdsObject {
-    @XmlAttribute(namespace = STUF)
-    public String entiteittype;
 
+	@XmlAttribute(namespace = STUF)
+	public String entiteittype = "EDCZAK";	
+	
     @XmlElement(namespace = ZKN)
     public ZdsGerelateerde gerelateerde;
 
