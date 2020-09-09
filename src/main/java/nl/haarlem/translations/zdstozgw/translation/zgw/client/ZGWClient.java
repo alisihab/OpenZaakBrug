@@ -159,7 +159,7 @@ public class ZGWClient {
     }
 
     public ZgwEnkelvoudigInformatieObject getZgwEnkelvoudigInformatieObjectByIdentiticatie(String identificatie) {
-    	log.info("get zaakdocument #" + identificatie);
+    	log.debug("get zaakdocument #" + identificatie);
         var documentJson = get(baseUrl + endpointEnkelvoudiginformatieobject + "?identificatie=" + identificatie, null);
         Type type = new TypeToken<QueryResult<ZgwEnkelvoudigInformatieObject>>() {
         }.getType();
@@ -169,7 +169,7 @@ public class ZGWClient {
         if (queryResult.getResults().size() == 1) {
             return queryResult.getResults().get(0);
         }
-        log.info("zaakdocument #" + identificatie + " not found!");
+        log.debug("zaakdocument #" + identificatie + " not found!");
         return null;
     }
 
@@ -194,7 +194,7 @@ public class ZGWClient {
         	ResponseEntity<byte[]> response = restTemplateService.getRestTemplate().exchange(url, HttpMethod.GET, entity, byte[].class);
 
 			byte[] data =  response.getBody();
-			log.info("BASE64 INHOUD DOWNLOADED:" + data.length +  " bytes");
+			log.debug("BASE64 INHOUD DOWNLOADED:" + data.length +  " bytes");
 			return java.util.Base64.getEncoder().encodeToString(data);        	
 
 		} catch (HttpStatusCodeException hsce) {

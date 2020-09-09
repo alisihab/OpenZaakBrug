@@ -24,8 +24,9 @@ public class VoegZaakdocumentToeTranslator extends Converter {
 
 	@Override
 	public ResponseEntity<?> execute() throws ResponseStatusException {
-		var zdsEdcLk01 = (ZdsEdcLk01) this.getZdsDocument();
-		this.getZaakService().voegZaakDocumentToe(zdsEdcLk01);		
+		var zdsEdcLk01 = (ZdsEdcLk01) this.getZdsDocument();		
+		var zdsInformatieObject = zdsEdcLk01.objects.get(0);		
+		this.getZaakService().voegZaakDocumentToe(this.getZaakService().getRSIN(zdsEdcLk01.stuurgegevens.zender.organisatie), zdsInformatieObject);		
 		var bv03 = new ZdsBv03(zdsEdcLk01.stuurgegevens);
 		var response = XmlUtils.getSOAPMessageFromObject(bv03);   
         return new ResponseEntity<>(response, HttpStatus.OK);	

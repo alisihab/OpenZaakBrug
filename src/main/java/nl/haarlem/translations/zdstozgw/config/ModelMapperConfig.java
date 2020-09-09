@@ -255,7 +255,7 @@ public class ModelMapperConfig {
 						date = cal.getTime();
 					}
 					var zgwDate = zgwDateFormatter.format(date);
-					log.info("convertStufDateToZgwDate: " + stufDate + " (amsterdam) --> " + zgwDate
+					log.debug("convertStufDateToZgwDate: " + stufDate + " (amsterdam) --> " + zgwDate
 							+ "(gmt) with offset minutes:" + timeoffset + "(date:" + date + ")");
 					return zgwDate;
 
@@ -340,10 +340,10 @@ public class ModelMapperConfig {
 				try {
 					DateTimeFormatter zdsFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 					var gmtDate = LocalDate.parse(stufDateTime, zdsFormatter);
-					log.info("convertZgwDateToStufDate parsed: " + gmtDate.toString());
+					log.debug("convertZgwDateToStufDate parsed: " + gmtDate.toString());
 					DateTimeFormatter stufFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");					
 					var result = gmtDate.format(stufFormatter);
-					log.info("convertZgwDateToStufDate result: " + result);
+					log.debug("convertZgwDateToStufDate result: " + result);
 					return result;
 				} catch (Exception e) {
 					log.warn("error parsing the string:" + stufDateTime, e);
@@ -359,24 +359,21 @@ public class ModelMapperConfig {
 
 			@Override
 			protected String convert(String stufDateTime) {
-				log.info("convertZgwDateTimeToStufDateTime:" + stufDateTime);
+				log.debug("convertZgwDateTimeToStufDateTime:" + stufDateTime);
 				if (stufDateTime == null) {
 					return null;
 				}
-				//if (stufDateTime.length() == 10) {
-				//	stufDateTime += "T00:00:00.000000Z";
-				//}
 				if (stufDateTime.length() != 27) {
 					throw new ConverterException("Verkeerde lengte(" + stufDateTime.length() + ", verwacht 27) van de datum:" + stufDateTime);
 				}
 				try {
 					DateTimeFormatter zdsFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'");
 					ZonedDateTime gmtDate = LocalDateTime.parse(stufDateTime, zdsFormatter).atZone(ZoneId.of("GMT"));
-					log.info("convertZgwDateTimeToStufDateTime parsed: " + gmtDate.toString());
+					log.debug("convertZgwDateTimeToStufDateTime parsed: " + gmtDate.toString());
 					gmtDate = gmtDate.plusMinutes(-timeoffset);
-					log.info("convertZgwDateTimeToStufDateTime substractedoffset: " + gmtDate.toString());
+					log.debug("convertZgwDateTimeToStufDateTime substractedoffset: " + gmtDate.toString());
 					OffsetDateTime cetDate = gmtDate.toOffsetDateTime();
-					log.info("convertZgwDateTimeToStufDateTime to cet timezone: " + cetDate.toString());
+					log.debug("convertZgwDateTimeToStufDateTime to cet timezone: " + cetDate.toString());
 					DateTimeFormatter stufFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");					
 					return gmtDate.format(stufFormatter);
 				} catch (Exception e) {

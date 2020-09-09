@@ -6,16 +6,13 @@ import lombok.Data;
 
 @Data
 public class ZgwInformatieObjectType {
-    @SerializedName("url")
+    
     @Expose
     public String url;
-    @SerializedName("uuid")
+    
     @Expose
     public String uuid;
-    //@SerializedName("identificatie")
-    //@Expose
-    //public String identificatie;
-    @SerializedName("omschrijving")
+
     @Expose
     public String omschrijving;
 }
