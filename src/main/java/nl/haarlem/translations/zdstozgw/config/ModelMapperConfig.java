@@ -330,7 +330,7 @@ public class ModelMapperConfig {
 
 			@Override
 			protected String convert(String stufDateTime) {
-				log.info("convertZgwDateToStufDate:" + stufDateTime);
+				log.debug("convertZgwDateToStufDate:" + stufDateTime);
 				if (stufDateTime == null) {
 					return null;
 				}

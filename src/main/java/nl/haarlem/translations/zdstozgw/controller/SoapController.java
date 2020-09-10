@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.RequestContextHolder;
 
 import java.lang.invoke.MethodHandles;
 
@@ -48,9 +50,12 @@ public class SoapController {
 			@RequestBody String body) {
 
 		var path = modus + "/" +  version  + "/" +  protocol  + "/" + endpoint;
-		log.info("Processing request for path: /" + path + "/ with soapaction: " + soapAction);		
-
-		var context = new RequestHandlerContext(path, soapAction.replace("\"", ""), body);		
+		var context = new RequestHandlerContext(path, soapAction.replace("\"", ""), body);
+		log.info("Processing request for path: /" + path + "/ with soapaction: " + soapAction + " with referentienummer:" + context.getReferentienummer());
+		
+		//TODO: lelijk en het is geen php, moet anders naar nl.haarlem.translations.zdstozgw.config.SpringContext.LoggingRequestInterceptor
+		RequestContextHolder.getRequestAttributes().setAttribute("referentienummer", context.getReferentienummer(), RequestAttributes.SCOPE_REQUEST);
+		
 		var converter = this.converterFactory.getConverter(context);		
         var handler = requestHandlerFactory.getRequestHandler(converter);		
 		return handler.execute(); 

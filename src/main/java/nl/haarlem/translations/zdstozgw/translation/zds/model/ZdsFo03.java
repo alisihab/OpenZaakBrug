@@ -20,8 +20,8 @@ public class ZdsFo03 extends ZdsStufDocument {
     public ZdsFo03() {
 	}
 
-    public ZdsFo03(ZdsStuurgegevens stuurgegevens) {
-    	this.stuurgegevens = new ZdsStuurgegevens(stuurgegevens);    	
+    public ZdsFo03(ZdsStuurgegevens stuurgegevens, String referentienummer) {
+    	this.stuurgegevens = new ZdsStuurgegevens(stuurgegevens, referentienummer);    	
     	this.stuurgegevens.crossRefnummer = stuurgegevens.referentienummer;
     	this.stuurgegevens.berichtcode = "Fo03";    	
     }

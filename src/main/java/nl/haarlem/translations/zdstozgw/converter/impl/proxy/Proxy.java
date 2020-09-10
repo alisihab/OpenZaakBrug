@@ -27,14 +27,12 @@ public class Proxy extends Converter {
 		this.zdsDocument = null;
 	}
 
-	public static ResponseEntity<?> Proxy(String url, String soapaction, String requestbody) {
-		var zdsClient= new ZDSClient();
-		log.info("relaying request to url: " + url + " with soapaction: " + soapaction);
-		return zdsClient.post(url, soapaction, requestbody);		
-	}
-	
 	@Override
 	public ResponseEntity<?> execute() throws ConverterException {
-		return Proxy.Proxy(this.getTranslation().getLegacyservice(), this.getContext().getSoapAction(), getContext().getRequestBody());
+		var url = this.getTranslation().getLegacyservice();
+		var soapaction = this.getTranslation().getLegacyservice();
+		var request = context.getRequestBody();
+		log.info("relaying request to url: " + url + " with soapaction: " + soapaction + " request-size:" + request.length());
+		return this.zaakService.zdsClient.post(url, soapaction, request);
 	}   
 }

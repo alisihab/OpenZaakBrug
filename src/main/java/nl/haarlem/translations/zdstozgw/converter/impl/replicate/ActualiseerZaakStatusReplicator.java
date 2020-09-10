@@ -33,8 +33,12 @@ public class ActualiseerZaakStatusReplicator extends ActualiseerZaakStatusTransl
 		replicator.replicateZaak(rsin,zdsZakLk01ActualiseerZaakstatus.objects.get(0).identificatie);		
 		
 		// send to legacy system
-		var legacyresponse = Proxy.Proxy(this.getTranslation().getLegacyservice(), this.getContext().getSoapAction(), getContext().getRequestBody());
-		
+		var url = this.getTranslation().getLegacyservice();
+		var soapaction = this.getTranslation().getLegacyservice();
+		var request = context.getRequestBody();
+		log.info("relaying request to url: " + url + " with soapaction: " + soapaction + " request-size:" + request.length());
+		var legacyresponse = this.zaakService.zdsClient.post(url, soapaction, request);
+
 		// quit ont error
 		if(legacyresponse.getStatusCode() != HttpStatus.OK) {
 			log.warn("Service:" + this.getTranslation().getLegacyservice() +  " SoapAction: " +   this.getContext().getSoapAction());

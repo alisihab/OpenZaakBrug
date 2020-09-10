@@ -14,7 +14,8 @@ public class RequestResponseCycle {
     @Id
     @GeneratedValue
     private long id;
-
+    private String referentienummer;
+    
     private String converterImplementation;
     private String converterTemplate;
 
@@ -31,6 +32,4 @@ public class RequestResponseCycle {
     // Wanneer we ergens in het proces een fout hebben, dan willen we die bewaren
     @Lob
     private String stackTrace;
-
-    private String httpSessionId;
 }

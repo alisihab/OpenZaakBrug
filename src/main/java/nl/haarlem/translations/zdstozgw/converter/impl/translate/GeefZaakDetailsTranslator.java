@@ -34,8 +34,9 @@ public class GeefZaakDetailsTranslator extends Converter {
 		var zdsZakLv01 = (ZdsZakLv01) this.getZdsDocument();
 
 		ZdsZakLa01GeefZaakDetails zdsResponse =  new ZdsZakLa01GeefZaakDetails();
-		zdsResponse.stuurgegevens = new ZdsStuurgegevens(zdsZakLv01.stuurgegevens);
+		zdsResponse.stuurgegevens = new ZdsStuurgegevens(zdsZakLv01.stuurgegevens, context.getReferentienummer());
 		zdsResponse.stuurgegevens.berichtcode = "La01";
+		zdsResponse.stuurgegevens.entiteittype = "ZAK";
 		zdsResponse.parameters = new ZdsParameters(zdsZakLv01.parameters);
 		zdsResponse.antwoord = new ZdsZakLa01GeefZaakDetails.Antwoord();
        

@@ -20,8 +20,8 @@ public class ZdsGenereerZaakIdentificatieDu02 extends ZdsZknDocument {
     private ZdsGenereerZaakIdentificatieDu02() {    	
     }
         
-    public ZdsGenereerZaakIdentificatieDu02(ZdsStuurgegevens zdsStuurgegevens) {
-        this.stuurgegevens = new ZdsStuurgegevens(zdsStuurgegevens);
+    public ZdsGenereerZaakIdentificatieDu02(ZdsStuurgegevens zdsStuurgegevens, String referentienummer) {
+        this.stuurgegevens = new ZdsStuurgegevens(zdsStuurgegevens, referentienummer);
         this.stuurgegevens.berichtcode = "Du02";
         this.stuurgegevens.functie = "genereerZaakidentificatie";        
     }          

@@ -27,16 +27,20 @@ public abstract class RequestHandler {
     }
 
 
-	protected ZdsFo03 getErrorZdsDocument(Exception ex, Converter convertor) {
-		log.warn("request for path: /" + converter.getContext().getUrl()+ "/ with soapaction: " + converter.getContext().getSoapAction(), ex);
-		
+    protected String getStacktrace(Exception ex) {
 		// get the stacktrace
 		var swriter = new java.io.StringWriter();
 		var pwriter = new java.io.PrintWriter(swriter);
 		ex.printStackTrace(pwriter);
 		var stacktrace = swriter.toString();			
 		 
-        var fo03 = converter.getZdsDocument() != null ? new ZdsFo03(converter.getZdsDocument().stuurgegevens) : new ZdsFo03();
+		return stacktrace;
+    }
+    
+	protected ZdsFo03 getErrorZdsDocument(Exception ex, Converter convertor) {
+		log.warn("request for path: /" + converter.getContext().getUrl()+ "/ with soapaction: " + converter.getContext().getSoapAction(), ex);
+		
+        var fo03 = converter.getZdsDocument() != null ? new ZdsFo03(converter.getZdsDocument().stuurgegevens, convertor.getContext().referentienummer) : new ZdsFo03();
         fo03.body = new ZdsFo03.Body();
         https://www.gemmaonline.nl/images/gemmaonline/4/4f/Stuf0301_-_ONV0347_%28zonder_renvooi%29.pdf
         fo03.body.code = "StUF058";
@@ -52,7 +56,7 @@ public abstract class RequestHandler {
         	fo03.body.details = ce.details;
         }	        
         else {
-        	fo03.body.details = stacktrace;
+        	fo03.body.details = getStacktrace(ex);
         }
         // maxlength
         if(fo03.body.details != null && fo03.body.details.length() >= 1000) {

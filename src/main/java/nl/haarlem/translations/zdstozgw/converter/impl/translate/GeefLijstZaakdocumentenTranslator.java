@@ -38,9 +38,9 @@ public class GeefLijstZaakdocumentenTranslator extends Converter {
 		var zaakidentificatie = zdsZakLv01.gelijk.identificatie;
 		List<ZdsHeeftRelevant> gerelateerdeDocumenten = this.getZaakService().geefLijstZaakdocumenten(zaakidentificatie);
 		
-		ZdsZakLa01LijstZaakdocumenten zdsZakLa01LijstZaakdocumenten = new ZdsZakLa01LijstZaakdocumenten(zdsZakLv01.stuurgegevens);
+		ZdsZakLa01LijstZaakdocumenten zdsZakLa01LijstZaakdocumenten = new ZdsZakLa01LijstZaakdocumenten(zdsZakLv01.stuurgegevens, context.getReferentienummer());
         zdsZakLa01LijstZaakdocumenten.antwoord = new ZdsAntwoordLijstZaakdocument();
-        zdsZakLa01LijstZaakdocumenten.stuurgegevens = new ZdsStuurgegevens(zdsZakLv01.stuurgegevens);
+        zdsZakLa01LijstZaakdocumenten.stuurgegevens = new ZdsStuurgegevens(zdsZakLv01.stuurgegevens, context.getReferentienummer());
         zdsZakLa01LijstZaakdocumenten.stuurgegevens.berichtcode = "La01";
         zdsZakLa01LijstZaakdocumenten.stuurgegevens.entiteittype = "ZAK";
         zdsZakLa01LijstZaakdocumenten.parameters  = new ZdsParameters(zdsZakLv01.parameters);

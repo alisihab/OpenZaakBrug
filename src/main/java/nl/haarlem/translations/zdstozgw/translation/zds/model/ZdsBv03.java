@@ -17,8 +17,8 @@ public class ZdsBv03 extends ZdsStufDocument {
     public ZdsBv03() {
     }
 
-    public ZdsBv03(ZdsStuurgegevens zdsStuurgegevens) {
-        this.stuurgegevens = new ZdsStuurgegevens(zdsStuurgegevens);
+    public ZdsBv03(ZdsStuurgegevens zdsStuurgegevens, String referentienummer) {
+        this.stuurgegevens = new ZdsStuurgegevens(zdsStuurgegevens, referentienummer);
         this.stuurgegevens.tijdstipBericht = StufUtils.getStufDateTime();
         this.stuurgegevens.berichtcode = "Bv03";
         this.stuurgegevens.crossRefnummer = zdsStuurgegevens.referentienummer;

@@ -32,7 +32,7 @@ public class GeefZaakdocumentLezenTranslator extends Converter {
 		var zdsEdcLv01 = (ZdsEdcLv01) this.getZdsDocument();
 		var documentIdentificatie = zdsEdcLv01.gelijk.identificatie;
 		ZdsZaakDocumentRelevant document  = this.getZaakService().getZaakDocumentLezen(documentIdentificatie);
-        var edcLa01 = new ZdsEdcLa01GeefZaakdocumentLezen(zdsEdcLv01.stuurgegevens);
+        var edcLa01 = new ZdsEdcLa01GeefZaakdocumentLezen(zdsEdcLv01.stuurgegevens, context.getReferentienummer());
         edcLa01.antwoord = new ZdsAntwoord();
         edcLa01.antwoord.object = document;
         edcLa01.parameters = new ZdsParameters(zdsEdcLv01.parameters);

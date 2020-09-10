@@ -12,65 +12,21 @@ import static nl.haarlem.translations.zdstozgw.translation.zds.model.namespace.N
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ZdsEdcLa01GeefZaakdocumentLezen extends ZdsZknDocument {
 
-/*	
-	@XmlAccessorType(XmlAccessType.FIELD)	
-    public class Antwoord {
-    	@XmlAttribute(namespace = STUF)
-        public String entiteittype = "EDC";
-        
-        @XmlElement(namespace = ZKN, name = "object")        
-        public ZdsZaakDocument object;
-	}
-*/
+
 	@XmlElement(namespace = ZKN)
     public ZdsParameters parameters;
 
     @XmlElement(namespace = ZKN, name = "antwoord")
     public ZdsAntwoord antwoord;
 
-//    @XmlElement(namespace = ZKN, name = "isRelevantVoor")
-//    public ZdsIsRelevantVoor isRelevantVoor;
-
     private ZdsEdcLa01GeefZaakdocumentLezen() {
     }
         
-	public ZdsEdcLa01GeefZaakdocumentLezen(ZdsStuurgegevens fromRequest) {
-		super(fromRequest);
+	public ZdsEdcLa01GeefZaakdocumentLezen(ZdsStuurgegevens fromRequest, String referentienummer) {
+		super(fromRequest, referentienummer);
 	    this.stuurgegevens.crossRefnummer = fromRequest.referentienummer;
 	    this.stuurgegevens.berichtcode = "La01";
 	    this.stuurgegevens.entiteittype = "EDC";
 	}       
 
-/*
-    @Data
-    @XmlAccessorType(XmlAccessType.FIELD)
-    public class Object  {
-
-    	@XmlAttribute(namespace = STUF)
-        public String entiteittype = "EDC";
-
-		@XmlElement(namespace = ZKN, name = "dct.omschrijving")
-        public String omschrijving;
-
-        @XmlElement(namespace = ZKN, name = "dct.categorie")
-        public String categorie;
-
-        @XmlElement(namespace = ZKN)
-        public Inhoud inhoud;
-
-        @Data
-        @XmlAccessorType(XmlAccessType.FIELD)
-        public class Inhoud {
-
-            @XmlAttribute(namespace = MIME)
-            public String contentType;
-
-            @XmlAttribute(namespace = ZKN)
-            public String bestandsnaam;
-
-            @XmlValue
-            public String inhoud;
-        }        
-    }
-*/
 }

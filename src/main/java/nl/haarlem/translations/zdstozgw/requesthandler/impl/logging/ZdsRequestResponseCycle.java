@@ -6,17 +6,18 @@ import javax.persistence.*;
 
 @Entity
 @Data
-public class ZgwRequestResponseCycle {
+public class ZdsRequestResponseCycle {
     @Id
     @GeneratedValue
     private long id;
     private String referentienummer;    
 
-    private String zgwMethod;    
-    private String zgwUrl;
+    private String zdsMethod;    
+    private String zdsUrl;
+    private String zdsSoapAction;
     @Lob
-    private String zgwRequestBody;
-    private int zgwResponseCode;
+    private String zdsRequestBody;
+    private int zdsResponseCode;
     @Lob
-    private String zgwResponseBody;
+    private String zdsResponseBody;    
 }

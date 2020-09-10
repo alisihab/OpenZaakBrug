@@ -13,9 +13,8 @@ abstract public class ZdsZknDocument extends  ZdsObject {
     protected ZdsZknDocument() {    	
     }
     
-    public ZdsZknDocument(ZdsStuurgegevens fromRequest) {
-        this.stuurgegevens = new ZdsStuurgegevens(fromRequest);
-        this.stuurgegevens.tijdstipBericht = StufUtils.getStufDateTime();
-        this.stuurgegevens.referentienummer = java.util.UUID.randomUUID().toString();    
+    public ZdsZknDocument(ZdsStuurgegevens fromRequest, String referentienummer) {
+        this.stuurgegevens = new ZdsStuurgegevens(fromRequest, referentienummer);
+        this.stuurgegevens.tijdstipBericht = StufUtils.getStufDateTime();    
     }
 }

@@ -20,8 +20,8 @@ public class ZdsGenereerDocumentIdentificatieDu02 extends ZdsZknDocument{
     private ZdsGenereerDocumentIdentificatieDu02() {
     }
         
-    public ZdsGenereerDocumentIdentificatieDu02(ZdsStuurgegevens zdsStuurgegevens) {
-        this.stuurgegevens = new ZdsStuurgegevens(zdsStuurgegevens);
+    public ZdsGenereerDocumentIdentificatieDu02(ZdsStuurgegevens zdsStuurgegevens, String referentienummer) {
+        this.stuurgegevens = new ZdsStuurgegevens(zdsStuurgegevens, referentienummer);
         this.stuurgegevens.berichtcode = "Du02";   
         this.stuurgegevens.functie = "genereerDocumentidentificatie";
     }        

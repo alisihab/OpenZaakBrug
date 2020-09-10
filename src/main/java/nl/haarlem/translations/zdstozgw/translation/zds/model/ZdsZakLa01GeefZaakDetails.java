@@ -29,31 +29,5 @@ public class ZdsZakLa01GeefZaakDetails extends ZdsZknDocument {
 		@XmlElement(namespace = ZKN, name = "object")
 		public List<ZdsZaak> zaak;
 
-//        @Data
-//        @XmlAccessorType(XmlAccessType.FIELD)
-//        public static class Object extends ZdsZaak {
-//            @XmlElement(namespace = ZKN)
-//            public List<Status> heeft;
-//        }
 	}
-//
-//    @Data
-//    @XmlAccessorType(XmlAccessType.FIELD)
-//    public static class Status {
-//        @XmlAttribute(namespace = STUF)
-//        public String entiteittype;
-//
-//        @XmlElement(namespace = ZKN)
-//        public String toelichting;
-//
-//        @XmlElement(namespace = ZKN)
-//        public String datumStatusGezet;
-//
-//        @XmlElement(namespace = ZKN)
-//        public String indicatieLaatsteStatus;
-//
-//        @XmlElement(namespace = ZKN)
-//        public String isGezetDoor;
-//    }
-
 }

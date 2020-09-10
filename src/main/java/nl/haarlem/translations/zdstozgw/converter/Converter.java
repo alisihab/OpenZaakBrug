@@ -17,9 +17,9 @@ public abstract class Converter {
 	    
 	private static final Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 	
-    private Translation translation;
-    private ZaakService zaakService;
-    private RequestHandlerContext context;
+    protected Translation translation;
+    protected ZaakService zaakService;
+    protected RequestHandlerContext context;
     protected ZdsZknDocument zdsDocument;
     
     public Converter(RequestHandlerContext context, Translation translation, ZaakService zaakService) {

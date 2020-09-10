@@ -40,10 +40,11 @@ public class ZdsStuurgegevens  extends ZdsObject {
     private ZdsStuurgegevens() {    	
     }
 
-    public ZdsStuurgegevens(ZdsStuurgegevens stuurgegevens) {
+    public ZdsStuurgegevens(ZdsStuurgegevens stuurgegevens, String referentienummer) {
     	this.zender = new Endpoint(stuurgegevens.ontvanger);        
     	this.ontvanger = new Endpoint(stuurgegevens.zender);
-    	this.referentienummer = stuurgegevens.referentienummer;
+    	this.referentienummer = referentienummer;
+    	this.crossRefnummer = stuurgegevens.referentienummer;    	
     	this.tijdstipBericht = StufUtils.getStufDateTime();
     }
 }

@@ -26,7 +26,7 @@ import java.util.Map;
 public class ZGWClient {
 
     private static final Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
-
+    
     @Value("${openzaak.baseUrl}")
     private String baseUrl;
 

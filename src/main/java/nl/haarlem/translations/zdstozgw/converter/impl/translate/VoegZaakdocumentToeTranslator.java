@@ -27,7 +27,7 @@ public class VoegZaakdocumentToeTranslator extends Converter {
 		var zdsEdcLk01 = (ZdsEdcLk01) this.getZdsDocument();		
 		var zdsInformatieObject = zdsEdcLk01.objects.get(0);		
 		this.getZaakService().voegZaakDocumentToe(this.getZaakService().getRSIN(zdsEdcLk01.stuurgegevens.zender.organisatie), zdsInformatieObject);		
-		var bv03 = new ZdsBv03(zdsEdcLk01.stuurgegevens);
+		var bv03 = new ZdsBv03(zdsEdcLk01.stuurgegevens, context.getReferentienummer());
 		var response = XmlUtils.getSOAPMessageFromObject(bv03);   
         return new ResponseEntity<>(response, HttpStatus.OK);	
 	}	

@@ -22,8 +22,8 @@ public class ZdsZakLa01LijstZaakdocumenten extends ZdsZknDocument {
     private ZdsZakLa01LijstZaakdocumenten() {
     }
 
-    public ZdsZakLa01LijstZaakdocumenten(ZdsStuurgegevens fromRequest) {
-    	super(fromRequest);
+    public ZdsZakLa01LijstZaakdocumenten(ZdsStuurgegevens fromRequest, String referentienummer) {
+    	super(fromRequest, referentienummer);
         this.stuurgegevens.entiteittype = "ZAK";    	
         this.stuurgegevens.berichtcode = "Bv03";
         this.stuurgegevens.crossRefnummer = fromRequest.referentienummer;

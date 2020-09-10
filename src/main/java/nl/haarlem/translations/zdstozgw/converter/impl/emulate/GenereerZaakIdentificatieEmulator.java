@@ -36,7 +36,7 @@ public class GenereerZaakIdentificatieEmulator extends Converter {
 		repository.save(idparam);
 		
 		var di02 = (ZdsGenereerZaakIdentificatieDi02) this.zdsDocument;
-		var du02 = new ZdsGenereerZaakIdentificatieDu02(di02.stuurgegevens);
+		var du02 = new ZdsGenereerZaakIdentificatieDu02(di02.stuurgegevens, context.getReferentienummer());
       	du02.zaak = new ZdsZaakIdentificatie();
       	du02.zaak.identificatie = prefixparam.getParameterValue() + identificatie;
       	

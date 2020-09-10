@@ -15,11 +15,6 @@ import java.util.List;
 @Data
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ZdsZaakDocumentRelevant extends ZdsZaakDocument {
-//	@XmlElement(namespace = ZKN, nillable = true)    
-//	public String formaat;	
-
-	//@XmlElement(namespace = ZKN, nillable = true)	
-	//public String beschrijving;
 
 	@XmlElement(namespace = ZKN, nillable = true)    
 	public ZdsIsRelevantVoor isRelevantVoor;

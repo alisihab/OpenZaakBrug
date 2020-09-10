@@ -16,6 +16,5 @@ import static nl.haarlem.translations.zdstozgw.translation.zds.model.namespace.N
 public class ZdsEdcLk01 extends ZdsZknDocument {
 
     @XmlElement(namespace = ZKN, name = "object")
-    //public List<ZdsEdcLk01.Object> objects;
     public List<ZdsZaakDocumentRelevant> objects;
 }
