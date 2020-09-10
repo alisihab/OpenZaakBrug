@@ -30,7 +30,7 @@ public class CreeerZaakReplicator extends CreeerZaakTranslator {
 
 		// send to legacy system
 		var url = this.getTranslation().getLegacyservice();
-		var soapaction = this.getTranslation().getLegacyservice();
+		var soapaction = this.getTranslation().getSoapAction();
 		var request = context.getRequestBody();
 		log.info("relaying request to url: " + url + " with soapaction: " + soapaction + " request-size:" + request.length());
 		var legacyresponse = this.zaakService.zdsClient.post(url, soapaction, request);

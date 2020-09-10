@@ -30,7 +30,7 @@ public class Proxy extends Converter {
 	@Override
 	public ResponseEntity<?> execute() throws ConverterException {
 		var url = this.getTranslation().getLegacyservice();
-		var soapaction = this.getTranslation().getLegacyservice();
+		var soapaction = this.getTranslation().getSoapAction();
 		var request = context.getRequestBody();
 		log.info("relaying request to url: " + url + " with soapaction: " + soapaction + " request-size:" + request.length());
 		return this.zaakService.zdsClient.post(url, soapaction, request);
