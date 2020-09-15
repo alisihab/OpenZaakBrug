@@ -412,7 +412,11 @@ public class ZGWClient {
     }
 
 	public ZgwStatusType getStatusTypeByZaakTypeAndVolgnummer(String zaakTypeUrl, String volgnummer, String verwachteomschrijving)  {
-		ZgwStatusType statustype =  getStatusTypeByZaakTypeAndVolgnummer(zaakTypeUrl, Integer.valueOf(volgnummer));		
+		ZgwStatusType statustype =  getStatusTypeByZaakTypeAndVolgnummer(zaakTypeUrl, Integer.valueOf(volgnummer));
+		if(statustype == null) 
+		{
+			throw new ConverterException("zaakstatus niet gevonden voor volgnummer #" + volgnummer);
+		}		
 		if(!statustype.omschrijving.startsWith(verwachteomschrijving)) 
 		{
 			throw new ConverterException("zaakstatus verschil in omschrijving met volgnummer #" + statustype.volgnummer + " verwacht: '" + statustype.omschrijving + "' gekregen: '" +  verwachteomschrijving  + "'");

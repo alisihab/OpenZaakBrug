@@ -19,7 +19,4 @@ public class ConverterException extends RuntimeException {
 		super(omschrijving);
 		this.details = details;
 	}	
-	public HttpStatus getHttpStatus() {
-		return HttpStatus.INTERNAL_SERVER_ERROR;
-	}	
 }

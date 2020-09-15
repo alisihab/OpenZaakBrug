@@ -32,11 +32,12 @@ public class BasicRequestHandler extends RequestHandler {
 			var zdsResponse = this.converter.execute();
 			var response = XmlUtils.getSOAPMessageFromObject(zdsResponse);
 			return new ResponseEntity<>(response, HttpStatus.OK);	        
-		}
+		}    	
 		catch(Exception ex) {
+			log.warn("Executing request with handler: " + this.getClass().getCanonicalName() + " and converter: " + this.converter.getClass().getCanonicalName(), ex);			
 			var fo03 = getErrorZdsDocument(ex, converter);
 	        var response = XmlUtils.getSOAPFaultMessageFromObject(SOAPConstants.SOAP_RECEIVER_FAULT, ex.toString(), fo03);
-	        return new ResponseEntity<>(response, ex instanceof ConverterException ? ((ConverterException) ex).getHttpStatus() : HttpStatus.INTERNAL_SERVER_ERROR);
+	        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
     }
 }
