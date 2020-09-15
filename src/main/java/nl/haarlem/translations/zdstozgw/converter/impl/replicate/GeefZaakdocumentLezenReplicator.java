@@ -1,7 +1,6 @@
 package nl.haarlem.translations.zdstozgw.converter.impl.replicate;
 
 import nl.haarlem.translations.zdstozgw.config.model.Translation;
-import nl.haarlem.translations.zdstozgw.converter.impl.proxy.Proxy;
 import nl.haarlem.translations.zdstozgw.converter.impl.translate.GeefZaakdocumentLezenTranslator;
 import nl.haarlem.translations.zdstozgw.requesthandler.RequestHandlerContext;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsEdcLv01;

@@ -1,8 +1,6 @@
 package nl.haarlem.translations.zdstozgw.requesthandler.impl.logging;
 
 import nl.haarlem.translations.zdstozgw.config.SpringContext;
-import nl.haarlem.translations.zdstozgw.controller.SoapController;
-
 import org.springframework.http.HttpRequest;
 import org.springframework.http.client.ClientHttpRequestExecution;
 import org.springframework.http.client.ClientHttpRequestInterceptor;

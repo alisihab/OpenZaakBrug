@@ -11,7 +11,6 @@ import org.springframework.web.client.RestTemplate;
 
 import javax.net.ssl.SSLContext;
 import java.security.cert.X509Certificate;
-import java.util.HashMap;
 
 public class LoggingRestTemplate implements RestTemplateCustomizer {
 	

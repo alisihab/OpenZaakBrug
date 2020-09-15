@@ -3,7 +3,6 @@ package nl.haarlem.translations.zdstozgw.translation.zgw.client;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import nl.haarlem.translations.zdstozgw.converter.ConverterException;
-import nl.haarlem.translations.zdstozgw.translation.zds.services.HttpService;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

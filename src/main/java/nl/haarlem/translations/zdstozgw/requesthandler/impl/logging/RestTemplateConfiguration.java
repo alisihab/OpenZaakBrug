@@ -1,7 +1,5 @@
 package nl.haarlem.translations.zdstozgw.requesthandler.impl.logging;
 
-import javax.management.RuntimeErrorException;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

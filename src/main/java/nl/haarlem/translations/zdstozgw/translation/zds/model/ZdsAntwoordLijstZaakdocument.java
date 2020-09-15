@@ -1,14 +1,8 @@
 package nl.haarlem.translations.zdstozgw.translation.zds.model;
 
-import lombok.Data;
-
 import javax.xml.bind.annotation.*;
 
-import static nl.haarlem.translations.zdstozgw.translation.zds.model.namespace.Namespace.MIME;
-import static nl.haarlem.translations.zdstozgw.translation.zds.model.namespace.Namespace.STUF;
 import static nl.haarlem.translations.zdstozgw.translation.zds.model.namespace.Namespace.ZKN;
-
-import java.util.List;
 
 @XmlRootElement(namespace = ZKN, name = "edcLa01")
 @XmlAccessorType(XmlAccessType.FIELD)
