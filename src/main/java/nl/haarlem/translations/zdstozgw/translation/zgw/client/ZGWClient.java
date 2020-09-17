@@ -411,29 +411,50 @@ public class ZGWClient {
         return this.getZgwZaakInformatieObjects(parameters).get(0);
     }
 
-	public ZgwStatusType getStatusTypeByZaakTypeAndVolgnummer(String zaakTypeUrl, String volgnummer, String verwachteomschrijving)  {
-		ZgwStatusType statustype =  getStatusTypeByZaakTypeAndVolgnummer(zaakTypeUrl, Integer.valueOf(volgnummer));
-		if(statustype == null) 
-		{
-			throw new ConverterException("zaakstatus niet gevonden voor volgnummer #" + volgnummer);
+    // TODO: we really need a zaakstatus-type-identificatie in openzaak    
+	public ZgwStatusType getStatusTypeByZaakTypeAndOmschrijving(String zaakTypeUrl, String statusOmschrijving, String verwachteVolgnummer)  {
+		Map<String, String> parameters = new HashMap();
+		parameters.put("zaaktype", zaakTypeUrl);
+		List<ZgwStatusType> statustypes =  this.getStatusTypes(parameters);
+
+		        		
+		for(ZgwStatusType statustype : statustypes) {
+			log.debug("opgehaald:" + statustype.omschrijving + " zoeken naar: " + statusOmschrijving);
+			if(statustype.omschrijving.startsWith(statusOmschrijving)) {
+				if(statustype.volgnummer != Integer.valueOf(verwachteVolgnummer)) {
+					log.warn("Zaakstatus verschil in zgw-statustype met omschrijving: " +  statustype.omschrijving + " met volgnummer #" + statustype.volgnummer + " en het meegestuurde volgnummer: '" + Integer.valueOf(verwachteVolgnummer)  + "'");
+				}
+				log.debug("gevonden:" + statustype.omschrijving + " zoeken naar: " + statusOmschrijving);
+				return statustype;
+			}
 		}		
-		if(!statustype.omschrijving.startsWith(verwachteomschrijving)) 
-		{
-			throw new ConverterException("zaakstatus verschil in omschrijving met volgnummer #" + statustype.volgnummer + " verwacht: '" + statustype.omschrijving + "' gekregen: '" +  verwachteomschrijving  + "'");
-		}
-		return statustype;
+		throw new ConverterException("zaakstatus niet gevonden voor omschrijving" + statusOmschrijving);
 	}    
     
-    private ZgwStatusType getStatusTypeByZaakTypeAndVolgnummer(String zaakTypeUrl, int volgnummer) {
-        Map<String, String> parameters = new HashMap();
-        parameters.put("zaaktype", zaakTypeUrl);
-
-        return this.getStatusTypes(parameters)
-                .stream()
-                .filter(zgwStatusType -> zgwStatusType.volgnummer == volgnummer)
-                .findFirst()
-                .orElse(null);
-    }  
+// 
+//	public ZgwStatusType getStatusTypeByZaakTypeAndVolgnummer(String zaakTypeUrl, String volgnummer, String verwachteomschrijving)  {
+//		ZgwStatusType statustype =  getStatusTypeByZaakTypeAndVolgnummer(zaakTypeUrl, Integer.valueOf(volgnummer));
+//		if(statustype == null) 
+//		{
+//			throw new ConverterException("zaakstatus niet gevonden voor volgnummer #" + volgnummer);
+//		}		
+//		if(!statustype.omschrijving.startsWith(verwachteomschrijving)) 
+//		{
+//			throw new ConverterException("zaakstatus verschil in omschrijving met volgnummer #" + statustype.volgnummer + " verwacht: '" + statustype.omschrijving + "' gekregen: '" +  verwachteomschrijving  + "'");
+//		}
+//		return statustype;
+//	}        	
+//	
+//    private ZgwStatusType getStatusTypeByZaakTypeAndVolgnummer(String zaakTypeUrl, int volgnummer) {
+//        Map<String, String> parameters = new HashMap();
+//        parameters.put("zaaktype", zaakTypeUrl);
+//
+//        return this.getStatusTypes(parameters)
+//                .stream()
+//                .filter(zgwStatusType -> zgwStatusType.volgnummer == volgnummer)
+//                .findFirst()
+//                .orElse(null);
+//    }  
     
     public List<ZgwRol> getRollenByZaakUrl(String zaakUrl) {
         Map<String, String> parameters = new HashMap();

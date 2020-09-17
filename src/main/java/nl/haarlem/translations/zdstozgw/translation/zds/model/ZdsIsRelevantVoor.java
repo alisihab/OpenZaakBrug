@@ -16,5 +16,14 @@ public class ZdsIsRelevantVoor  extends ZdsObject {
 	
     @XmlElement(namespace = ZKN)
     public ZdsGerelateerde gerelateerde;
+    
+    @XmlElement(namespace = ZKN, name = "dct.omschrijving")    
+	public String volgnummer;
+
+    @XmlElement(namespace = ZKN, name = "stt.omschrijving")
+	public String omschrijving;
+
+    @XmlElement(namespace = ZKN, name = "sta.datumStatusGezet")
+	public String datumStatusGezet;
 
 }
