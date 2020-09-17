@@ -23,7 +23,7 @@ public class ZdsZaakDocument extends ZdsZaakDocumentIdentificatie {
     @XmlElement(namespace = ZKN, nillable = true)
     public String titel;
 
-	@XmlElement(namespace = ZKN, nillable = true)    
+	@XmlElement(namespace = ZKN, nillable = true)
 	public String beschrijving;
     
 	@XmlElement(namespace = ZKN, nillable = true)    
@@ -47,9 +47,9 @@ public class ZdsZaakDocument extends ZdsZaakDocumentIdentificatie {
     @XmlElement(namespace = ZKN, nillable = true)
     public String auteur;
 
-    //@XmlElement(namespace = ZKN, nillable = true)
-    //public String link;
-
+    @XmlElement(namespace = ZKN, nillable = true)
+    public String link;	
+    
     //@XmlElement(namespace = ZKN)
   	//public ZdsInhoud inhoud;        
 }

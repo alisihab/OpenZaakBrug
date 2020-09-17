@@ -134,7 +134,7 @@ public class ModelMapperConfig {
 	}
 
 	private void addZgwEnkelvoudigInformatieObjectToZaakDocumentLinkTypeMapping(ModelMapper modelMapper) {
-		modelMapper.typeMap(ZgwEnkelvoudigInformatieObject.class, ZdsZaakDocumentLink.class)
+		modelMapper.typeMap(ZgwEnkelvoudigInformatieObject.class, ZdsZaakDocument.class)
 //		.includeBase(ZgwEnkelvoudigInformatieObject.class, ZdsZaakDocument.class)
 				.addMappings(mapper -> mapper.using(convertZgwDateToStufDate())
 						.map(ZgwEnkelvoudigInformatieObject::getCreatiedatum, ZdsZaakDocument::setCreatiedatum))
@@ -145,7 +145,7 @@ public class ModelMapperConfig {
 				.addMappings(mapper -> mapper.using(convertToUpperCase()).map(
 						ZgwEnkelvoudigInformatieObject::getVertrouwelijkheidaanduiding,
 						ZdsZaakDocument::setVertrouwelijkAanduiding))
-				.addMappings(mapper -> mapper.map(ZgwEnkelvoudigInformatieObject::getUrl, ZdsZaakDocumentLink::setLink));
+				.addMappings(mapper -> mapper.map(ZgwEnkelvoudigInformatieObject::getUrl, ZdsZaakDocument::setLink));
 	}
 
 	public void addZgwEnkelvoudigInformatieObjectToZdsZaakDocumentInhoudTypeMapping(ModelMapper modelMapper) {

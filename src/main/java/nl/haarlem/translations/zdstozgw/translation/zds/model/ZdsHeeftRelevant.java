@@ -17,7 +17,7 @@ public class ZdsHeeftRelevant {
     public String entiteittype = "ZAKEDC";
     
         @XmlElement(namespace = ZKN)
-        public ZdsZaakDocumentLink gerelateerde;
+        public ZdsZaakDocument gerelateerde;
 
         @XmlElement(namespace = ZKN)
         public String titel;

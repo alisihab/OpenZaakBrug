@@ -187,7 +187,7 @@ public class ZaakService {
         result.omschrijving = documenttype.omschrijving;
 	        
  */
-	        ZdsZaakDocumentLink zdsZaakDocument = modelMapper.map(zgwEnkelvoudigInformatieObject, ZdsZaakDocumentLink.class);
+	        ZdsZaakDocument zdsZaakDocument = modelMapper.map(zgwEnkelvoudigInformatieObject, ZdsZaakDocument.class);
 	        zdsZaakDocument.omschrijving = documenttype.omschrijving;
 	        ZdsHeeftRelevant heeftRelevant = modelMapper.map(zgwZaakInformatieObject, ZdsHeeftRelevant.class);
 	        heeftRelevant.gerelateerde = zdsZaakDocument;
@@ -255,15 +255,23 @@ public class ZaakService {
         if(inhoud == null) {
         	throw new ConverterException("getBas64Inhoud #" + zgwEnkelvoudigInformatieObject.getInhoud() + " could not be found");
         }        
-        
-        
+                
         ZdsZaakDocumentInhoud result = modelMapper.map(zgwEnkelvoudigInformatieObject, ZdsZaakDocumentInhoud.class);
         result.inhoud = new ZdsInhoud();
         var mimeType = URLConnection.guessContentTypeFromName(zgwEnkelvoudigInformatieObject.bestandsnaam);
+                      
         // documenttype
-        result.omschrijving = documenttype.omschrijving;
+        result.omschrijving = documenttype.omschrijving; 
+        if(result.ontvangstdatum == null) {
+        	result.ontvangstdatum = "00010101";
+        }
         result.titel = zgwEnkelvoudigInformatieObject.titel;
         result.beschrijving = zgwEnkelvoudigInformatieObject.beschrijving;
+        if(result.beschrijving.length() == 0) result.beschrijving = null;
+        if(result.versie.length() == 0) result.versie = null;
+        if(result.taal.length() == 0) result.taal= null;        
+        if(result.status.length() == 0) result.status = null;        
+
         result.formaat = zgwEnkelvoudigInformatieObject.bestandsnaam.substring(zgwEnkelvoudigInformatieObject.bestandsnaam.lastIndexOf(".") + 1);
         result.inhoud.contentType = mimeType;
         result.inhoud.bestandsnaam = zgwEnkelvoudigInformatieObject.bestandsnaam;
