@@ -48,7 +48,6 @@ public class LoggingRequestHandler extends RequestHandler {
         this.converter.load();
         try {
 			var response = this.converter.execute();
-			
         	session.setClientResponseBody(response.getBody().toString());
         	session.setClientResponseCode(response.getStatusCodeValue());
         	session.setDurationInMilliseconds(Duration.between(start, LocalDateTime.now()).toMillis());
@@ -57,19 +56,17 @@ public class LoggingRequestHandler extends RequestHandler {
             return response;
         }
 		catch(Exception ex) {
-			log.warn("Executing request with handler: " + this.getClass().getCanonicalName() + " and converter: " + this.converter.getClass().getCanonicalName(), ex);
+			log.warn("Exception handling request with handler: " + this.getClass().getCanonicalName() + " and converter: " + this.converter.getClass().getCanonicalName(), ex);			
 			var fo03 = getErrorZdsDocument(ex, this.getConverter());
-	        var responseBody = XmlUtils.getSOAPFaultMessageFromObject(SOAPConstants.SOAP_RECEIVER_FAULT, ex.toString(), fo03);	        
-	        var response = new ResponseEntity<>(responseBody, HttpStatus.INTERNAL_SERVER_ERROR);
-	        
+			var responseBody = XmlUtils.getSOAPFaultMessageFromObject(SOAPConstants.SOAP_RECEIVER_FAULT, ex.toString(), fo03);	        
+			var response = new ResponseEntity<>(responseBody, HttpStatus.INTERNAL_SERVER_ERROR);
 	        // log this error response
         	session.setClientResponseBody(response.getBody().toString());
         	session.setClientResponseCode(response.getStatusCodeValue());
         	session.setDurationInMilliseconds(Duration.between(start, LocalDateTime.now()).toMillis());
         	session.setStackTrace(getStacktrace(ex));
-	        sessionService.save(session);
-
-	        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        	sessionService.save(session);
+	        return response;
 		}
     }
 }
