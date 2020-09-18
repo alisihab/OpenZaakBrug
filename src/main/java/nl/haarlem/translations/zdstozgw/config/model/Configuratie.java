@@ -11,22 +11,20 @@ public class Configuratie {
     @SerializedName("requestHandlerImplementation")
     @Expose
     public String requestHandlerImplementation = null;    
-	@SerializedName("organisaties")
+
+    @SerializedName("organisaties")
     @Expose    
     public List<Organisatie> organisaties = null;
-	@SerializedName("geefZaakdetails")
-    @Expose    
-	public Service geefZaakdetails = null;
-	@SerializedName("geefLijstZaakdocumenten")
-    @Expose    	
-	public Service geefLijstZaakdocumenten = null;
-	@SerializedName("geefZaakdocumentLezen")
-    @Expose    
-	public Service geefZaakdocumentLezen = null;
+	
 	@SerializedName("zgwRolOmschrijving")
     @Expose
     public ZgwRolOmschrijving zgwRolOmschrijving = null;	
-    @SerializedName("translations")
+
+	@SerializedName("replication")
+    @Expose
+    public Replication replication = null;
+	
+	@SerializedName("translations")
     @Expose
     public List<Translation> translations = null;
 }

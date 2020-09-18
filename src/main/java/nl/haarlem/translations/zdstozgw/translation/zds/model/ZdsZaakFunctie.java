@@ -12,12 +12,10 @@ import static nl.haarlem.translations.zdstozgw.translation.zds.model.namespace.N
 
 @Data
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ZdsZaakIdentificatie extends ZdsObject {
-	
-    @XmlAttribute(namespace = STUF)
-    public String entiteittype = "ZAK";
-    
-    @XmlElement(namespace = ZKN)
-    public String identificatie;
+public class ZdsZaakFunctie extends ZdsZaakIdentificatie {
+
+	@XmlAttribute(namespace = STUF)
+    public String functie = "entiteit";    
+
 }
 

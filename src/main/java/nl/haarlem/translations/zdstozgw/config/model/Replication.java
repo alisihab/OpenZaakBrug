@@ -6,20 +6,17 @@ import lombok.Data;
 
 @Data
 public class Replication {
-    @SerializedName("enableZDS")
-    @Expose
-    public boolean enableZDS;
-    @SerializedName("enableZGW")
-    @Expose
-    public boolean enableZGW;
-    public ResponseType responseType;
+	
+	@SerializedName("geefZaakdetails")
+	@Expose    
+	public Service geefZaakdetails = null;
+	
+	@SerializedName("geefLijstZaakdocumenten")
+    @Expose    	
+	public Service geefLijstZaakdocumenten = null;
+	
+	@SerializedName("geefZaakdocumentLezen")
+    @Expose    
+	public Service geefZaakdocumentLezen = null;
 
-    @Override
-    public String toString() {
-        return "Replication{" +
-                "enableZDS=" + enableZDS +
-                ", enableZGW=" + enableZGW +
-                ", responseType=" + responseType +
-                '}';
-    }
 }

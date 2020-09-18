@@ -17,8 +17,8 @@ public class ZdsZakLv01 extends ZdsZknDocument {
     public ZdsParameters parameters;
 
     @XmlElement(namespace = ZKN)
-    public ZdsZaak gelijk;
+    public ZdsZaakIdentificatie gelijk;
 
     @XmlElement(namespace = ZKN)
-	public ZdsScope sope;
+	public ZdsScope scope;
 }

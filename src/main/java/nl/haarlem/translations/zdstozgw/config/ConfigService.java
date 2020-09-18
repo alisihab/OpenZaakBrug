@@ -45,6 +45,7 @@ public class ConfigService {
             organisatie.getRSIN();
         }
         
+               
         var rolomschrijving = this.configuratie.getZgwRolOmschrijving();            
         rolomschrijving.getHeeftAlsBelanghebbende();
         rolomschrijving.getHeeftAlsInitiator();
@@ -52,6 +53,14 @@ public class ConfigService {
         rolomschrijving.getHeeftAlsVerantwoordelijke();
         rolomschrijving.getHeeftAlsGemachtigde();
         rolomschrijving.getHeeftAlsOverigBetrokkene();
+        
+        var replicatie = this.configuratie.getReplication();
+        replicatie.getGeefZaakdetails().getSoapaction();
+        replicatie.getGeefZaakdetails().getUrl();
+        replicatie.getGeefLijstZaakdocumenten().getSoapaction();
+        replicatie.getGeefLijstZaakdocumenten().getUrl();
+        replicatie.getGeefZaakdocumentLezen().getSoapaction();
+        replicatie.getGeefZaakdocumentLezen().getUrl();
         
         this.configuratie.getTranslations().size();
         for (Translation translation: this.configuratie.getTranslations()) {

@@ -11,7 +11,7 @@ import static nl.haarlem.translations.zdstozgw.translation.zds.model.namespace.N
 
 @Data
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ZdsZaak extends ZdsZaakIdentificatie {
+public class ZdsZaak extends ZdsZaakFunctie {
     @XmlElement(namespace = ZKN, nillable = true)
     public String einddatum;
 
