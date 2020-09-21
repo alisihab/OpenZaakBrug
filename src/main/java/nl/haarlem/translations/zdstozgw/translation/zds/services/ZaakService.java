@@ -94,7 +94,7 @@ public class ZaakService {
         
         // status
         if(zdsZaak.heeft != null && zdsZaak.heeft.size() > 0 && zdsZaak.heeft.get(0).gerelateerde != null) {
-        	log.info("Update of zaakid:" + zdsZaak.identificatie + " has status changes");
+        	log.debug("Update of zaakid:" + zdsZaak.identificatie + " has status changes");
 
         	var zdsHeeft = zdsZaak.heeft.get(0);
 	    	var zdsStatus = zdsHeeft.gerelateerde;
@@ -213,7 +213,7 @@ public class ZaakService {
         
         // status
         if(zdsInformatieObject.isRelevantVoor.volgnummer != null && zdsInformatieObject.isRelevantVoor.omschrijving  != null && zdsInformatieObject.isRelevantVoor.datumStatusGezet != null) {
-        	log.info("Update of zaakid:" + zgwZaak.identificatie + " has  status changes");
+        	log.debug("Update of zaakid:" + zgwZaak.identificatie + " has  status changes");
 	        var zgwStatusType = zgwClient.getStatusTypeByZaakTypeAndOmschrijving(zgwZaak.zaaktype, zdsInformatieObject.isRelevantVoor.omschrijving, zdsInformatieObject.isRelevantVoor.volgnummer);
 	        // ZgwStatus zgwStatus = modelMapper.map(zdsHeeft, ZgwStatus.class);
 	        ZgwStatus zgwStatus = new ZgwStatus();
@@ -434,9 +434,9 @@ public class ZaakService {
         var changed = false;
         var fieldChanges = changeDetector.getAllChangesByDeclaringClassAndFilter(ZdsZaak.class, ZdsRol.class);
         if (fieldChanges.size() > 0) {
-        	log.info("Update of zaakid:" + zdsWasZaak.identificatie + " has # " + fieldChanges.size() + " field changes");
+        	log.debug("Update of zaakid:" + zdsWasZaak.identificatie + " has # " + fieldChanges.size() + " field changes");
             for(Change change: fieldChanges.keySet()) {
-            	log.info("\tchange:" + change.getField().getName());
+            	log.debug("\tchange:" + change.getField().getName());
             }            
             ZgwZaakPut zgwWordtZaak = this.modelMapper.map(zdsWordtZaak, ZgwZaakPut.class);
             ZgwZaakPut updatedZaak = ZgwZaakPut.merge(zgwZaak, zgwWordtZaak);
@@ -448,7 +448,7 @@ public class ZaakService {
         // rollen
         Map<ChangeDetector.Change, ChangeDetector.ChangeType> rolChanges = changeDetector.getAllChangesByFieldType(ZdsRol.class);
         if (rolChanges.size() > 0) {
-        	log.info("Update of zaakid:" + zdsWasZaak.identificatie + " has # " + rolChanges.size() + " rol changes:");
+        	log.debug("Update of zaakid:" + zdsWasZaak.identificatie + " has # " + rolChanges.size() + " rol changes:");
 
         	changeDetector.filterChangesByType(rolChanges, ChangeDetector.ChangeType.NEW).forEach((change, changeType) -> {
             	addRolToZgw((ZdsRol) change.getValue(), getRolOmschrijvingGeneriekByRolName(change.getField().getName()), zgwZaak);
@@ -466,7 +466,7 @@ public class ZaakService {
 
         // status
         if(zdsWordtZaak.heeft != null && zdsWordtZaak.heeft.size() > 0 && zdsWordtZaak.heeft.get(0).gerelateerde != null) {
-        	log.info("Update of zaakid:" + zdsWasZaak.identificatie + " has  status changes");
+        	log.debug("Update of zaakid:" + zdsWasZaak.identificatie + " has  status changes");
 
         	var zdsHeeft = zdsWordtZaak.heeft.get(0);
 	    	var zdsStatus = zdsHeeft.gerelateerde;
