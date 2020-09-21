@@ -3,6 +3,7 @@ package nl.haarlem.translations.zdstozgw.config.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import lombok.Data;
+import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwZaak;
 
 import java.util.List;
 
@@ -27,4 +28,5 @@ public class Configuratie {
 	@SerializedName("translations")
     @Expose
     public List<Translation> translations = null;
+
 }

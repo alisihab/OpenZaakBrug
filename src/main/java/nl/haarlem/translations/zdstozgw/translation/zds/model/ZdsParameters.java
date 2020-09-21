@@ -16,8 +16,8 @@ public class ZdsParameters  extends ZdsObject {
     public String indicatorVervolgvraag;
 
 
-	@XmlElement(namespace = STUF, nillable = true)
-    public String sortering;
+	//@XmlElement(namespace = STUF, nillable = true)
+    //public String sortering;
 		
 	public ZdsParameters() {
     }

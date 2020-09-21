@@ -38,15 +38,15 @@ public class Replicator {
 
 		if(zgwZaak == null) {
 			// bestond nog niet, aanmaken
-			var zdsUrl = this.zaakservice.configService.getConfiguratie().getGeefZaakdetails().getUrl();
-			var zdsSoapAction = this.zaakservice.configService.getConfiguratie().getGeefZaakdetails().getSoapaction();
+			var zdsUrl = this.zaakservice.configService.getConfiguratie().getReplication().getGeefZaakdetails().getUrl();
+			var zdsSoapAction = this.zaakservice.configService.getConfiguratie().getReplication().getGeefZaakdetails().getSoapaction();
 			var zdsRequest = new ZdsZakLv01();
 			zdsRequest.stuurgegevens = stuurgegevens;
 			zdsRequest.parameters = new ZdsParameters();		
 			//zdsRequest.parameters.setSortering("0");
 			zdsRequest.parameters.setIndicatorVervolgvraag("false");
 			zdsRequest.gelijk = new ZdsZaak();
-			zdsRequest.sope = new ZdsScope();
+			zdsRequest.scope = new ZdsScope();
 			var zdsResponse = this.zaakservice.zdsClient.post(zdsUrl, zdsSoapAction, zdsRequest);
 	
 			// fetch the zaak details 
@@ -63,15 +63,15 @@ public class Replicator {
 /////////////////////////
 
 		// documenten moeten we altijd controleren of ze bestaan		
-		var zdsUrl = this.zaakservice.configService.getConfiguratie().getGeefLijstZaakdocumenten().getUrl();
-		var zdsSoapAction = this.zaakservice.configService.getConfiguratie().getGeefLijstZaakdocumenten().getSoapaction();
+		var zdsUrl = this.zaakservice.configService.getConfiguratie().getReplication().getGeefLijstZaakdocumenten().getUrl();
+		var zdsSoapAction = this.zaakservice.configService.getConfiguratie().getReplication().getGeefLijstZaakdocumenten().getSoapaction();
 		var zdsRequest = new ZdsZakLv01();
 		zdsRequest.stuurgegevens = stuurgegevens;
 		zdsRequest.parameters = new ZdsParameters();		
 		//zdsRequest.parameters.setSortering("0");
 		zdsRequest.parameters.setIndicatorVervolgvraag("false");
 		zdsRequest.gelijk = new ZdsZaak();
-		zdsRequest.sope = new ZdsScope();
+		zdsRequest.scope = new ZdsScope();
 		var zdsResponse = this.zaakservice.zdsClient.post(zdsUrl, zdsSoapAction, zdsRequest);
 
 		// fetch the zaak details 
