@@ -13,6 +13,7 @@ public class ZgwRequestResponseCycle {
     private String referentienummer;    
 
     private String zgwMethod;    
+    @Lob
     private String zgwUrl;
     @Lob
     private String zgwRequestBody;

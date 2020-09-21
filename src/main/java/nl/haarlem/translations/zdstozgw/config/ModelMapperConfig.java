@@ -363,6 +363,9 @@ public class ModelMapperConfig {
 				if (stufDateTime == null) {
 					return null;
 				}
+				if (stufDateTime.length() == 20) {
+					stufDateTime = stufDateTime.substring(0, 19) + ".000000Z";
+				}				
 				if (stufDateTime.length() != 27) {
 					throw new ConverterException("Verkeerde lengte(" + stufDateTime.length() + ", verwacht 27) van de datum:" + stufDateTime);
 				}

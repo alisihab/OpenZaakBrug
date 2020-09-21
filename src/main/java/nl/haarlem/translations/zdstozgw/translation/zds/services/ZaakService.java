@@ -386,19 +386,15 @@ public class ZaakService {
         zaak.opschorting = zgwZaak.getOpschorting() != null ? modelMapper.map(zgwZaak.getOpschorting(), ZdsZaak.Opschorting.class) : null;
         zaak.verlenging = zgwZaak.getVerlenging() != null ? modelMapper.map(zgwZaak.getVerlenging(), ZdsZaak.Verlenging.class) : null;
 
-        var zgwStatussen = zgwClient.getStatussenByZaakUrl(zgwZaak.url);
-        
-        // TODO: wat gebeurd hier?            
-        var zdsStatussen = zgwStatussen
-        .stream()
-        .map(zgwStatus -> {
-            ZgwStatusType zgwStatusType = zgwClient.getResource(zgwStatus.statustype, ZgwStatusType.class);
-            return modelMapper.map(zgwStatus, ZdsHeeft.class)
-                    .setEntiteittype("ZAKSTT")
-                    .setIndicatieLaatsteStatus(Boolean.valueOf(zgwStatusType.isEindstatus) ? "J" : "N");
-        })
-        .collect(Collectors.toList());
-        
+
+        var zdsStatussen = new ArrayList<ZdsHeeft>();
+        for(ZgwStatus zgwStatus : zgwClient.getStatussenByZaakUrl(zgwZaak.url)) {
+        	ZgwStatusType zgwStatusType = zgwClient.getResource(zgwStatus.statustype, ZgwStatusType.class);
+        	ZdsHeeft zdsHeeft = modelMapper.map(zgwStatus, ZdsHeeft.class);
+        	zdsHeeft.setEntiteittype("ZAKSTT");
+        	zdsHeeft.setIndicatieLaatsteStatus(Boolean.valueOf(zgwStatusType.isEindstatus) ? "J" : "N");
+        	zdsStatussen.add(zdsHeeft);
+        }
         zaak.heeft = zdsStatussen;
         return zaak;
     }

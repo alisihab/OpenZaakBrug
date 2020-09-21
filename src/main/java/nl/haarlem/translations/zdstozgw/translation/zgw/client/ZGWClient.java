@@ -143,16 +143,8 @@ public class ZGWClient {
     }
 
     private String getUrlWithParameters(String url, Map<String, String> parameters) {
-        var i = 0;
-        for (Map.Entry<String, String> entry : parameters.entrySet()) {
-            String key = entry.getKey();
-            String value = entry.getValue();
-            if (i == 0) {
-                url = url + "?" + key + "=" + value;
-            } else {
-                url = url + "&" + key + "=" + value;
-            }
-            i++;
+        for (String key: parameters.keySet()) {
+        	url += !url.contains("?") ? "?" + key + "=" + parameters.get(key) : "&" + key + "=" + parameters.get(key);
         }
         return url;
     }
@@ -428,7 +420,7 @@ public class ZGWClient {
 				return statustype;
 			}
 		}		
-		throw new ConverterException("zaakstatus niet gevonden voor omschrijving" + statusOmschrijving);
+		throw new ConverterException("zaakstatus niet gevonden voor omschrijving: '" + statusOmschrijving + "'");
 	}    
     
 // 
