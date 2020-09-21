@@ -7,7 +7,6 @@ import nl.haarlem.translations.zdstozgw.converter.ConverterException;
 import nl.haarlem.translations.zdstozgw.translation.BetrokkeneType;
 import nl.haarlem.translations.zdstozgw.translation.zds.client.ZDSClient;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.*;
-import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsZaak.Kenmerk;
 import nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.*;
 import nl.haarlem.translations.zdstozgw.utils.ChangeDetector;
@@ -73,7 +72,7 @@ public class ZaakService {
         if (zdsZaak.getKenmerk() != null && !zdsZaak.getKenmerk().isEmpty()) {
             zgwZaak.kenmerk = new ArrayList<>();
             //TODO: controleren of werkt
-            for(Kenmerk kenmerk : zdsZaak.getKenmerk() )
+            for(ZdsKenmerk kenmerk : zdsZaak.getKenmerk() )
             {
             	zgwZaak.kenmerk.add(modelMapper.map(kenmerk, ZgwKenmerk.class));
             }
@@ -379,12 +378,13 @@ public class ZaakService {
         if (zgwZaak.getKenmerk() != null && !zgwZaak.getKenmerk().isEmpty()) {
             zaak.kenmerk = new ArrayList<>();
             for(ZgwKenmerk zgwKenmerk : zgwZaak.getKenmerk()) {
-            	zaak.kenmerk.add(modelMapper.map(zgwKenmerk, ZdsZaak.Kenmerk.class));
+            	var zdsKenmerkKenmerk =  modelMapper.map(zgwKenmerk, ZdsKenmerk.class);            	
+            	zaak.kenmerk.add(zdsKenmerkKenmerk);
             }
         }
 
-        zaak.opschorting = zgwZaak.getOpschorting() != null ? modelMapper.map(zgwZaak.getOpschorting(), ZdsZaak.Opschorting.class) : null;
-        zaak.verlenging = zgwZaak.getVerlenging() != null ? modelMapper.map(zgwZaak.getVerlenging(), ZdsZaak.Verlenging.class) : null;
+        zaak.opschorting = zgwZaak.getOpschorting() != null ? modelMapper.map(zgwZaak.getOpschorting(), ZdsOpschorting.class) : null;
+        zaak.verlenging = zgwZaak.getVerlenging() != null ? modelMapper.map(zgwZaak.getVerlenging(), ZdsVerlenging.class) : null;
 
 
         var zdsStatussen = new ArrayList<ZdsHeeft>();

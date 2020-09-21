@@ -12,35 +12,24 @@ import static nl.haarlem.translations.zdstozgw.translation.zds.model.namespace.N
 @Data
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ZdsZaak extends ZdsZaakFunctie {
-    @XmlElement(namespace = ZKN, nillable = true)
-    public String einddatum;
-
-    @XmlElement(namespace = ZKN, nillable = true)
-    public String einddatumGepland;
 
     @XmlElement(namespace = ZKN, nillable = true)
     public String omschrijving;
-
-    @XmlElement(namespace = ZKN, nillable = true)
-    public List<Kenmerk> kenmerk;
-
-    @XmlElement(namespace = ZKN, nillable = true)
-    public Resultaat resultaat;
-
-    @XmlElement(namespace = ZKN, nillable = true)
-    public String startdatum;
-
+	
     @XmlElement(namespace = ZKN, nillable = true)
     public String toelichting;
 
     @XmlElement(namespace = ZKN, nillable = true)
-    public String uiterlijkeEinddatum;
+    public List<ZdsKenmerk> kenmerk;
 
     @XmlElement(namespace = ZKN, nillable = true)
-    public String zaakniveau;
+    public ZdsAnderZaakObject anderZaakObject;
 
     @XmlElement(namespace = ZKN, nillable = true)
-    public String deelzakenIdicatie;
+    public ZdsResultaat resultaat;
+
+    @XmlElement(namespace = ZKN, nillable = true)
+    public String startdatum;
 
     @XmlElement(namespace = ZKN, nillable = true)
     public String registratiedatum;
@@ -49,10 +38,19 @@ public class ZdsZaak extends ZdsZaakFunctie {
     public String publicatiedatum;
 
     @XmlElement(namespace = ZKN, nillable = true)
-    public String archiefnominatie;
+    public String einddatumGepland;
 
     @XmlElement(namespace = ZKN, nillable = true)
-    public String datumVernietigingDossier;
+    public String uiterlijkeEinddatum;
+    
+	@XmlElement(namespace = ZKN, nillable = true)
+    public String einddatum;
+
+    @XmlElement(namespace = ZKN, nillable = true)
+    public ZdsOpschorting opschorting;
+
+    @XmlElement(namespace = ZKN, nillable = true)
+    public ZdsVerlenging verlenging;
 
     @XmlElement(namespace = ZKN, nillable = true)
     public String betalingsIndicatie;
@@ -61,14 +59,20 @@ public class ZdsZaak extends ZdsZaakFunctie {
     public String laatsteBetaaldatum;
 
     @XmlElement(namespace = ZKN, nillable = true)
-    public Opschorting opschorting;
+    public String archiefnominatie;
 
     @XmlElement(namespace = ZKN, nillable = true)
-    public Verlenging verlenging;
+    public String datumVernietigingDossier;
 
     @XmlElement(namespace = ZKN, nillable = true)
-    public AnderZaakObject anderZaakObject;
+    public String zaakniveau;
 
+    @XmlElement(namespace = ZKN, nillable = true)
+    public String deelzakenIdicatie;
+
+    @XmlElement(namespace = ZKN)
+    public ZdsRol isVan;
+    
     @XmlElement(namespace = ZKN, nillable = true)
     public ZdsRol heeftBetrekkingOp;
 
@@ -90,12 +94,11 @@ public class ZdsZaak extends ZdsZaakFunctie {
     @XmlElement(namespace = ZKN, nillable = true)
     public ZdsRol heeftAlsOverigBetrokkene;
 
-    @XmlElement(namespace = ZKN)
-    public ZdsRol isVan;
-    
-    @XmlElement(namespace = ZKN)
+    @XmlElement(namespace = ZKN, nillable = true)
     public List<ZdsHeeft> heeft;
 
+    /*
+    
     @Data
     @XmlAccessorType(XmlAccessType.FIELD)
     public static class Resultaat {
@@ -151,5 +154,6 @@ public class ZdsZaak extends ZdsZaakFunctie {
         @XmlElement(namespace = ZKN)
         public String bron;
     }
+    */
 }
 

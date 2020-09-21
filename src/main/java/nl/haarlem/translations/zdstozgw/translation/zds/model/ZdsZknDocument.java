@@ -6,6 +6,7 @@ import javax.xml.bind.annotation.XmlElement;
 
 import static nl.haarlem.translations.zdstozgw.translation.zds.model.namespace.Namespace.ZKN;
 
+
 abstract public class ZdsZknDocument extends  ZdsObject {
     @XmlElement(namespace = ZKN, name = "stuurgegevens")
     public ZdsStuurgegevens stuurgegevens;

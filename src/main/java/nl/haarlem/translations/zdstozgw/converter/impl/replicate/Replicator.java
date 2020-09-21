@@ -1,5 +1,7 @@
 package nl.haarlem.translations.zdstozgw.converter.impl.replicate;
 
+import nl.haarlem.translations.zdstozgw.converter.impl.replicate.model.ZdsReplicateGeefLijstZaakdocumentenLv01;
+import nl.haarlem.translations.zdstozgw.converter.impl.replicate.model.ZdsReplicateGeefZaakdetailsLv01;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsParameters;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsScope;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsStuurgegevens;
@@ -40,7 +42,7 @@ public class Replicator {
 			// bestond nog niet, aanmaken
 			var zdsUrl = this.zaakservice.configService.getConfiguratie().getReplication().getGeefZaakdetails().getUrl();
 			var zdsSoapAction = this.zaakservice.configService.getConfiguratie().getReplication().getGeefZaakdetails().getSoapaction();
-			var zdsRequest = new ZdsZakLv01();
+			var zdsRequest = new ZdsReplicateGeefZaakdetailsLv01();
 			zdsRequest.stuurgegevens = stuurgegevens;
 			zdsRequest.parameters = new ZdsParameters();		
 			//zdsRequest.parameters.setSortering("0");
@@ -65,7 +67,7 @@ public class Replicator {
 		// documenten moeten we altijd controleren of ze bestaan		
 		var zdsUrl = this.zaakservice.configService.getConfiguratie().getReplication().getGeefLijstZaakdocumenten().getUrl();
 		var zdsSoapAction = this.zaakservice.configService.getConfiguratie().getReplication().getGeefLijstZaakdocumenten().getSoapaction();
-		var zdsRequest = new ZdsZakLv01();
+		var zdsRequest = new ZdsReplicateGeefLijstZaakdocumentenLv01();
 		zdsRequest.stuurgegevens = stuurgegevens;
 		zdsRequest.parameters = new ZdsParameters();		
 		//zdsRequest.parameters.setSortering("0");

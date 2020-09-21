@@ -55,8 +55,8 @@ public class ModelMapperConfig {
 				.addMappings(mapper -> mapper.using(convertStufDateTimeToZgwDateTime())
 						.map(ZdsHeeft::getDatumStatusGezet, ZgwStatus::setDatumStatusGezet));
 
-		modelMapper.typeMap(ZdsZaak.Opschorting.class, ZgwOpschorting.class).addMappings(mapper -> mapper
-				.using(convertStringToBoolean()).map(ZdsZaak.Opschorting::getIndicatie, ZgwOpschorting::setIndicatie));
+		modelMapper.typeMap(ZdsOpschorting.class, ZgwOpschorting.class).addMappings(mapper -> mapper
+				.using(convertStringToBoolean()).map(ZdsOpschorting::getIndicatie, ZgwOpschorting::setIndicatie));
 
 		addZdsZaakToZgwZaakTypeMapping(modelMapper);
 		addZgwZaakToZdsZaakTypeMapping(modelMapper);
