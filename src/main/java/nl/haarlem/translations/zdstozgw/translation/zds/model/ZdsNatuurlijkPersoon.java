@@ -20,6 +20,12 @@ public class ZdsNatuurlijkPersoon  extends ZdsObject {
     @XmlElement(namespace = BG, name = "inp.bsn")
     public String bsn;
 
+    //@XmlElement(namespace = BG)
+    //public String authentiek = "J";
+    
+    @XmlElement(namespace = BG)
+    public ZdsAuthentiek authentiek = new ZdsAuthentiek();
+    
     @XmlElement(namespace = BG)
     public String geslachtsnaam;
 

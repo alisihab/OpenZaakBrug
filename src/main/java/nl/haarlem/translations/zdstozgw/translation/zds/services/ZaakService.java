@@ -17,12 +17,16 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import static nl.haarlem.translations.zdstozgw.translation.zds.model.namespace.Namespace.ZKN;
+
 import java.lang.invoke.MethodHandles;
 import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
+import javax.xml.bind.annotation.XmlElement;
 
 
 @Service
@@ -277,6 +281,7 @@ public class ZaakService {
         result.inhoud.value = inhoud;
         result.isRelevantVoor = new ZdsIsRelevantVoor();
         result.isRelevantVoor.gerelateerde = new ZdsGerelateerde();
+        result.isRelevantVoor.gerelateerde.entiteittype = "ZAK";
         result.isRelevantVoor.gerelateerde.identificatie = zgwZaak.identificatie;
         result.isRelevantVoor.gerelateerde.omschrijving = zgwZaak.omschrijving;
         
@@ -390,9 +395,18 @@ public class ZaakService {
         var zdsStatussen = new ArrayList<ZdsHeeft>();
         for(ZgwStatus zgwStatus : zgwClient.getStatussenByZaakUrl(zgwZaak.url)) {
         	ZgwStatusType zgwStatusType = zgwClient.getResource(zgwStatus.statustype, ZgwStatusType.class);
-        	ZdsHeeft zdsHeeft = modelMapper.map(zgwStatus, ZdsHeeft.class);
+        	//ZdsHeeft zdsHeeft = modelMapper.map(zgwStatus, ZdsHeeft.class);
+        	ZdsHeeft zdsHeeft = new ZdsHeeft();
         	zdsHeeft.setEntiteittype("ZAKSTT");
         	zdsHeeft.setIndicatieLaatsteStatus(Boolean.valueOf(zgwStatusType.isEindstatus) ? "J" : "N");
+
+        	zdsHeeft.gerelateerde = modelMapper.map(zgwStatus, ZdsGerelateerde.class);
+        	zdsHeeft.gerelateerde.setEntiteittype("STT");
+        	
+        	zdsHeeft.gerelateerde.zktCode = zgwZaakType.identificatie;
+        	zdsHeeft.gerelateerde.zktOmschrijving = zgwZaakType.omschrijving;
+        	zdsHeeft.gerelateerde.omschrijving = zgwStatus.statustoelichting;
+
         	zdsStatussen.add(zdsHeeft);
         }
         zaak.heeft = zdsStatussen;
@@ -414,7 +428,9 @@ public class ZaakService {
         	// geen rol voor deze
         	return null;
         }
-        return this.modelMapper.map(zgwRol, ZdsRol.class).setEntiteittype(entiteittype);
+        ZdsRol zdsRol = this.modelMapper.map(zgwRol, ZdsRol.class);
+        zdsRol.setEntiteittype(entiteittype);
+        return zdsRol;
     }
 
     public void updateZaak(ZdsZaak zdsWasZaak, ZdsZaak zdsWordtZaak) {

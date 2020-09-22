@@ -13,6 +13,8 @@ import static nl.haarlem.translations.zdstozgw.translation.zds.model.namespace.N
 @Data
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ZdsZaakIdentificatie extends ZdsObject {
+	@XmlAttribute(namespace = STUF)
+	public String functie = null;
 	
     @XmlAttribute(namespace = STUF)
     public String entiteittype = "ZAK";

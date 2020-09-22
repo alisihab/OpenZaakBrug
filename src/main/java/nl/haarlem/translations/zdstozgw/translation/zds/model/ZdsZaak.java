@@ -11,7 +11,7 @@ import static nl.haarlem.translations.zdstozgw.translation.zds.model.namespace.N
 
 @Data
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ZdsZaak extends ZdsZaakFunctie {
+public class ZdsZaak extends ZdsZaakIdentificatie {
 
     @XmlElement(namespace = ZKN, nillable = true)
     public String omschrijving;
@@ -67,19 +67,19 @@ public class ZdsZaak extends ZdsZaakFunctie {
     @XmlElement(namespace = ZKN, nillable = true)
     public String zaakniveau;
 
-    @XmlElement(namespace = ZKN, nillable = true)
+    @XmlElement(namespace = ZKN)
     public String deelzakenIdicatie;
 
     @XmlElement(namespace = ZKN)
     public ZdsRol isVan;
     
-    @XmlElement(namespace = ZKN, nillable = true)
+    @XmlElement(namespace = ZKN)
     public ZdsRol heeftBetrekkingOp;
 
     @XmlElement(namespace = ZKN, nillable = true)
     public ZdsRol heeftAlsBelanghebbende;
 
-    @XmlElement(namespace = ZKN, nillable = true)
+    @XmlElement(namespace = ZKN)
     public ZdsRol heeftAlsGemachtigde;
 
     @XmlElement(namespace = ZKN, nillable = true)
@@ -91,7 +91,7 @@ public class ZdsZaak extends ZdsZaakFunctie {
     @XmlElement(namespace = ZKN, nillable = true)
     public ZdsRol heeftAlsVerantwoordelijke;
 
-    @XmlElement(namespace = ZKN, nillable = true)
+    @XmlElement(namespace = ZKN)
     public ZdsRol heeftAlsOverigBetrokkene;
 
     @XmlElement(namespace = ZKN, nillable = true)

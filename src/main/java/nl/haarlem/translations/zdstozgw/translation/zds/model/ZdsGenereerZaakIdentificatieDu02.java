@@ -15,7 +15,7 @@ import static nl.haarlem.translations.zdstozgw.translation.zds.model.namespace.N
 public class ZdsGenereerZaakIdentificatieDu02 extends ZdsZknDocument {
         
     @XmlElement(namespace = ZKN)
-	public ZdsZaakFunctie zaak;
+	public ZdsZaakIdentificatie zaak;
     
     private ZdsGenereerZaakIdentificatieDu02() {    	
     }

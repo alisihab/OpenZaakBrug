@@ -15,27 +15,28 @@ import static nl.haarlem.translations.zdstozgw.translation.zds.model.namespace.N
 public class ZdsGerelateerde  extends ZdsObject {
 
 	@XmlAttribute(namespace = STUF)
-	public String entiteittype = "ZAK";	
+	public String entiteittype;	
+	
     @XmlElement(namespace = ZKN)
     public String identificatie;
 
     @XmlAttribute(namespace = STUF)
     public String verwerkingssoort;
 
-    @XmlElement(namespace = ZKN, nillable = true)
-    public String omschrijving;
-
-    @XmlElement(namespace = ZKN)
-    public String code;
-
-    @XmlElement(namespace = ZKN)
-    public String ingangsdatumObject;
-
     @XmlElement(namespace = ZKN, name = "zkt.code")
     public String zktCode;
 
     @XmlElement(namespace = ZKN, name = "zkt.omschrijving")
     public String zktOmschrijving;
+
+    @XmlElement(namespace = ZKN)
+    public String omschrijving;    
+    
+    @XmlElement(namespace = ZKN)
+    public String code;
+
+    @XmlElement(namespace = ZKN)
+    public String ingangsdatumObject;
 
     @XmlElement(namespace = ZKN)
     public String volgnummer;

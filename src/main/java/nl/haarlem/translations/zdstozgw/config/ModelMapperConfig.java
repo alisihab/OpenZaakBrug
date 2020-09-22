@@ -39,11 +39,40 @@ public class ModelMapperConfig {
 				.setMatchingStrategy(MatchingStrategies.STRICT).setSkipNullEnabled(true)
 				.setPropertyCondition(Conditions.isNotNull());
 
+
 		modelMapper.typeMap(ZgwStatus.class, ZdsHeeft.class)
 				.addMappings(mapper -> mapper.map(ZgwStatus::getStatustoelichting, ZdsHeeft::setToelichting))
 				.addMappings(mapper -> mapper.using(convertZgwDateTimeToStufDateTime()).map(ZgwStatus::getDatumStatusGezet,
 						ZdsHeeft::setDatumStatusGezet));
 
+		modelMapper.typeMap(ZgwStatus.class, ZdsGerelateerde.class);
+			//.addMapping(mapper -> mapper.map("STT", ZdsGerelateerde::setEntiteittype))
+			//.addMapping(mapper -> mapper.map("CODE", ZdsGerelateerde::setCode))
+			//.addMapping(mapper -> mapper.map(ZgwStatus::getStatustoelichting, ZdsGerelateerde::setOmschrijving));
+		
+		
+		/*
+        <ZKN:zkt.code>B1026</ZKN:zkt.code>
+        <ZKN:zkt.omschrijving>Aanvraag minima</ZKN:zkt.omschrijving>
+        <ZKN:volgnummer>0001</ZKN:volgnummer>
+        <ZKN:code>ontv</ZKN:code>
+        <ZKN:omschrijving>Ontvangen</ZKN:omschrijving>
+        <ZKN:ingangsdatumObject xsi:nil="true" StUF:noValue="geenWaarde"/>	
+		
+		
+		//.addMappings(mapper -> mapper.map(ZgwStatus::getStatustoelichting, ZdsGerelateerde::setToelichting))
+		//.addMappings(mapper -> mapper.using(convertZgwDateTimeToStufDateTime()).map(ZgwStatus::getDatumStatusGezet,
+		// ZdsHeeft::setDatumStatusGezet));
+		/*
+		<ZKN:gerelateerde StUF:entiteittype="STT" StUF:verwerkingssoort="T">
+        	<ZKN:zkt.code>B1026</ZKN:zkt.code>
+        	<ZKN:zkt.omschrijving>Aanvraag minima</ZKN:zkt.omschrijving>
+        	<ZKN:volgnummer>0001</ZKN:volgnummer>
+        	<ZKN:code>ontv</ZKN:code>
+        	<ZKN:omschrijving>Ontvangen</ZKN:omschrijving>
+        	<ZKN:ingangsdatumObject xsi:nil="true" StUF:noValue="geenWaarde"/>	
+		*/
+		
 		modelMapper
 				.typeMap(ZgwZaakInformatieObject.class,
 						ZdsHeeftRelevant.class)
@@ -54,9 +83,11 @@ public class ModelMapperConfig {
 		modelMapper.typeMap(ZdsHeeft.class, ZgwStatus.class)
 				.addMappings(mapper -> mapper.using(convertStufDateTimeToZgwDateTime())
 						.map(ZdsHeeft::getDatumStatusGezet, ZgwStatus::setDatumStatusGezet));
-
+		
 		modelMapper.typeMap(ZdsOpschorting.class, ZgwOpschorting.class).addMappings(mapper -> mapper
 				.using(convertStringToBoolean()).map(ZdsOpschorting::getIndicatie, ZgwOpschorting::setIndicatie));
+		modelMapper.typeMap(ZgwOpschorting.class, ZdsOpschorting.class).addMappings(mapper -> mapper
+				.using(convertBooleanToString()).map(ZgwOpschorting::getIndicatie, ZdsOpschorting::setIndicatie));
 
 		addZdsZaakToZgwZaakTypeMapping(modelMapper);
 		addZgwZaakToZdsZaakTypeMapping(modelMapper);
@@ -81,7 +112,7 @@ public class ModelMapperConfig {
 		modelMapper.typeMap(ZgwBetrokkeneIdentificatie.class, ZdsNatuurlijkPersoon.class)
 				.addMappings(mapper -> mapper.using(convertZgwDateToStufDate())
 						.map(ZgwBetrokkeneIdentificatie::getGeboortedatum, ZdsNatuurlijkPersoon::setGeboortedatum))
-				.addMappings(mapper -> mapper.using(convertToLowerCase()).map(
+				.addMappings(mapper -> mapper.using(convertToUpperCase()).map(
 						ZgwBetrokkeneIdentificatie::getGeslachtsaanduiding,
 						ZdsNatuurlijkPersoon::setGeslachtsaanduiding))
 				.addMappings(mapper -> mapper.using(convertToLowerCase()).map(ZgwBetrokkeneIdentificatie::getInpBsn,
@@ -411,6 +442,18 @@ public class ModelMapperConfig {
 		};
 	}
 
+	private AbstractConverter<Boolean, String> convertBooleanToString() {
+		return new AbstractConverter<>() {
+
+			@Override
+			protected String convert(Boolean b) {
+				var result = b ? "J" : "N";
+				log.debug("convertBooleanToString: " + b + " --> " + result);
+				return result;
+			}
+		};
+	}
+
 	private AbstractConverter<String, String> convertZgwArchiefNomitieToZdsArchiefNominatie() {
 		return new AbstractConverter<>() {
 
@@ -423,6 +466,7 @@ public class ModelMapperConfig {
 		};
 	}
 
+	
 	private AbstractConverter<String, String> convertToLowerCase() {
 		return new AbstractConverter<>() {
 
