@@ -19,6 +19,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 
 import java.io.IOException;
 import java.lang.invoke.MethodHandles;
+import java.net.ConnectException;
 
 //import nl.haarlem.translations.zdstozgw.translation.zgw.services.HttpService;
 
@@ -69,9 +70,9 @@ public class ZDSClient {
 			this.repository.save(session);
 			return new ResponseEntity<>(zdsResponseBody, HttpStatus.valueOf(responsecode));	
 		} catch (IOException ce) {
-			throw new ConverterException("Requesting url:" + zdsUrl + " with soapaction: " + zdsSoapAction , ce);
+			throw new ConverterException("Error: " + ce.toString() + " requesting url:" + zdsUrl + " with soapaction: " + zdsSoapAction , ce);
 		} catch (java.lang.IllegalArgumentException iae) {
-			throw new ConverterException("Requesting url:" + zdsUrl + " with soapaction: " + zdsSoapAction , iae);						
+			throw new ConverterException("Error " + iae.toString() + " requesting url:" + zdsUrl + " with soapaction: " + zdsSoapAction , iae);
 		} finally {
 			// Release current connection to the connection pool once you are done
 			method.releaseConnection();

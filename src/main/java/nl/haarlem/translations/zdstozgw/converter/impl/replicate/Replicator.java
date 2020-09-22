@@ -1,5 +1,6 @@
 package nl.haarlem.translations.zdstozgw.converter.impl.replicate;
 
+import nl.haarlem.translations.zdstozgw.converter.ConverterException;
 import nl.haarlem.translations.zdstozgw.converter.impl.replicate.model.ZdsReplicateGeefLijstZaakdocumentenLv01;
 import nl.haarlem.translations.zdstozgw.converter.impl.replicate.model.ZdsReplicateGeefZaakdetailsLv01;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsParameters;
@@ -35,9 +36,9 @@ public class Replicator {
 
 	public void replicateZaak(String rsin, String zaakidentificatie) {
 		log.info("replicateZaak for zaakidentificatie:" + zaakidentificatie);
-		
-		var zgwZaak = this.zaakservice.zgwClient.getZaakByIdentificatie(zaakidentificatie);
-
+				
+		// altijd de controle of de zaak al bestaat
+		var zgwZaak = this.zaakservice.zgwClient.getZaakByIdentificatie(zaakidentificatie);		
 		if(zgwZaak == null) {
 			// bestond nog niet, aanmaken
 			var zdsUrl = this.zaakservice.configService.getConfiguratie().getReplication().getGeefZaakdetails().getUrl();
@@ -48,11 +49,13 @@ public class Replicator {
 			//zdsRequest.parameters.setSortering("0");
 			zdsRequest.parameters.setIndicatorVervolgvraag("false");
 			zdsRequest.gelijk = new ZdsZaak();
+			zdsRequest.gelijk.identificatie = zaakidentificatie;
 			zdsRequest.scope = new ZdsScope();
+			zdsRequest.scope.scope = "alles";
 			var zdsResponse = this.zaakservice.zdsClient.post(zdsUrl, zdsSoapAction, zdsRequest);
 	
 			// fetch the zaak details 
-			log.info("GeefZaakDetails response:" + zdsResponse);
+			log.debug("GeefZaakDetails response:" + zdsResponse);
 			ZdsZakLa01GeefZaakDetails zakLa01 = (ZdsZakLa01GeefZaakDetails) XmlUtils.getStUFObject(zdsResponse.getBody().toString(), ZdsZakLa01GeefZaakDetails.class);
 			var zdsZaak = zakLa01.antwoord.zaak.get(0);
 	
@@ -62,9 +65,8 @@ public class Replicator {
 		else {
 			log.info("replication: no need to copy, zaak with id #" + zaakidentificatie + " already in zgw");
 		}
-/////////////////////////
 
-		// documenten moeten we altijd controleren of ze bestaan		
+		// altijd de controle of de documenten al bestaan
 		var zdsUrl = this.zaakservice.configService.getConfiguratie().getReplication().getGeefLijstZaakdocumenten().getUrl();
 		var zdsSoapAction = this.zaakservice.configService.getConfiguratie().getReplication().getGeefLijstZaakdocumenten().getSoapaction();
 		var zdsRequest = new ZdsReplicateGeefLijstZaakdocumentenLv01();
@@ -73,13 +75,18 @@ public class Replicator {
 		//zdsRequest.parameters.setSortering("0");
 		zdsRequest.parameters.setIndicatorVervolgvraag("false");
 		zdsRequest.gelijk = new ZdsZaak();
+		zdsRequest.gelijk.identificatie = zaakidentificatie;
+		zdsRequest.scope = new ZdsScope();
+		zdsRequest.scope.scope = "alles";
 		zdsRequest.scope = new ZdsScope();
 		var zdsResponse = this.zaakservice.zdsClient.post(zdsUrl, zdsSoapAction, zdsRequest);
-
+		
 		// fetch the zaak details 
 		log.info("GeefLijstZaakdocumenten response:" + zdsResponse);
 		var zakLa01 = (ZdsZakLa01GeefZaakDetails) XmlUtils.getStUFObject(zdsResponse.getBody().toString(), ZdsZakLa01GeefZaakDetails.class);
 		var zdsZaak = zakLa01.antwoord.zaak;
+
+		throw new ConverterException("todo");
 	}
 
 	private void replicateDocuments(String zaakidentificatie, String documentidentificatie) {		

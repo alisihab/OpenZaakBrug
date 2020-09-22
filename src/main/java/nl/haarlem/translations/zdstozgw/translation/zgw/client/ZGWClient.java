@@ -413,8 +413,14 @@ public class ZGWClient {
 		for(ZgwStatusType statustype : statustypes) {
 			log.debug("opgehaald:" + statustype.omschrijving + " zoeken naar: " + statusOmschrijving);
 			if(statustype.omschrijving.startsWith(statusOmschrijving)) {
-				if(statustype.volgnummer != Integer.valueOf(verwachteVolgnummer)) {
-					log.warn("Zaakstatus verschil in zgw-statustype met omschrijving: " +  statustype.omschrijving + " met volgnummer #" + statustype.volgnummer + " en het meegestuurde volgnummer: '" + Integer.valueOf(verwachteVolgnummer)  + "'");
+			    try
+			    {
+					if(statustype.volgnummer != Integer.valueOf(verwachteVolgnummer)) {
+						log.warn("Zaakstatus verschil in zgw-statustype met omschrijving: " +  statustype.omschrijving + " met volgnummer #" + statustype.volgnummer + " en het meegestuurde volgnummer: '" + Integer.valueOf(verwachteVolgnummer)  + "'");
+					}
+			    }
+				catch(java.lang.NumberFormatException nft) {
+					log.warn("Zaakstatus verschil in zgw-statustype met omschrijving: " +  statustype.omschrijving + " ongeldig volnummer: '" + verwachteVolgnummer + "'");
 				}
 				log.debug("gevonden:" + statustype.omschrijving + " zoeken naar: " + statusOmschrijving);
 				return statustype;

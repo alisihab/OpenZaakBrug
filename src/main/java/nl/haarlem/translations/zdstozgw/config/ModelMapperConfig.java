@@ -266,7 +266,7 @@ public class ModelMapperConfig {
 
 			@Override
 			protected String convert(String stufDate) {
-				if (stufDate == null) {
+				if (stufDate == null || stufDate.length() == 0) {
 					return null;
 				}
 				var zdsDateFormatter = new SimpleDateFormat("yyyyMMdd");
@@ -303,7 +303,7 @@ public class ModelMapperConfig {
 			@Override
 			protected String convert(String stufDateTime) {
 				log.debug("convertStufDateTimeToZgwDateTime:" + stufDateTime);
-				if (stufDateTime == null) {
+				if (stufDateTime == null || stufDateTime.length() == 0) {
 					return null;
 				}
 				if (stufDateTime.length() == 8) {
@@ -362,7 +362,7 @@ public class ModelMapperConfig {
 			@Override
 			protected String convert(String stufDateTime) {
 				log.debug("convertZgwDateToStufDate:" + stufDateTime);
-				if (stufDateTime == null) {
+				if (stufDateTime == null || stufDateTime.length() == 0) {
 					return null;
 				}
 				if (stufDateTime.length() != 10) {
@@ -391,7 +391,7 @@ public class ModelMapperConfig {
 			@Override
 			protected String convert(String stufDateTime) {
 				log.debug("convertZgwDateTimeToStufDateTime:" + stufDateTime);
-				if (stufDateTime == null) {
+				if (stufDateTime == null ||  stufDateTime.length() == 0) {
 					return null;
 				}
 				if (stufDateTime.length() == 20) {

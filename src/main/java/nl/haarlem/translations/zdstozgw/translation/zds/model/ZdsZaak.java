@@ -13,58 +13,58 @@ import static nl.haarlem.translations.zdstozgw.translation.zds.model.namespace.N
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ZdsZaak extends ZdsZaakIdentificatie {
 
-    @XmlElement(namespace = ZKN, nillable = true)
+    @XmlElement(namespace = ZKN)
     public String omschrijving;
 	
-    @XmlElement(namespace = ZKN, nillable = true)
+    @XmlElement(namespace = ZKN)
     public String toelichting;
 
-    @XmlElement(namespace = ZKN, nillable = true)
+    @XmlElement(namespace = ZKN)
     public List<ZdsKenmerk> kenmerk;
 
-    @XmlElement(namespace = ZKN, nillable = true)
+    @XmlElement(namespace = ZKN)
     public ZdsAnderZaakObject anderZaakObject;
 
-    @XmlElement(namespace = ZKN, nillable = true)
+    @XmlElement(namespace = ZKN)
     public ZdsResultaat resultaat;
 
-    @XmlElement(namespace = ZKN, nillable = true)
+    @XmlElement(namespace = ZKN)
     public String startdatum;
 
-    @XmlElement(namespace = ZKN, nillable = true)
+    @XmlElement(namespace = ZKN)
     public String registratiedatum;
 
-    @XmlElement(namespace = ZKN, nillable = true)
+    @XmlElement(namespace = ZKN)
     public String publicatiedatum;
 
-    @XmlElement(namespace = ZKN, nillable = true)
+    @XmlElement(namespace = ZKN)
     public String einddatumGepland;
 
-    @XmlElement(namespace = ZKN, nillable = true)
+    @XmlElement(namespace = ZKN)
     public String uiterlijkeEinddatum;
     
-	@XmlElement(namespace = ZKN, nillable = true)
+	@XmlElement(namespace = ZKN)
     public String einddatum;
 
-    @XmlElement(namespace = ZKN, nillable = true)
+    @XmlElement(namespace = ZKN)
     public ZdsOpschorting opschorting;
 
-    @XmlElement(namespace = ZKN, nillable = true)
+    @XmlElement(namespace = ZKN)
     public ZdsVerlenging verlenging;
 
-    @XmlElement(namespace = ZKN, nillable = true)
+    @XmlElement(namespace = ZKN)
     public String betalingsIndicatie;
 
-    @XmlElement(namespace = ZKN, nillable = true)
+    @XmlElement(namespace = ZKN)
     public String laatsteBetaaldatum;
 
-    @XmlElement(namespace = ZKN, nillable = true)
+    @XmlElement(namespace = ZKN)
     public String archiefnominatie;
 
-    @XmlElement(namespace = ZKN, nillable = true)
+    @XmlElement(namespace = ZKN)
     public String datumVernietigingDossier;
 
-    @XmlElement(namespace = ZKN, nillable = true)
+    @XmlElement(namespace = ZKN)
     public String zaakniveau;
 
     @XmlElement(namespace = ZKN)
@@ -76,25 +76,25 @@ public class ZdsZaak extends ZdsZaakIdentificatie {
     @XmlElement(namespace = ZKN)
     public ZdsRol heeftBetrekkingOp;
 
-    @XmlElement(namespace = ZKN, nillable = true)
+    @XmlElement(namespace = ZKN)
     public ZdsRol heeftAlsBelanghebbende;
 
     @XmlElement(namespace = ZKN)
     public ZdsRol heeftAlsGemachtigde;
 
-    @XmlElement(namespace = ZKN, nillable = true)
+    @XmlElement(namespace = ZKN)
     public ZdsRol heeftAlsInitiator;
 
-    @XmlElement(namespace = ZKN, nillable = true)
+    @XmlElement(namespace = ZKN)
     public ZdsRol heeftAlsUitvoerende;
 
-    @XmlElement(namespace = ZKN, nillable = true)
+    @XmlElement(namespace = ZKN)
     public ZdsRol heeftAlsVerantwoordelijke;
 
     @XmlElement(namespace = ZKN)
     public ZdsRol heeftAlsOverigBetrokkene;
 
-    @XmlElement(namespace = ZKN, nillable = true)
+    @XmlElement(namespace = ZKN)
     public List<ZdsHeeft> heeft;
 
     /*

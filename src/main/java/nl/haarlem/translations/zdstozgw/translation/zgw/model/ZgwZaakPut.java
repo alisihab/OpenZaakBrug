@@ -56,9 +56,9 @@ public class ZgwZaakPut  {
     @SerializedName("betalingsindicatie")
     @Expose
     public String betalingsindicatie;
-    @SerializedName("laatsteBetaaldatum")
-    @Expose
-    public String laatsteBetaaldatum;
+//    @SerializedName("laatsteBetaaldatum")
+//    @Expose
+//    public String laatsteBetaaldatum = null;
     @SerializedName("zaakgeometrie")
     @Expose
     public String zaakgeometrie;
@@ -107,7 +107,7 @@ public class ZgwZaakPut  {
 		result.productenOfDiensten  = changes.productenOfDiensten != null ? changes.productenOfDiensten : original.productenOfDiensten;
 		result.vertrouwelijkheidaanduiding  = changes.vertrouwelijkheidaanduiding != null ? changes.vertrouwelijkheidaanduiding : original.vertrouwelijkheidaanduiding;
 		result.betalingsindicatie  = changes.betalingsindicatie != null ? changes.betalingsindicatie : original.betalingsindicatie;
-		result.laatsteBetaaldatum  = changes.laatsteBetaaldatum!= null ? changes.laatsteBetaaldatum : original.laatsteBetaaldatum;
+//		result.laatsteBetaaldatum  = changes.laatsteBetaaldatum!= null ? changes.laatsteBetaaldatum : original.laatsteBetaaldatum;
 		result.zaakgeometrie  = changes.zaakgeometrie != null ? changes.zaakgeometrie : original.zaakgeometrie;
 		result.verlenging  = changes.verlenging != null ? changes.verlenging : original.verlenging;	    		
 		result.opschorting  = changes.opschorting != null ? changes.opschorting : original.opschorting;	    
