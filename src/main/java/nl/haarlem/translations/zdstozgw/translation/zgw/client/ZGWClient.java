@@ -514,7 +514,7 @@ public class ZGWClient {
         return null;
     }
 
-	public ZgwInformatieObjectType getZgwInformatieObjectTypeByÙrl(String url) {
+	public ZgwInformatieObjectType getZgwInformatieObjectTypeByUrl(String url) {
         var documentType = get(url, null);
         Gson gson = new Gson();
         ZgwInformatieObjectType result = gson.fromJson(documentType, ZgwInformatieObjectType.class);

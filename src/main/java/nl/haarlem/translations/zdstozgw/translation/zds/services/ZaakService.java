@@ -157,7 +157,7 @@ public class ZaakService {
 	        if(zgwEnkelvoudigInformatieObject == null) {
 	        	throw new ConverterException("could not get the zaakdocument: " + zgwZaakInformatieObject.informatieobject + " for zaak:" + zaakidentificatie );
 	        }
-	        ZgwInformatieObjectType documenttype = zgwClient.getZgwInformatieObjectTypeByÙrl(zgwEnkelvoudigInformatieObject.informatieobjecttype);
+	        ZgwInformatieObjectType documenttype = zgwClient.getZgwInformatieObjectTypeByUrl(zgwEnkelvoudigInformatieObject.informatieobjecttype);
 	        if(documenttype == null) {
 	        	throw new ConverterException("getZgwInformatieObjectType #" + zgwEnkelvoudigInformatieObject.informatieobjecttype + " could not be found");
 	        }        	        
@@ -242,7 +242,7 @@ public class ZaakService {
         if(zgwEnkelvoudigInformatieObject == null) {
         	throw new ConverterException("ZgwEnkelvoudigInformatieObject #" + documentIdentificatie + " could not be found");
         }        
-        ZgwInformatieObjectType documenttype = zgwClient.getZgwInformatieObjectTypeByÙrl(zgwEnkelvoudigInformatieObject.informatieobjecttype);
+        ZgwInformatieObjectType documenttype = zgwClient.getZgwInformatieObjectTypeByUrl(zgwEnkelvoudigInformatieObject.informatieobjecttype);
         if(documenttype == null) {
         	throw new ConverterException("getZgwInformatieObjectType #" + zgwEnkelvoudigInformatieObject.informatieobjecttype + " could not be found");
         }        
