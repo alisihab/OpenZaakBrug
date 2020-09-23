@@ -96,6 +96,9 @@ public class ZdsZaak extends ZdsZaakIdentificatie {
 
     @XmlElement(namespace = ZKN)
     public List<ZdsHeeft> heeft;
+    
+    @XmlElement(namespace = ZKN)
+	public ZdsHeeftRelevant heeftRelevant;
 
     /*
     

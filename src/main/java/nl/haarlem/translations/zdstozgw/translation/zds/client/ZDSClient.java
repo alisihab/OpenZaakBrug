@@ -56,6 +56,7 @@ public class ZDSClient {
 			String referentienummer = (String) RequestContextHolder.getRequestAttributes().getAttribute("referentienummer", RequestAttributes.SCOPE_REQUEST);    	
 			ZdsRequestResponseCycle session  = new ZdsRequestResponseCycle();
 			session.setReferentienummer(referentienummer);
+			session.setZdsUrl(zdsUrl);
 			session.setZdsMethod(method.getName());
 			session.setZdsSoapAction(zdsSoapAction);
 			session.setZdsRequestBody(zdsRequest);

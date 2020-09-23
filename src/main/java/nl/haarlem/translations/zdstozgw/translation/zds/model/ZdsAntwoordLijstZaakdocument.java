@@ -6,7 +6,7 @@ import static nl.haarlem.translations.zdstozgw.translation.zds.model.namespace.N
 
 @XmlRootElement(namespace = ZKN, name = "edcLa01")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ZdsAntwoordLijstZaakdocument extends ZdsAntwoord {    
+public class ZdsAntwoordLijstZaakdocument extends ZdsObject {    
     //@XmlAttribute(namespace = STUF)
     //public String entiteittype = "ZAK";     	
 	

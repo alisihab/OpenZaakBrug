@@ -26,11 +26,12 @@ public class GeefZaakdocumentLezenReplicator extends GeefZaakdocumentLezenTransl
 
 	@Override
 	public ResponseEntity<?> execute() throws ResponseStatusException {
-		var zdsEdcLv01 = (ZdsEdcLv01) this.getZdsDocument();
+		var zdsZakLv01 = (ZdsZakLv01) this.getZdsDocument();
         
 		// replicate the zaak        
 		var replicator = new Replicator(this);		
-		replicator.replicateZaak(zdsEdcLv01.zdsScope.object.isRelevantVoor.gerelateerde.identificatie);		
+		//replicator.replicateZaak(zdsEdcLv01.zdsScope.object.isRelevantVoor.gerelateerde.identificatie);		
+		replicator.replicateZaak(zdsZakLv01.scope.object.identificatie);
 		
 		// send to legacy system
 		var legacyresponse = replicator.proxy();
