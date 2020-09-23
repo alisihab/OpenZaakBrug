@@ -24,27 +24,20 @@ public class GeefZaakDetailsReplicator extends GeefZaakDetailsTranslator {
 	
 	@Override
 	public ResponseEntity<?> execute() throws ResponseStatusException {
-		String rsin = this.getZaakService().getRSIN(this.zdsDocument.stuurgegevens.zender.organisatie);
-		
 		var zdsZakLv01 = (ZdsZakLv01) this.getZdsDocument();
-		// replicate the zaak
-        var replicator = new Replicator(this.getZaakService(), zdsZakLv01.stuurgegevens);
-		replicator.replicateZaak(rsin, zdsZakLv01.gelijk.identificatie);		
-
-		// send to legacy system
-		var url = this.getTranslation().getLegacyservice();
-		var soapaction = this.getTranslation().getSoapAction();
-		var request = context.getRequestBody();
-		log.info("relaying request to url: " + url + " with soapaction: " + soapaction + " request-size:" + request.length());
-		var legacyresponse = this.zaakService.zdsClient.post(url, soapaction, request);
+        
+		// replicate the zaak        
+		var replicator = new Replicator(this);		
+		replicator.replicateZaak(zdsZakLv01.gelijk.identificatie);		
 		
-		// quit ont error
+		// send to legacy system
+		var legacyresponse = replicator.proxy();
 		if(legacyresponse.getStatusCode() != HttpStatus.OK) {
 			log.warn("Service:" + this.getTranslation().getLegacyservice() +  " SoapAction: " +   this.getContext().getSoapAction());
 			return legacyresponse;
 		}		
 		
 		// do the translation
-		return super.execute();		
+		return super.execute();
 	}		
 }

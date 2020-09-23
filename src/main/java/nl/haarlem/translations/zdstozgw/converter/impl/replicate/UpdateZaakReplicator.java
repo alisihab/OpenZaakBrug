@@ -3,6 +3,7 @@ package nl.haarlem.translations.zdstozgw.converter.impl.replicate;
 import nl.haarlem.translations.zdstozgw.config.model.Translation;
 import nl.haarlem.translations.zdstozgw.converter.impl.translate.UpdateZaakTranslator;
 import nl.haarlem.translations.zdstozgw.requesthandler.RequestHandlerContext;
+import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsEdcLv01;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsZakLk01;
 import nl.haarlem.translations.zdstozgw.translation.zds.services.ZaakService;
 
@@ -24,27 +25,20 @@ public class UpdateZaakReplicator extends UpdateZaakTranslator {
 
 	@Override
 	public ResponseEntity<?> execute() throws ResponseStatusException {
-		String rsin = this.getZaakService().getRSIN(this.zdsDocument.stuurgegevens.zender.organisatie);
-		
 		var zdsZakLk01 = (ZdsZakLk01) this.getZdsDocument();		
-		// replicate the zaak
-        var replicator = new Replicator(this.getZaakService(),zdsZakLk01.stuurgegevens);
-		replicator.replicateZaak(rsin, zdsZakLk01.objects.get(0).identificatie);
-
-		// send to legacy system
-		var url = this.getTranslation().getLegacyservice();
-		var soapaction = this.getTranslation().getSoapAction();
-		var request = context.getRequestBody();
-		log.info("relaying request to url: " + url + " with soapaction: " + soapaction + " request-size:" + request.length());
-		var legacyresponse = this.zaakService.zdsClient.post(url, soapaction, request);
+        
+		// replicate the zaak        
+		var replicator = new Replicator(this);		
+		replicator.replicateZaak(zdsZakLk01.objects.get(0).identificatie);		
 		
-		// quit ont error
+		// send to legacy system
+		var legacyresponse = replicator.proxy();
 		if(legacyresponse.getStatusCode() != HttpStatus.OK) {
 			log.warn("Service:" + this.getTranslation().getLegacyservice() +  " SoapAction: " +   this.getContext().getSoapAction());
 			return legacyresponse;
 		}		
 		
 		// do the translation
-		return super.execute();		
+		return super.execute();
 	}	
 }

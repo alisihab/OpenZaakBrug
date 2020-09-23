@@ -5,6 +5,7 @@ import nl.haarlem.translations.zdstozgw.converter.impl.translate.GeefZaakdocumen
 import nl.haarlem.translations.zdstozgw.requesthandler.RequestHandlerContext;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsEdcLv01;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsStuurgegevens;
+import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsZakLv01;
 import nl.haarlem.translations.zdstozgw.translation.zds.services.ZaakService;
 
 import java.lang.invoke.MethodHandles;
@@ -25,28 +26,21 @@ public class GeefZaakdocumentLezenReplicator extends GeefZaakdocumentLezenTransl
 
 	@Override
 	public ResponseEntity<?> execute() throws ResponseStatusException {
-		String rsin = this.getZaakService().getRSIN(this.zdsDocument.stuurgegevens.zender.organisatie);
-				
 		var zdsEdcLv01 = (ZdsEdcLv01) this.getZdsDocument();
-		// replicate the zaak
-        var replicator = new Replicator(this.getZaakService(), zdsEdcLv01.stuurgegevens);		
-		replicator.replicateZaak(rsin, zdsEdcLv01.zdsScope.object.isRelevantVoor.gerelateerde.identificatie);		
-
-		// send to legacy system
-		var url = this.getTranslation().getLegacyservice();
-		var soapaction = this.getTranslation().getSoapAction();
-		var request = context.getRequestBody();
-		log.info("relaying request to url: " + url + " with soapaction: " + soapaction + " request-size:" + request.length());
-		var legacyresponse = this.zaakService.zdsClient.post(url, soapaction, request);
+        
+		// replicate the zaak        
+		var replicator = new Replicator(this);		
+		replicator.replicateZaak(zdsEdcLv01.zdsScope.object.isRelevantVoor.gerelateerde.identificatie);		
 		
-		// quit ont error
+		// send to legacy system
+		var legacyresponse = replicator.proxy();
 		if(legacyresponse.getStatusCode() != HttpStatus.OK) {
 			log.warn("Service:" + this.getTranslation().getLegacyservice() +  " SoapAction: " +   this.getContext().getSoapAction());
 			return legacyresponse;
 		}		
 		
 		// do the translation
-		return super.execute();		
+		return super.execute();
 	}		
 }
 

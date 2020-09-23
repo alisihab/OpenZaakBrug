@@ -24,21 +24,14 @@ public class ActualiseerZaakStatusReplicator extends ActualiseerZaakStatusTransl
 
 	@Override
 	public ResponseEntity<?> execute() throws ResponseStatusException {
-		String rsin = this.getZaakService().getRSIN(this.zdsDocument.stuurgegevens.zender.organisatie);
-		
-		var zdsZakLk01ActualiseerZaakstatus = (ZdsZakLk01ActualiseerZaakstatus) this.getZdsDocument();
-		// replicate the zaak
-        var replicator = new Replicator(this.getZaakService(), zdsZakLk01ActualiseerZaakstatus.stuurgegevens);		
-		replicator.replicateZaak(rsin,zdsZakLk01ActualiseerZaakstatus.objects.get(0).identificatie);		
+		var zdsZakLk01ActualiseerZaakstatus = (ZdsZakLk01ActualiseerZaakstatus) this.getZdsDocument();	
+        
+		// replicate the zaak        
+		var replicator = new Replicator(this);		
+		replicator.replicateZaak(zdsZakLk01ActualiseerZaakstatus.objects.get(0).identificatie);		
 		
 		// send to legacy system
-		var url = this.getTranslation().getLegacyservice();
-		var soapaction = this.getTranslation().getSoapAction();
-		var request = context.getRequestBody();
-		log.info("relaying request to url: " + url + " with soapaction: " + soapaction + " request-size:" + request.length());
-		var legacyresponse = this.zaakService.zdsClient.post(url, soapaction, request);
-
-		// quit ont error
+		var legacyresponse = replicator.proxy();
 		if(legacyresponse.getStatusCode() != HttpStatus.OK) {
 			log.warn("Service:" + this.getTranslation().getLegacyservice() +  " SoapAction: " +   this.getContext().getSoapAction());
 			return legacyresponse;
