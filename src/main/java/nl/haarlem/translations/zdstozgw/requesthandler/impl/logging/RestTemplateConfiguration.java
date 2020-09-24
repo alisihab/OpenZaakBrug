@@ -5,9 +5,9 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class RestTemplateConfiguration {
-	
+
 	@Bean
-    public LoggingRestTemplate customRestTemplateCustomizer() {
-        return new LoggingRestTemplate();
-    }
+	public LoggingRestTemplate customRestTemplateCustomizer() {
+		return new LoggingRestTemplate();
+	}
 }

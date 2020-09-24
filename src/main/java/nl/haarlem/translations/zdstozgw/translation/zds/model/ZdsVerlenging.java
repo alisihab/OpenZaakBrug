@@ -11,10 +11,10 @@ import lombok.Data;
 @Data
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ZdsVerlenging {
-    @XmlElement(namespace = ZKN)
-    public String duur;
-    
-    @XmlElement(namespace = ZKN)
-    public String reden;
+	@XmlElement(namespace = ZKN)
+	public String duur;
+
+	@XmlElement(namespace = ZKN)
+	public String reden;
 
 }

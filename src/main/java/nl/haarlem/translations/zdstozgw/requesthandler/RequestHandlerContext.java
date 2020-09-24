@@ -13,7 +13,7 @@ public class RequestHandlerContext {
 	public RequestHandlerContext(String url, String soapAction, String requestBody) {
 		this.url = url;
 		this.soapAction = soapAction;
-		this.requestBody  = requestBody;
-		this.referentienummer= java.util.UUID.randomUUID().toString();
-	}	
+		this.requestBody = requestBody;
+		this.referentienummer = java.util.UUID.randomUUID().toString();
+	}
 }

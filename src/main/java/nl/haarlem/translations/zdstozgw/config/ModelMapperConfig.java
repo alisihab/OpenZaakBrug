@@ -1,8 +1,21 @@
 package nl.haarlem.translations.zdstozgw.config;
 
-import nl.haarlem.translations.zdstozgw.converter.ConverterException;
-import nl.haarlem.translations.zdstozgw.translation.zds.model.*;
-import nl.haarlem.translations.zdstozgw.translation.zgw.model.*;
+import static nl.haarlem.translations.zdstozgw.translation.BetrokkeneType.MEDEWERKER;
+import static nl.haarlem.translations.zdstozgw.translation.BetrokkeneType.NATUURLIJK_PERSOON;
+
+import java.lang.invoke.MethodHandles;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
+import java.util.TimeZone;
+
 import org.modelmapper.AbstractConverter;
 import org.modelmapper.Conditions;
 import org.modelmapper.ModelMapper;
@@ -13,16 +26,25 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.lang.invoke.MethodHandles;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.*;
-import java.time.format.DateTimeFormatter;
-import java.util.Calendar;
-import java.util.TimeZone;
-
-import static nl.haarlem.translations.zdstozgw.translation.BetrokkeneType.MEDEWERKER;
-import static nl.haarlem.translations.zdstozgw.translation.BetrokkeneType.NATUURLIJK_PERSOON;
+import nl.haarlem.translations.zdstozgw.converter.ConverterException;
+import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsGerelateerde;
+import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsHeeft;
+import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsHeeftRelevant;
+import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsMedewerker;
+import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsNatuurlijkPersoon;
+import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsOpschorting;
+import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsRol;
+import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsZaak;
+import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsZaakDocument;
+import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsZaakDocumentInhoud;
+import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwBetrokkeneIdentificatie;
+import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwEnkelvoudigInformatieObject;
+import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwOpschorting;
+import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwRol;
+import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwStatus;
+import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwZaak;
+import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwZaakInformatieObject;
+import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwZaakPut;
 
 @Configuration
 public class ModelMapperConfig {
@@ -39,51 +61,21 @@ public class ModelMapperConfig {
 				.setMatchingStrategy(MatchingStrategies.STRICT).setSkipNullEnabled(true)
 				.setPropertyCondition(Conditions.isNotNull());
 
-
 		modelMapper.typeMap(ZgwStatus.class, ZdsHeeft.class)
 				.addMappings(mapper -> mapper.map(ZgwStatus::getStatustoelichting, ZdsHeeft::setToelichting))
-				.addMappings(mapper -> mapper.using(convertZgwDateTimeToStufDateTime()).map(ZgwStatus::getDatumStatusGezet,
-						ZdsHeeft::setDatumStatusGezet));
+				.addMappings(mapper -> mapper.using(convertZgwDateTimeToStufDateTime())
+						.map(ZgwStatus::getDatumStatusGezet, ZdsHeeft::setDatumStatusGezet));
 
 		modelMapper.typeMap(ZgwStatus.class, ZdsGerelateerde.class);
-			//.addMapping(mapper -> mapper.map("STT", ZdsGerelateerde::setEntiteittype))
-			//.addMapping(mapper -> mapper.map("CODE", ZdsGerelateerde::setCode))
-			//.addMapping(mapper -> mapper.map(ZgwStatus::getStatustoelichting, ZdsGerelateerde::setOmschrijving));
-		
-		
-		/*
-        <ZKN:zkt.code>B1026</ZKN:zkt.code>
-        <ZKN:zkt.omschrijving>Aanvraag minima</ZKN:zkt.omschrijving>
-        <ZKN:volgnummer>0001</ZKN:volgnummer>
-        <ZKN:code>ontv</ZKN:code>
-        <ZKN:omschrijving>Ontvangen</ZKN:omschrijving>
-        <ZKN:ingangsdatumObject xsi:nil="true" StUF:noValue="geenWaarde"/>	
-		
-		
-		//.addMappings(mapper -> mapper.map(ZgwStatus::getStatustoelichting, ZdsGerelateerde::setToelichting))
-		//.addMappings(mapper -> mapper.using(convertZgwDateTimeToStufDateTime()).map(ZgwStatus::getDatumStatusGezet,
-		// ZdsHeeft::setDatumStatusGezet));
-		/*
-		<ZKN:gerelateerde StUF:entiteittype="STT" StUF:verwerkingssoort="T">
-        	<ZKN:zkt.code>B1026</ZKN:zkt.code>
-        	<ZKN:zkt.omschrijving>Aanvraag minima</ZKN:zkt.omschrijving>
-        	<ZKN:volgnummer>0001</ZKN:volgnummer>
-        	<ZKN:code>ontv</ZKN:code>
-        	<ZKN:omschrijving>Ontvangen</ZKN:omschrijving>
-        	<ZKN:ingangsdatumObject xsi:nil="true" StUF:noValue="geenWaarde"/>	
-		*/
-		
-		modelMapper
-				.typeMap(ZgwZaakInformatieObject.class,
-						ZdsHeeftRelevant.class)
-				.addMappings(mapper -> mapper.using(convertZgwDateTimeToStufDateTime()).map(
-						ZgwZaakInformatieObject::getRegistratiedatum,
-						ZdsHeeftRelevant::setRegistratiedatum));
+
+		modelMapper.typeMap(ZgwZaakInformatieObject.class, ZdsHeeftRelevant.class)
+				.addMappings(mapper -> mapper.using(convertZgwDateTimeToStufDateTime())
+						.map(ZgwZaakInformatieObject::getRegistratiedatum, ZdsHeeftRelevant::setRegistratiedatum));
 
 		modelMapper.typeMap(ZdsHeeft.class, ZgwStatus.class)
 				.addMappings(mapper -> mapper.using(convertStufDateTimeToZgwDateTime())
 						.map(ZdsHeeft::getDatumStatusGezet, ZgwStatus::setDatumStatusGezet));
-		
+
 		modelMapper.typeMap(ZdsOpschorting.class, ZgwOpschorting.class).addMappings(mapper -> mapper
 				.using(convertStringToBoolean()).map(ZdsOpschorting::getIndicatie, ZgwOpschorting::setIndicatie));
 		modelMapper.typeMap(ZgwOpschorting.class, ZdsOpschorting.class).addMappings(mapper -> mapper
@@ -158,15 +150,11 @@ public class ModelMapperConfig {
 	}
 
 	private void addZgwZaakToGeefZaakDetailsTypeMappingTypeMapping(ModelMapper modelMapper) {
-		// modelMapper.typeMap(ZgwZaak.class,
-		// ZdsZakLa01GeefZaakDetails.Antwoord.Object.class)
-		// .includeBase(ZgwZaak.class, ZdsZaak.class);
 		modelMapper.typeMap(ZgwZaak.class, ZdsZaak.class);
 	}
 
 	private void addZgwEnkelvoudigInformatieObjectToZaakDocumentLinkTypeMapping(ModelMapper modelMapper) {
 		modelMapper.typeMap(ZgwEnkelvoudigInformatieObject.class, ZdsZaakDocument.class)
-//		.includeBase(ZgwEnkelvoudigInformatieObject.class, ZdsZaakDocument.class)
 				.addMappings(mapper -> mapper.using(convertZgwDateToStufDate())
 						.map(ZgwEnkelvoudigInformatieObject::getCreatiedatum, ZdsZaakDocument::setCreatiedatum))
 				.addMappings(mapper -> mapper.using(convertZgwDateToStufDate())
@@ -191,7 +179,6 @@ public class ModelMapperConfig {
 				.addMappings(mapper -> mapper.using(convertToUpperCase()).map(
 						ZgwEnkelvoudigInformatieObject::getVertrouwelijkheidaanduiding,
 						ZdsZaakDocument::setVertrouwelijkAanduiding));
-				//.addMappings(mapper -> mapper.map(ZgwEnkelvoudigInformatieObject::getUrl, ZdsZaakDocument::setLink));
 	}
 
 	public void addZdsZaakToZgwZaakTypeMapping(ModelMapper modelMapper) {
@@ -245,8 +232,6 @@ public class ModelMapperConfig {
 				.addMappings(
 						mapper -> mapper.using(convertToLowerCase()).map(ZdsZaakDocument::getVertrouwelijkAanduiding,
 								ZgwEnkelvoudigInformatieObject::setVertrouwelijkheidaanduiding));
-				//.addMapping(src -> src.getInhoud().getValue(), ZgwEnkelvoudigInformatieObject::setInhoud)
-				//.addMapping(src -> src.getInhoud().getBestandsnaam(), ZgwEnkelvoudigInformatieObject::setBestandsnaam);
 	}
 
 	public void addZdsZaakDocumentRelevantToZgwEnkelvoudigInformatieObjectTypeMapping(ModelMapper modelMapper) {
@@ -279,15 +264,15 @@ public class ModelMapperConfig {
 					}
 					var date = zdsDateFormatter.parse(stufDate);
 					// log.info("date:" + date);
-					if (timeoffset != 0) {
+					if (ModelMapperConfig.this.timeoffset != 0) {
 						Calendar cal = Calendar.getInstance();
 						cal.setTime(date);
-						cal.add(Calendar.MINUTE, timeoffset);
+						cal.add(Calendar.MINUTE, ModelMapperConfig.this.timeoffset);
 						date = cal.getTime();
 					}
 					var zgwDate = zgwDateFormatter.format(date);
 					log.debug("convertStufDateToZgwDate: " + stufDate + " (amsterdam) --> " + zgwDate
-							+ "(gmt) with offset minutes:" + timeoffset + "(date:" + date + ")");
+							+ "(gmt) with offset minutes:" + ModelMapperConfig.this.timeoffset + "(date:" + date + ")");
 					return zgwDate;
 
 				} catch (ParseException e) {
@@ -313,33 +298,35 @@ public class ModelMapperConfig {
 						DateTimeFormatter stufFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");
 						LocalDate cetDate = LocalDate.parse(stufDateTime, stufFormatter);
 						log.debug("convertStufDateTimeToZgwDateTime parsed: " + cetDate.toString());
-						DateTimeFormatter zdsFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");					
-						var result = cetDate.format(zdsFormatter) + "T00:00:00.000000Z"; 
+						DateTimeFormatter zdsFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+						var result = cetDate.format(zdsFormatter) + "T00:00:00.000000Z";
 						log.debug("convertStufDateTimeToZgwDateTime result: " + result);
 						return result;
-					
+
 					} catch (Exception e) {
 						log.warn("error parsing the string:" + stufDateTime, e);
 						return e.toString();
 					}
-				}
-				else if(stufDateTime.length() == 16 || stufDateTime.length() == 17) {
-					if(stufDateTime.length() == 17) {
-						log.debug("convertStufDateTimeToZgwDateTime input is a datetime of 17 characters:" + stufDateTime + " will be trimmed to 16");
-						stufDateTime = stufDateTime.substring(0, 16); 
-					}					
+				} else if (stufDateTime.length() == 16 || stufDateTime.length() == 17) {
+					if (stufDateTime.length() == 17) {
+						log.debug("convertStufDateTimeToZgwDateTime input is a datetime of 17 characters:"
+								+ stufDateTime + " will be trimmed to 16");
+						stufDateTime = stufDateTime.substring(0, 16);
+					}
 					// input a datetime
 					log.debug("convertStufDateTimeToZgwDateTime input is a datetime:" + stufDateTime);
 					try {
 						DateTimeFormatter stufFormatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmssSS");
-						ZonedDateTime cetDate = LocalDateTime.parse(stufDateTime, stufFormatter).atZone(ZoneId.systemDefault());
+						ZonedDateTime cetDate = LocalDateTime.parse(stufDateTime, stufFormatter)
+								.atZone(ZoneId.systemDefault());
 						log.debug("convertStufDateTimeToZgwDateTime parsed: " + cetDate.toString());
-						//OffsetDateTime gmtDate = cetDate.toOffsetDateTime();
+						// OffsetDateTime gmtDate = cetDate.toOffsetDateTime();
 						var gmtDate = cetDate.withZoneSameInstant(ZoneOffset.UTC).toLocalDateTime();
 						log.debug("convertStufDateTimeToZgwDateTime to GMT tomezone: " + gmtDate.toString());
-						gmtDate = gmtDate.plusMinutes(timeoffset);
-						log.debug("convertStufDateTimeToZgwDateTime aded offset: " + gmtDate.toString() + " (offset in minutes:" + timeoffset + ")");
-						DateTimeFormatter zdsFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'");					
+						gmtDate = gmtDate.plusMinutes(ModelMapperConfig.this.timeoffset);
+						log.debug("convertStufDateTimeToZgwDateTime aded offset: " + gmtDate.toString()
+								+ " (offset in minutes:" + ModelMapperConfig.this.timeoffset + ")");
+						DateTimeFormatter zdsFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'");
 						var result = gmtDate.format(zdsFormatter);
 						log.debug("convertStufDateTimeToZgwDateTime result: " + result);
 						return result;
@@ -347,14 +334,13 @@ public class ModelMapperConfig {
 						log.warn("error parsing the string:" + stufDateTime, e);
 						return e.toString();
 					}
-				}
-				else {
-					throw new ConverterException("datetime string: '" + stufDateTime + "' has to have lengthe of 8 or 16 (current lengt:" + stufDateTime.length() + ")");
+				} else {
+					throw new ConverterException("datetime string: '" + stufDateTime
+							+ "' has to have lengthe of 8 or 16 (current lengt:" + stufDateTime.length() + ")");
 				}
 			}
 		};
 	}
-
 
 	private AbstractConverter<String, String> convertZgwDateToStufDate() {
 		return new AbstractConverter<>() {
@@ -366,13 +352,14 @@ public class ModelMapperConfig {
 					return null;
 				}
 				if (stufDateTime.length() != 10) {
-					throw new ConverterException("Verkeerde lengte(" + stufDateTime.length() + ", verwacht 10) van de datum:" + stufDateTime);
+					throw new ConverterException("Verkeerde lengte(" + stufDateTime.length()
+							+ ", verwacht 10) van de datum:" + stufDateTime);
 				}
 				try {
 					DateTimeFormatter zdsFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 					var gmtDate = LocalDate.parse(stufDateTime, zdsFormatter);
 					log.debug("convertZgwDateToStufDate parsed: " + gmtDate.toString());
-					DateTimeFormatter stufFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");					
+					DateTimeFormatter stufFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");
 					var result = gmtDate.format(stufFormatter);
 					log.debug("convertZgwDateToStufDate result: " + result);
 					return result;
@@ -383,32 +370,32 @@ public class ModelMapperConfig {
 			}
 		};
 	}
-	
-	
+
 	private AbstractConverter<String, String> convertZgwDateTimeToStufDateTime() {
 		return new AbstractConverter<>() {
 
 			@Override
 			protected String convert(String stufDateTime) {
 				log.debug("convertZgwDateTimeToStufDateTime:" + stufDateTime);
-				if (stufDateTime == null ||  stufDateTime.length() == 0) {
+				if (stufDateTime == null || stufDateTime.length() == 0) {
 					return null;
 				}
 				if (stufDateTime.length() == 20) {
 					stufDateTime = stufDateTime.substring(0, 19) + ".000000Z";
-				}				
+				}
 				if (stufDateTime.length() != 27) {
-					throw new ConverterException("Verkeerde lengte(" + stufDateTime.length() + ", verwacht 27) van de datum:" + stufDateTime);
+					throw new ConverterException("Verkeerde lengte(" + stufDateTime.length()
+							+ ", verwacht 27) van de datum:" + stufDateTime);
 				}
 				try {
 					DateTimeFormatter zdsFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'");
 					ZonedDateTime gmtDate = LocalDateTime.parse(stufDateTime, zdsFormatter).atZone(ZoneId.of("GMT"));
 					log.debug("convertZgwDateTimeToStufDateTime parsed: " + gmtDate.toString());
-					gmtDate = gmtDate.plusMinutes(-timeoffset);
+					gmtDate = gmtDate.plusMinutes(-ModelMapperConfig.this.timeoffset);
 					log.debug("convertZgwDateTimeToStufDateTime substractedoffset: " + gmtDate.toString());
 					OffsetDateTime cetDate = gmtDate.toOffsetDateTime();
 					log.debug("convertZgwDateTimeToStufDateTime to cet timezone: " + cetDate.toString());
-					DateTimeFormatter stufFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");					
+					DateTimeFormatter stufFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");
 					return gmtDate.format(stufFormatter);
 				} catch (Exception e) {
 					log.warn("error parsing the string:" + stufDateTime, e);
@@ -466,7 +453,6 @@ public class ModelMapperConfig {
 		};
 	}
 
-	
 	private AbstractConverter<String, String> convertToLowerCase() {
 		return new AbstractConverter<>() {
 

@@ -7,9 +7,6 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import lombok.Data;
-import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsParameters;
-import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsScope;
-import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsZaak;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsZakLv01;
 
 @Data

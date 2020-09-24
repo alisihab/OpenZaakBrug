@@ -13,18 +13,18 @@ import lombok.Data;
 @Data
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ZdsHeeftRelevant {
-    @XmlAttribute(namespace = STUF)
-    public String entiteittype = "ZAKEDC";
-    
-        @XmlElement(namespace = ZKN)
-        public ZdsZaakDocument gerelateerde;
+	@XmlAttribute(namespace = STUF)
+	public String entiteittype = "ZAKEDC";
 
-        @XmlElement(namespace = ZKN)
-        public String titel;
+	@XmlElement(namespace = ZKN)
+	public ZdsZaakDocument gerelateerde;
 
-        @XmlElement(namespace = ZKN)
-        public String beschrijving;
+	@XmlElement(namespace = ZKN)
+	public String titel;
 
-        @XmlElement(namespace = ZKN)
-        public String registratiedatum;
+	@XmlElement(namespace = ZKN)
+	public String beschrijving;
+
+	@XmlElement(namespace = ZKN)
+	public String registratiedatum;
 }

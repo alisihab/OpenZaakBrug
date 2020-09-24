@@ -8,9 +8,10 @@ import javax.xml.bind.annotation.XmlElement;
 
 import lombok.Data;
 
-@Data@XmlAccessorType(XmlAccessType.FIELD)
+@Data
+@XmlAccessorType(XmlAccessType.FIELD)
 
 public class ZdsDetailsXML {
-    @XmlElement(namespace = STUF)        
-	public String todo;    	
+	@XmlElement(namespace = STUF)
+	public String todo;
 }

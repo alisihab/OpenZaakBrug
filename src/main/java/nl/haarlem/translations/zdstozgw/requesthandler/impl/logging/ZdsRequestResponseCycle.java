@@ -1,23 +1,26 @@
 package nl.haarlem.translations.zdstozgw.requesthandler.impl.logging;
 
-import lombok.Data;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Lob;
 
-import javax.persistence.*;
+import lombok.Data;
 
 @Entity
 @Data
 public class ZdsRequestResponseCycle {
-    @Id
-    @GeneratedValue
-    private long id;
-    private String referentienummer;    
+	@Id
+	@GeneratedValue
+	private long id;
+	private String referentienummer;
 
-    private String zdsMethod;    
-    private String zdsUrl;
-    private String zdsSoapAction;
-    @Lob
-    private String zdsRequestBody;
-    private int zdsResponseCode;
-    @Lob
-    private String zdsResponseBody;    
+	private String zdsMethod;
+	private String zdsUrl;
+	private String zdsSoapAction;
+	@Lob
+	private String zdsRequestBody;
+	private int zdsResponseCode;
+	@Lob
+	private String zdsResponseBody;
 }

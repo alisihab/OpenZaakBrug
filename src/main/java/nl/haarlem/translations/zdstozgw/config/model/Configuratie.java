@@ -1,32 +1,32 @@
 package nl.haarlem.translations.zdstozgw.config.model;
 
+import java.util.List;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import lombok.Data;
-import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwZaak;
 
-import java.util.List;
+import lombok.Data;
 
 @Data
 public class Configuratie {
-    @SerializedName("requestHandlerImplementation")
-    @Expose
-    public String requestHandlerImplementation = null;    
+	@SerializedName("requestHandlerImplementation")
+	@Expose
+	public String requestHandlerImplementation = null;
 
-    @SerializedName("organisaties")
-    @Expose    
-    public List<Organisatie> organisaties = null;
-	
+	@SerializedName("organisaties")
+	@Expose
+	public List<Organisatie> organisaties = null;
+
 	@SerializedName("zgwRolOmschrijving")
-    @Expose
-    public ZgwRolOmschrijving zgwRolOmschrijving = null;	
+	@Expose
+	public ZgwRolOmschrijving zgwRolOmschrijving = null;
 
 	@SerializedName("replication")
-    @Expose
-    public Replication replication = null;
-	
+	@Expose
+	public Replication replication = null;
+
 	@SerializedName("translations")
-    @Expose
-    public List<Translation> translations = null;
+	@Expose
+	public List<Translation> translations = null;
 
 }
