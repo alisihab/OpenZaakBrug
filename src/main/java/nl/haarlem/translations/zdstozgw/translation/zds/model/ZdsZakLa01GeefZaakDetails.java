@@ -20,14 +20,5 @@ public class ZdsZakLa01GeefZaakDetails extends ZdsZknDocument {
 	public ZdsParameters parameters;
 
 	@XmlElement(namespace = ZKN)
-	public Antwoord antwoord;
-
-	@Data
-	@XmlAccessorType(XmlAccessType.FIELD)
-	public static class Antwoord {
-
-		@XmlElement(namespace = ZKN, name = "object")
-		public List<ZdsZaak> zaak;
-
-	}
+	public ZdsZaakAntwoord antwoord;
 }

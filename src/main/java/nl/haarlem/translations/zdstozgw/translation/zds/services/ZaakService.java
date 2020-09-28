@@ -170,7 +170,7 @@ public class ZaakService {
 		for (ZgwZaakInformatieObject zgwZaakInformatieObject : this.zgwClient
 				.getZaakInformatieObjectenByZaak(zgwZaak.url)) {
 			ZgwEnkelvoudigInformatieObject zgwEnkelvoudigInformatieObject = this.zgwClient
-					.getZaakDocument(zgwZaakInformatieObject.informatieobject);
+					.getZaakDocumentByUrl(zgwZaakInformatieObject.informatieobject);
 			if (zgwEnkelvoudigInformatieObject == null) {
 				throw new ConverterException("could not get the zaakdocument: "
 						+ zgwZaakInformatieObject.informatieobject + " for zaak:" + zaakidentificatie);
@@ -229,15 +229,13 @@ public class ZaakService {
 			throw new RuntimeException("Documenttype not found for omschrijving: " + zdsInformatieObject.omschrijving);
 		}
 
-		ZgwEnkelvoudigInformatieObject zgwEnkelvoudigInformatieObject = this.modelMapper.map(zdsInformatieObject,
-				ZgwEnkelvoudigInformatieObject.class);
+		ZgwEnkelvoudigInformatieObject zgwEnkelvoudigInformatieObject = this.modelMapper.map(zdsInformatieObject, ZgwEnkelvoudigInformatieObject.class);
 		zgwEnkelvoudigInformatieObject.informatieobjecttype = zgwInformatieObjectType.url;
 		zgwEnkelvoudigInformatieObject.bronorganisatie = rsin;
 		zgwEnkelvoudigInformatieObject = this.zgwClient.addZaakDocument(zgwEnkelvoudigInformatieObject);
 		ZgwZaak zgwZaak = this.zgwClient
 				.getZaakByIdentificatie(zdsInformatieObject.isRelevantVoor.gerelateerde.identificatie);
-		ZgwZaakInformatieObject zgwZaakInformatieObject = addZaakInformatieObject(zgwEnkelvoudigInformatieObject,
-				zgwZaak.url);
+		ZgwZaakInformatieObject zgwZaakInformatieObject = addZaakInformatieObject(zgwEnkelvoudigInformatieObject, zgwZaak.url);
 
 		// status
 		if (zdsInformatieObject.isRelevantVoor.volgnummer != null

@@ -227,11 +227,9 @@ public class ModelMapperConfig {
 
 	public void addZdsZaakDocumentToZgwEnkelvoudigInformatieObjectTypeMapping(ModelMapper modelMapper) {
 		modelMapper.typeMap(ZdsZaakDocument.class, ZgwEnkelvoudigInformatieObject.class)
-				.addMappings(mapper -> mapper.using(convertStufDateToZgwDate()).map(ZdsZaakDocument::getCreatiedatum,
-						ZgwEnkelvoudigInformatieObject::setCreatiedatum))
-				.addMappings(
-						mapper -> mapper.using(convertToLowerCase()).map(ZdsZaakDocument::getVertrouwelijkAanduiding,
-								ZgwEnkelvoudigInformatieObject::setVertrouwelijkheidaanduiding));
+				.addMappings(mapper -> mapper.using(convertStufDateToZgwDate()).map(ZdsZaakDocument::getCreatiedatum, ZgwEnkelvoudigInformatieObject::setCreatiedatum))
+				.addMappings(mapper -> mapper.using(convertStufDateToZgwDate()).map(ZdsZaakDocument::getOntvangstdatum, ZgwEnkelvoudigInformatieObject::setOntvangstdatum))				
+				.addMappings(mapper -> mapper.using(convertToLowerCase()).map(ZdsZaakDocument::getVertrouwelijkAanduiding, ZgwEnkelvoudigInformatieObject::setVertrouwelijkheidaanduiding));
 	}
 
 	public void addZdsZaakDocumentRelevantToZgwEnkelvoudigInformatieObjectTypeMapping(ModelMapper modelMapper) {
