@@ -8,6 +8,8 @@ nl.haarlem.translations.zdstozgw.trustAllCerts = false
 
 nl.haarlem.translations.zdstozgw.enableJWTEntpoint = false
 
+nl.haarlem.translations.zdstozgw.timeoffset.minutes = -5
+
 #openzaak endpoints
 zgw.endpoint.roltype = /catalogi/api/v1/roltypen
 zgw.endpoint.rol = /zaken/api/v1/rollen

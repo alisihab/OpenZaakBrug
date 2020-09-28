@@ -25,7 +25,7 @@
 		"heeftAlsGemachtigde": "Gemachtigde",
 		"heeftAlsOverigBetrokkene": "Overige_betrokkene"
 	},
-	"replicatie": {	
+	"replication": {	
 		"geefZaakdetails" : {
 			"soapaction" : "http://www.egem.nl/StUF/sector/zkn/0310/geefZaakdetails_Lv01",
 			"url" : "http://localhost:8181/zds/BeantwoordVraag"		
