@@ -99,12 +99,13 @@ public class ZaakService {
 
 		// rollen
 		ZgwRolOmschrijving zgwRolOmschrijving = this.configService.getConfiguratie().getZgwRolOmschrijving();
-		addRolToZgw(zdsZaak.heeftAlsInitiator, zgwRolOmschrijving.getHeeftAlsInitiator(), zgwZaak);
+		addRolToZgw(zdsZaak.heeftBetrekkingOp, zgwRolOmschrijving.getHeeftBetrekkingOp(), zgwZaak);
 		addRolToZgw(zdsZaak.heeftAlsBelanghebbende, zgwRolOmschrijving.getHeeftAlsBelanghebbende(), zgwZaak);
-		addRolToZgw(zdsZaak.heeftAlsGemachtigde, zgwRolOmschrijving.getHeeftAlsGemachtigde(), zgwZaak);
-		addRolToZgw(zdsZaak.heeftAlsOverigBetrokkene, zgwRolOmschrijving.getHeeftAlsOverigBetrokkene(), zgwZaak);
+		addRolToZgw(zdsZaak.heeftAlsInitiator, zgwRolOmschrijving.getHeeftAlsInitiator(), zgwZaak);
 		addRolToZgw(zdsZaak.heeftAlsUitvoerende, zgwRolOmschrijving.getHeeftAlsUitvoerende(), zgwZaak);
 		addRolToZgw(zdsZaak.heeftAlsVerantwoordelijke, zgwRolOmschrijving.getHeeftAlsVerantwoordelijke(), zgwZaak);
+		addRolToZgw(zdsZaak.heeftAlsGemachtigde, zgwRolOmschrijving.getHeeftAlsGemachtigde(), zgwZaak);
+		addRolToZgw(zdsZaak.heeftAlsOverigBetrokkene, zgwRolOmschrijving.getHeeftAlsOverigBetrokkene(), zgwZaak);
 
 		// status
 		if (zdsZaak.heeft != null && zdsZaak.heeft.size() > 0 && zdsZaak.heeft.get(0).gerelateerde != null) {
@@ -223,8 +224,7 @@ public class ZaakService {
 	public ZgwEnkelvoudigInformatieObject voegZaakDocumentToe(String rsin, ZdsZaakDocumentInhoud zdsInformatieObject) {
 		log.info("voegZaakDocumentToe:" + zdsInformatieObject.identificatie);
 
-		var zgwInformatieObjectType = this.zgwClient
-				.getZgwInformatieObjectTypeByOmschrijving(zdsInformatieObject.omschrijving);
+		var zgwInformatieObjectType = this.zgwClient.getZgwInformatieObjectTypeByOmschrijving(zdsInformatieObject.omschrijving);
 		if (zgwInformatieObjectType == null) {
 			throw new RuntimeException("Documenttype not found for omschrijving: " + zdsInformatieObject.omschrijving);
 		}

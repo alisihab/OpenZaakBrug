@@ -18,6 +18,7 @@
 		}
 	],
 	"zgwRolOmschrijving": {
+		"heeftBetrekkingOp" : "BetrekkingOp",	
 		"heeftAlsBelanghebbende": "Belanghebbende",
 		"heeftAlsInitiator": "initiator",
 		"heeftAlsUitvoerende": "Uitvoerende",
