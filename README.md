@@ -24,9 +24,9 @@ Hierbij hebben we de volgende uitgangspunten:
 
 ## Technische informatie
 
-informatie over de installatie kijk in : [INSTALL.md](INSTALL.md)  
+informatie over de installatie kijk in : [Installing Open Zaakbrug.md](docs/Installing Open Zaakbrug.md)  
 
-informatie over de replicatie kijk in : [REPLICATION.md](REPLICATION.md)  
+informatie over de replicatie kijk in : [Workings of Replication.md](docs/Workings of Replication.md)  
 
 ## Volwassenheid van het product
 
