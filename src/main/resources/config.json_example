@@ -20,11 +20,11 @@
 	"zgwRolOmschrijving": {
 		"heeftBetrekkingOp" : "BetrekkingOp",	
 		"heeftAlsBelanghebbende": "Belanghebbende",
-		"heeftAlsInitiator": "initiator",
+		"heeftAlsInitiator": "Initiator",
 		"heeftAlsUitvoerende": "Uitvoerende",
 		"heeftAlsVerantwoordelijke": "Verantwoordelijke",
 		"heeftAlsGemachtigde": "Gemachtigde",
-		"heeftAlsOverigBetrokkene": "Overige_betrokkene"
+		"heeftAlsOverigBetrokkene": "OverigeBetrokkene"
 	},
 	"replication": {	
 		"geefZaakdetails" : {
