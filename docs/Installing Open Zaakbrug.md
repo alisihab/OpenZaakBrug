@@ -107,13 +107,9 @@ Instellen van de applicatie, application.properties
 
 Instellen van de applicatie, config.json
 
-De modus goed zetten
-
-```
--- USE\_ZGW
-
-++ USE ZDS
-```
+- openzaak.jwt.secret=test
+- openzaak.jwt.issuer=test
+- openzaak.baseUrl = https://openzaak.local
 
 De endpoints goedzetten naar de juiste
 
@@ -134,13 +130,9 @@ $ mvn spring-boot:run
 
 Na het draaien van de commando&#39;s zijn de services bereikbaar op:
 
-[http://localhost:8080/VrijBerichtService](http://localhost:8080/VrijBerichtService)
-
-[http://localhost:8080/OntvangAsynchroon](http://localhost:8080/OntvangAsynchroon)
-
-[http://localhost:8080/BeantwoordVraag](http://localhost:8080/BeantwoordVraag)
-
-(eigenlijk maakt het eindpoint niet uit, de matching wordt gedaan opbasis van de SoapAction)
+- http://localhost:8080/translate/generic/zds/VrijBericht
+- http://localhost:8080/translate/generic/zds/OntvangAsynchroon
+- http://localhost:8080/translate/generic/zds/BeantwoordVraag
 
 ### Benaderen H2 database
 
@@ -158,7 +150,7 @@ Voor de basisurl zal dan http://%linuxserver%:8080/ gebruikt moeten worden
 
 ### Gebruik vanuit SoapUI
 
-Binnen SoapUi kunnen dan de berichten verstuurd worden naar de volgende endpoints van de OpenZaakBrug:
+Binnen SoapUi kunnen dan de berichten verstuurd worden naar de volgende endpoints van de OpenZaakBrug. Een voorbeeld project valt te vinden in: examples\soap\Open-Zaakbrug-soapui-project.xml
 
 ### Vervolg actie vervangen van de database
 
@@ -170,17 +162,9 @@ Instellen van de applicatie, application.properties, het volgende blok aanpassen
 
 In de application.properties instellen waar openzaak zich bevind
 
-openzaak.jwt.secret=test
-
-openzaak.jwt.issuer=test
-
-openzaak.baseUrl = https://openzaak.local
-
-In de config.json instellen welke modus de voorkeur heeft
-
--- USE\_ZDS
-
-++ USE ZGW
+- openzaak.jwt.secret=test
+- openzaak.jwt.issuer=test
+- openzaak.baseUrl = https://openzaak.local
 
 ### JWT enpoint
 
