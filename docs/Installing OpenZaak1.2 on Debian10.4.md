@@ -1,8 +1,9 @@
 # Installeren van OpenZaak 1.2 op Debian 10.4
 
-# WAARSCHUWING: Deze installatie is puur voor het snel testen!
+# WAARSCHUWING: Deze installatie is puur voor het testen, dit is geen _secure_ inrichting! 
 Dit betekend dus dat je hier nooit gegevens in moet opslaan of het ontsluiten.
 De meest voor de handliggende punten van aandacht zijn bij deze installatie:
+
 - SECRET_KEY moet nooit publiek zijn
 - Database credentials wil je niet delen
 - DEBUG wil je echt niet aan hebben staa

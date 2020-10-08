@@ -24,7 +24,7 @@ Hierbij hebben we de volgende uitgangspunten:
 
 ## Technische informatie
 - informatie over de installatie kijk in : [Installing Open Zaakbrug.md](docs/Installing Open Zaakbrug.md)  
-- informatie over de replicatie kijk in : [Workings of Replication.md](docs/Workings of Replication.md)  
+- informatie over het aanroepen van der service en het vertalen en repliceren kijk : [Workings of Replication.md](docs/Workings of Replication.md) 
 
 ## Status
 Op dit moment wordt de Open Zaakbrug getest door de functioneelbeheerders van één applicatie, hierbij wordt gekeken of de applicatie zich gedraagd zoals het voorheen werkte met het legacy (ZDS) zaaksysteem. Daarnaast kan natuurlijk ook de https://github.com/Sudwest-Fryslan/DeSleepTool gebruikt worden om hiermee documenten aan bestaande zaken in een ZGW server (zoals OpenZaak) toe gevoegen

@@ -8,7 +8,7 @@ In deze implementatie zit geen extra logica.
 
 ## ReplicationRequestHanlder
 ### Logging
-In deze implementatie zit extra logging logica. De inkomende en uitgaande berichten van openzaakbrug worden in een database opgeslagen. Dit wordt opgeslagen in de tabel REQUEST_RESPONSE_CYCLE. Ook derequests en responses naar OpenZaak worden gelogd in de tabel INTERIM_REQUEST_RESPONSE_CYCLE.
+In deze implementatie zit extra logging logica. De inkomende en uitgaande berichten van openzaakbrug worden in een database opgeslagen. Dit wordt opgeslagen in de tabel REQUEST_RESPONSE_CYCLE. Ook de requests en responses naar OpenZaak worden gelogd in de tabel ZGW_REQUEST_RESPONSE_CYCLE en voor het legacy zaaksysteem in de tabel: ZDS_REQUEST_RESPONSE_CYCLE 
 
 ### Replicatie
 Naar aanleiding van de configuratie van de replicatie in het config.json bestand, kunnen berichten zowel naar het nieuwe zakenmagazijn als het oude gestuurd worden.
