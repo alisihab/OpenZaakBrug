@@ -27,8 +27,6 @@ _Replicatie standen:_
 - Replicate : Converteer de berichten naar OpenZaak logt berichtenverkeer en fouten naar de tabellen, daarnaast nog een afschrift naar het legacy zaaksysteem voor de zekerheid
 - Translate : Converteer de berichten naar OpenZaak logt berichtenverkeer en fouten naar de tabellen
 
-** urls **
-
 | modus| url | soapaction |
 |------|-----|------------|
 | proxy | http://localhost:8080/proxy/generic/zds/VrijBericht | http://www.egem.nl/StUF/sector/zkn/0310/genereerDocumentIdentificatie_Di02 |
