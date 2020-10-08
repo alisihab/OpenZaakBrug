@@ -7,7 +7,7 @@ Voor de minimale inrichting zijn er de volgende randvoorwaarden aan het systeem:
 - Java 11, getest met OpenJDK11
 - Maven
 - Git
-- Internet verbinding voor git en maven
+- Internet verbinding voor git en maven 
 
 Ophalen en klaarzetten van de applicatie:
 
@@ -29,13 +29,14 @@ $ mv src/main/resources/config.json_example src/main/resources/config.json
 
 Instellen van de applicatie, application.properties
 
-Instellen van de applicatie, config.json
-
 - openzaak.jwt.secret=test
 - openzaak.jwt.issuer=test
 - openzaak.baseUrl = https://openzaak.local
 
-De endpoints goedzetten naar de juiste
+Instellen van de applicatie, config.json
+
+- bekijk de documentatie Configuratie.md
+- De endpoints goedzetten naar de juiste
 
 Draaien van de service
 

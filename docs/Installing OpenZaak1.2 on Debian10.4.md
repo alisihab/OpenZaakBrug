@@ -6,7 +6,7 @@ De meest voor de handliggende punten van aandacht zijn bij deze installatie:
 
 - SECRET_KEY moet nooit publiek zijn
 - Database credentials wil je niet delen
-- DEBUG wil je echt niet aan hebben staa
+- DEBUG wil je echt niet aan hebben staan
 
 
 ## Bronnen: 

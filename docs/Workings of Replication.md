@@ -21,7 +21,7 @@ Dit door het volgende proces te doorlopen:
 
 Op dit moment wordt AL het berichtenverkeer in de database gelogd met de eventuele fouten voor nadere inspectie, zodra de koppeling robuust werkt kan dit worden aangepast.
 
-_Replicatie standen:_
+## Replicatie standen: ##
 
 - Proxy : Stuur door naar het legacy zaaksysteem en logt berichtenverkeer en fouten naar de tabellen
 - Replicate : Converteer de berichten naar OpenZaak logt berichtenverkeer en fouten naar de tabellen, daarnaast nog een afschrift naar het legacy zaaksysteem voor de zekerheid

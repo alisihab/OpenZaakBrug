@@ -7,7 +7,7 @@ De requesthandler is in het leven geroepen als een wrapper voor de Converter. Do
 In deze implementatie zit geen extra logica.
 
 ## ReplicationRequestHanlder
-### Logging
+### Logging 
 In deze implementatie zit extra logging logica. De inkomende en uitgaande berichten van openzaakbrug worden in een database opgeslagen. Dit wordt opgeslagen in de tabel REQUEST_RESPONSE_CYCLE. Ook de requests en responses naar OpenZaak worden gelogd in de tabel ZGW_REQUEST_RESPONSE_CYCLE en voor het legacy zaaksysteem in de tabel: ZDS_REQUEST_RESPONSE_CYCLE 
 
 ### Replicatie

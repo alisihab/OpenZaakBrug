@@ -3,7 +3,7 @@ In de resource map van het project staat het bestand config.json
 
 ## RequestHandlerImplementation
 Hier wordt de klasse naam opgegeven van de requestHandlerImplementatie die gebruikt moet worden, bv: nl.haarlem.translations.zdstozgw.requesthandler.impl.BasicRequestHandler
-Voor uitleg over de requesthandler, zie [ReplicationHandler.md](ReplicationHandler.md).
+Voor uitleg over de requesthandler, zie [ReplicationHandler.md](ReplicationHandler.md). 
 
 ## Organisaties
 In de stuurgegevens van het bericht bevinden zich de Zender en Ontvanger nodes. Daarin staan gemeentecodes, OpenZaak verwacht RSIN. Hier wordt de vertaling aangegeven.
