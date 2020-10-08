@@ -26,3 +26,38 @@ _Replicatie standen:_
 - Proxy : Stuur door naar het legacy zaaksysteem en logt berichtenverkeer en fouten naar de tabellen
 - Replicate : Converteer de berichten naar OpenZaak logt berichtenverkeer en fouten naar de tabellen, daarnaast nog een afschrift naar het legacy zaaksysteem voor de zekerheid
 - Translate : Converteer de berichten naar OpenZaak logt berichtenverkeer en fouten naar de tabellen
+
+** urls **
+
+| modus| url | soapaction |
+|------|-----|------------|
+| proxy | http://localhost:8080/proxy/generic/zds/VrijBericht | http://www.egem.nl/StUF/sector/zkn/0310/genereerDocumentIdentificatie_Di02 |
+| proxy | http://localhost:8080/proxy/generic/zds/VrijBericht | http://www.egem.nl/StUF/sector/zkn/0310/genereerZaakIdentificatie_Di02 |
+| proxy | http://localhost:8080/proxy/generic/zds/OntvangAsynchroon | http://www.egem.nl/StUF/sector/zkn/0310/actualiseerZaakstatus_Lk01 |
+| proxy | http://localhost:8080/proxy/generic/zds/OntvangAsynchroon | http://www.egem.nl/StUF/sector/zkn/0310/creeerZaak_Lk01 |
+| proxy | http://localhost:8080/proxy/generic/zds/OntvangAsynchroon | http://www.egem.nl/StUF/sector/zkn/0310/updateZaak_Lk01 |
+| proxy | http://localhost:8080/proxy/generic/zds/OntvangAsynchroon | http://www.egem.nl/StUF/sector/zkn/0310/voegZaakdocumentToe_Lk01 |
+| proxy | http://localhost:8080/proxy/generic/zds/BeantwoordVraag | http://www.egem.nl/StUF/sector/zkn/0310/geefLijstZaakdocumenten_Lv01 |
+| proxy | http://localhost:8080/proxy/generic/zds/BeantwoordVraag | http://www.egem.nl/StUF/sector/zkn/0310/geefZaakdetails_Lv01 |
+| proxy | http://localhost:8080/proxy/generic/zds/BeantwoordVraag | http://www.egem.nl/StUF/sector/zkn/0310/geefZaakdocumentLezen_Lv01 |
+| proxy | http://localhost:8080/proxy/generic/stufzkn/BeantwoordVraag | http://www.egem.nl/StUF/sector/zkn/0310/zakLv01 |
+| replicate | http://localhost:8080/replicate/generic/zds/VrijBericht | http://www.egem.nl/StUF/sector/zkn/0310/genereerDocumentIdentificatie_Di02 |
+| replicate | http://localhost:8080/replicate/generic/zds/VrijBericht | http://www.egem.nl/StUF/sector/zkn/0310/genereerZaakIdentificatie_Di02 |
+| replicate | http://localhost:8080/replicate/generic/zds/OntvangAsynchroon | http://www.egem.nl/StUF/sector/zkn/0310/actualiseerZaakstatus_Lk01 |
+| replicate | http://localhost:8080/replicate/generic/zds/OntvangAsynchroon | http://www.egem.nl/StUF/sector/zkn/0310/creeerZaak_Lk01 |
+| replicate | http://localhost:8080/replicate/generic/zds/OntvangAsynchroon | http://www.egem.nl/StUF/sector/zkn/0310/updateZaak_Lk01 |
+| replicate | http://localhost:8080/replicate/generic/zds/OntvangAsynchroon | http://www.egem.nl/StUF/sector/zkn/0310/voegZaakdocumentToe_Lk01 |
+| replicate | http://localhost:8080/replicate/generic/zds/BeantwoordVraag | http://www.egem.nl/StUF/sector/zkn/0310/geefLijstZaakdocumenten_Lv01 |
+| replicate | http://localhost:8080/replicate/generic/zds/BeantwoordVraag | http://www.egem.nl/StUF/sector/zkn/0310/geefZaakdetails_Lv01 |
+| replicate | http://localhost:8080/replicate/generic/zds/BeantwoordVraag | http://www.egem.nl/StUF/sector/zkn/0310/geefZaakdocumentLezen_Lv01 |
+| replicate | http://localhost:8080/replicate/generic/stufzkn/BeantwoordVraag | http://www.egem.nl/StUF/sector/zkn/0310/zakLv01 |
+| translate | http://localhost:8080/translate/generic/zds/VrijBericht | http://www.egem.nl/StUF/sector/zkn/0310/genereerDocumentIdentificatie_Di02 |
+| translate | http://localhost:8080/translate/generic/zds/VrijBericht | http://www.egem.nl/StUF/sector/zkn/0310/genereerZaakIdentificatie_Di02 |
+| translate | http://localhost:8080/translate/generic/zds/OntvangAsynchroon | http://www.egem.nl/StUF/sector/zkn/0310/actualiseerZaakstatus_Lk01 |
+| translate | http://localhost:8080/translate/generic/zds/OntvangAsynchroon | http://www.egem.nl/StUF/sector/zkn/0310/creeerZaak_Lk01 |
+| translate | http://localhost:8080/translate/generic/zds/OntvangAsynchroon | http://www.egem.nl/StUF/sector/zkn/0310/updateZaak_Lk01 |
+| translate | http://localhost:8080/translate/generic/zds/OntvangAsynchroon | http://www.egem.nl/StUF/sector/zkn/0310/voegZaakdocumentToe_Lk01 |
+| translate | http://localhost:8080/translate/generic/zds/BeantwoordVraag | http://www.egem.nl/StUF/sector/zkn/0310/geefLijstZaakdocumenten_Lv01 |
+| translate | http://localhost:8080/translate/generic/zds/BeantwoordVraag | http://www.egem.nl/StUF/sector/zkn/0310/geefZaakdetails_Lv01 |
+| translate | http://localhost:8080/translate/generic/zds/BeantwoordVraag | http://www.egem.nl/StUF/sector/zkn/0310/geefZaakdocumentLezen_Lv01 |
+| translate | http://localhost:8080/translate/generic/stufzkn/BeantwoordVraag | http://www.egem.nl/StUF/sector/zkn/0310/zakLv01 |
