@@ -53,28 +53,10 @@ The application uses two configuration files, located in the resources folder. E
 ### Using the service
 
 The service can receive and translate StUF ZDS 1.2 SOAP messages.
-
-Currenlty these SOAP actions and operations are partly implemented. Some properties are set with default values and are not (yet) mapped from ZDS to ZGW.
-
-| Protocol | SOAP action        | Operation                     | Endpoint                                |
-| -------- | ------------------ | ----------------------------- | --------------------------------------- |
-| ZDS      | BeantwoordVraag    | geefZaakDetails               | http://localhost:8080/BeantwoordVraag   |
-|          |                    | geefLijstZaakdocumenten       |                                         |
-|          | OntvangAsynchroon  | creeerZaak                    | http://localhost:8080/OntvangAsynchroon |
-|          |                    | voegZaakdocumentToe           |                                         |
-|          | VrijBerichtService | genereerZaakIdentificatie     | http://localhost:8080/VrijBericht       |
-|          |                    | genereerDocumentIdentificatie |                                         |
-| StUF-ZKN | OntvangAsynchroon  | zakLv01                       | http://localhost:8080/OntvangAsynchroon |
-
-
+A list of supported operations and endpoints can be retrieved by accessing the url: http://localhost:8080/
+The database can accessed by the following url: http://localhost:8080/h2-console/
 
 Example SOAP messages are provided in the /examples/soap folder
-
-## Omgeving OpenZaakBrug
-
-Eerst met alleen de OpenZaakBrug ertussen, later met OpenZaak eraan gekoppeld.
-
-![openzaakbrug-infra](media/openzaakbrug-infra.png)
 
 ### Minimale configuratie OpenZaakBrug
 
