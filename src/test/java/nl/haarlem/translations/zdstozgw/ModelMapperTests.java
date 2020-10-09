@@ -5,8 +5,13 @@ import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsHeeft;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsZaakDocument;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwEnkelvoudigInformatieObject;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwStatus;
-import org.junit.Assert;
-import org.junit.Test;
+
+//import org.junit.Assert;
+//import org.junit.Test;
+
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import org.junit.runner.RunWith;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,7 +57,7 @@ public class ModelMapperTests {
         ZdsZaakDocument zdsZaakDocument = modelMapper.map(zgwEnkelvoudigInformatieObject, ZdsZaakDocument.class);
 
         //assert
-        Assert.assertEquals(expectedCreatieDatum, zdsZaakDocument.getCreatiedatum());
+        assertEquals(expectedCreatieDatum, zdsZaakDocument.getCreatiedatum(), "creatiedatum:" + expectedCreatieDatum + " verwacht, maar: " +  zdsZaakDocument.getCreatiedatum() + " gekregen");
     }
 
     @Test
@@ -65,7 +70,7 @@ public class ModelMapperTests {
         ZgwStatus zgwStatus =  modelMapper.map(zdsHeeft, ZgwStatus.class);
 
         //assert
-        Assert.assertEquals(expectedDatum, zgwStatus.getDatumStatusGezet());
+        assertEquals(expectedDatum, zgwStatus.getDatumStatusGezet(), "datumgezet:" + expectedDatum + " verwacht, maar: " +  zgwStatus.getDatumStatusGezet() + " gekregen");
     }
 
     @Test
@@ -78,6 +83,7 @@ public class ModelMapperTests {
         ZgwStatus zgwStatus =  modelMapper.map(zdsHeeft, ZgwStatus.class);
 
         //assert
-        Assert.assertEquals(expectedDatum, zgwStatus.getDatumStatusGezet());
+        assertEquals(expectedDatum, zgwStatus.getDatumStatusGezet(), "datumgezet:" + expectedDatum + " verwacht, maar: " +  zgwStatus.getDatumStatusGezet() + " gekregen");
+
     }
 }
