@@ -1,5 +1,5 @@
 # OpenZaakBrug #
-Deze applicatie is een proof-of-concept van een service die een vertaling kan doen van StUF-ZDS Soap-berichten naar de corrosponderende ZGW API-calls. 
+Deze applicatie is een proof-of-concept van een service die een vertaling kan doen van StUF-ZDS Soap-berichten naar de corresponderende ZGW API-calls. 
 Met deze proof-of-concept kan aantoond worden welke functionaliteiten er nodig zijn door gemeente, maar ook aan te tonen dat het ook daadwerkelijk mogelijk is.
 Deze implemenatie kan als voorbeeld dienen voor een software-leveranier, om zo uiteindelijk de gemeenten deze functionaliteiten te kunnen aanbieden 
 
