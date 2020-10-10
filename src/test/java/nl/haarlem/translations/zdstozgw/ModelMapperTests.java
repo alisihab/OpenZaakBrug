@@ -33,6 +33,7 @@ public class ModelMapperTests {
     @Test
     public void zgwEnkelvoudigInformatieObjectToZdsZaakDocument_shouldMapCorrectly(){
         //assign
+    	System.setProperty("user.timezone", "CET");
         ModelMapperConfig.timeoffset = 0;    	
         ZgwEnkelvoudigInformatieObject zgwEnkelvoudigInformatieObject = new ZgwEnkelvoudigInformatieObject()
                 .setBestandsnaam("bestandsnaam")
@@ -66,6 +67,7 @@ public class ModelMapperTests {
     @Test
     public void convertStufDateTimeToZgwDateTime_shouldAddTwoHoursInUTCWhenDayInSummer(){
         //assign	
+    	System.setProperty("user.timezone", "CET");
         ModelMapperConfig.timeoffset = 0;
         ZdsHeeft zdsHeeft = new ZdsHeeft().setDatumStatusGezet("20200904103404929");
         // String expectedDatum = "2020-09-04T10:34:04+02:00";
@@ -82,7 +84,8 @@ public class ModelMapperTests {
     @Test
     public void convertStufDateTimeToZgwDateTime_shouldAddOneHourInUTCWhenDayInWinter(){
         //assign
-        ModelMapperConfig.timeoffset = 0;    	
+    	System.setProperty("user.timezone", "CET");
+    	ModelMapperConfig.timeoffset = 0;    	
         ZdsHeeft zdsHeeft = new ZdsHeeft().setDatumStatusGezet("20200101103404929");
         //String expectedDatum = "2020-01-01T10:34:04+01:00";
         // TODO: use gooed expectd values
