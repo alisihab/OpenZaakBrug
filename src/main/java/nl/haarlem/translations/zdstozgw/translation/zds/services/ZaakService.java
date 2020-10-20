@@ -51,15 +51,13 @@ public class ZaakService {
 	private static final Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
 	public final ZGWClient zgwClient;
-	public final ZDSClient zdsClient;
 
 	private final ModelMapper modelMapper;
 	public final ConfigService configService;
 
 	@Autowired
-	public ZaakService(ZGWClient zgwClient, ZDSClient zdsClient, ModelMapper modelMapper, ConfigService configService) {
+	public ZaakService(ZGWClient zgwClient, ModelMapper modelMapper, ConfigService configService) {
 		this.zgwClient = zgwClient;
-		this.zdsClient = zdsClient;
 		this.modelMapper = modelMapper;
 		this.configService = configService;
 	}
@@ -383,8 +381,8 @@ public class ZaakService {
 
 		for (ZgwRol zgwRol : this.zgwClient.getRollenByZaakUrl(zgwZaak.url)) {
 			var rolGeconverteerd = false;
-			
-			if (zgwRolOmschrijving.getHeeftAlsBelanghebbende() != null 
+
+			if (zgwRolOmschrijving.getHeeftAlsBelanghebbende() != null
 					&& zgwRolOmschrijving.getHeeftAlsBelanghebbende().equalsIgnoreCase(zgwRol.getOmschrijvingGeneriek())) {
 				zaak.heeftAlsBelanghebbende = getZdsRol(zgwZaak, zgwRolOmschrijving.getHeeftAlsBelanghebbende(), "ZAKBTRBLH");
 				rolGeconverteerd = true;
@@ -561,17 +559,17 @@ public class ZaakService {
 
 	private void updateRolInZgw(String typeRolOmschrijving, ZgwZaak zgwZaak, ZdsRol newValue) {
 		log.debug("updateRolInZgw Rol:" + typeRolOmschrijving);
-		
+
 		// no put action for rollen, so first delete then add
 		log.debug("Attempting to update rol by deleting and adding as new");
 		deleteRolFromZgw(typeRolOmschrijving, zgwZaak);
-		
-		
+
+
 		if(newValue.gerelateerde == null) {
 			log.debug("Not adding the rol:"  + typeRolOmschrijving + ", gerelateerde == null ");
 			return;
 		}
-		addRolToZgw(newValue, typeRolOmschrijving, zgwZaak);			
+		addRolToZgw(newValue, typeRolOmschrijving, zgwZaak);
 	}
 
 	private void deleteRolFromZgw(String typeRolOmschrijving, ZgwZaak zgwZaak) {

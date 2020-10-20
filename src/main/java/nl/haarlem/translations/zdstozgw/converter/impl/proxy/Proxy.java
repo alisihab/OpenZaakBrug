@@ -2,6 +2,9 @@ package nl.haarlem.translations.zdstozgw.converter.impl.proxy;
 
 import java.lang.invoke.MethodHandles;
 
+import nl.haarlem.translations.zdstozgw.config.SpringContext;
+import nl.haarlem.translations.zdstozgw.translation.zds.client.ZDSClient;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -16,9 +19,11 @@ import nl.haarlem.translations.zdstozgw.translation.zds.services.ZaakService;
 public class Proxy extends Converter {
 
 	private static final Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+	private final ZDSClient zdsClient;
 
 	public Proxy(RequestHandlerContext context, Translation translation, ZaakService zaakService) {
 		super(context, translation, zaakService);
+		this.zdsClient = SpringContext.getBean(ZDSClient.class);
 	}
 
 	@Override
@@ -34,6 +39,6 @@ public class Proxy extends Converter {
 		var request = this.context.getRequestBody();
 		log.info("relaying request to url: " + url + " with soapaction: " + soapaction + " request-size:"
 				+ request.length());
-		return this.zaakService.zdsClient.post(url, soapaction, request);
+		return this.zdsClient.post(url, soapaction, request);
 	}
 }
