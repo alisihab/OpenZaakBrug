@@ -52,18 +52,17 @@ public class Replicator {
 		log.info("replicateZaak for zaakidentificatie:" + zaakidentificatie);
 		String rsin = this.converter.getZaakService().getRSIN(this.converter.getZdsDocument().stuurgegevens.zender.organisatie);
 
-		// altijd de controle of de zaak al bestaat
+		// Always check if zaak does exist
 		var zgwZaak = this.converter.getZaakService().zgwClient.getZaakByIdentificatie(zaakidentificatie);
 		if (zgwZaak == null) {
 			log.info("REPLICATION [replicate] zaakidentificatie #" + zaakidentificatie);
 
-			// bestond nog niet, aanmaken
+			// Create the zaak
 			var zdsUrl = this.converter.getZaakService().configService.getConfiguratie().getReplication().getGeefZaakdetails().getUrl();
 			var zdsSoapAction = this.converter.getZaakService().configService.getConfiguratie().getReplication().getGeefZaakdetails().getSoapaction();
 			var zdsRequest = new ZdsReplicateGeefZaakdetailsLv01();
 			zdsRequest.stuurgegevens = this.converter.getZdsDocument().stuurgegevens;
 			zdsRequest.parameters = new ZdsParameters();
-			// zdsRequest.parameters.setSortering("0");
 			zdsRequest.parameters.setIndicatorVervolgvraag("false");
 			zdsRequest.gelijk = new ZdsZaak();
 			zdsRequest.gelijk.identificatie = zaakidentificatie;
@@ -82,7 +81,7 @@ public class Replicator {
 			log.info("REPLICATION [skip] zaakidentificatie #" + zaakidentificatie);
 		}
 
-		// altijd de controle of de documenten al bestaan
+		// Always check if documents exist
 		List<ZdsHeeftRelevant> relevanteDocumenten = null;
 		{
 			var zdsUrl = this.converter.getZaakService().configService.getConfiguratie().getReplication().getGeefLijstZaakdocumenten().getUrl();
@@ -90,7 +89,6 @@ public class Replicator {
 			var zdsRequest = new ZdsReplicateGeefLijstZaakdocumentenLv01();
 			zdsRequest.stuurgegevens = this.converter.getZdsDocument().stuurgegevens;
 			zdsRequest.parameters = new ZdsParameters();
-			// zdsRequest.parameters.setSortering("0");
 			zdsRequest.parameters.setIndicatorVervolgvraag("false");
 			zdsRequest.gelijk = new ZdsZaak();
 			zdsRequest.gelijk.identificatie = zaakidentificatie;

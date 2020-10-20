@@ -169,7 +169,6 @@ public class ModelMapperConfig {
 
 	public void addZgwEnkelvoudigInformatieObjectToZdsZaakDocumentInhoudTypeMapping(ModelMapper modelMapper) {
 		modelMapper.typeMap(ZgwEnkelvoudigInformatieObject.class, ZdsZaakDocumentInhoud.class)
-//				.includeBase(ZgwEnkelvoudigInformatieObject.class, ZdsZaakDocument.class)
 				.addMappings(mapper -> mapper.using(convertZgwDateToStufDate())
 						.map(ZgwEnkelvoudigInformatieObject::getCreatiedatum, ZdsZaakDocument::setCreatiedatum))
 				.addMappings(mapper -> mapper.using(convertZgwDateToStufDate())
@@ -228,7 +227,7 @@ public class ModelMapperConfig {
 	public void addZdsZaakDocumentToZgwEnkelvoudigInformatieObjectTypeMapping(ModelMapper modelMapper) {
 		modelMapper.typeMap(ZdsZaakDocument.class, ZgwEnkelvoudigInformatieObject.class)
 				.addMappings(mapper -> mapper.using(convertStufDateToZgwDate()).map(ZdsZaakDocument::getCreatiedatum, ZgwEnkelvoudigInformatieObject::setCreatiedatum))
-				.addMappings(mapper -> mapper.using(convertStufDateToZgwDate()).map(ZdsZaakDocument::getOntvangstdatum, ZgwEnkelvoudigInformatieObject::setOntvangstdatum))				
+				.addMappings(mapper -> mapper.using(convertStufDateToZgwDate()).map(ZdsZaakDocument::getOntvangstdatum, ZgwEnkelvoudigInformatieObject::setOntvangstdatum))
 				.addMappings(mapper -> mapper.using(convertToLowerCase()).map(ZdsZaakDocument::getVertrouwelijkAanduiding, ZgwEnkelvoudigInformatieObject::setVertrouwelijkheidaanduiding));
 	}
 
@@ -261,7 +260,6 @@ public class ModelMapperConfig {
 						throw new ConverterException("stuf date: " + stufDate + " may not contain the character '-'");
 					}
 					var date = zdsDateFormatter.parse(stufDate);
-					// log.info("date:" + date);
 					if (ModelMapperConfig.timeoffset != 0) {
 						Calendar cal = Calendar.getInstance();
 						cal.setTime(date);
@@ -318,7 +316,6 @@ public class ModelMapperConfig {
 						ZonedDateTime cetDate = LocalDateTime.parse(stufDateTime, stufFormatter)
 								.atZone(ZoneId.systemDefault());
 						log.debug("convertStufDateTimeToZgwDateTime parsed: " + cetDate.toString());
-						// OffsetDateTime gmtDate = cetDate.toOffsetDateTime();
 						var gmtDate = cetDate.withZoneSameInstant(ZoneOffset.UTC).toLocalDateTime();
 						log.debug("convertStufDateTimeToZgwDateTime to GMT tomezone: " + gmtDate.toString());
 						gmtDate = gmtDate.plusMinutes(ModelMapperConfig.timeoffset);

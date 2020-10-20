@@ -60,7 +60,6 @@ public class SoapController {
 				+ " with referentienummer:" + context.getReferentienummer());
 
 		// TODO: lelijk en het is geen php, moet anders naar
-		// nl.haarlem.translations.zdstozgw.config.SpringContext.LoggingRequestInterceptor
 		RequestContextHolder.getRequestAttributes().setAttribute("referentienummer", context.getReferentienummer(),
 				RequestAttributes.SCOPE_REQUEST);
 
