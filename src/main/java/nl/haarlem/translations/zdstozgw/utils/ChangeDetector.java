@@ -1,10 +1,14 @@
 package nl.haarlem.translations.zdstozgw.utils;
 
+import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import lombok.Data;
 import nl.haarlem.translations.zdstozgw.converter.ConverterException;
@@ -12,6 +16,8 @@ import nl.haarlem.translations.zdstozgw.converter.ConverterException;
 @Data
 public class ChangeDetector {
 
+	private static final Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+	
 	private Map<Change, ChangeType> changes = new HashMap<>();
 
 	public ChangeDetector() {
@@ -25,11 +31,15 @@ public class ChangeDetector {
 				Object newValue = field.get(newState);
 				ChangeType changeType = null;
 
+				log.debug("looking for changes in current: '" + currentValue + "' into: '" + field + "'");
+				
 				if (currentValue == null && newValue != null) {
 					changeType = ChangeType.NEW;
-				} else if (currentValue != null && newValue == null) {
+				} 
+				else if (currentValue != null && newValue == null) {
 					changeType = ChangeType.DELETED;
-				} else if (currentValue != null && !currentValue.equals(newValue)) {
+				} 
+				else if (currentValue != null && !currentValue.equals(newValue)) {					
 					changeType = ChangeType.CHANGED;
 				}
 

@@ -34,42 +34,49 @@ public class ConfigService {
 		this.configuratie = gson.fromJson(bufferedReader, Configuratie.class);
 
 		validateConfiguration();
+		log.debug("ConfigService succesfully loaded");		
 	}
 
 	private void validateConfiguration() throws Exception {
-		this.configuratie.getRequestHandlerImplementation();
+		log.debug("validateConfiguration");
+		log.debug("requestHandlerImplementation:" + this.configuratie.getRequestHandlerImplementation());
 
 		this.configuratie.getOrganisaties().size();
+		log.debug("=== organisaties ===");
 		for (Organisatie organisatie : this.configuratie.getOrganisaties()) {
-			organisatie.getGemeenteNaam();
-			organisatie.getGemeenteCode();
-			organisatie.getRSIN();
+			log.debug("gemeentenaam:" + organisatie.getGemeenteNaam());
+			log.debug("gemeentecode:" + organisatie.getGemeenteCode());
+			log.debug("rsin:" + organisatie.getRSIN());
 		}
 
 		var rolomschrijving = this.configuratie.getZgwRolOmschrijving();
-		rolomschrijving.getHeeftAlsBelanghebbende();
-		rolomschrijving.getHeeftAlsInitiator();
-		rolomschrijving.getHeeftAlsUitvoerende();
-		rolomschrijving.getHeeftAlsVerantwoordelijke();
-		rolomschrijving.getHeeftAlsGemachtigde();
-		rolomschrijving.getHeeftAlsOverigBetrokkene();
+		log.debug("=== rol omschrijvingen ===");
+		log.debug("heeftBetrekkingOp:" + rolomschrijving.getHeeftBetrekkingOp());
+		log.debug("heeftAlsBelanghebbende:" + rolomschrijving.getHeeftAlsBelanghebbende());
+		log.debug("heeftAlsInitiator:" + rolomschrijving.getHeeftAlsInitiator());
+		log.debug("heeftAlsUitvoerende:" + rolomschrijving.getHeeftAlsUitvoerende());
+		log.debug("heeftAlsVerantwoordelijke:" + rolomschrijving.getHeeftAlsVerantwoordelijke());
+		log.debug("heeftAlsGemachtigde:" + rolomschrijving.getHeeftAlsGemachtigde());
+		log.debug("heeftAlsOverigeBetrokkene:" + rolomschrijving.getHeeftAlsOverigBetrokkene());
 
 		var replicatie = this.configuratie.getReplication();
-		replicatie.getGeefZaakdetails().getSoapaction();
-		replicatie.getGeefZaakdetails().getUrl();
-		replicatie.getGeefLijstZaakdocumenten().getSoapaction();
-		replicatie.getGeefLijstZaakdocumenten().getUrl();
-		replicatie.getGeefZaakdocumentLezen().getSoapaction();
-		replicatie.getGeefZaakdocumentLezen().getUrl();
+		log.debug("=== replicatie ===");
+		log.debug("geefZaakDetailsAction:" + replicatie.getGeefZaakdetails().getSoapaction());
+		log.debug("geefZaakDetailsUrl:" + replicatie.getGeefZaakdetails().getUrl());
+		log.debug("geefLijstZaakdocumentenAction:" + replicatie.getGeefLijstZaakdocumenten().getSoapaction());
+		log.debug("geefLijstZaakdocumentenUrl:" + replicatie.getGeefLijstZaakdocumenten().getUrl());
+		log.debug("geefZaakDocumentLezenAction:" + replicatie.getGeefZaakdocumentLezen().getSoapaction());
+		log.debug("geefZaakDocumentLezenUrl:" + replicatie.getGeefZaakdocumentLezen().getUrl());
 
 		this.configuratie.getTranslations().size();
+		log.debug("=== translaties ===");
 		for (Translation translation : this.configuratie.getTranslations()) {
-			translation.getTranslation();
-			translation.getPath();
-			translation.getSoapAction();
-			translation.getTemplate();
-			translation.getImplementation();
-			translation.getLegacyservice();
+			log.debug("translation:" + translation.getTranslation());
+			log.debug("path:" + translation.getPath());
+			log.debug("soapAction:" + translation.getSoapAction());
+			log.debug("template:" + translation.getTemplate());
+			log.debug("implementation:" + translation.getImplementation());
+			log.debug("legacyservice:" + translation.getLegacyservice());
 		}
 	}
 

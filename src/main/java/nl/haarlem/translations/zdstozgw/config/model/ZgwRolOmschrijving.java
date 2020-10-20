@@ -7,7 +7,10 @@ import lombok.Data;
 
 @Data
 public class ZgwRolOmschrijving {
-
+	@SerializedName("heeftBetrekkingOp")
+	@Expose
+	String heeftBetrekkingOp = null;	
+	
 	@SerializedName("heeftAlsBelanghebbende")
 	@Expose
 	String heeftAlsBelanghebbende = null;
