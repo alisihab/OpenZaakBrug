@@ -15,7 +15,7 @@ public class ZdsEdcLa01GeefZaakdocumentLezen extends ZdsZknDocument {
 	public ZdsParameters parameters;
 
 	@XmlElement(namespace = ZKN, name = "antwoord")
-	public ZdsAntwoord antwoord;
+	public ZdsZaakDocumentAntwoord antwoord;
 
 	private ZdsEdcLa01GeefZaakdocumentLezen() {
 	}

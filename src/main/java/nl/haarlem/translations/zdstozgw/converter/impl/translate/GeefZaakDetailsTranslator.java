@@ -13,6 +13,7 @@ import nl.haarlem.translations.zdstozgw.requesthandler.RequestHandlerContext;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsParameters;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsStuurgegevens;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsZaak;
+import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsZaakAntwoord;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsZakLa01GeefZaakDetails;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsZakLv01;
 import nl.haarlem.translations.zdstozgw.translation.zds.services.ZaakService;
@@ -38,7 +39,7 @@ public class GeefZaakDetailsTranslator extends Converter {
 		zdsResponse.stuurgegevens.berichtcode = "La01";
 		zdsResponse.stuurgegevens.entiteittype = "ZAK";
 		zdsResponse.parameters = new ZdsParameters(zdsZakLv01.parameters);
-		zdsResponse.antwoord = new ZdsZakLa01GeefZaakDetails.Antwoord();
+		zdsResponse.antwoord = new ZdsZaakAntwoord();
 
 		if (zdsZakLv01.gelijk != null && zdsZakLv01.gelijk.identificatie != null) {
 			zdsResponse.antwoord.zaak = new ArrayList<ZdsZaak>();
