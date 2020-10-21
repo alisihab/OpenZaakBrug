@@ -61,43 +61,36 @@ public class ModelMapperTests {
         ZdsZaakDocument zdsZaakDocument = modelMapper.map(zgwEnkelvoudigInformatieObject, ZdsZaakDocument.class);
 
         //assert
-        //assertEquals(expectedCreatieDatum, zdsZaakDocument.getCreatiedatum(), "zgwEnkelvoudigInformatieObjectToZdsZaakDocument_shouldMapCorrectly");
         assertEquals(expectedCreatieDatum, zdsZaakDocument.getCreatiedatum());
     }
 
     @Test
     public void convertStufDateTimeToZgwDateTime_shouldAddTwoHoursInUTCWhenDayInSummer(){
-        //assign	
-    	System.setProperty("user.timezone", "CET");
+        //assign
+    	//System.setProperty("user.timezone", "CET");
     	ModelMapperConfig.singleton.timeoffset = 0;
         ZdsHeeft zdsHeeft = new ZdsHeeft().setDatumStatusGezet("20200904103404929");
-        // String expectedDatum = "2020-09-04T10:34:04+02:00";
-        // TODO: use gooed expectd values
-        String expectedDatum = "2020-09-04T10:34:04.920000Z";
-
+        String expectedDatum = "2020-09-04T12:34:04.920000Z";
+        
         //act
         ZgwStatus zgwStatus =  modelMapper.map(zdsHeeft, ZgwStatus.class);
 
         //assert
-        //assertEquals(expectedDatum, zgwStatus.getDatumStatusGezet(), "convertStufDateTimeToZgwDateTime_shouldAddTwoHoursInUTCWhenDayInSummer");
         assertEquals(expectedDatum, zgwStatus.getDatumStatusGezet());
     }
 
     @Test
     public void convertStufDateTimeToZgwDateTime_shouldAddOneHourInUTCWhenDayInWinter(){
         //assign
-    	System.setProperty("user.timezone", "CET");
+    	//System.setProperty("user.timezone", "CET");
     	ModelMapperConfig.singleton.timeoffset = 0;
         ZdsHeeft zdsHeeft = new ZdsHeeft().setDatumStatusGezet("20200101103404929");
-        //String expectedDatum = "2020-01-01T10:34:04+01:00";
-        // TODO: use gooed expectd values
-        String expectedDatum = "2020-01-01T10:34:04.920000Z";
+        String expectedDatum = "2020-01-01T11:34:04.920000Z";
 
         //act
         ZgwStatus zgwStatus =  modelMapper.map(zdsHeeft, ZgwStatus.class);
 
         //assert
-        // assertEquals(expectedDatum, zgwStatus.getDatumStatusGezet(), "convertStufDateTimeToZgwDateTime_shouldAddOneHourInUTCWhenDayInWinter");
         assertEquals(expectedDatum, zgwStatus.getDatumStatusGezet());
     }
 }
