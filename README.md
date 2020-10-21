@@ -1,4 +1,6 @@
-# StUF ZDS to ZGW API translator #
+# StUF ZDS to ZGW API translator 
+
+[![Build Status](https://travis-ci.org/Haarlem/zds-stuf-to-zgw-api-translator.svg?branch=master)](https://travis-ci.org/Haarlem/zds-stuf-to-zgw-api-translator)
 
 This project is a proof of concept of a service that can translate StUF ZDS 1.2 SOAP messages to their corresponding ZGW 1.0 API calls.
 
