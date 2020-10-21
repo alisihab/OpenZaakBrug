@@ -1,7 +1,6 @@
 package nl.haarlem.translations.zdstozgw.converter.impl.replicate;
 
 import java.lang.invoke.MethodHandles;
-import java.util.ArrayList;
 import java.util.List;
 
 import nl.haarlem.translations.zdstozgw.config.SpringContext;
@@ -14,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import nl.haarlem.translations.zdstozgw.converter.Converter;
-import nl.haarlem.translations.zdstozgw.converter.ConverterException;
 import nl.haarlem.translations.zdstozgw.converter.impl.replicate.model.ZdsReplicateGeefLijstZaakdocumentenLv01;
 import nl.haarlem.translations.zdstozgw.converter.impl.replicate.model.ZdsReplicateGeefZaakdetailsLv01;
 import nl.haarlem.translations.zdstozgw.converter.impl.replicate.model.ZdsReplicateGeefZaakdocumentLezenLv01;
@@ -29,7 +27,6 @@ import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsZaakDocument;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsZakLa01GeefZaakDetails;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsZakLa01LijstZaakdocumenten;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwEnkelvoudigInformatieObject;
-import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwZaakInformatieObject;
 import nl.haarlem.translations.zdstozgw.utils.XmlUtils;
 
 @Service
@@ -58,8 +55,8 @@ public class Replicator {
 			log.info("REPLICATION [replicate] zaakidentificatie #" + zaakidentificatie);
 
 			// Create the zaak
-			var zdsUrl = this.converter.getZaakService().configService.getConfiguratie().getReplication().getGeefZaakdetails().getUrl();
-			var zdsSoapAction = this.converter.getZaakService().configService.getConfiguratie().getReplication().getGeefZaakdetails().getSoapaction();
+			var zdsUrl = this.converter.getZaakService().configService.getConfiguration().getReplication().getGeefZaakdetails().getUrl();
+			var zdsSoapAction = this.converter.getZaakService().configService.getConfiguration().getReplication().getGeefZaakdetails().getSoapaction();
 			var zdsRequest = new ZdsReplicateGeefZaakdetailsLv01();
 			zdsRequest.stuurgegevens = this.converter.getZdsDocument().stuurgegevens;
 			zdsRequest.parameters = new ZdsParameters();
@@ -84,8 +81,8 @@ public class Replicator {
 		// Always check if documents exist
 		List<ZdsHeeftRelevant> relevanteDocumenten = null;
 		{
-			var zdsUrl = this.converter.getZaakService().configService.getConfiguratie().getReplication().getGeefLijstZaakdocumenten().getUrl();
-			var zdsSoapAction = this.converter.getZaakService().configService.getConfiguratie().getReplication().getGeefLijstZaakdocumenten().getSoapaction();
+			var zdsUrl = this.converter.getZaakService().configService.getConfiguration().getReplication().getGeefLijstZaakdocumenten().getUrl();
+			var zdsSoapAction = this.converter.getZaakService().configService.getConfiguration().getReplication().getGeefLijstZaakdocumenten().getSoapaction();
 			var zdsRequest = new ZdsReplicateGeefLijstZaakdocumentenLv01();
 			zdsRequest.stuurgegevens = this.converter.getZdsDocument().stuurgegevens;
 			zdsRequest.parameters = new ZdsParameters();
@@ -112,8 +109,8 @@ public class Replicator {
 				if (zgwEnkelvoudigInformatieObject == null) {
 					log.info("REPLICATION [replicate] documentidentificatie #" + zaakdocumentidentificatie);
 
-					var zdsUrl = this.converter.getZaakService().configService.getConfiguratie().getReplication().getGeefZaakdocumentLezen().getUrl();
-					var zdsSoapAction = this.converter.getZaakService().configService.getConfiguratie().getReplication().getGeefZaakdocumentLezen().getSoapaction();
+					var zdsUrl = this.converter.getZaakService().configService.getConfiguration().getReplication().getGeefZaakdocumentLezen().getUrl();
+					var zdsSoapAction = this.converter.getZaakService().configService.getConfiguration().getReplication().getGeefZaakdocumentLezen().getSoapaction();
 					var zdsRequest = new ZdsReplicateGeefZaakdocumentLezenLv01();
 					 zdsRequest.stuurgegevens = this.converter.getZdsDocument().stuurgegevens;
 					 zdsRequest.parameters = new ZdsParameters(); //zdsRequest.parameters.setSortering("0");

@@ -17,7 +17,6 @@ import nl.haarlem.translations.zdstozgw.config.model.Organisatie;
 import nl.haarlem.translations.zdstozgw.config.model.ZgwRolOmschrijving;
 import nl.haarlem.translations.zdstozgw.converter.ConverterException;
 import nl.haarlem.translations.zdstozgw.translation.BetrokkeneType;
-import nl.haarlem.translations.zdstozgw.translation.zds.client.ZDSClient;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsGerelateerde;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsHeeft;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsHeeftRelevant;
@@ -63,7 +62,7 @@ public class ZaakService {
 	}
 
 	public String getRSIN(String gemeenteCode) {
-		List<Organisatie> organisaties = this.configService.getConfiguratie().getOrganisaties();
+		List<Organisatie> organisaties = this.configService.getConfiguration().getOrganisaties();
 		for (Organisatie organisatie : organisaties) {
 			if (organisatie.getGemeenteCode().equals(gemeenteCode)) {
 				return organisatie.getRSIN();
@@ -96,7 +95,7 @@ public class ZaakService {
 		log.debug("Created a ZGW Zaak with UUID: " + zgwZaak.getUuid());
 
 		// rollen
-		ZgwRolOmschrijving zgwRolOmschrijving = this.configService.getConfiguratie().getZgwRolOmschrijving();
+		ZgwRolOmschrijving zgwRolOmschrijving = this.configService.getConfiguration().getZgwRolOmschrijving();
 		addRolToZgw(zdsZaak.heeftBetrekkingOp, zgwRolOmschrijving.getHeeftBetrekkingOp(), zgwZaak);
 		addRolToZgw(zdsZaak.heeftAlsBelanghebbende, zgwRolOmschrijving.getHeeftAlsBelanghebbende(), zgwZaak);
 		addRolToZgw(zdsZaak.heeftAlsInitiator, zgwRolOmschrijving.getHeeftAlsInitiator(), zgwZaak);
@@ -356,7 +355,7 @@ public class ZaakService {
 		var result = new ArrayList<ZdsZaak>();
 		for (ZgwRol rol : zgwRollen) {
 			var zgwRolType = this.zgwClient.getRolTypeByUrl(rol.roltype);
-			ZgwRolOmschrijving zgwRolOmschrijving = this.configService.getConfiguratie().getZgwRolOmschrijving();
+			ZgwRolOmschrijving zgwRolOmschrijving = this.configService.getConfiguration().getZgwRolOmschrijving();
 			if (zgwRolType.omschrijving.equals(zgwRolOmschrijving.getHeeftAlsInitiator())) {
 
 				// TODO: hier minder overhead!
@@ -377,7 +376,7 @@ public class ZaakService {
 		ZdsZaak zaak = new ZdsZaak();
 		zaak = this.modelMapper.map(zgwZaak, ZdsZaak.class);
 
-		ZgwRolOmschrijving zgwRolOmschrijving = this.configService.getConfiguratie().getZgwRolOmschrijving();
+		ZgwRolOmschrijving zgwRolOmschrijving = this.configService.getConfiguration().getZgwRolOmschrijving();
 
 		for (ZgwRol zgwRol : this.zgwClient.getRollenByZaakUrl(zgwZaak.url)) {
 			var rolGeconverteerd = false;
@@ -587,7 +586,7 @@ public class ZaakService {
 	}
 
 	public String getRolOmschrijvingGeneriekByRolName(String rolName) {
-		ZgwRolOmschrijving zgwRolOmschrijving = this.configService.getConfiguratie().getZgwRolOmschrijving();
+		ZgwRolOmschrijving zgwRolOmschrijving = this.configService.getConfiguration().getZgwRolOmschrijving();
 
 		switch (rolName.toLowerCase()) {
 		case "heeftalsbelanghebbende":
