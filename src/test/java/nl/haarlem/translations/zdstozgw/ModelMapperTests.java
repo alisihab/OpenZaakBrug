@@ -70,7 +70,7 @@ public class ModelMapperTests {
     	System.setProperty("user.timezone", "CET");
     	ModelMapperConfig.singleton.timeoffset = "0";
         ZdsHeeft zdsHeeft = new ZdsHeeft().setDatumStatusGezet("20200904103404929");
-        String expectedDatum = "2020-09-04T08:34:04.920000Z";
+        String expectedDatum = "2020-09-04T10:34:04.920000Z";
         
         //act
         ZgwStatus zgwStatus =  modelMapper.map(zdsHeeft, ZgwStatus.class);
@@ -85,7 +85,7 @@ public class ModelMapperTests {
     	System.setProperty("user.timezone", "CET");
     	ModelMapperConfig.singleton.timeoffset = "0";
         ZdsHeeft zdsHeeft = new ZdsHeeft().setDatumStatusGezet("20200101103404929");
-        String expectedDatum = "2020-01-01T09:34:04.920000Z";
+        String expectedDatum = "2020-01-01T10:34:04.920000Z";
 
         //act
         ZgwStatus zgwStatus =  modelMapper.map(zdsHeeft, ZgwStatus.class);
