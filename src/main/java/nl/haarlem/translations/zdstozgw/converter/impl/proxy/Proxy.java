@@ -26,10 +26,9 @@ public class Proxy extends Converter {
 		this.zdsClient = SpringContext.getBean(ZDSClient.class);
 	}
 
-	@Override
+    @Override
 	public void load() throws ResponseStatusException {
-		// nothing to do here, we dont set the zdsDocument
-		this.zdsDocument = null;
+		 this.zdsDocument = null;
 	}
 
 	@Override
