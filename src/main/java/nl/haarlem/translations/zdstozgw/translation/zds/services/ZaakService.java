@@ -17,7 +17,6 @@ import nl.haarlem.translations.zdstozgw.config.model.Organisatie;
 import nl.haarlem.translations.zdstozgw.config.model.ZgwRolOmschrijving;
 import nl.haarlem.translations.zdstozgw.converter.ConverterException;
 import nl.haarlem.translations.zdstozgw.translation.BetrokkeneType;
-import nl.haarlem.translations.zdstozgw.translation.zds.client.ZDSClient;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsGerelateerde;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsHeeft;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsHeeftRelevant;
@@ -51,15 +50,13 @@ public class ZaakService {
 	private static final Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
 	public final ZGWClient zgwClient;
-	public final ZDSClient zdsClient;
 
 	private final ModelMapper modelMapper;
 	public final ConfigService configService;
 
 	@Autowired
-	public ZaakService(ZGWClient zgwClient, ZDSClient zdsClient, ModelMapper modelMapper, ConfigService configService) {
+	public ZaakService(ZGWClient zgwClient, ModelMapper modelMapper, ConfigService configService) {
 		this.zgwClient = zgwClient;
-		this.zdsClient = zdsClient;
 		this.modelMapper = modelMapper;
 		this.configService = configService;
 	}

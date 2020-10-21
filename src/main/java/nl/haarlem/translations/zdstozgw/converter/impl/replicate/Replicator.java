@@ -10,11 +10,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import nl.haarlem.translations.zdstozgw.config.SpringContext;
 import nl.haarlem.translations.zdstozgw.converter.Converter;
 import nl.haarlem.translations.zdstozgw.converter.ConverterException;
 import nl.haarlem.translations.zdstozgw.converter.impl.replicate.model.ZdsReplicateGeefLijstZaakdocumentenLv01;
 import nl.haarlem.translations.zdstozgw.converter.impl.replicate.model.ZdsReplicateGeefZaakdetailsLv01;
 import nl.haarlem.translations.zdstozgw.converter.impl.replicate.model.ZdsReplicateGeefZaakdocumentLezenLv01;
+import nl.haarlem.translations.zdstozgw.requesthandler.impl.logging.ZdsRequestResponseCycleRepository;
+import nl.haarlem.translations.zdstozgw.translation.zds.client.ZDSClient;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsEdcLa01GeefZaakdocumentLezen;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsGerelateerde;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsHeeftRelevant;
@@ -63,7 +66,8 @@ public class Replicator {
 			zdsRequest.gelijk.identificatie = zaakidentificatie;
 			zdsRequest.scope = new ZdsScope();
 			zdsRequest.scope.scope = "alles";
-			var zdsResponse = this.converter.getZaakService().zdsClient.post(zdsUrl, zdsSoapAction, zdsRequest);
+			ZDSClient zdsClient = SpringContext.getBean(ZDSClient.class);
+			var zdsResponse = zdsClient.post(zdsUrl, zdsSoapAction, zdsRequest);
 
 			// fetch the zaak details
 			log.debug("GeefZaakDetails response:" + zdsResponse);
@@ -94,7 +98,8 @@ public class Replicator {
 			zdsRequest.scope.object.heeftRelevant.gerelateerde = new ZdsZaakDocument();
 
 			// fetch the document list
-			var zdsResponse = this.converter.getZaakService().zdsClient.post(zdsUrl, zdsSoapAction, zdsRequest);
+			ZDSClient zdsClient = SpringContext.getBean(ZDSClient.class);
+			var zdsResponse = zdsClient.post(zdsUrl, zdsSoapAction, zdsRequest);
 			log.info("GeefLijstZaakdocumenten voor zaak:" + zaakidentificatie);
 			var zakZakLa01 = (ZdsZakLa01LijstZaakdocumenten) XmlUtils.getStUFObject(zdsResponse.getBody().toString(),ZdsZakLa01LijstZaakdocumenten.class);
 			relevanteDocumenten = zakZakLa01.antwoord.object.heeftRelevant;
@@ -120,8 +125,9 @@ public class Replicator {
 					 zdsRequest.scope.object = new ZdsZaak();
 					 zdsRequest.scope.object.heeftRelevant = new ZdsHeeftRelevant();
 					 zdsRequest.scope.object.heeftRelevant.gerelateerde = new ZdsZaakDocument();
-					 
-					 var zdsResponse = this.converter.getZaakService().zdsClient.post(zdsUrl, zdsSoapAction, zdsRequest); 
+
+					 ZDSClient zdsClient = SpringContext.getBean(ZDSClient.class);					 
+					 var zdsResponse = zdsClient.post(zdsUrl, zdsSoapAction, zdsRequest); 
 					 // fetch the document details
 					 log.debug("getGeefZaakdocumentLezen response:" + zdsResponse.getBody().toString()); 					 
 					 var zdsEdcLa01 =  (ZdsEdcLa01GeefZaakdocumentLezen) XmlUtils.getStUFObject(zdsResponse.getBody().toString(), ZdsEdcLa01GeefZaakdocumentLezen.class);
@@ -149,6 +155,8 @@ public class Replicator {
 		var request = this.converter.getContext().getRequestBody();
 		log.info("relaying request to url: " + url + " with soapaction: " + soapaction + " request-size:"
 				+ request.length());
-		return this.converter.getZaakService().zdsClient.post(url, soapaction, request);
+		
+		ZDSClient zdsClient = SpringContext.getBean(ZDSClient.class);					 
+		return zdsClient.post(url, soapaction, request);
 	}
 }
