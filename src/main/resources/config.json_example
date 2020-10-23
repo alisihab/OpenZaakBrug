@@ -1,112 +1,8 @@
 {
-	"replicationModus": "USE_ZDS (proxyZds) : Stuur door naar het legacy zaaksysteem en logt berichtenverkeer en fouten naar de tabel: RequestResponseCycle",
-	"replicationModus": "USE_ZDS_AND_REPLICATE_2_ZGW (proxyZdsAndReplicateToZgw) : Stuur door naar het legacy zaaksysteem en logt berichtenverkeer en fouten naar de tabel: RequestResponseCycle, daarnaast nog een afschrift naar OpenZaak",
-	"replicationModus": "USE_ZGW_AND_REPLICATE_2_ZDS (convertToZgwAndReplicateToZds) : Converteer de berichten naar OpenZaak logt berichtenverkeer en fouten naar de tabel: RequestResponseCycle, daarnaast nog een afschrift naar het legacy zaaksysteem voor de zekerheid",
-	"replicationModus": "USE_ZGW (convertToZgw) : Converteer de berichten naar OpenZaak logt berichtenverkeer en fouten naar de tabel: RequestResponseCycle",
-	
-	"replicationModus": "USE_ZGW",
-	"timeOffsetHour":  -6,	
-	"translations": [
-		{
-			"translation": "ZDS 1.1 GWS4all genereerZaakIdentificatie_Di02",
-			"soapaction": "http://www.egem.nl/StUF/sector/zkn/0310/GenereerZaakIdentificatie_Di02",
-			"requestcontains": "<StUF:applicatie>GWS4all</StUF:applicatie>",
-			"template": "src/main/java/nl/haarlem/translations/zdstozgw/converter/impl/genereerZaakIdentificatie_Du02.xml",
-			"implementation": "nl.haarlem.translations.zdstozgw.converter.impl.GenereerZaakIdentificatieConverter",
-			"legacyservice" : "http://localhost:8181/zds/VrijBerichtService"
-		},
-		{
-			"translation": "ZDS 1.1 Generic genereerZaakIdentificatie_Di02",
-			"soapaction": "http://www.egem.nl/StUF/sector/zkn/0310/GenereerZaakIdentificatie_Di02",
-			"requestcontains": "",
-			"template": "src/main/java/nl/haarlem/translations/zdstozgw/converter/impl/genereerZaakIdentificatie_Du02.xml",
-			"implementation": "nl.haarlem.translations.zdstozgw.converter.impl.GenereerZaakIdentificatieConverter",
-			"legacyservice" : "http://localhost:8181/zds/VrijBerichtService"
-		},
-		{
-			"translation": "ZDS 1.1 Generic creeerZaak_Lk01",
-			"soapaction": "http://www.egem.nl/StUF/sector/zkn/0310/creeerZaak_Lk01",
-			"requestcontains": "",
-			"template": "src/main/java/nl/haarlem/translations/zdstozgw/converter/impl/CreeerZaak_Bv03.xml",
-			"implementation": "nl.haarlem.translations.zdstozgw.converter.impl.CreeerZaakConverter",
-			"legacyservice" : "http://localhost:8181/zds/OntvangAsynchroon"		
-		},
-		{
-			"translation": "ZDS 1.1 Generic UpdateZaak_Lk01",
-			"soapaction": "http://www.egem.nl/StUF/sector/zkn/0310/updateZaak_Lk01",
-			"requestcontains": "",
-			"template": "src/main/java/nl/haarlem/translations/zdstozgw/converter/impl/UpdateZaak_Bv03.xml",
-			"implementation": "nl.haarlem.translations.zdstozgw.converter.impl.UpdateZaakConverter",
-			"legacyservice" : "http://localhost:8181/zds/OntvangAsynchroon"		
-		},		
-		{
-			"translation": "ZDS 1.1 GWS4all genereerDocumentIdentificatie_Di02",
-			"soapaction": "http://www.egem.nl/StUF/sector/zkn/0310/genereerDocumentIdentificatie_Di02",
-			"requestcontains": "<StUF:applicatie>GWS4all</StUF:applicatie>",
-			"template": "src/main/java/nl/haarlem/translations/zdstozgw/converter/impl/GenereerDocumentIdentificatie_Du02.xml",
-			"implementation": "nl.haarlem.translations.zdstozgw.converter.impl.GenereerDocumentIdentificatieConverter",
-			"legacyservice" : "http://localhost:8181/zds/VrijBerichtService"
-		},
-		{
-			"translation": "ZDS 1.1 Generic genereerDocumentIdentificatie_Di02",
-			"soapaction": "http://www.egem.nl/StUF/sector/zkn/0310/genereerDocumentIdentificatie_Di02",
-			"requestcontains": "",
-			"template": "src/main/java/nl/haarlem/translations/zdstozgw/converter/impl/GenereerDocumentIdentificatie_Du02.xml",
-			"implementation": "nl.haarlem.translations.zdstozgw.converter.impl.GenereerDocumentIdentificatieConverter",
-			"legacyservice" : "http://localhost:8181/zds/VrijBerichtService"
-		},		
-		{
-			"translation": "ZDS 1.1 Generic voegZaakdocumentToe_Lk01",
-			"soapaction": "http://www.egem.nl/StUF/sector/zkn/0310/voegZaakdocumentToe_Lk01",
-			"requestcontains": "",
-			"template": "src/main/java/nl/haarlem/translations/zdstozgw/converter/impl/VoegZaakdocumentToeConverter_Bv03.xml",
-			"implementation": "nl.haarlem.translations.zdstozgw.converter.impl.VoegZaakdocumentToeConverter",
-			"legacyservice" : "http://localhost:8181/zds/OntvangAsynchroon"
-		},
-		{
-			"translation": "ZDS 1.1 Generic GeefLijstZaakdocumenten_Lv01",
-			"soapaction": "http://www.egem.nl/StUF/sector/zkn/0310/geefLijstZaakdocumenten_Lv01",
-			"requestcontains": "",
-			"template": "nvt.",
-			"implementation": "nl.haarlem.translations.zdstozgw.converter.impl.GeefLijstZaakdocumentenConverter",
-			"legacyservice" : "http://localhost:8181/zds/BeantwoordVraag"		
-		},
-		{
-			"translation": "ZDS 1.1 Generic GeefZaakdocumentLezen_Lv01",
-			"soapaction": "http://www.egem.nl/StUF/sector/zkn/0310/geefZaakdocumentLezen_Lv01",
-			"requestcontains": "",
-			"template": "src/main/java/nl/haarlem/translations/zdstozgw/converter/impl/GeefZaakdocumentLezen_La01.xml",
-			"implementation": "nl.haarlem.translations.zdstozgw.converter.impl.GeefZaakdocumentLezenConverter",
-			"legacyservice" : "http://localhost:8181/zds/BeantwoordVraag"		
-		},
-		{
-			"translation": "ZDS 1.1 Generic ActualiseerZaakstatus_Lk01",
-			"soapaction": "http://www.egem.nl/StUF/sector/zkn/0310/actualiseerZaakstatus_Lk01",
-			"requestcontains": "",
-			"template": "src/main/java/nl/haarlem/translations/zdstozgw/converter/impl/ActualiseerZaakstatus_La01.xml",			
-			"implementation": "nl.haarlem.translations.zdstozgw.converter.impl.ActualiseerZaakStatusConverter",
-			"legacyservice" : "http://localhost:8181/zds/BeantwoordVraag"		
-		},				
-		{
-			"translation": "ZDS 1.1 Generic GeefZaakdetails_Lv01",
-			"soapaction": "http://www.egem.nl/StUF/sector/zkn/0310/geefZaakdetails_Lv01",
-			"requestcontains": "",
-			"template": "nvt.",
-			"implementation": "nl.haarlem.translations.zdstozgw.converter.impl.GeefZaakDetailsConverter",
-			"legacyservice" : "http://localhost:8181/zds/BeantwoordVraag"		
-		},
-		{
-			"translation": "StufZkn 3.1 Generic zakLv01",
-			"soapaction": "http://www.egem.nl/StUF/sector/zkn/0310/zakLv01",
-			"requestcontains": "",
-			"template": "nvt.",
-			"implementation": "nl.haarlem.translations.zdstozgw.converter.impl.NotImplementedConverter",
-			"legacyservice" : "http://localhost:8181/stufzkn/OntvangAsynchroon"		
-		}				
-	],
+	"requestHandlerImplementation": "nl.haarlem.translations.zdstozgw.requesthandler.impl.LoggingRequestHandler",
 	"organisaties": [
 		{
-			"gemeenteNaam": "Haarlem",	
+			"gemeenteNaam": "Haarlem",
 			"gemeenteCode": "0392",
 			"RSIN": "001005650"
 		},
@@ -120,5 +16,273 @@
 			"gemeenteCode": "1900",
 			"RSIN": "823288444"
 		}
-	]
+	],
+	"zgwRolOmschrijving": {
+		"heeftBetrekkingOp" : "BetrekkingOp",	
+		"heeftAlsBelanghebbende": "Belanghebbende",
+		"heeftAlsInitiator": "Initiator",
+		"heeftAlsUitvoerende": "Uitvoerende",
+		"heeftAlsVerantwoordelijke": "Verantwoordelijke",
+		"heeftAlsGemachtigde": "Gemachtigde",
+		"heeftAlsOverigBetrokkene": "OverigeBetrokkene"
+	},
+	"replication": {	
+		"geefZaakdetails" : {
+			"soapaction" : "http://www.egem.nl/StUF/sector/zkn/0310/geefZaakdetails_Lv01",
+			"url" : "http://localhost:8181/zds/BeantwoordVraag"		
+		},
+		"geefLijstZaakdocumenten" : {
+			"soapaction" : "http://www.egem.nl/StUF/sector/zkn/0310/geefLijstZaakdocumenten_Lv01",
+			"url" : "http://localhost:8181/zds/BeantwoordVraag"		
+		},
+		"geefZaakdocumentLezen" : {
+			"soapaction" : "http://www.egem.nl/StUF/sector/zkn/0310/geefZaakdocumentLezen_Lv01",
+			"url" : "http://localhost:8181/zds/BeantwoordVraag"		
+		}		
+	},		
+	"translations": [
+		{
+			"translation": "Translate ZDS 1.1 Generic genereerZaakIdentificatie_Di02",
+			"path": "translate/generic/zds/VrijBericht",
+			"soapaction": "http://www.egem.nl/StUF/sector/zkn/0310/genereerZaakIdentificatie_Di02",
+			"implementation": "nl.haarlem.translations.zdstozgw.converter.impl.emulate.GenereerZaakIdentificatieEmulator",
+			"legacyservice": "",
+			"template": ""
+		},
+		{
+			"translation": "Translate ZDS 1.1 Generic creeerZaak_Lk01",
+			"path": "translate/generic/zds/OntvangAsynchroon",
+			"soapaction": "http://www.egem.nl/StUF/sector/zkn/0310/creeerZaak_Lk01",
+			"implementation": "nl.haarlem.translations.zdstozgw.converter.impl.translate.CreeerZaakTranslator",
+			"legacyservice": "",
+			"template": ""			
+		},
+		{
+			"translation": "Translate ZDS 1.1 Generic updateZaak_Lk01",
+			"path": "translate/generic/zds/OntvangAsynchroon",
+			"soapaction": "http://www.egem.nl/StUF/sector/zkn/0310/updateZaak_Lk01",
+			"implementation": "nl.haarlem.translations.zdstozgw.converter.impl.translate.UpdateZaakTranslator",
+			"legacyservice": "",
+			"template": ""			
+		},
+		{
+			"translation": "Translate ZDS 1.1 Generic genereerDocumentIdentificatie_Di02",
+			"path": "translate/generic/zds/VrijBericht",
+			"soapaction": "http://www.egem.nl/StUF/sector/zkn/0310/genereerDocumentIdentificatie_Di02",
+			"implementation": "nl.haarlem.translations.zdstozgw.converter.impl.emulate.GenereerDocumentIdentificatieEmulator",
+			"legacyservice": "",
+			"template": ""			
+		},
+		{
+			"translation": "Translate ZDS 1.1 Generic voegZaakdocumentToe_Lk01",
+			"path": "translate/generic/zds/OntvangAsynchroon",
+			"soapaction": "http://www.egem.nl/StUF/sector/zkn/0310/voegZaakdocumentToe_Lk01",
+			"implementation": "nl.haarlem.translations.zdstozgw.converter.impl.translate.VoegZaakdocumentToeTranslator",
+			"legacyservice": "",
+			"template": ""			
+		},
+		{
+			"translation": "Translate ZDS 1.1 Generic geefLijstZaakdocumenten_Lv01",
+			"path": "translate/generic/zds/BeantwoordVraag",
+			"soapaction": "http://www.egem.nl/StUF/sector/zkn/0310/geefLijstZaakdocumenten_Lv01",
+			"implementation": "nl.haarlem.translations.zdstozgw.converter.impl.translate.GeefLijstZaakdocumentenTranslator",
+			"legacyservice": "",
+			"template": ""			
+		},
+		{
+			"translation": "Translate ZDS 1.1 Generic geefZaakdocumentLezen_Lv01",
+			"path": "translate/generic/zds/BeantwoordVraag",
+			"soapaction": "http://www.egem.nl/StUF/sector/zkn/0310/geefZaakdocumentLezen_Lv01",
+			"implementation": "nl.haarlem.translations.zdstozgw.converter.impl.translate.GeefZaakdocumentLezenTranslator",
+			"legacyservice": "",
+			"template": ""			
+		},
+		{
+			"translation": "Translate ZDS 1.1 Generic actualiseerZaakstatus_Lk01",
+			"path": "translate/generic/zds/OntvangAsynchroon",
+			"soapaction": "http://www.egem.nl/StUF/sector/zkn/0310/actualiseerZaakstatus_Lk01",
+			"implementation": "nl.haarlem.translations.zdstozgw.converter.impl.translate.ActualiseerZaakStatusTranslator",
+			"legacyservice": "",
+			"template": ""			
+		},
+		{
+			"translation": "Translate ZDS 1.1 Generic geefZaakdetails_Lv01",
+			"path": "translate/generic/zds/BeantwoordVraag",
+			"soapaction": "http://www.egem.nl/StUF/sector/zkn/0310/geefZaakdetails_Lv01",
+			"implementation": "nl.haarlem.translations.zdstozgw.converter.impl.translate.GeefZaakDetailsTranslator",
+			"legacyservice": "",
+			"template": ""			
+		},
+		{
+			"translation": "Translate StufZkn 3.1 Generic zakLv01",
+			"path": "translate/generic/stufzkn/BeantwoordVraag",
+			"soapaction": "http://www.egem.nl/StUF/sector/zkn/0310/zakLv01",
+			"implementation": "nl.haarlem.translations.zdstozgw.converter.impl.translate.GeefZaakDetailsTranslator",
+			"legacyservice": "",
+			"template": ""			
+		},
+
+
+		{
+			"translation": "Proxy ZDS 1.1 Generic genereerZaakIdentificatie_Di02",
+			"path": "proxy/generic/zds/VrijBericht",
+			"soapaction": "http://www.egem.nl/StUF/sector/zkn/0310/genereerZaakIdentificatie_Di02",
+			"implementation": "nl.haarlem.translations.zdstozgw.converter.impl.proxy.Proxy",
+			"legacyservice": "http://localhost:8181/zds/VrijBericht",
+			"template": ""
+		},
+		{
+			"translation": "Proxy ZDS 1.1 Generic creeerZaak_Lk01",
+			"path": "proxy/generic/zds/OntvangAsynchroon",
+			"soapaction": "http://www.egem.nl/StUF/sector/zkn/0310/creeerZaak_Lk01",
+			"implementation": "nl.haarlem.translations.zdstozgw.converter.impl.proxy.Proxy",
+			"legacyservice": "http://localhost:8181/zds/OntvangAsynchroon",
+			"template": ""			
+		},
+		{
+			"translation": "Proxy ZDS 1.1 Generic updateZaak_Lk01",
+			"path": "proxy/generic/zds/OntvangAsynchroon",
+			"soapaction": "http://www.egem.nl/StUF/sector/zkn/0310/updateZaak_Lk01",
+			"implementation": "nl.haarlem.translations.zdstozgw.converter.impl.proxy.Proxy",
+			"legacyservice": "http://localhost:8181/zds/OntvangAsynchroon",
+			"template": ""			
+		},
+		{
+			"translation": "Proxy ZDS 1.1 Generic genereerDocumentIdentificatie_Di02",
+			"path": "proxy/generic/zds/VrijBericht",
+			"soapaction": "http://www.egem.nl/StUF/sector/zkn/0310/genereerDocumentIdentificatie_Di02",
+			"implementation": "nl.haarlem.translations.zdstozgw.converter.impl.proxy.Proxy",
+			"legacyservice": "http://localhost:8181/zds/VrijBericht",
+			"template": ""			
+		},
+		{
+			"translation": "Proxy ZDS 1.1 Generic voegZaakdocumentToe_Lk01",
+			"path": "proxy/generic/zds/OntvangAsynchroon",
+			"soapaction": "http://www.egem.nl/StUF/sector/zkn/0310/voegZaakdocumentToe_Lk01",
+			"implementation": "nl.haarlem.translations.zdstozgw.converter.impl.proxy.Proxy",
+			"legacyservice": "http://localhost:8181/zds/OntvangAsynchroon",
+			"template": ""			
+		},
+		{
+			"translation": "Proxy ZDS 1.1 Generic geefLijstZaakdocumenten_Lv01",
+			"path": "proxy/generic/zds/BeantwoordVraag",
+			"soapaction": "http://www.egem.nl/StUF/sector/zkn/0310/geefLijstZaakdocumenten_Lv01",
+			"implementation": "nl.haarlem.translations.zdstozgw.converter.impl.proxy.Proxy",
+			"legacyservice": "http://localhost:8181/zds/BeantwoordVraag",
+			"template": ""			
+		},
+		{
+			"translation": "Proxy ZDS 1.1 Generic geefZaakdocumentLezen_Lv01",
+			"path": "proxy/generic/zds/BeantwoordVraag",
+			"soapaction": "http://www.egem.nl/StUF/sector/zkn/0310/geefZaakdocumentLezen_Lv01",
+			"implementation": "nl.haarlem.translations.zdstozgw.converter.impl.proxy.Proxy",
+			"legacyservice": "http://localhost:8181/zds/BeantwoordVraag",
+			"template": ""			
+		},
+		{
+			"translation": "Proxy ZDS 1.1 Generic actualiseerZaakstatus_Lk01",
+			"path": "proxy/generic/zds/OntvangAsynchroon",
+			"soapaction": "http://www.egem.nl/StUF/sector/zkn/0310/actualiseerZaakstatus_Lk01",
+			"implementation": "nl.haarlem.translations.zdstozgw.converter.impl.proxy.Proxy",
+			"legacyservice": "http://localhost:8181/zds/OntvangAsynchroon",
+			"template": ""			
+		},
+		{
+			"translation": "Proxy ZDS 1.1 Generic geefZaakdetails_Lv01",
+			"path": "proxy/generic/zds/BeantwoordVraag",
+			"soapaction": "http://www.egem.nl/StUF/sector/zkn/0310/geefZaakdetails_Lv01",
+			"implementation": "nl.haarlem.translations.zdstozgw.converter.impl.proxy.Proxy",
+			"legacyservice": "http://localhost:8181/zds/BeantwoordVraag",
+			"template": ""			
+		},
+		{
+			"translation": "Proxy StufZkn 3.1 Generic zakLv01",
+			"path": "proxy/generic/stufzkn/BeantwoordVraag",
+			"soapaction": "http://www.egem.nl/StUF/sector/zkn/0310/zakLv01",
+			"implementation": "nl.haarlem.translations.zdstozgw.converter.impl.proxy.Proxy",
+			"legacyservice": "http://iszfmid03.iszf.local:53803/TSWFZKS-Zakenmagazijn/ZKN0310/BeantwoordVraagService.svc",
+			"template": ""			
+		},
+
+
+		{
+			"translation": "Replicate ZDS 1.1 Generic genereerZaakIdentificatie_Di02",
+			"path": "replicate/generic/zds/VrijBericht",
+			"soapaction": "http://www.egem.nl/StUF/sector/zkn/0310/genereerZaakIdentificatie_Di02",
+			"implementation": "nl.haarlem.translations.zdstozgw.converter.impl.proxy.Proxy",
+			"legacyservice": "http://localhost:8181/zds/VrijBericht",
+			"template": ""
+		},
+		{
+			"translation": "Replicate ZDS 1.1 Generic creeerZaak_Lk01",
+			"path": "replicate/generic/zds/OntvangAsynchroon",
+			"soapaction": "http://www.egem.nl/StUF/sector/zkn/0310/creeerZaak_Lk01",
+			"implementation": "nl.haarlem.translations.zdstozgw.converter.impl.replicate.CreeerZaakReplicator",
+			"legacyservice": "http://localhost:8181/zds/OntvangAsynchroon",
+			"template": ""			
+		},
+		{
+			"translation": "Replicate ZDS 1.1 Generic updateZaak_Lk01",
+			"path": "replicate/generic/zds/OntvangAsynchroon",
+			"soapaction": "http://www.egem.nl/StUF/sector/zkn/0310/updateZaak_Lk01",
+			"implementation": "nl.haarlem.translations.zdstozgw.converter.impl.replicate.UpdateZaakReplicator",
+			"legacyservice": "http://localhost:8181/zds/OntvangAsynchroon",
+			"template": ""			
+		},
+		{
+			"translation": "Replicate ZDS 1.1 Generic genereerDocumentIdentificatie_Di02",
+			"path": "replicate/generic/zds/VrijBericht",
+			"soapaction": "http://www.egem.nl/StUF/sector/zkn/0310/genereerDocumentIdentificatie_Di02",
+			"implementation": "nl.haarlem.translations.zdstozgw.converter.impl.proxy.Proxy",
+			"legacyservice": "http://localhost:8181/zds/VrijBericht",
+			"template": ""			
+		},
+		{
+			"translation": "Replicate ZDS 1.1 Generic voegZaakdocumentToe_Lk01",
+			"path": "replicate/generic/zds/OntvangAsynchroon",
+			"soapaction": "http://www.egem.nl/StUF/sector/zkn/0310/voegZaakdocumentToe_Lk01",
+			"implementation": "nl.haarlem.translations.zdstozgw.converter.impl.replicate.VoegZaakdocumentToeReplicator",
+			"legacyservice": "http://localhost:8181/zds/OntvangAsynchroon",
+			"template": ""			
+		},
+		{
+			"translation": "Replicate ZDS 1.1 Generic geefLijstZaakdocumenten_Lv01",
+			"path": "replicate/generic/zds/BeantwoordVraag",
+			"soapaction": "http://www.egem.nl/StUF/sector/zkn/0310/geefLijstZaakdocumenten_Lv01",
+			"implementation": "nl.haarlem.translations.zdstozgw.converter.impl.replicate.GeefLijstZaakdocumentenReplicator",
+			"legacyservice": "http://localhost:8181/zds/BeantwoordVraag",
+			"template": ""			
+		},
+		{
+			"translation": "Replicate ZDS 1.1 Generic geefZaakdocumentLezen_Lv01",
+			"path": "replicate/generic/zds/BeantwoordVraag",
+			"soapaction": "http://www.egem.nl/StUF/sector/zkn/0310/geefZaakdocumentLezen_Lv01",
+			"implementation": "nl.haarlem.translations.zdstozgw.converter.impl.replicate.GeefZaakdocumentLezenReplicator",
+			"legacyservice": "http://localhost:8181/zds/BeantwoordVraag",
+			"template": ""			
+		},
+		{
+			"translation": "Replicate ZDS 1.1 Generic actualiseerZaakstatus_Lk01",
+			"path": "replicate/generic/zds/OntvangAsynchroon",
+			"soapaction": "http://www.egem.nl/StUF/sector/zkn/0310/actualiseerZaakstatus_Lk01",
+			"implementation": "nl.haarlem.translations.zdstozgw.converter.impl.replicate.ActualiseerZaakStatusReplicator",
+			"legacyservice": "http://localhost:8181/zds/OntvangAsynchroon",
+			"template": ""			
+		},
+		{
+			"translation": "Replicate ZDS 1.1 Generic geefZaakdetails_Lv01",
+			"path": "replicate/generic/zds/BeantwoordVraag",
+			"soapaction": "http://www.egem.nl/StUF/sector/zkn/0310/geefZaakdetails_Lv01",
+			"implementation": "nl.haarlem.translations.zdstozgw.converter.impl.replicate.GeefZaakDetailsReplicator",
+			"legacyservice": "http://localhost:8181/zds/BeantwoordVraag",
+			"template": ""			
+		},
+		{
+			"translation": "Replicate StufZkn 3.1 Generic zakLv01",
+			"path": "replicate/generic/stufzkn/BeantwoordVraag",
+			"soapaction": "http://www.egem.nl/StUF/sector/zkn/0310/zakLv01",
+			"implementation": "nl.haarlem.translations.zdstozgw.converter.impl.replicate.GeefZaakDetailsReplicator",
+			"legacyservice": "http://localhost:8181/zds/BeantwoordVraag",
+			"template": ""			
+		}	]
 }

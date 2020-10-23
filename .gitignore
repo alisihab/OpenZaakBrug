@@ -30,13 +30,23 @@ build/
 ### VS Code ###
 .vscode/
 
-### Eclipse ###
-/bin/
-/target/
-
-### Config files from OpenZaakBrug ###
 src/main/resources/application.properties
+
 src/main/resources/config.json
 
-### H2 Database-files
-/data/**
+*.db
+
+src/main/resources/application.fieldlab.properties
+
+src/main/resources/application.local.properties
+
+src/main/resources/application.swf.properties
+
+src/main/resources/config.local.json
+
+src/main/resources/config.swf.json
+
+TODO.txt
+
+bouw.bat
+/schema/Zaak_DocumentServices_1_1_02

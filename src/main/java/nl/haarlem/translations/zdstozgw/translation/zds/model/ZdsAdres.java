@@ -7,13 +7,13 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ZdsAdres {
+public class ZdsAdres extends ZdsObject {
 	@XmlElement(namespace = BG, name = "aoa.identificatie")
 	public String identificatie;
 
 	@XmlElement(namespace = BG, name = "wpl.woonplaatsNaam")
 	public String woonplaatsnaam;
-	
+
 	@XmlElement(namespace = BG, name = "gor.straatnaam")
 	public String straatnaam;
 
@@ -22,7 +22,7 @@ public class ZdsAdres {
 
 	@XmlElement(namespace = BG, name = "aoa.huisnummer")
 	public String huisnummer;
-	
+
 	@XmlElement(namespace = BG, name = "aoa.huisletter")
 	public String huisletter;
 

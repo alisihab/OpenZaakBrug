@@ -6,39 +6,60 @@ import com.google.gson.annotations.SerializedName;
 import lombok.Data;
 
 @Data
-public class ZgwBetrokkeneIdentificatie extends ZgwObject {
-	
-	// medewerker
-	@Expose
-	public String identificatie;
-	@Expose
-	public String achternaam;
-	@Expose
-	public String voorletters;
-	@Expose
-	public String voorvoegselAchternaam;
-
-	// natuurlijk_persoon
+public class ZgwBetrokkeneIdentificatie {
+	@SerializedName("inpBsn")
 	@Expose
 	public String inpBsn;
+
+	@SerializedName("anpIdentificatie")
 	@Expose
 	public String anpIdentificatie;
+
+	@SerializedName("inpA_nummer")
 	@Expose
-	public String inpA_nummer;
-	@Expose
-	public String inpgeslachtsnaam;
+	public String inpA;
+
+	@SerializedName("geslachtsnaam")
 	@Expose
 	public String geslachtsnaam;
+
+	@SerializedName("achternaam")
+	@Expose
+	public String achternaam;
+
+	@SerializedName("voorvoegselGeslachtsnaam")
 	@Expose
 	public String voorvoegselGeslachtsnaam;
+
+	@SerializedName("voorletters")
+	@Expose
+	public String voorletters;
+
+	@SerializedName("voornamen")
 	@Expose
 	public String voornamen;
+
+	@SerializedName("geslachtsaanduiding")
 	@Expose
 	public String geslachtsaanduiding;
+
+	@SerializedName("geboortedatum")
 	@Expose
 	public String geboortedatum;
+
+	@SerializedName("verblijfsadres")
 	@Expose
 	public ZgwAdres verblijfsadres;
-//	@Expose
-//	public String subVerblijfBuitenland;
+
+	@SerializedName("sub")
+	@Expose
+	public String sub;
+
+	@SerializedName("isGehuisvestIn")
+	@Expose
+	public String isGehuisvestIn;
+
+	@SerializedName("naam")
+	@Expose
+	public String naam;
 }

@@ -1,2 +1,0 @@
-UpdateZaakConverter
-GeefZaakdocumentLezenConverter

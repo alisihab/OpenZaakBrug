@@ -15,7 +15,6 @@ public class ZgwRol extends ZgwObject {
 	public String betrokkene;
 	@SerializedName("betrokkeneType")
 	@Expose
-	// Enum:"natuurlijk_persoon" "niet_natuurlijk_persoon" "vestiging" "organisatorische_eenheid" "medewerker"
 	public String betrokkeneType;
 	@SerializedName("roltype")
 	@Expose
@@ -26,4 +25,7 @@ public class ZgwRol extends ZgwObject {
 	@SerializedName("betrokkeneIdentificatie")
 	@Expose
 	public ZgwBetrokkeneIdentificatie betrokkeneIdentificatie;
+	@SerializedName("omschrijvingGeneriek")
+	@Expose
+	public String omschrijvingGeneriek;
 }

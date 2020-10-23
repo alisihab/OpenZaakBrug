@@ -20,7 +20,6 @@ public class JWTController {
 	public String JWT() {
 		String jwt = "This endpoint is dissabled. Enable by setting: nl.haarlem.transtlations.zdstozgw.enableJWTEntpoint = true";
 		if (this.enabled) {
-
 			jwt = this.jwtService.getJWT();
 		}
 		return jwt;

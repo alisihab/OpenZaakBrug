@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
@@ -29,19 +30,17 @@ public class RestTemplateService {
 	@Autowired
 	private JWTService jwtService;
 
+	RestTemplateBuilder restTemplateBuilder;
+
 	private RestTemplate restTemplate;
 
-	public RestTemplateService(@Value("${nl.haarlem.translations.zdstozgw.trustAllCerts:false}") boolean trustAllCerts) {
-		if (trustAllCerts) {
-			log.info("zwg-api-client is trusting ALL certificates");
-			this.restTemplate = new RestTemplate(this.getAllCertsTrustingRequestFactory());
-		} else {
-			log.info("zwg-api-client are trusting ALL certificates");
-			this.restTemplate = new RestTemplate();
-		}
+	@Autowired
+	public RestTemplateService(@Value("${nl.haarlem.translations.zdstozgw.trustAllCerts:false}") boolean trustAllCerts,
+			RestTemplateBuilder restTemplateBuilder) {
+		this.restTemplate = restTemplateBuilder.build();
 	}
 
-	public HttpComponentsClientHttpRequestFactory getAllCertsTrustingRequestFactory() {
+	private HttpComponentsClientHttpRequestFactory getAllCertsTrustingRequestFactory() {
 		TrustStrategy acceptingTrustStrategy = (X509Certificate[] chain, String authType) -> true;
 
 		SSLContext sslContext = null;
@@ -66,6 +65,7 @@ public class RestTemplateService {
 		headers.set("Accept-Crs", "EPSG:4326");
 		headers.set("Content-Crs", "EPSG:4326");
 		headers.set("Authorization", "Bearer " + this.jwtService.getJWT());
+		log.debug("headers:" + headers);
 
 		return headers;
 	}
