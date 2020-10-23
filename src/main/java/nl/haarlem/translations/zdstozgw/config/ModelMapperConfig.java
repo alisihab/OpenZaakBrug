@@ -52,15 +52,15 @@ public class ModelMapperConfig {
 	private static final Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
 	@Value("${nl.haarlem.translations.zdstozgw.timeoffset.minutes}")
-	public static int timeoffset;
+	public String timeoffset;
 	public static ModelMapperConfig singleton;
-
+	
 	@Bean
 	public ModelMapper modelMapper() {
 		log.info("nl.haarlem.translations.zdstozgw.timeoffset.minutes = " + this.timeoffset);
 		ModelMapper modelMapper = new ModelMapper();
 		ModelMapperConfig.singleton = this;
-
+		
 		modelMapper.getConfiguration() // Fetch the configuration
 				.setMatchingStrategy(MatchingStrategies.STRICT).setSkipNullEnabled(true)
 				.setPropertyCondition(Conditions.isNotNull());
@@ -173,6 +173,7 @@ public class ModelMapperConfig {
 
 	public void addZgwEnkelvoudigInformatieObjectToZdsZaakDocumentInhoudTypeMapping(ModelMapper modelMapper) {
 		modelMapper.typeMap(ZgwEnkelvoudigInformatieObject.class, ZdsZaakDocumentInhoud.class)
+//				.includeBase(ZgwEnkelvoudigInformatieObject.class, ZdsZaakDocument.class)
 				.addMappings(mapper -> mapper.using(convertZgwDateToStufDate())
 						.map(ZgwEnkelvoudigInformatieObject::getCreatiedatum, ZdsZaakDocument::setCreatiedatum))
 				.addMappings(mapper -> mapper.using(convertZgwDateToStufDate())
@@ -231,7 +232,7 @@ public class ModelMapperConfig {
 	public void addZdsZaakDocumentToZgwEnkelvoudigInformatieObjectTypeMapping(ModelMapper modelMapper) {
 		modelMapper.typeMap(ZdsZaakDocument.class, ZgwEnkelvoudigInformatieObject.class)
 				.addMappings(mapper -> mapper.using(convertStufDateToZgwDate()).map(ZdsZaakDocument::getCreatiedatum, ZgwEnkelvoudigInformatieObject::setCreatiedatum))
-				.addMappings(mapper -> mapper.using(convertStufDateToZgwDate()).map(ZdsZaakDocument::getOntvangstdatum, ZgwEnkelvoudigInformatieObject::setOntvangstdatum))
+				.addMappings(mapper -> mapper.using(convertStufDateToZgwDate()).map(ZdsZaakDocument::getOntvangstdatum, ZgwEnkelvoudigInformatieObject::setOntvangstdatum))				
 				.addMappings(mapper -> mapper.using(convertToLowerCase()).map(ZdsZaakDocument::getVertrouwelijkAanduiding, ZgwEnkelvoudigInformatieObject::setVertrouwelijkheidaanduiding));
 	}
 
@@ -264,12 +265,11 @@ public class ModelMapperConfig {
 						throw new ConverterException("stuf date: " + stufDate + " may not contain the character '-'");
 					}
 					var date = zdsDateFormatter.parse(stufDate);
-					if (ModelMapperConfig.timeoffset != 0) {
-						Calendar cal = Calendar.getInstance();
-						cal.setTime(date);
-						cal.add(Calendar.MINUTE, ModelMapperConfig.singleton.timeoffset);
-						date = cal.getTime();
-					}
+					// log.debug("date:" + date);
+					Calendar cal = Calendar.getInstance();
+					cal.setTime(date);
+					cal.add(Calendar.MINUTE, Integer.parseInt(ModelMapperConfig.singleton.timeoffset));
+					date = cal.getTime();
 					var zgwDate = zgwDateFormatter.format(date);
 					log.debug("convertStufDateToZgwDate: " + stufDate + " (amsterdam) --> " + zgwDate
 							+ "(gmt) with offset minutes:" + ModelMapperConfig.singleton.timeoffset  + "(date:" + date + ")");
@@ -319,10 +319,11 @@ public class ModelMapperConfig {
 						DateTimeFormatter stufFormatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmssSS");
 						ZonedDateTime cetDate = LocalDateTime.parse(stufDateTime, stufFormatter)
 								.atZone(ZoneId.systemDefault());
-						log.debug("convertStufDateTimeToZgwDateTime parsed: " + cetDate.toString());
+						log.debug("convertStufDateTimeToZgwDateTime parsed:\t\t\t" + cetDate.toString());
+						// OffsetDateTime gmtDate = cetDate.toOffsetDateTime();
 						var gmtDate = cetDate.withZoneSameInstant(ZoneOffset.UTC).toLocalDateTime();
 						log.debug("convertStufDateTimeToZgwDateTime to GMT tomezone:\t\t" + gmtDate.toString());
-						gmtDate = gmtDate.plusMinutes(ModelMapperConfig.singleton.timeoffset );
+						gmtDate = gmtDate.plusMinutes(Integer.parseInt(ModelMapperConfig.singleton.timeoffset));
 						log.debug("convertStufDateTimeToZgwDateTime aded offset:\t\t" + gmtDate.toString() + " (offset in minutes:" + ModelMapperConfig.singleton.timeoffset  + ")");
 						DateTimeFormatter zdsFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'");
 						var result = gmtDate.format(zdsFormatter);
@@ -389,7 +390,7 @@ public class ModelMapperConfig {
 					DateTimeFormatter zdsFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'");
 					ZonedDateTime gmtDate = LocalDateTime.parse(stufDateTime, zdsFormatter).atZone(ZoneId.of("GMT"));
 					log.debug("convertZgwDateTimeToStufDateTime parsed:\t" + gmtDate.toString());
-					gmtDate = gmtDate.plusMinutes(-ModelMapperConfig.singleton.timeoffset);
+					gmtDate = gmtDate.plusMinutes(-Integer.parseInt(ModelMapperConfig.singleton.timeoffset));
 					log.debug("convertZgwDateTimeToStufDateTime substractedoffset:\t" + gmtDate.toString());
 					OffsetDateTime cetDate = gmtDate.toOffsetDateTime();
 					log.debug("convertZgwDateTimeToStufDateTime to cet timezone:\t" + cetDate.toString());
