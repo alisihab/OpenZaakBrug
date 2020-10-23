@@ -8,7 +8,7 @@ import com.google.gson.annotations.SerializedName;
 import lombok.Data;
 
 @Data
-public class Configuratie {
+public class Configuration {
 	@SerializedName("requestHandlerImplementation")
 	@Expose
 	public String requestHandlerImplementation = null;
