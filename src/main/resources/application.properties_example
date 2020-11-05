@@ -31,4 +31,27 @@ spring.jpa.hibernate.ddl-auto=update
 spring.h2.console.enabled=true
 spring.h2.console.path=/h2-console
 spring.h2.console.settings.trace=true
+spring.h2.console.settings.web-allow-others=true#spring.datasource.initialize=true
+#spring.jpa.generate-ddl=true
+#spring.jpa.show-sql=true
+#spring.jpa.hibernate.ddl-auto=create
+spring.jpa.hibernate.ddl-auto=update
+
+## Postgresql
+#	spring.datasource.driverClassName=org.postgresql.Driver
+#	spring.jpa.database-platform=org.hibernate.dialect.PostgreSQLDialect
+#	spring.datasource.url= jdbc:postgresql://localhost/openzaakbrug
+#	spring.datasource.username=openzaakbrug
+#	spring.datasource.password=openzaakbrug
+
+## H2
+spring.datasource.driverClassName=org.h2.Driver
+spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
+spring.datasource.url=jdbc:h2:./data/OpenZaakBrug
+spring.datasource.username=sa
+spring.datasource.password=
+# Enabling H2 Console on http://localhost:8080/h2-console
+spring.h2.console.enabled=true
+spring.h2.console.path=/h2-console
+spring.h2.console.settings.trace=true
 spring.h2.console.settings.web-allow-others=true
