@@ -2,6 +2,8 @@ language: java
 jdk:
   - openjdk11
 
+before_install:
+ - export TZ=Europe/Amsterdam
 #install: mvn dependency:go-offline
 script: mvn --fail-at-end -T 1C clean test install
 after_script:
