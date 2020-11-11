@@ -2,6 +2,7 @@ package nl.haarlem.translations.zdstozgw.requesthandler.impl.logging;
 
 import java.time.LocalDateTime;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -24,9 +25,9 @@ public class RequestResponseCycle {
 	private long durationInMilliseconds;
 	private String clientUrl;
 	private String clientSoapAction;
-	@Lob
+	@Column(columnDefinition="TEXT")
 	private String clientRequestBody;
-	@Lob
+	@Column(columnDefinition="TEXT")
 	private String clientResponseBody;
 	private int clientResponseCode;
 

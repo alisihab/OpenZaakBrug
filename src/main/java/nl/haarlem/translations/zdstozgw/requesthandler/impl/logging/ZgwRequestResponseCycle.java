@@ -1,5 +1,6 @@
 package nl.haarlem.translations.zdstozgw.requesthandler.impl.logging;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -16,11 +17,11 @@ public class ZgwRequestResponseCycle {
 	private String referentienummer;
 
 	private String zgwMethod;
-	@Lob
+	@Column(columnDefinition="TEXT")
 	private String zgwUrl;
-	@Lob
+	@Column(columnDefinition="TEXT")
 	private String zgwRequestBody;
 	private int zgwResponseCode;
-	@Lob
+	@Column(columnDefinition="TEXT")
 	private String zgwResponseBody;
 }
