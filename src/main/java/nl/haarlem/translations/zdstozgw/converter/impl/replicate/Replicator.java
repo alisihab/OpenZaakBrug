@@ -23,6 +23,8 @@ import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsHeeftRelevant;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsIsRelevantVoor;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsParameters;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsScope;
+import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsScopeGerelateerde;
+import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsScopeHeeftRelevant;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsScopeObject;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsZaak;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsZaakDocument;
@@ -83,8 +85,11 @@ public class Replicator {
                  zdsRequest.gelijk.identificatie = zaakidentificatie;
                  zdsRequest.scope= new ZdsScope();
                  zdsRequest.scope.object = new ZdsScopeObject();
-                 //zdsRequest.scope.object.heeftRelevant = new ZdsHeeftRelevant();
-                 //zdsRequest.scope.object.heeftRelevant.gerelateerde = new ZdsZaakDocument();
+                 zdsRequest.scope.object.entiteittype = "ZAK";
+                 zdsRequest.scope.object.heeftRelevant = new ZdsScopeHeeftRelevant();
+                 zdsRequest.scope.object.heeftRelevant.entiteittype = "ZAKEDC";
+                 zdsRequest.scope.object.heeftRelevant.gerelateerde = new ZdsScopeGerelateerde();
+                 zdsRequest.scope.object.heeftRelevant.gerelateerde.entiteittype = "EDC";
 
                  var zdsResponse = this.zdsClient.post(zdsUrl, zdsSoapAction, zdsRequest);
                  // fetch the document details
