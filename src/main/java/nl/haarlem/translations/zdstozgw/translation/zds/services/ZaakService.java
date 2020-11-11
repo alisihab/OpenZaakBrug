@@ -127,9 +127,10 @@ public class ZaakService {
 			return;
 		}
 		if (zdsRol.gerelateerde == null) {
-			throw new ConverterException("Rol:" + typeRolOmschrijving + " zonder gerelateerde informatie");
+			// throw new ConverterException("Rol:" + typeRolOmschrijving + " zonder gerelateerde informatie");
+			log.warn("Rol:" + typeRolOmschrijving + " zonder gerelateerde informatie");
+			return;
 		}
-
 		ZgwRol zgwRol = new ZgwRol();
 		if (zdsRol.gerelateerde.medewerker != null) {
 			zgwRol.betrokkeneIdentificatie = this.modelMapper.map(zdsRol.gerelateerde.medewerker,
@@ -576,7 +577,9 @@ public class ZaakService {
 
 		var roltype = this.zgwClient.getRolTypeByZaaktypeUrlAndOmschrijving(zgwZaak.zaaktype, typeRolOmschrijving);
 		if (roltype == null) {
-			throw new ConverterException("Roltype: " + typeRolOmschrijving + " niet gevonden bij zaaktype voor zaak: " + zgwZaak.identificatie);
+			// throw new ConverterException("Roltype: " + typeRolOmschrijving + " niet gevonden bij zaaktype voor zaak: " + zgwZaak.identificatie);
+			log.warn("Roltype: " + typeRolOmschrijving + " niet gevonden bij zaaktype voor zaak: " + zgwZaak.identificatie);
+			return;
 		}
 		var rol = this.zgwClient.getRolByZaakUrlAndRolTypeUrl(zgwZaak.url, roltype.url);
 		if (rol == null) {
