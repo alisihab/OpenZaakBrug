@@ -92,10 +92,8 @@ public class ZaakService {
 			}
 		}
 		
-		if(zdsZaak.verlenging != null && (zdsZaak.verlenging.reden == null ||  zdsZaak.verlenging.reden.length() == 0)) {
-			// alleen een verlenging meenemen als er echt waarden in staan
-			zdsZaak.verlenging = null;
-		}
+		// alleen een verlenging meenemen als er echt waarden in staan (en lijkt me sterk bij creatie)
+		zdsZaak.verlenging = null;
 
 		zgwZaak = this.zgwClient.addZaak(zgwZaak);
 		log.debug("Created a ZGW Zaak with UUID: " + zgwZaak.getUuid());
