@@ -96,9 +96,13 @@ public class ModelMapperConfig {
 		addZgwBetrokkeneIdentificatieToNatuurlijkPersoonTypeMapping(modelMapper);
 		addZgwEnkelvoudigInformatieObjectToZaakDocumentLinkTypeMapping(modelMapper);
 		addZgwEnkelvoudigInformatieObjectToZdsZaakDocumentInhoudTypeMapping(modelMapper);
+		
+		addZdsZaakDocumentInhoudToZgwEnkelvoudigInformatieObjectTypeMapping(modelMapper);
+		
 		addZdsNatuurlijkPersoonToZgwBetrokkeneIdentificatieTypeMapping(modelMapper);
 		addZdsZaakDocumentToZgwEnkelvoudigInformatieObjectTypeMapping(modelMapper);
 		addZdsZaakDocumentRelevantToZgwEnkelvoudigInformatieObjectTypeMapping(modelMapper);
+		
 		addZgwZaakToGeefZaakDetailsTypeMappingTypeMapping(modelMapper);
 
 		modelMapper.addConverter(convertZgwRolToZdsRol());
@@ -187,6 +191,20 @@ public class ModelMapperConfig {
 						ZdsZaakDocument::setVertrouwelijkAanduiding));
 	}
 
+	public void addZdsZaakDocumentInhoudToZgwEnkelvoudigInformatieObjectTypeMapping(ModelMapper modelMapper) {
+		modelMapper.typeMap(ZdsZaakDocumentInhoud.class, ZgwEnkelvoudigInformatieObject.class)
+//				.includeBase(ZgwEnkelvoudigInformatieObject.class, ZdsZaakDocument.class)
+				.addMappings(mapper -> mapper.using(convertStufDateToZgwDate())
+						.map(ZdsZaakDocument::getCreatiedatum, ZgwEnkelvoudigInformatieObject::setCreatiedatum))
+				.addMappings(mapper -> mapper.using(convertStufDateToZgwDate())
+						.map(ZdsZaakDocument::getOntvangstdatum, ZgwEnkelvoudigInformatieObject::setOntvangstdatum))
+				.addMappings(mapper -> mapper.using(convertStufDateToZgwDate())
+						.map(ZdsZaakDocument::getVerzenddatum, ZgwEnkelvoudigInformatieObject::setVerzenddatum))
+				.addMappings(mapper -> mapper.using(convertToLowerCase()).map(
+						ZdsZaakDocument::getVertrouwelijkAanduiding,
+						ZgwEnkelvoudigInformatieObject::setVertrouwelijkheidaanduiding));
+	}	
+	
 	public void addZdsZaakToZgwZaakTypeMapping(ModelMapper modelMapper) {
 		modelMapper.typeMap(ZdsZaak.class, ZgwZaak.class)
 				.addMappings(mapper -> mapper.using(convertStufDateToZgwDate()).map(ZdsZaak::getStartdatum,
