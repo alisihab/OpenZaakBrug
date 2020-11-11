@@ -57,7 +57,7 @@ public class ZdsZaak extends ZdsZaakIdentificatie {
 	@XmlElement(namespace = ZKN)
 	public ZdsOpschorting opschorting;
 
-	@XmlElement(namespace = ZKN)
+	@XmlElement(namespace = ZKN, nillable = true)
 	public ZdsVerlenging verlenging;
 
 	@XmlElement(namespace = ZKN)
