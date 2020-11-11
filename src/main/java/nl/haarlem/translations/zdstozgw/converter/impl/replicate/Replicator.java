@@ -137,15 +137,11 @@ public class Replicator {
                  zdsRequest.parameters.setIndicatorVervolgvraag("false");
                  zdsRequest.gelijk = new ZdsZaakDocument();
                  zdsRequest.gelijk.identificatie = zaakidentificatie;
-                 zdsRequest.scope= new ZdsScope();
-                 /*
+                 zdsRequest.scope = new ZdsScope();
                  zdsRequest.scope.object = new ZdsScopeObject();
-                 zdsRequest.scope.object.entiteittype = "ZAK";
-                 zdsRequest.scope.object.heeftRelevant = new ZdsScopeHeeftRelevant();
-                 zdsRequest.scope.object.heeftRelevant.entiteittype = "ZAKEDC";
-                 zdsRequest.scope.object.heeftRelevant.gerelateerde = new ZdsScopeGerelateerde();
-                 zdsRequest.scope.object.heeftRelevant.gerelateerde.entiteittype = "EDC";
-                 */
+                 zdsRequest.scope.object.setEntiteittype("EDC");
+                 zdsRequest.scope.object.setScope("alles");
+                 
                  var zdsResponse = this.zdsClient.post(zdsUrl, zdsSoapAction, zdsRequest);
                  // fetch the document details
                  log.debug("getGeefZaakdocumentLezen response:" + zdsResponse.getBody().toString());
