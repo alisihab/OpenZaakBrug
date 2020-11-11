@@ -12,7 +12,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement(namespace = ZKN, name = "scope")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ZdsScope extends ZdsObject {
-
+	@XmlElement(namespace = STUF)
+	public String entiteittype = "ZAK";
+	
 	@XmlElement(namespace = ZKN, name = "object")
 	public ZdsZaak object;
 

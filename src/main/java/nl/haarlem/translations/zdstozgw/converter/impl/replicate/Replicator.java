@@ -132,16 +132,19 @@ public class Replicator {
         var zdsRequest = new ZdsReplicateGeefZaakdetailsLv01();
         zdsRequest.stuurgegevens = this.converter.getZdsDocument().stuurgegevens;
         zdsRequest.parameters = new ZdsParameters();
+        zdsRequest.parameters.setSortering("0");
         zdsRequest.parameters.setIndicatorVervolgvraag("false");
         zdsRequest.gelijk = new ZdsZaak();
         zdsRequest.gelijk.identificatie = zaakidentificatie;
         zdsRequest.scope = new ZdsScope();
+        zdsRequest.scope.setEntiteittype("ZAK");
         zdsRequest.scope.scope = "alles";
         var zdsResponse = this.zdsClient.post(zdsUrl, zdsSoapAction, zdsRequest);
 
         // fetch the zaak details
         log.debug("GeefZaakDetails response:" + zdsResponse);
         ZdsZakLa01GeefZaakDetails zakLa01 = (ZdsZakLa01GeefZaakDetails) XmlUtils.getStUFObject(zdsResponse.getBody().toString(), ZdsZakLa01GeefZaakDetails.class);
+        
         var zdsZaak = zakLa01.antwoord.zaak.get(0);
 
         log.info("received data from zds-zaaksysteem, now storing in zgw-zaaksysteem");
