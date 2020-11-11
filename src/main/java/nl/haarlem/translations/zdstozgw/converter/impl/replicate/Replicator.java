@@ -79,9 +79,9 @@ public class Replicator {
                  zdsRequest.gelijk = new ZdsZaakDocument();
                  zdsRequest.gelijk.identificatie = zaakidentificatie;
                  zdsRequest.scope= new ZdsScope();
-                 zdsRequest.scope.object = new ZdsZaak();
-                 zdsRequest.scope.object.heeftRelevant = new ZdsHeeftRelevant();
-                 zdsRequest.scope.object.heeftRelevant.gerelateerde = new ZdsZaakDocument();
+                 zdsRequest.scope.zaak = new ZdsZaak();
+                 zdsRequest.scope.zaak.heeftRelevant = new ZdsHeeftRelevant();
+                 zdsRequest.scope.zaak.heeftRelevant.gerelateerde = new ZdsZaakDocument();
 
                  var zdsResponse = this.zdsClient.post(zdsUrl, zdsSoapAction, zdsRequest);
                  // fetch the document details
@@ -115,9 +115,9 @@ public class Replicator {
         zdsRequest.gelijk = new ZdsZaak();
         zdsRequest.gelijk.identificatie = zaakidentificatie;
         zdsRequest.scope = new ZdsScope();
-        zdsRequest.scope.object = new ZdsZaak();
-        zdsRequest.scope.object.heeftRelevant = new ZdsHeeftRelevant();
-        zdsRequest.scope.object.heeftRelevant.gerelateerde = new ZdsZaakDocument();
+        zdsRequest.scope.zaak = new ZdsZaak();
+        zdsRequest.scope.zaak.heeftRelevant = new ZdsHeeftRelevant();
+        zdsRequest.scope.zaak.heeftRelevant.gerelateerde = new ZdsZaakDocument();
 
         var zdsResponse = this.zdsClient.post(zdsUrl, zdsSoapAction, zdsRequest);
         log.info("GeefLijstZaakdocumenten voor zaak:" + zaakidentificatie);
