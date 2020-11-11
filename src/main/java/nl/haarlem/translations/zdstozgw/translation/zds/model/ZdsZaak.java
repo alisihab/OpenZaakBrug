@@ -15,11 +15,11 @@ import lombok.Data;
 @Data
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ZdsZaak extends ZdsZaakIdentificatie {
-	@XmlAttribute(namespace = STUF)
-	public String entiteittype;
+//	@XmlAttribute(namespace = STUF)
+//	public String entiteittype;
 	
-	@XmlAttribute(namespace = STUF)
-	public String scope;		
+//	@XmlAttribute(namespace = STUF)
+//	public String scope;		
 	
 	@XmlElement(namespace = ZKN)
 	public String omschrijving;
