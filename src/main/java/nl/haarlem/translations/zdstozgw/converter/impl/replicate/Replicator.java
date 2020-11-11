@@ -59,11 +59,11 @@ public class Replicator {
 		}
 
         List<ZdsHeeftRelevant> relevanteDocumenten = getRelevanteDocumenten(zaakidentificatie);
-
         checkAllDocuments(zaakidentificatie, rsin, relevanteDocumenten);
     }
 
     private void checkAllDocuments(String zaakidentificatie, String rsin, List<ZdsHeeftRelevant> relevanteDocumenten) {
+    	log.info("Checking #" + relevanteDocumenten.size() + "zaakdocuments for zaak with zaakidentificatie:" + zaakidentificatie);
         for (ZdsHeeftRelevant relevant : relevanteDocumenten) {
             var zaakdocumentidentificatie = relevant.gerelateerde.identificatie;
             ZgwEnkelvoudigInformatieObject zgwEnkelvoudigInformatieObject = this.converter.getZaakService().zgwClient.getZgwEnkelvoudigInformatieObjectByIdentiticatie(zaakdocumentidentificatie);
