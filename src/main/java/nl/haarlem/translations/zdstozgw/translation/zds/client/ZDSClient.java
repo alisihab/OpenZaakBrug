@@ -57,10 +57,9 @@ public class ZDSClient {
 			int responsecode = httpclient.executeMethod(method);
 			String zdsResponseBody = method.getResponseBodyAsString();
 			zdsRequestResponseCycle.setZdsResponseCode(responsecode);
-			zdsRequestResponseCycle.setZdsResponseBody(zdsResponseBody);
+			zdsRequestResponseCycle.setZdsResponseBody(zdsResponseBody);			
 			this.repository.save(zdsRequestResponseCycle);
 
-			this.repository.save(zdsRequestResponseCycle);
 			return new ResponseEntity<>(zdsResponseBody, HttpStatus.valueOf(responsecode));
 		} catch (IOException ce) {
 			throw new ConverterException(
