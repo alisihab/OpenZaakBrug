@@ -4,7 +4,7 @@ import java.lang.invoke.MethodHandles;
 import java.util.List;
 
 import nl.haarlem.translations.zdstozgw.config.SpringContext;
-import nl.haarlem.translations.zdstozgw.translation.zds.client.ZDSClient;
+
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,6 +16,7 @@ import nl.haarlem.translations.zdstozgw.converter.Converter;
 import nl.haarlem.translations.zdstozgw.converter.impl.replicate.model.ZdsReplicateGeefLijstZaakdocumentenLv01;
 import nl.haarlem.translations.zdstozgw.converter.impl.replicate.model.ZdsReplicateGeefZaakdetailsLv01;
 import nl.haarlem.translations.zdstozgw.converter.impl.replicate.model.ZdsReplicateGeefZaakdocumentLezenLv01;
+import nl.haarlem.translations.zdstozgw.translation.zds.client.ZDSClient;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsEdcLa01GeefZaakdocumentLezen;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsGerelateerde;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsHeeftRelevant;
@@ -138,7 +139,7 @@ public class Replicator {
         zdsRequest.gelijk.identificatie = zaakidentificatie;
         zdsRequest.scope = new ZdsScope();
         zdsRequest.scope.setEntiteittype("ZAK");
-        zdsRequest.scope.scope = "alles";
+        zdsRequest.scope.setScope("alles");
         var zdsResponse = this.zdsClient.post(zdsUrl, zdsSoapAction, zdsRequest);
 
         // fetch the zaak details
