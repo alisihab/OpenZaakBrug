@@ -120,10 +120,12 @@ public class Replicator {
     }
 
     private void checkVoegZaakDocumentToe(String zaakidentificatie, String rsin, List<ZdsHeeftRelevant> relevanteDocumenten) {
-    	log.info("Checking #" + relevanteDocumenten.size() + "zaakdocuments for zaak with zaakidentificatie:" + zaakidentificatie);
+    	log.info("Zaakdocumenten, count: " + relevanteDocumenten.size() + " for zaak with zaakidentificatie:" + zaakidentificatie);
         for (ZdsHeeftRelevant relevant : relevanteDocumenten) {
             var zaakdocumentidentificatie = relevant.gerelateerde.identificatie;
-            ZgwEnkelvoudigInformatieObject zgwEnkelvoudigInformatieObject = this.converter.getZaakService().zgwClient.getZgwEnkelvoudigInformatieObjectByIdentiticatie(zaakdocumentidentificatie);
+    		log.warn("replicateZaakDocument for zaakidentificatie:" + zaakidentificatie + " with zaakdocumentidentificatie:" + zaakdocumentidentificatie);
+    		
+            ZgwEnkelvoudigInformatieObject zgwEnkelvoudigInformatieObject = this.converter.getZaakService().zgwClient.getZgwEnkelvoudigInformatieObjectByIdentiticatie(zaakdocumentidentificatie);            
             if (zgwEnkelvoudigInformatieObject == null) {
                 log.info("REPLICATION [replicate] documentidentificatie #" + zaakdocumentidentificatie);
 
@@ -136,7 +138,7 @@ public class Replicator {
                  zdsRequest.parameters.setSortering("0");
                  zdsRequest.parameters.setIndicatorVervolgvraag("false");
                  zdsRequest.gelijk = new ZdsZaakDocument();
-                 zdsRequest.gelijk.identificatie = zaakidentificatie;
+                 zdsRequest.gelijk.identificatie = zaakdocumentidentificatie;
                  zdsRequest.scope = new ZdsScope();
                  zdsRequest.scope.object = new ZdsScopeObject();
                  zdsRequest.scope.object.setEntiteittype("EDC");
