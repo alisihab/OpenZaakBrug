@@ -50,9 +50,9 @@ public class ZgwEnkelvoudigInformatieObject {
 	@SerializedName("ontvangstdatum")
 	@Expose
 	public String ontvangstdatum;
-	@SerializedName("verzenddatum")
-	@Expose
-	public String verzenddatum;
+//	@SerializedName("verzenddatum")
+//	@Expose
+//	public String verzenddatum;
 	@SerializedName("beschrijving")
 	@Expose
 	public String beschrijving;
