@@ -583,7 +583,10 @@ public class ZaakService {
 		}
 		var rol = this.zgwClient.getRolByZaakUrlAndRolTypeUrl(zgwZaak.url, roltype.url);
 		if (rol == null) {
-			throw new ConverterException("Rol: " + typeRolOmschrijving + " niet gevonden bij zaak: " + zgwZaak.identificatie);
+			//throw new ConverterException("Rol: " + typeRolOmschrijving + " niet gevonden bij zaak: " + zgwZaak.identificatie);
+			log.warn("Rol: " + typeRolOmschrijving + " niet gevonden bij zaaktype voor zaak: " + zgwZaak.identificatie);
+			return;			
+			
 		}
 		this.zgwClient.deleteRol(rol.uuid);
 	}
