@@ -104,7 +104,6 @@ public class Replicator {
         zdsRequest.gelijk.identificatie = zaakidentificatie;
         zdsRequest.scope = new ZdsScope();
         zdsRequest.scope.object = new ZdsScopeObject();
-        zdsRequest.scope.object = new ZdsScopeObject();
         zdsRequest.scope.object.entiteittype = "ZAK";
         zdsRequest.scope.object.heeftRelevant = new ZdsScopeHeeftRelevant();
         zdsRequest.scope.object.heeftRelevant.entiteittype = "ZAKEDC";

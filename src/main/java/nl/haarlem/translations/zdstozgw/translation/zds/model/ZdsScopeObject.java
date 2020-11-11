@@ -21,9 +21,9 @@ public class ZdsScopeObject extends ZdsObject {
 	@XmlAttribute(namespace = STUF)
 	public String scope;
 	
-	@XmlElement(namespace = ZKN, nillable = false)
+	@XmlElement(namespace = ZKN)
 	public String identificatie = null;
 
-	@XmlElement(namespace = ZKN, nillable = false)
+	@XmlElement(namespace = ZKN)
 	public ZdsScopeHeeftRelevant heeftRelevant = null;		
 }
