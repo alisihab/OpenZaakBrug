@@ -14,16 +14,10 @@ import lombok.Data;
 
 @Data
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ZdsScopeObject extends ZdsObject {
+public class ZdsScopeGerelateerde extends ZdsObject {
 	@XmlAttribute(namespace = STUF)
-	public String entiteittype;
+	public String entiteittype = "EDC";
 	
-	@XmlAttribute(namespace = STUF)
-	public String scope;
-	
-	@XmlElement(namespace = ZKN, nillable = false)
+	@XmlElement(namespace = ZKN, nillable = true)
 	public String identificatie = null;
-
-	@XmlElement(namespace = ZKN, nillable = false)
-	public ZdsScopeHeeftRelevant heeftRelevant = null;		
 }
