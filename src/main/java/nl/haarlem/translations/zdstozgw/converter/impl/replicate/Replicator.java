@@ -138,8 +138,9 @@ public class Replicator {
         zdsRequest.gelijk = new ZdsZaak();
         zdsRequest.gelijk.identificatie = zaakidentificatie;
         zdsRequest.scope = new ZdsScope();
-        zdsRequest.scope.setEntiteittype("ZAK");
-        zdsRequest.scope.setScope("alles");
+        zdsRequest.scope.zaak = new ZdsZaak();
+        zdsRequest.scope.zaak.setEntiteittype("ZAK");
+        zdsRequest.scope.zaak.setScope("alles");
         var zdsResponse = this.zdsClient.post(zdsUrl, zdsSoapAction, zdsRequest);
 
         // fetch the zaak details
