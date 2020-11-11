@@ -19,5 +19,8 @@ public class ZdsScopeObject extends ZdsObject {
 	public String entiteittype;
 	
 	@XmlAttribute(namespace = STUF)
-	public String scope;		
+	public String scope;
+	
+	@XmlElement(namespace = ZKN, nillable = true)
+	public String identificatie = null;
 }
