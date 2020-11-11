@@ -259,19 +259,12 @@ public class ModelMapperConfig {
 					return null;
 				}
 				var zdsDateFormatter = new SimpleDateFormat("yyyyMMdd");
-				zdsDateFormatter.setTimeZone(TimeZone.getTimeZone("Europe/Amsterdam"));
 				var zgwDateFormatter = new SimpleDateFormat("yyyy-MM-dd");
-				zgwDateFormatter.setTimeZone(TimeZone.getTimeZone("GMT"));
 				try {
 					if (stufDate.contains("-")) {
 						throw new ConverterException("stuf date: " + stufDate + " may not contain the character '-'");
 					}
 					var date = zdsDateFormatter.parse(stufDate);
-					// log.debug("date:" + date);
-					Calendar cal = Calendar.getInstance();
-					cal.setTime(date);
-					cal.add(Calendar.MINUTE, Integer.parseInt(ModelMapperConfig.singleton.timeoffset));
-					date = cal.getTime();
 					var zgwDate = zgwDateFormatter.format(date);
 					log.debug("convertStufDateToZgwDate: " + stufDate + " (amsterdam) --> " + zgwDate
 							+ "(gmt) with offset minutes:" + ModelMapperConfig.singleton.timeoffset  + "(date:" + date + ")");
