@@ -56,88 +56,16 @@ public class Replicator {
 		var zgwZaak = this.converter.getZaakService().zgwClient.getZaakByIdentificatie(zaakidentificatie);
 		if (zgwZaak == null) {
 			log.info("REPLICATION [replicate] zaakidentificatie #" + zaakidentificatie);
-            createZaak(zaakidentificatie, rsin);
+            checkCreeerZaak(zaakidentificatie, rsin);
         } else {
 			log.info("REPLICATION [skip] zaakidentificatie #" + zaakidentificatie);
 		}
 
-        List<ZdsHeeftRelevant> relevanteDocumenten = getRelevanteDocumenten(zaakidentificatie);
-        checkAllDocuments(zaakidentificatie, rsin, relevanteDocumenten);
+        List<ZdsHeeftRelevant> relevanteDocumenten = getLijstZaakdocumenten(zaakidentificatie);
+        checkVoegZaakDocumentToe(zaakidentificatie, rsin, relevanteDocumenten);
     }
-
-    private void checkAllDocuments(String zaakidentificatie, String rsin, List<ZdsHeeftRelevant> relevanteDocumenten) {
-    	log.info("Checking #" + relevanteDocumenten.size() + "zaakdocuments for zaak with zaakidentificatie:" + zaakidentificatie);
-        for (ZdsHeeftRelevant relevant : relevanteDocumenten) {
-            var zaakdocumentidentificatie = relevant.gerelateerde.identificatie;
-            ZgwEnkelvoudigInformatieObject zgwEnkelvoudigInformatieObject = this.converter.getZaakService().zgwClient.getZgwEnkelvoudigInformatieObjectByIdentiticatie(zaakdocumentidentificatie);
-            if (zgwEnkelvoudigInformatieObject == null) {
-                log.info("REPLICATION [replicate] documentidentificatie #" + zaakdocumentidentificatie);
-
-                var zdsUrl = this.converter.getZaakService().configService.getConfiguration().getReplication().getGeefZaakdocumentLezen().getUrl();
-                var zdsSoapAction = this.converter.getZaakService().configService.getConfiguration().getReplication().getGeefZaakdocumentLezen().getSoapaction();
-                var zdsRequest = new ZdsReplicateGeefZaakdocumentLezenLv01();                
-                 zdsRequest.stuurgegevens = this.converter.getZdsDocument().stuurgegevens;
-                 zdsRequest.stuurgegevens.entiteittype = "EDC";
-                 zdsRequest.parameters = new ZdsParameters();
-                 zdsRequest.parameters.setSortering("0");
-                 zdsRequest.parameters.setIndicatorVervolgvraag("false");
-                 zdsRequest.gelijk = new ZdsZaakDocument();
-                 zdsRequest.gelijk.identificatie = zaakidentificatie;
-                 zdsRequest.scope= new ZdsScope();
-                 zdsRequest.scope.object = new ZdsScopeObject();
-                 zdsRequest.scope.object.entiteittype = "ZAK";
-                 zdsRequest.scope.object.heeftRelevant = new ZdsScopeHeeftRelevant();
-                 zdsRequest.scope.object.heeftRelevant.entiteittype = "ZAKEDC";
-                 zdsRequest.scope.object.heeftRelevant.gerelateerde = new ZdsScopeGerelateerde();
-                 zdsRequest.scope.object.heeftRelevant.gerelateerde.entiteittype = "EDC";
-
-                 var zdsResponse = this.zdsClient.post(zdsUrl, zdsSoapAction, zdsRequest);
-                 // fetch the document details
-                 log.debug("getGeefZaakdocumentLezen response:" + zdsResponse.getBody().toString());
-                 var zdsEdcLa01 =  (ZdsEdcLa01GeefZaakdocumentLezen) XmlUtils.getStUFObject(zdsResponse.getBody().toString(), ZdsEdcLa01GeefZaakdocumentLezen.class);
-                 var zdsDocument = zdsEdcLa01.antwoord.document.get(0);
-
-                 // put the zaak in the object, so voegZaakDocument works as expected
-                 zdsDocument.isRelevantVoor = new ZdsIsRelevantVoor();
-                 zdsDocument.isRelevantVoor.gerelateerde = new ZdsGerelateerde();
-                 zdsDocument.isRelevantVoor.gerelateerde.identificatie = zaakidentificatie;
-
-                 log.info("received data from zds-zaaksysteem, now storing in zgw-zaaksysteem");
-                 this.converter.getZaakService().voegZaakDocumentToe(rsin, zdsDocument);
-            }
-            else {
-                log.info("REPLICATION [skip] documentidentificatie #" + zaakdocumentidentificatie);
-                // TODO: check if zaak-relation is there
-            }
-        }
-    }
-
-    private List<ZdsHeeftRelevant> getRelevanteDocumenten(String zaakidentificatie) {
-        List<ZdsHeeftRelevant> relevanteDocumenten = null;
-        var zdsUrl = this.converter.getZaakService().configService.getConfiguration().getReplication().getGeefLijstZaakdocumenten().getUrl();
-        var zdsSoapAction = this.converter.getZaakService().configService.getConfiguration().getReplication().getGeefLijstZaakdocumenten().getSoapaction();
-        var zdsRequest = new ZdsReplicateGeefLijstZaakdocumentenLv01();
-        zdsRequest.stuurgegevens = this.converter.getZdsDocument().stuurgegevens;
-        zdsRequest.parameters = new ZdsParameters();
-        zdsRequest.parameters.setSortering("0");
-        zdsRequest.parameters.setIndicatorVervolgvraag("false");
-        zdsRequest.gelijk = new ZdsZaak();
-        zdsRequest.gelijk.identificatie = zaakidentificatie;
-        zdsRequest.scope = new ZdsScope();
-        zdsRequest.scope.object = new ZdsScopeObject();
-        //zdsRequest.scope.object.heeftRelevant = new ZdsHeeftRelevant();
-        //zdsRequest.scope.object.heeftRelevant.gerelateerde = new ZdsZaakDocument();
-
-        var zdsResponse = this.zdsClient.post(zdsUrl, zdsSoapAction, zdsRequest);
-        log.info("GeefLijstZaakdocumenten voor zaak:" + zaakidentificatie);
-        var zakZakLa01 = (ZdsZakLa01LijstZaakdocumenten) XmlUtils.getStUFObject(zdsResponse.getBody().toString(),ZdsZakLa01LijstZaakdocumenten.class);
-        
-        relevanteDocumenten = zakZakLa01.antwoord.object.heeftRelevant;
-
-        return relevanteDocumenten;
-    }
-
-    private void createZaak(String zaakidentificatie, String rsin) {
+	
+    private void checkCreeerZaak(String zaakidentificatie, String rsin) {
         var zdsUrl = this.converter.getZaakService().configService.getConfiguration().getReplication().getGeefZaakdetails().getUrl();
         var zdsSoapAction = this.converter.getZaakService().configService.getConfiguration().getReplication().getGeefZaakdetails().getSoapaction();
         var zdsRequest = new ZdsReplicateGeefZaakdetailsLv01();
@@ -161,6 +89,83 @@ public class Replicator {
 
         log.info("received data from zds-zaaksysteem, now storing in zgw-zaaksysteem");
         this.converter.getZaakService().creeerZaak(rsin, zdsZaak);
+    }
+	
+    private List<ZdsHeeftRelevant> getLijstZaakdocumenten(String zaakidentificatie) {
+        List<ZdsHeeftRelevant> relevanteDocumenten = null;
+        var zdsUrl = this.converter.getZaakService().configService.getConfiguration().getReplication().getGeefLijstZaakdocumenten().getUrl();
+        var zdsSoapAction = this.converter.getZaakService().configService.getConfiguration().getReplication().getGeefLijstZaakdocumenten().getSoapaction();
+        var zdsRequest = new ZdsReplicateGeefLijstZaakdocumentenLv01();
+        zdsRequest.stuurgegevens = this.converter.getZdsDocument().stuurgegevens;
+        zdsRequest.parameters = new ZdsParameters();
+        zdsRequest.parameters.setSortering("0");
+        zdsRequest.parameters.setIndicatorVervolgvraag("false");
+        zdsRequest.gelijk = new ZdsZaak();
+        zdsRequest.gelijk.identificatie = zaakidentificatie;
+        zdsRequest.scope = new ZdsScope();
+        zdsRequest.scope.object = new ZdsScopeObject();
+        zdsRequest.scope.object = new ZdsScopeObject();
+        zdsRequest.scope.object.entiteittype = "ZAK";
+        zdsRequest.scope.object.heeftRelevant = new ZdsScopeHeeftRelevant();
+        zdsRequest.scope.object.heeftRelevant.entiteittype = "ZAKEDC";
+        zdsRequest.scope.object.heeftRelevant.gerelateerde = new ZdsScopeGerelateerde();
+        zdsRequest.scope.object.heeftRelevant.gerelateerde.entiteittype = "EDC";
+        
+        var zdsResponse = this.zdsClient.post(zdsUrl, zdsSoapAction, zdsRequest);
+        log.info("GeefLijstZaakdocumenten voor zaak:" + zaakidentificatie);
+        var zakZakLa01 = (ZdsZakLa01LijstZaakdocumenten) XmlUtils.getStUFObject(zdsResponse.getBody().toString(),ZdsZakLa01LijstZaakdocumenten.class);
+        
+        relevanteDocumenten = zakZakLa01.antwoord.object.heeftRelevant;
+
+        return relevanteDocumenten;
+    }
+
+    private void checkVoegZaakDocumentToe(String zaakidentificatie, String rsin, List<ZdsHeeftRelevant> relevanteDocumenten) {
+    	log.info("Checking #" + relevanteDocumenten.size() + "zaakdocuments for zaak with zaakidentificatie:" + zaakidentificatie);
+        for (ZdsHeeftRelevant relevant : relevanteDocumenten) {
+            var zaakdocumentidentificatie = relevant.gerelateerde.identificatie;
+            ZgwEnkelvoudigInformatieObject zgwEnkelvoudigInformatieObject = this.converter.getZaakService().zgwClient.getZgwEnkelvoudigInformatieObjectByIdentiticatie(zaakdocumentidentificatie);
+            if (zgwEnkelvoudigInformatieObject == null) {
+                log.info("REPLICATION [replicate] documentidentificatie #" + zaakdocumentidentificatie);
+
+                var zdsUrl = this.converter.getZaakService().configService.getConfiguration().getReplication().getGeefZaakdocumentLezen().getUrl();
+                var zdsSoapAction = this.converter.getZaakService().configService.getConfiguration().getReplication().getGeefZaakdocumentLezen().getSoapaction();
+                var zdsRequest = new ZdsReplicateGeefZaakdocumentLezenLv01();                
+                 zdsRequest.stuurgegevens = this.converter.getZdsDocument().stuurgegevens;
+                 zdsRequest.stuurgegevens.entiteittype = "EDC";
+                 zdsRequest.parameters = new ZdsParameters();
+                 zdsRequest.parameters.setSortering("0");
+                 zdsRequest.parameters.setIndicatorVervolgvraag("false");
+                 zdsRequest.gelijk = new ZdsZaakDocument();
+                 zdsRequest.gelijk.identificatie = zaakidentificatie;
+                 zdsRequest.scope= new ZdsScope();
+                 /*
+                 zdsRequest.scope.object = new ZdsScopeObject();
+                 zdsRequest.scope.object.entiteittype = "ZAK";
+                 zdsRequest.scope.object.heeftRelevant = new ZdsScopeHeeftRelevant();
+                 zdsRequest.scope.object.heeftRelevant.entiteittype = "ZAKEDC";
+                 zdsRequest.scope.object.heeftRelevant.gerelateerde = new ZdsScopeGerelateerde();
+                 zdsRequest.scope.object.heeftRelevant.gerelateerde.entiteittype = "EDC";
+                 */
+                 var zdsResponse = this.zdsClient.post(zdsUrl, zdsSoapAction, zdsRequest);
+                 // fetch the document details
+                 log.debug("getGeefZaakdocumentLezen response:" + zdsResponse.getBody().toString());
+                 var zdsEdcLa01 =  (ZdsEdcLa01GeefZaakdocumentLezen) XmlUtils.getStUFObject(zdsResponse.getBody().toString(), ZdsEdcLa01GeefZaakdocumentLezen.class);
+                 var zdsDocument = zdsEdcLa01.antwoord.document.get(0);
+
+                 // put the zaak in the object, so voegZaakDocument works as expected
+                 zdsDocument.isRelevantVoor = new ZdsIsRelevantVoor();
+                 zdsDocument.isRelevantVoor.gerelateerde = new ZdsGerelateerde();
+                 zdsDocument.isRelevantVoor.gerelateerde.identificatie = zaakidentificatie;
+
+                 log.info("received data from zds-zaaksysteem, now storing in zgw-zaaksysteem");
+                 this.converter.getZaakService().voegZaakDocumentToe(rsin, zdsDocument);
+            }
+            else {
+                log.info("REPLICATION [skip] documentidentificatie #" + zaakdocumentidentificatie);
+                // TODO: check if zaak-relation is there
+            }
+        }
     }
 
     public ResponseEntity<?> proxy() {
