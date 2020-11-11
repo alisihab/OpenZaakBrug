@@ -111,6 +111,7 @@ public class Replicator {
         var zdsRequest = new ZdsReplicateGeefLijstZaakdocumentenLv01();
         zdsRequest.stuurgegevens = this.converter.getZdsDocument().stuurgegevens;
         zdsRequest.parameters = new ZdsParameters();
+        zdsRequest.parameters.setSortering("0");
         zdsRequest.parameters.setIndicatorVervolgvraag("false");
         zdsRequest.gelijk = new ZdsZaak();
         zdsRequest.gelijk.identificatie = zaakidentificatie;
@@ -122,6 +123,7 @@ public class Replicator {
         var zdsResponse = this.zdsClient.post(zdsUrl, zdsSoapAction, zdsRequest);
         log.info("GeefLijstZaakdocumenten voor zaak:" + zaakidentificatie);
         var zakZakLa01 = (ZdsZakLa01LijstZaakdocumenten) XmlUtils.getStUFObject(zdsResponse.getBody().toString(),ZdsZakLa01LijstZaakdocumenten.class);
+        
         relevanteDocumenten = zakZakLa01.antwoord.object.heeftRelevant;
 
         return relevanteDocumenten;
