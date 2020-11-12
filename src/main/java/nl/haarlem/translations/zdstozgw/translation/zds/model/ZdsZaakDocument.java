@@ -14,39 +14,39 @@ public class ZdsZaakDocument extends ZdsZaakDocumentIdentificatie {
 	@XmlElement(namespace = ZKN, name = "dct.omschrijving")
 	public String omschrijving;
 
-	@XmlElement(namespace = ZKN, nillable = true)
+	@XmlElement(namespace = ZKN)
 	public String creatiedatum;
 
-	@XmlElement(namespace = ZKN, nillable = true)
+	@XmlElement(namespace = ZKN)
 	public String ontvangstdatum;
 
-	@XmlElement(namespace = ZKN, nillable = true)
+	@XmlElement(namespace = ZKN)
 	public String titel;
 
-	@XmlElement(namespace = ZKN, nillable = true)
+	@XmlElement(namespace = ZKN)
 	public String beschrijving;
 
-	@XmlElement(namespace = ZKN, nillable = true)
+	@XmlElement(namespace = ZKN)
 	public String formaat;
 
-	@XmlElement(namespace = ZKN, nillable = true)
+	@XmlElement(namespace = ZKN)
 	public String taal;
 
-	@XmlElement(namespace = ZKN, nillable = true)
+	@XmlElement(namespace = ZKN)
 	public String versie;
 
-	@XmlElement(namespace = ZKN, nillable = true)
+	@XmlElement(namespace = ZKN)
 	public String status;
 
-	@XmlElement(namespace = ZKN, nillable = true)
+	@XmlElement(namespace = ZKN)
 	public String verzenddatum;
 
-	@XmlElement(namespace = ZKN, nillable = true)
+	@XmlElement(namespace = ZKN)
 	public String vertrouwelijkAanduiding;
 
-	@XmlElement(namespace = ZKN, nillable = true)
+	@XmlElement(namespace = ZKN)
 	public String auteur;
 
-	@XmlElement(namespace = ZKN, nillable = true)
+	@XmlElement(namespace = ZKN)
 	public String link;
 }

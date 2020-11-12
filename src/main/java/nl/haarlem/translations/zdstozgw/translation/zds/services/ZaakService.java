@@ -91,6 +91,12 @@ public class ZaakService {
 				zgwZaak.kenmerk.add(this.modelMapper.map(kenmerk, ZgwKenmerk.class));
 			}
 		}
+		
+		// alleen een verlenging meenemen als er echt waarden in staan
+		if(zgwZaak.verlenging != null && (zgwZaak.verlenging.reden == null || zgwZaak.verlenging.reden.length() == 0)) {
+			zgwZaak.verlenging = null;
+		}
+
 		zgwZaak = this.zgwClient.addZaak(zgwZaak);
 		log.debug("Created a ZGW Zaak with UUID: " + zgwZaak.getUuid());
 

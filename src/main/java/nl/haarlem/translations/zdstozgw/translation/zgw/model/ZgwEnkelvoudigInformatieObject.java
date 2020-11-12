@@ -38,9 +38,6 @@ public class ZgwEnkelvoudigInformatieObject {
 	@SerializedName("bestandsnaam")
 	@Expose
 	public String bestandsnaam;
-	@SerializedName("inhoud")
-	@Expose
-	public String inhoud;
 	@SerializedName("informatieobjecttype")
 	@Expose
 	public String informatieobjecttype;
@@ -59,4 +56,7 @@ public class ZgwEnkelvoudigInformatieObject {
 	@SerializedName("beschrijving")
 	@Expose
 	public String beschrijving;
+	@SerializedName("inhoud")
+	@Expose
+	public String inhoud;	
 }
