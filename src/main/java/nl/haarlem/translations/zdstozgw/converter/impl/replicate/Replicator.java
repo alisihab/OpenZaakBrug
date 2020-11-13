@@ -22,6 +22,7 @@ import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsGerelateerde;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsHeeftRelevant;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsIsRelevantVoor;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsParameters;
+import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsParametersMetSortering;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsScope;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsScopeGerelateerde;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsScopeHeeftRelevant;
@@ -70,7 +71,7 @@ public class Replicator {
         var zdsSoapAction = this.converter.getZaakService().configService.getConfiguration().getReplication().getGeefZaakdetails().getSoapaction();
         var zdsRequest = new ZdsReplicateGeefZaakdetailsLv01();
         zdsRequest.stuurgegevens = this.converter.getZdsDocument().stuurgegevens;
-        zdsRequest.parameters = new ZdsParameters();
+        zdsRequest.parameters = new ZdsParametersMetSortering();
         zdsRequest.parameters.setSortering("0");
         zdsRequest.parameters.setIndicatorVervolgvraag("false");
         zdsRequest.gelijk = new ZdsZaak();
@@ -97,7 +98,7 @@ public class Replicator {
         var zdsSoapAction = this.converter.getZaakService().configService.getConfiguration().getReplication().getGeefLijstZaakdocumenten().getSoapaction();
         var zdsRequest = new ZdsReplicateGeefLijstZaakdocumentenLv01();
         zdsRequest.stuurgegevens = this.converter.getZdsDocument().stuurgegevens;
-        zdsRequest.parameters = new ZdsParameters();
+        zdsRequest.parameters = new ZdsParametersMetSortering();
         zdsRequest.parameters.setSortering("0");
         zdsRequest.parameters.setIndicatorVervolgvraag("false");
         zdsRequest.gelijk = new ZdsZaak();
@@ -134,7 +135,7 @@ public class Replicator {
                 var zdsRequest = new ZdsReplicateGeefZaakdocumentLezenLv01();                
                  zdsRequest.stuurgegevens = this.converter.getZdsDocument().stuurgegevens;
                  zdsRequest.stuurgegevens.entiteittype = "EDC";
-                 zdsRequest.parameters = new ZdsParameters();
+                 zdsRequest.parameters = new ZdsParametersMetSortering();
                  zdsRequest.parameters.setSortering("0");
                  zdsRequest.parameters.setIndicatorVervolgvraag("false");
                  zdsRequest.gelijk = new ZdsZaakDocument();

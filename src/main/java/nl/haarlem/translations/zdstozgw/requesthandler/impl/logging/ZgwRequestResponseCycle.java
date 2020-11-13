@@ -21,7 +21,8 @@ public class ZgwRequestResponseCycle {
 	private String zgwUrl;
 	@Column(columnDefinition="TEXT")
 	private String zgwRequestBody;
-	private int zgwResponseCode;
-	@Column(columnDefinition="TEXT")
-	private String zgwResponseBody;
+	private int zgwResponseCode;	
+	//@Column(columnDefinition="TEXT")
+	@Lob
+	private String zgwResponseBody;	
 }

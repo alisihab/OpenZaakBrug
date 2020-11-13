@@ -12,7 +12,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class ZdsEdcLv01 extends ZdsZknDocument {
 
 	@XmlElement(namespace = ZKN)
-	public ZdsParameters parameters;
+	public ZdsParametersMetSortering parameters;
 
 	@XmlElement(namespace = ZKN)
 	public ZdsZaakDocument gelijk;

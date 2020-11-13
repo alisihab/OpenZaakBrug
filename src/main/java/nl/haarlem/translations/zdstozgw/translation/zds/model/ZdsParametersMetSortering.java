@@ -14,6 +14,9 @@ public class ZdsParametersMetSortering extends ZdsParameters {
 	@XmlElement(namespace = STUF, nillable = true)
 	public String sortering;
 
+	public ZdsParametersMetSortering() {
+	}	
+	
 	public ZdsParametersMetSortering(ZdsParametersMetSortering zdsParameters) {
 		super(zdsParameters);
 		this.sortering = zdsParameters.sortering;
