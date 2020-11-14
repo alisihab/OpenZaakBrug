@@ -364,11 +364,14 @@ public class ZaakService {
 			var zgwRolType = this.zgwClient.getRolTypeByUrl(rol.roltype);
 			ZgwRolOmschrijving zgwRolOmschrijving = this.configService.getConfiguration().getZgwRolOmschrijving();
 			if (zgwRolType.omschrijving.equals(zgwRolOmschrijving.getHeeftAlsInitiator())) {
-
-				// TODO: hier minder overhead!
-				// hier wordt nu 2 keer achterelkaar een getzaak op openzaak gedaan!
+				// TODO: hier minder overhead: hier wordt nu 2 keer achterelkaar een getzaak op openzaak gedaan!
 				var zgwZaak = this.zgwClient.getZaakByUrl(rol.zaak);
 				result.add(getZaakDetailsByIdentificatie(zgwZaak.identificatie));
+			}
+			if(result.size() >= 20) {
+				// Max 20 results, it seems we get get unpredicted results after that
+				log.warn("Limit activated, no more than 20 results! (total amound found: " + zgwRollen.size() + " relations)");
+				break;
 			}
 		}
 		return result;

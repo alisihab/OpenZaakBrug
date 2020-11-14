@@ -12,16 +12,12 @@ import lombok.Data;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ZdsParameters extends ZdsObject {
 	@XmlElement(namespace = STUF, nillable = true)
-	public String sortering;
-
-	@XmlElement(namespace = STUF, nillable = true)
 	public String indicatorVervolgvraag;
 
 	public ZdsParameters() {
 	}
 
 	public ZdsParameters(ZdsParameters zdsParameters) {
-		this.sortering = zdsParameters.sortering;
 		this.indicatorVervolgvraag = zdsParameters.indicatorVervolgvraag;
 	}
 }
