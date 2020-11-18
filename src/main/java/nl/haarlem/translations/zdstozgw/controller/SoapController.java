@@ -1,117 +1,84 @@
 package nl.haarlem.translations.zdstozgw.controller;
 
-import nl.haarlem.translations.zdstozgw.translation.zds.model.*;
-import nl.haarlem.translations.zdstozgw.translation.zds.services.ZaakService;
-import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwZaak;
-import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwZaakInformatieObject;
-import nl.haarlem.translations.zdstozgw.utils.XmlUtils;
+import java.lang.invoke.MethodHandles;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.RequestContextHolder;
 
-import java.lang.invoke.MethodHandles;
+import nl.haarlem.translations.zdstozgw.config.ConfigService;
+import nl.haarlem.translations.zdstozgw.converter.ConverterFactory;
+import nl.haarlem.translations.zdstozgw.requesthandler.RequestHandlerContext;
+import nl.haarlem.translations.zdstozgw.requesthandler.RequestHandlerFactory;
 
 @RestController
 public class SoapController {
 
-    private static final Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+	private static final Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
-    @Autowired
-    private ZaakService zaakService;
+	private final ConverterFactory converterFactory;
+	private final ConfigService configService;
+	private final RequestHandlerFactory requestHandlerFactory;
 
-    private String response = "NOT IMPLEMENTED";
+	@Autowired
+	public SoapController(ConverterFactory converterFactory, ConfigService configService,
+			RequestHandlerFactory requestHandlerFactory) {
+		this.converterFactory = converterFactory;
+		this.configService = configService;
+		this.requestHandlerFactory = requestHandlerFactory;
+	}
 
-    @PostMapping(value = "/BeantwoordVraag", consumes = MediaType.TEXT_XML_VALUE, produces = MediaType.TEXT_XML_VALUE)
-    public String beantwoordVraag(@RequestBody String body) {
 
-        var stufRequest = new StufRequest(XmlUtils.convertStringToDocument(body));
+    /**
+     * Does not handle any reqyests, returns a list of avaialble endpoints
+     *
+     * @return List of available endpoints
+     */
+	@GetMapping(path = { "/" }, produces = MediaType.TEXT_HTML_VALUE)
+	public ResponseEntity<?> HandleRequest() {
+		var context = new RequestHandlerContext("/", "", "");
+		this.requestHandlerFactory.getRequestHandler(this.converterFactory.getConverter(context));
+		return null;
+	}
 
-        if (stufRequest.isgeefZaakDetails()) {
-            try {
-                response = XmlUtils.xmlToString(zaakService.getZaakDetails(stufRequest.getZakLv01ZaakDetails()));
-            } catch (Exception ex) {
-                handleFetchZaakException(ex);
-            }
-        }
+    /**
+     * Receives the SOAP requests. Based on the configuration and path variables, the correct translation implementation is used.
+     *
+     * @param modus
+     * @param version
+     * @param protocol
+     * @param endpoint
+     * @param soapAction
+     * @param body
+     * @return ZDS response
+     */
+	@PostMapping(path = { "/{modus}/{version}/{protocol}/{endpoint}" },
+                    consumes = MediaType.TEXT_XML_VALUE, produces = MediaType.TEXT_XML_VALUE)
+	public ResponseEntity<?> HandleRequest(
+			@PathVariable String modus, @PathVariable String version, @PathVariable String protocol,
+			@PathVariable String endpoint, @RequestHeader(name = "SOAPAction", required = true) String soapAction,
+			@RequestBody String body) {
 
-        if (stufRequest.isgeefLijstZaakdocumenten()) {
-            try {
-                response = XmlUtils.xmlToString(zaakService.getLijstZaakdocumenten(stufRequest.getZakLv01LijstZaakdocumenten()));
-            } catch (Exception ex) {
-                handleFetchZaakException(ex);
-            }
-        }
+		var path = modus + "/" + version + "/" + protocol + "/" + endpoint;
+		var context = new RequestHandlerContext(path, soapAction.replace("\"", ""), body);
+		log.info("Processing request for path: /" + path + "/ with soapaction: " + soapAction
+				+ " with referentienummer:" + context.getReferentienummer());
 
-        return response;
-    }
+		RequestContextHolder.getRequestAttributes().setAttribute("referentienummer", context.getReferentienummer(),
+				RequestAttributes.SCOPE_REQUEST);
 
-    @PostMapping(value = "/OntvangAsynchroon", consumes = MediaType.TEXT_XML_VALUE, produces = MediaType.TEXT_XML_VALUE)
-    public String ontvangAsynchroon(@RequestBody String body) {
-
-        var stufRequest = new StufRequest(XmlUtils.convertStringToDocument(body));
-
-        if (stufRequest.isCreeerZaak()) {
-            creerZaak(stufRequest);
-        }
-        if (stufRequest.isVoegZaakdocumentToe()) {
-            voegZaakDocumentToe(stufRequest);
-        }
-
-        return response;
-    }
-
-    private void voegZaakDocumentToe(StufRequest stufRequest) {
-        EdcLk01 edcLk01 = stufRequest.getEdcLk01();
-        try {
-            ZgwZaakInformatieObject zgwZaakInformatieObject = zaakService.voegZaakDocumentToe(edcLk01);
-            setResponseToDocumentBv03(zgwZaakInformatieObject);
-        } catch (Exception e) {
-            handleAddZaakException(e);
-        }
-
-    }
-
-    private void creerZaak(StufRequest stufRequest) {
-        try {
-            ZakLk01 zakLk01 = stufRequest.getZakLk01();
-            var zaak = zaakService.creeerZaak(zakLk01);
-            setResponseToZaakBv03(zaak);
-        } catch (Exception ex) {
-            handleAddZaakException(ex);
-        }
-    }
-
-    private void setResponseToZaakBv03(ZgwZaak createdZaak) {
-        var bv03 = new Bv03();
-        bv03.setReferentienummer(createdZaak.getUuid());
-        response = bv03.getSoapMessageAsString();
-    }
-
-    private void setResponseToDocumentBv03(ZgwZaakInformatieObject zgwZaakInformatieObject) {
-        var bv03 = new Bv03();
-        bv03.setReferentienummer(zgwZaakInformatieObject.getUuid());
-        response = bv03.getSoapMessageAsString();
-    }
-
-    private void handleAddZaakException(Exception e) {
-        var f03 = new F03();
-        f03.setFaultString("Object was not saved");
-        f03.setCode("StUF046");
-        f03.setOmschrijving("Object niet opgeslagen");
-        f03.setDetails(e.getMessage());
-        response = f03.getSoapMessageAsString();
-    }
-
-    private void handleFetchZaakException(Exception e) {
-        var f03 = new F03();
-        f03.setFaultString("Object was not found");
-        f03.setCode("StUF064");
-        f03.setOmschrijving("Object niet gevonden");
-        f03.setDetails(e.getMessage());
-        response = f03.getSoapMessageAsString();
-    }
+		var converter = this.converterFactory.getConverter(context);
+		var handler = this.requestHandlerFactory.getRequestHandler(converter);
+		return handler.execute();
+	}
 }

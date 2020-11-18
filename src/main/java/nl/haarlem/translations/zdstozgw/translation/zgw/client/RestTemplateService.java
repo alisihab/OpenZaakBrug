@@ -1,68 +1,72 @@
 package nl.haarlem.translations.zdstozgw.translation.zgw.client;
 
-import lombok.Data;
+import java.lang.invoke.MethodHandles;
+import java.security.cert.X509Certificate;
+
+import javax.net.ssl.SSLContext;
+
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.conn.ssl.TrustStrategy;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import javax.net.ssl.SSLContext;
-import java.security.cert.X509Certificate;
+import lombok.Data;
 
 @Service
 @Data
 public class RestTemplateService {
+	private static final Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
-    @Autowired
-    private JWTService jwtService;
+	@Autowired
+	private JWTService jwtService;
 
-    private RestTemplate restTemplate;
+	RestTemplateBuilder restTemplateBuilder;
 
-    public RestTemplateService(@Value("${nl.haarlem.translations.zdstozgw.trustAllCerts:false}") boolean trustAllCerts) {
-        if (trustAllCerts) {
-            this.restTemplate = new RestTemplate(this.getAllCertsTrustingRequestFactory());
-        } else {
-            this.restTemplate = new RestTemplate();
-        }
-    }
+	private RestTemplate restTemplate;
 
-    private HttpComponentsClientHttpRequestFactory getAllCertsTrustingRequestFactory() {
-        TrustStrategy acceptingTrustStrategy = (X509Certificate[] chain, String authType) -> true;
+	@Autowired
+	public RestTemplateService(@Value("${nl.haarlem.translations.zdstozgw.trustAllCerts:false}") boolean trustAllCerts,
+			RestTemplateBuilder restTemplateBuilder) {
+		this.restTemplate = restTemplateBuilder.build();
+	}
 
-        SSLContext sslContext = null;
-        try {
-            sslContext = org.apache.http.ssl.SSLContexts.custom()
-                    .loadTrustMaterial(null, acceptingTrustStrategy)
-                    .build();
-        } catch (Exception ex) {
-        }
+	private HttpComponentsClientHttpRequestFactory getAllCertsTrustingRequestFactory() {
+		TrustStrategy acceptingTrustStrategy = (X509Certificate[] chain, String authType) -> true;
 
-        SSLConnectionSocketFactory csf = new SSLConnectionSocketFactory(sslContext);
-        CloseableHttpClient httpClient = HttpClients.custom()
-                .setSSLSocketFactory(csf)
-                .build();
+		SSLContext sslContext = null;
+		try {
+			sslContext = org.apache.http.ssl.SSLContexts.custom().loadTrustMaterial(null, acceptingTrustStrategy)
+					.build();
+		} catch (Exception ex) {
+		}
 
-        HttpComponentsClientHttpRequestFactory requestFactory =
-                new HttpComponentsClientHttpRequestFactory();
+		SSLConnectionSocketFactory csf = new SSLConnectionSocketFactory(sslContext);
+		CloseableHttpClient httpClient = HttpClients.custom().setSSLSocketFactory(csf).build();
 
-        requestFactory.setHttpClient(httpClient);
-        return requestFactory;
-    }
+		HttpComponentsClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory();
 
-    public HttpHeaders getHeaders() {
-        var headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.set("Accept-Crs", "EPSG:4326");
-        headers.set("Content-Crs", "EPSG:4326");
-        headers.set("Authorization", "Bearer " + jwtService.getJWT());
+		requestFactory.setHttpClient(httpClient);
+		return requestFactory;
+	}
 
-        return headers;
-    }
+	public HttpHeaders getHeaders() {
+		var headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		headers.set("Accept-Crs", "EPSG:4326");
+		headers.set("Content-Crs", "EPSG:4326");
+		headers.set("Authorization", "Bearer " + this.jwtService.getJWT());
+		log.debug("headers:" + headers);
+
+		return headers;
+	}
 }
