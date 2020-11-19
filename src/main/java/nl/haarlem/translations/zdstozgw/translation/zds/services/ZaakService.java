@@ -235,8 +235,13 @@ public class ZaakService {
 		}
 
 		ZgwEnkelvoudigInformatieObject zgwEnkelvoudigInformatieObject = this.modelMapper.map(zdsInformatieObject, ZgwEnkelvoudigInformatieObject.class);
-		zgwEnkelvoudigInformatieObject.informatieobjecttype = zgwInformatieObjectType.url;
+		zgwEnkelvoudigInformatieObject.informatieobjecttype = zgwInformatieObjectType.url;		
 		zgwEnkelvoudigInformatieObject.bronorganisatie = rsin;
+		// TODO: somehow not handled by the ModelMapperConfig::convertStufDateToZgwDate()
+		if(zgwEnkelvoudigInformatieObject.verzenddatum != null && zgwEnkelvoudigInformatieObject.verzenddatum.length() == 0) {
+			zgwEnkelvoudigInformatieObject.verzenddatum = null;
+		}
+		
 		zgwEnkelvoudigInformatieObject = this.zgwClient.addZaakDocument(zgwEnkelvoudigInformatieObject);
 		ZgwZaak zgwZaak = this.zgwClient
 				.getZaakByIdentificatie(zdsInformatieObject.isRelevantVoor.gerelateerde.identificatie);
