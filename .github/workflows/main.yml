@@ -25,5 +25,10 @@ jobs:
         key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
         restore-keys: ${{ runner.os }}-m2      
 
+    - name: Setup timezone    
+      uses: zcong1993/setup-timezone@master
+      with:
+        timezone: Europe/Amsterdam
+
     - name: Build project with Maven
       run: mvn -B package --file pom.xml
