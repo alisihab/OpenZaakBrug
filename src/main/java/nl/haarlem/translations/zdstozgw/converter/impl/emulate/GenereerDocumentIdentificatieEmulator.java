@@ -37,13 +37,15 @@ public class GenereerDocumentIdentificatieEmulator extends Converter {
 		var identificatie = Long.parseLong(idparam.getParameterValue()) + 1;
 		idparam.setParameterValue(Long.toString(identificatie));
 		repository.save(idparam);
-
+		var did = prefixparam.getParameterValue() + identificatie;
+		this.context.setKenmerk("documentidentificatie:" + did);
+		
 		var di02 = (ZdsGenereerDocumentIdentificatieDi02) this.zdsDocument;
 		var du02 = new ZdsGenereerDocumentIdentificatieDu02(di02.stuurgegevens, this.context.getReferentienummer());
 		du02.document = new ZdsZaakDocument();
 		du02.document.functie = "entiteit";
-		du02.document.identificatie = prefixparam.getParameterValue() + identificatie;
-
+		du02.document.identificatie = did;
+				
 		var response = XmlUtils.getSOAPMessageFromObject(du02);
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}

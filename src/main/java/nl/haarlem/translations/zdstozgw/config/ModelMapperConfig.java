@@ -94,12 +94,14 @@ public class ModelMapperConfig {
 		addZgwZaakPutToZdsZaakTypeMapping(modelMapper);
 
 		addZgwBetrokkeneIdentificatieToNatuurlijkPersoonTypeMapping(modelMapper);
+		addZgwAdresToZdsAdresTypeMapping(modelMapper);
 		addZgwEnkelvoudigInformatieObjectToZaakDocumentLinkTypeMapping(modelMapper);
 		addZgwEnkelvoudigInformatieObjectToZdsZaakDocumentInhoudTypeMapping(modelMapper);
 		
 		addZdsZaakDocumentInhoudToZgwEnkelvoudigInformatieObjectTypeMapping(modelMapper);
 		
 		addZdsNatuurlijkPersoonToZgwBetrokkeneIdentificatieTypeMapping(modelMapper);
+		addZdsAdresToZgwAdresTypeMapping(modelMapper);		
 		addZdsZaakDocumentToZgwEnkelvoudigInformatieObjectTypeMapping(modelMapper);
 		addZdsZaakDocumentRelevantToZgwEnkelvoudigInformatieObjectTypeMapping(modelMapper);
 		
@@ -108,6 +110,14 @@ public class ModelMapperConfig {
 		modelMapper.addConverter(convertZgwRolToZdsRol());
 
 		return modelMapper;
+	}
+
+	private void addZdsAdresToZgwAdresTypeMapping(ModelMapper modelMapper) {
+		modelMapper.typeMap(ZdsAdres.class, ZgwAdres.class);		
+	}
+
+	private void addZgwAdresToZdsAdresTypeMapping(ModelMapper modelMapper) {
+		modelMapper.typeMap(ZgwAdres.class, ZdsAdres.class);
 	}
 
 	private void addZgwBetrokkeneIdentificatieToNatuurlijkPersoonTypeMapping(ModelMapper modelMapper) {
