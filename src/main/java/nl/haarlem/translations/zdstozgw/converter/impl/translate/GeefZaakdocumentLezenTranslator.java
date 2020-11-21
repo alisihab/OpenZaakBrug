@@ -34,6 +34,7 @@ public class GeefZaakdocumentLezenTranslator extends Converter {
 	public ResponseEntity<?> execute() throws ResponseStatusException {
 		var zdsEdcLv01 = (ZdsEdcLv01) this.getZdsDocument();
 		var documentIdentificatie = zdsEdcLv01.gelijk.identificatie;
+		this.context.setKenmerk("documentidentificatie:" + documentIdentificatie);
 		ZdsZaakDocumentInhoud document = this.getZaakService().getZaakDocumentLezen(documentIdentificatie);
 		var edcLa01 = new ZdsEdcLa01GeefZaakdocumentLezen(zdsEdcLv01.stuurgegevens, this.context.getReferentienummer());
 		edcLa01.antwoord = new ZdsZaakDocumentAntwoord();

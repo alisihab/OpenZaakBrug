@@ -17,7 +17,8 @@ public class RequestResponseCycle {
 	@GeneratedValue
 	private long id;
 	private String referentienummer;
-
+	private String kenmerk;
+	
 	private String converterImplementation;
 	private String converterTemplate;
 
