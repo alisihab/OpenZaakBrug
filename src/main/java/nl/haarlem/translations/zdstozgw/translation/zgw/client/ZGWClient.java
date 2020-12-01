@@ -408,7 +408,11 @@ public class ZGWClient {
 	public ZgwZaakInformatieObject getZgwZaakInformatieObjectByEnkelvoudigInformatieObjectUrl(String url) {
 		Map<String, String> parameters = new HashMap();
 		parameters.put("informatieobject", url);
-		return this.getZgwZaakInformatieObjects(parameters).get(0);
+		var zaakinformatieobjecten = this.getZgwZaakInformatieObjects(parameters);
+		if(zaakinformatieobjecten.size() == 0) {
+			throw new ConverterException("Geen zaakinformatieobject gevonden voor de url: '" + url + "'");
+		}
+		return zaakinformatieobjecten.get(0);
 	}
 
 	// TODO: we really need a zaakstatus-type-identificatie in openzaak
