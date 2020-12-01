@@ -4,9 +4,7 @@
 
 [![codecov](https://codecov.io/gh/Sudwest-Fryslan/OpenZaakBrug/branch/master/graph/badge.svg)](https://codecov.io/gh/Sudwest-Fryslan/OpenZaakBrug) codecov.io
 
-Deze applicatie is een proof-of-concept van een service die een vertaling kan doen van StUF-ZDS Soap-berichten naar de corresponderende ZGW API-calls. 
-Met deze proof-of-concept kan aantoond worden welke functionaliteiten er nodig zijn door gemeente, maar ook aan te tonen dat het ook daadwerkelijk mogelijk is.
-Deze implemenatie kan als voorbeeld dienen voor een software-leveranier, om zo uiteindelijk de gemeenten deze functionaliteiten te kunnen aanbieden 
+Niet meer investeren in de oude-zds-koppelingen van het zaakgericht werken, maar  zo snel mogelijk de nieuwe zaakgericht werken-api’s gebruiken. Daarom wil team OpenZaakBrug het nieuwe zaaksysteem met deze oude-zds-standaard aanbieden zodat alles blijft draaien. Daarmee kunnen alle nieuwe applicaties via deze nieuwe standaard aansluiten en krijgen de leveranciers van de bestaande applicaties de tijd om de ZGW koppeling in te bouwen.
 
 ## Over OpenZaakBrug
 De API-standaarden voor zaakgericht werken stellen gemeenten in staat om de informatievoorziening rondom zaakgericht werken in te richten volgens de informatiekundige visie Common Ground. Hiermee zetten ze een eerste stap in de richting van een modernisering van het ICT-landschap. Dit helpt bij het (ont)koppelen van processystemen en de opslagcomponenten waar documenten en overige informatie in zijn opgeslagen.
