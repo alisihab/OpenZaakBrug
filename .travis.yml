@@ -18,6 +18,7 @@ before_script:
 
 script:
   - mvn install -Dmaven.javadoc.skip=true -B -V
+  - jar -xvf ./target/zds-to-zgw.jar
   - docker-compose up --build
   - curl http://localhost:8080
   - docker-compose down
