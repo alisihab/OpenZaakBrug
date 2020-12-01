@@ -125,7 +125,7 @@
 			"translation": "Translate ZDS 1.1 Generic geefZaakdocumentbewerken_Di02",
 			"path": "translate/generic/zds/VrijBericht",
 			"soapaction": "http://www.egem.nl/StUF/sector/zkn/0310/geefZaakdocumentbewerken_Di02",
-			"implementation": "nl.haarlem.translations.zdstozgw.converter.impl.NotImplementedConverter",
+			"implementation": "nl.haarlem.translations.zdstozgw.converter.impl.translate.GeefZaakdocumentBewerkenTranslator",
 			"legacyservice": "",
 			"template": ""			
 		},
@@ -133,7 +133,7 @@
 			"translation": "Translate ZDS 1.1 Generic updateZaakdocument_Di02",
 			"path": "translate/generic/zds/VrijBericht",
 			"soapaction": "http://www.egem.nl/StUF/sector/zkn/0310/updateZaakdocument_Di02",
-			"implementation": "nl.haarlem.translations.zdstozgw.converter.impl.NotImplementedConverter",
+			"implementation": "nl.haarlem.translations.zdstozgw.converter.impl.translate.UpdateZaakdocumentTranslator",
 			"legacyservice": "",
 			"template": ""			
 		},
@@ -141,7 +141,7 @@
 			"translation": "Translate ZDS 1.1 Generic cancelCheckout_Di02",
 			"path": "translate/generic/zds/VrijBericht",
 			"soapaction": "http://www.egem.nl/StUF/sector/zkn/0310/cancelCheckout_Di02",
-			"implementation": "nl.haarlem.translations.zdstozgw.converter.impl.NotImplementedConverter",
+			"implementation": "nl.haarlem.translations.zdstozgw.converter.impl.translate.CancelCheckoutTranslator",
 			"legacyservice": "",
 			"template": ""			
 		},
@@ -335,7 +335,7 @@
 			"translation": "Replicate ZDS 1.1 Generic geefZaakdocumentbewerken_Di02",
 			"path": "replicate/generic/zds/VrijBericht",
 			"soapaction": "http://www.egem.nl/StUF/sector/zkn/0310/geefZaakdocumentbewerken_Di02",
-			"implementation": "nl.haarlem.translations.zdstozgw.converter.impl.NotImplementedConverter",
+			"implementation": "nl.haarlem.translations.zdstozgw.converter.impl.replicate.GeefZaakDocumentBewerkenReplicator",
 			"legacyservice": "http://localhost:8181/zds/VrijBericht",
 			"template": ""			
 		},
@@ -343,7 +343,7 @@
 			"translation": "Replicate ZDS 1.1 Generic updateZaakdocument_Di02",
 			"path": "replicate/generic/zds/VrijBericht",
 			"soapaction": "http://www.egem.nl/StUF/sector/zkn/0310/updateZaakdocument_Di02",
-			"implementation": "nl.haarlem.translations.zdstozgw.converter.impl.NotImplementedConverter",
+			"implementation": "nl.haarlem.translations.zdstozgw.converter.impl.replicate.UpdateZaakdocumentReplicator",
 			"legacyservice": "http://localhost:8181/zds/VrijBericht",
 			"template": ""			
 		},
@@ -351,7 +351,7 @@
 			"translation": "Replicate ZDS 1.1 Generic cancelCheckout_Di02",
 			"path": "translate/generic/zds/VrijBericht",
 			"soapaction": "http://www.egem.nl/StUF/sector/zkn/0310/cancelCheckout_Di02",
-			"implementation": "nl.haarlem.translations.zdstozgw.converter.impl.NotImplementedConverter",
+			"implementation": "nl.haarlem.translations.zdstozgw.converter.impl.replicate.CancelCheckoutReplicator",
 			"legacyservice": "http://localhost:8181/zds/VrijBericht",
 			"template": ""			
 		}			
