@@ -20,5 +20,5 @@ script:
   - docker-compose up --build
   - curl http://localhost:8080
   - docker-compose down
-  - ./docker_push.sh
+  - ./dockerPush.sh
 
