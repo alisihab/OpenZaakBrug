@@ -1,5 +1,6 @@
 package nl.haarlem.translations.zdstozgw.requesthandler.impl.logging;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -18,9 +19,9 @@ public class ZdsRequestResponseCycle {
 	private String zdsMethod;
 	private String zdsUrl;
 	private String zdsSoapAction;
-	@Lob
+	@Column(columnDefinition="TEXT")
 	private String zdsRequestBody;
 	private int zdsResponseCode;
-	@Lob
+	@Column(columnDefinition="TEXT")
 	private String zdsResponseBody;
 }

@@ -40,6 +40,7 @@ public class LoggingRequestHandler extends RequestHandler {
 		LocalDateTime start = LocalDateTime.now();
 		RequestResponseCycle session = new RequestResponseCycle().setTimestamp(start)
 				.setReferentienummer(this.getConverter().getContext().getReferentienummer())
+				.setKenmerk(this.getConverter().getContext().getKenmerk())
 				.setClientUrl(this.getConverter().getContext().getUrl())
 				.setClientSoapAction(this.getConverter().getContext().getSoapAction())
 				.setClientRequestBody(this.getConverter().getContext().getRequestBody())
@@ -50,6 +51,7 @@ public class LoggingRequestHandler extends RequestHandler {
 		this.converter.load();
 		try {
 			var response = this.converter.execute();
+			session.setKenmerk(this.getConverter().getContext().getKenmerk());
 			session.setClientResponseBody(response.getBody().toString());
 			session.setClientResponseCode(response.getStatusCodeValue());
 			session.setDurationInMilliseconds(Duration.between(start, LocalDateTime.now()).toMillis());
@@ -64,6 +66,7 @@ public class LoggingRequestHandler extends RequestHandler {
 					fo03);
 			var response = new ResponseEntity<>(responseBody, HttpStatus.INTERNAL_SERVER_ERROR);
 			// log this error response
+			session.setKenmerk(this.getConverter().getContext().getKenmerk());
 			session.setClientResponseBody(response.getBody().toString());
 			session.setClientResponseCode(response.getStatusCodeValue());
 			session.setDurationInMilliseconds(Duration.between(start, LocalDateTime.now()).toMillis());

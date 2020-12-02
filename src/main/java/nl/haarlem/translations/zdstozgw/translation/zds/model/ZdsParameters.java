@@ -11,7 +11,6 @@ import lombok.Data;
 @Data
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ZdsParameters extends ZdsObject {
-
 	@XmlElement(namespace = STUF, nillable = true)
 	public String indicatorVervolgvraag;
 
