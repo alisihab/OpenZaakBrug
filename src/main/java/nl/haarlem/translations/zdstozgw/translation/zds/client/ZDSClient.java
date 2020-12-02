@@ -7,8 +7,12 @@ import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.methods.StringRequestEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -27,9 +31,8 @@ public class ZDSClient {
 
 	private ZdsRequestResponseCycleRepository repository;
 
-	public ZDSClient() {
-		this.repository = SpringContext.getBean(ZdsRequestResponseCycleRepository.class);
-
+	public ZDSClient(ZdsRequestResponseCycleRepository zdsRequestResponseCycleRepository) {
+		this.repository = zdsRequestResponseCycleRepository;
 	}
 
 	public ResponseEntity<?> post(String zdsUrl, String zdsSoapAction, ZdsObject zdsRequest) {
@@ -57,12 +60,12 @@ public class ZDSClient {
 			int responsecode = httpclient.executeMethod(method);
 			String zdsResponseBody = method.getResponseBodyAsString();
 			zdsRequestResponseCycle.setZdsResponseCode(responsecode);
-			zdsRequestResponseCycle.setZdsResponseBody(zdsResponseBody);			
+			zdsRequestResponseCycle.setZdsResponseBody(zdsResponseBody);
 			this.repository.save(zdsRequestResponseCycle);
 
 			if(responsecode != 200) {
 				throw new ConverterException("Error: responsecode #" + responsecode + " (not 200) while requesting url:" + zdsUrl + " with soapaction: " + zdsSoapAction);
-			}			
+			}
 			return new ResponseEntity<>(zdsResponseBody, HttpStatus.valueOf(responsecode));
 		} catch (IOException ce) {
 			throw new ConverterException(
