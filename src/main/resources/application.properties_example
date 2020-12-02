@@ -55,3 +55,9 @@ spring.h2.console.enabled=true
 spring.h2.console.path=/h2-console
 spring.h2.console.settings.trace=true
 spring.h2.console.settings.web-allow-others=true
+
+ladybug.maxCheckpoints=2500
+ladybug.maxMemoryUsage=100000000
+ladybug.maxMessageLength=1000000
+ladybug.regexFilter=.*
+ladybug.reportTransformation=transform-ladybug-report.xslt
