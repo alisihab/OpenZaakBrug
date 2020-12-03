@@ -28,7 +28,7 @@
 
 	<bean name="testTool" class="nl.nn.testtool.TestTool" autowire="byName">
 		<property name="configName" value="OpenZaakBrug"/>
-		<property name="configVersion" value="${version}"/>
+		<property name="configVersion" value="${version:?.?.?}"/>
 		<property name="maxCheckpoints" value="${ladybug.maxCheckpoints}"/>
 		<property name="maxMemoryUsage" value="${ladybug.maxMemoryUsage}"/>
 		<property name="maxMessageLength" value="${ladybug.maxMessageLength}"/>
