@@ -266,6 +266,7 @@ public class ZaakService {
 		if(zgwEnkelvoudigInformatieObject.verzenddatum != null && zgwEnkelvoudigInformatieObject.verzenddatum.length() == 0) {
 			zgwEnkelvoudigInformatieObject.verzenddatum = null;
 		}
+		zgwEnkelvoudigInformatieObject.indicatieGebruiksrecht = "false";
 		
 		zgwEnkelvoudigInformatieObject = this.zgwClient.addZaakDocument(zgwEnkelvoudigInformatieObject);
 		ZgwZaak zgwZaak = this.zgwClient
