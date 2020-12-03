@@ -47,7 +47,7 @@ public class ConverterFactoryTests {
         doReturn(translation).when(configService).getTranslationByPathAndSoapAction(any(), any());
 
         //act
-        var context = new RequestHandlerContext("", soapAction, content);
+        var context = new RequestHandlerContext("", "", "", "", "", soapAction, content, null);
         Converter converter = converterFactory.getConverter(context);
 
         //assert

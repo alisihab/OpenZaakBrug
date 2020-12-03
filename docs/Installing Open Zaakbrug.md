@@ -27,16 +27,38 @@ $ mv src/main/resources/application.properties_example src/main/resources/applic
 $ mv src/main/resources/config.json_example src/main/resources/config.json
 ```
 
-Instellen van de applicatie, application.properties
+### application.properties
 
+Pas het openzaak endpoint aan:
+
+- openzaak.baseUrl = https://openzaak.local
 - openzaak.jwt.secret=test
 - openzaak.jwt.issuer=test
-- openzaak.baseUrl = https://openzaak.local
+
+Wanneer nodig, pas de database aan naar bijvoorbeeld postgresql:
+
+- spring.datasource.driverClassName=org.postgresql.Driver
+- spring.jpa.database-platform=org.hibernate.dialect.PostgreSQLDialect
+- spring.datasource.url= jdbc:postgresql://localhost/openzaakbrug
+- spring.datasource.username=openzaakbrug
+- spring.datasource.password=openzaakbrug
+
+Bekijk de configuratie documentatie [Configuratie.md](Configuratie.md)
+
+De default h2 database kan benaderd worden op [http://localhost:8080/h2-console/login.jsp](http://localhost:8080/h2-console/login.jsp) (zie ook het onderstaande scherm)
+
+![openzaakbrug-h2](media/openzaakbrug-h2.png)
+
+### config.json
 
 Instellen van de applicatie, config.json
 
-- bekijk de documentatie Configuratie.md
-- De endpoints goedzetten naar de juiste
+- Voor een werkende replication / proxy alle waarden aan voor "legacyservice" in het document naar het je bestaande legacy zaaksysteem
+- Voor werkende replication alle waarden aan voor "url" in het document naar het je bestaande legacy zaaksysteem
+
+Bekijk de configuratie documentatie [Configuratie.md](Configuratie.md)
+
+## Running the service
 
 Draaien van de service
 
@@ -61,14 +83,6 @@ Na het draaien van de commando&#39;s zijn de translate services bereikbaar op:
 
 Voor meer informatie, zie ook in Workings of Replication.md voor de overige urls
 
-### Benaderen H2 database
-
-De H2 (database) console is te bereiken op:
-
-[http://localhost:8080/h2-console/login.jsp](http://localhost:8080/h2-console/login.jsp)
-
-![openzaakbrug-h2](media/openzaakbrug-h2.png)
-
 ### Gebruik vanuit een backoffice applicatie
 
 Hierna is het van belang om de client-applicatie aan te passen, in bijvoorbeeld Suite4SociaalDomein kan de functioneelbeheerder dit zelf doen in het volgende scherm:
@@ -79,23 +93,16 @@ Voor de basisurl zal dan http://%linuxserver%:8080/ gebruikt moeten worden
 
 Binnen SoapUi kunnen dan de berichten verstuurd worden naar de volgende endpoints van de OpenZaakBrug. Een voorbeeld project valt te vinden in: examples\soap\Open-Zaakbrug-soapui-project.xml
 
-### Vervolg actie vervangen van de database
+### Bekijken berichten verkeer
 
-Instellen van de applicatie, application.properties, het volgende blok aanpassen met instructies zoals deze te vinden zijn voor &quot;spring boot properties jpa&quot; met de betreffende database
+Om het berichten verkeer te bekijken zijn er 2 mogelijkheden:
 
-(bvb h2/postgresqsl/mysql/oracle/mssql/..)
+- Via de database, waarin al het berichtenverkeer wordt gelogd (kan worden) naar de tabellen, hierbij representeert het veld: referentienummer één vraag
+  - - request_response_cycle : de vragen en antwoorden op de Open Zaakbrug service
+    - zds_request_response_cycle : de vragen die gesteld worden aan het legacy zaaksysteem, met de bijbehorende antwoorden
+    - zgw_request_response_cycle : de vragen die gesteld worden aan openzaak, met de bijbehorende antwoorden
 
-### Vervolg actie aanpassen modus naar koppeling OpenZaak
-
-In de application.properties instellen waar openzaak zich bevind
-
-- openzaak.jwt.secret=test
-- openzaak.jwt.issuer=test
-- openzaak.baseUrl = https://openzaak.local
-
-
-
-------------------------------------------
+- Via de ladybug omgeving, hiermee een bepaalde sequence van berichten kan worden opgenomen en later worden afgespeeld. Deze is bereikbaar via de url: http://localhost:8080/debug/ .  Meer informatie over ladybug valt te vinden op: https://frank-manual.readthedocs.io/en/latest/testing/ladybug/capture/capture.html
 
 # rest hieronder moet gecontroleerd worden
 

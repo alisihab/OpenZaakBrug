@@ -161,7 +161,7 @@ public class ZaakService {
 					if(zgwRol.betrokkeneIdentificatie.verblijfsadres.aoaIdentificatie == null || zgwRol.betrokkeneIdentificatie.verblijfsadres.aoaIdentificatie.length() == 0) {
 						// https://github.com/Sudwest-Fryslan/OpenZaakBrug/issues/55
 						// 		Retrieve aoa-identification from BAG
-						zgwRol.betrokkeneIdentificatie.verblijfsadres.aoaIdentificatie = "1900010000314239";
+						zgwRol.betrokkeneIdentificatie.verblijfsadres.aoaIdentificatie = "1900200000314240";
 					}
 					zgwRol.betrokkeneIdentificatie.verblijfsadres.wplWoonplaatsNaam = zdsRol.gerelateerde.natuurlijkPersoon.verblijfsadres.woonplaatsnaam;
 					zgwRol.betrokkeneIdentificatie.verblijfsadres.gorOpenbareRuimteNaam = zdsRol.gerelateerde.natuurlijkPersoon.verblijfsadres.straatnaam;
