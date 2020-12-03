@@ -27,12 +27,12 @@ Hierbij hebben we de volgende uitgangspunten:
 
 ## Technische informatie
 - informatie over de installatie kijk in : [Installing Open Zaakbrug.md](docs/Installing Open Zaakbrug.md)  
-- informatie over het aanroepen van der service en het vertalen en repliceren kijk : [Workings of Replication.md](docs/Workings of Replication.md) 
+- informatie over het aanroepen van der service en het vertalen en repliceren kijk : [Workings of Replication.md](docs/Workings of Replication.md)
 
 ## Status
 Op dit moment wordt de Open Zaakbrug getest door de functioneelbeheerders van één applicatie, hierbij wordt gekeken of de applicatie zich gedraagd zoals het voorheen werkte met het legacy (ZDS) zaaksysteem. Daarnaast kan natuurlijk ook de https://github.com/Sudwest-Fryslan/DeSleepTool gebruikt worden om hiermee documenten aan bestaande zaken in een ZGW server (zoals OpenZaak) toe gevoegen
 
 Onderdelen en de stand van zaken:
 - **Proxy** : Verstuurd de berichten door naar het oude, legacy zaaksysteem. Status = getest door functioneelbeheer en werkt
-- **Translate** : Vertaald de ZDS berichten naar ZGW en geeft weer netjes een antwoord in ZDS. Status = draait in de test-omgeving en wordt getest door functioneelbeheer 
+- **Translate** : Vertaald de ZDS berichten naar ZGW en geeft weer netjes een antwoord in ZDS. Status = draait in de test-omgeving en wordt getest door functioneelbeheer
 - **Replicate**:  Combinatie van de bovenste 2, de berichten worden vertaald EN doorgestuurd naar het nieuwe systeem. Wanneer er verwezen wordt naar een zaakid /documentid welke niet bestaat in openzaak, dan wordt deze informatie uit het oude systeem gecopieerd naar openzaak
