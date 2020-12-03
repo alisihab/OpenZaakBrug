@@ -3,35 +3,17 @@ package nl.haarlem.translations.zdstozgw.converter.impl.replicate;
 import java.lang.invoke.MethodHandles;
 import java.util.List;
 
-import nl.haarlem.translations.zdstozgw.config.SpringContext;
-
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.DependsOn;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import nl.haarlem.translations.zdstozgw.config.SpringContext;
 import nl.haarlem.translations.zdstozgw.converter.Converter;
-import nl.haarlem.translations.zdstozgw.converter.impl.replicate.model.ZdsReplicateGeefLijstZaakdocumentenLv01;
-import nl.haarlem.translations.zdstozgw.converter.impl.replicate.model.ZdsReplicateGeefZaakdetailsLv01;
-import nl.haarlem.translations.zdstozgw.converter.impl.replicate.model.ZdsReplicateGeefZaakdocumentLezenLv01;
+import nl.haarlem.translations.zdstozgw.converter.impl.replicate.model.*;
 import nl.haarlem.translations.zdstozgw.translation.zds.client.ZDSClient;
-import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsEdcLa01GeefZaakdocumentLezen;
-import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsGerelateerde;
-import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsHeeftRelevant;
-import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsIsRelevantVoor;
-import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsParameters;
-import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsParametersMetSortering;
-import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsScope;
-import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsScopeGerelateerde;
-import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsScopeHeeftRelevant;
-import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsScopeObject;
-import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsZaak;
-import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsZaakDocument;
-import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsZakLa01GeefZaakDetails;
-import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsZakLa01LijstZaakdocumenten;
+import nl.haarlem.translations.zdstozgw.translation.zds.model.*;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwEnkelvoudigInformatieObject;
 import nl.haarlem.translations.zdstozgw.utils.XmlUtils;
 
