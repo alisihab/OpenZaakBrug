@@ -647,4 +647,19 @@ public class ZaakService {
 			return null;
 		}
 	}
+
+	public Object CheckOutZaakDocument(String documentIdentificatie) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Object CancelCheckOutZaakDocument(String documentIdentificatie) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public void UpdateZaakDocument(ZdsZaakDocumentInhoud zdsInformatieObject) {
+		// TODO Auto-generated method stub
+		
+	}
 }
