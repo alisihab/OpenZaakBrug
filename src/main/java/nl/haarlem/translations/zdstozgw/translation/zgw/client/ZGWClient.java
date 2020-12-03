@@ -21,6 +21,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import nl.haarlem.translations.zdstozgw.converter.ConverterException;
+import nl.haarlem.translations.zdstozgw.debug.Debugger;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.QueryResult;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwEnkelvoudigInformatieObject;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwInformatieObjectType;
@@ -37,6 +38,8 @@ import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwZaakType;
 public class ZGWClient {
 
 	private static final Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+
+	private static final Debugger debug = Debugger.getDebugger(MethodHandles.lookup().lookupClass());
 
 	@Value("${openzaak.baseUrl}")
 	private String baseUrl;
@@ -72,10 +75,15 @@ public class ZGWClient {
 	RestTemplateService restTemplateService;
 
 	private String post(String url, String json) {
+		String debugName = "ZGWClient POST";
+		json = debug.startpoint(debugName, json);
+		url = debug.inputpoint("url", url);
 		log.debug("POST: " + url + ", json: " + json);
 		HttpEntity<String> entity = new HttpEntity<String>(json, this.restTemplateService.getHeaders());
 		try {
-			var zgwResponse = this.restTemplateService.getRestTemplate().postForObject(url, entity, String.class);
+			String finalUrl = url;
+			String zgwResponse = (String) debug.endpoint(debugName,
+					() -> this.restTemplateService.getRestTemplate().postForObject(finalUrl, entity, String.class));
 			log.debug("POST response: " + zgwResponse);
 			return zgwResponse;
 		} catch (HttpStatusCodeException hsce) {
@@ -96,12 +104,23 @@ public class ZGWClient {
 		if (parameters != null) {
 			url = getUrlWithParameters(url, parameters);
 		}
+		String debugName = "ZGWClient GET";
+		debug.startpoint(debugName);
+		url = debug.inputpoint("url", url);
+		if (parameters != null) {
+			for (String key : parameters.keySet()) {
+				parameters.put(key, debug.inputpoint("Parameter " + key, parameters.get(key)));
+			}
+		}
 		log.debug("GET: " + url);
 		HttpEntity entity = new HttpEntity(this.restTemplateService.getHeaders());
 		try {
-			ResponseEntity<String> response = this.restTemplateService.getRestTemplate().exchange(url, HttpMethod.GET,
-					entity, String.class);
-			var zgwResponse = response.getBody();
+			String finalUrl = url;
+			String zgwResponse = (String) debug.endpoint(debugName, () -> {
+				ResponseEntity<String> response = this.restTemplateService.getRestTemplate().exchange(finalUrl,
+						HttpMethod.GET, entity, String.class);
+				return response.getBody();
+			});
 			log.debug("GET response: " + zgwResponse);
 			return zgwResponse;
 		} catch (HttpStatusCodeException hsce) {
@@ -118,12 +137,18 @@ public class ZGWClient {
 	}
 
 	private String delete(String url) {
+		String debugName = "ZGWClient DELETE";
+		debug.startpoint(debugName);
+		url = debug.inputpoint("url", url);
 		log.debug("DELETE: " + url);
 		HttpEntity entity = new HttpEntity(this.restTemplateService.getHeaders());
 		try {
-			ResponseEntity<String> response = this.restTemplateService.getRestTemplate().exchange(url,
-					HttpMethod.DELETE, entity, String.class);
-			var zgwResponse = response.getBody();
+			String finalUrl = url;
+			String zgwResponse = (String) debug.endpoint(debugName, () -> {
+				ResponseEntity<String> response = this.restTemplateService.getRestTemplate().exchange(finalUrl,
+						HttpMethod.DELETE, entity, String.class);
+				return response.getBody();
+			});
 			log.debug("DELETE response: " + zgwResponse);
 			return zgwResponse;
 		} catch (HttpStatusCodeException hsce) {
@@ -140,12 +165,18 @@ public class ZGWClient {
 	}
 
 	private String put(String url, String json) {
+		String debugName = "ZGWClient PUT";
+		json = debug.startpoint(debugName, json);
+		url = debug.inputpoint("url", url);
 		log.debug("PUT: " + url + ", json: " + json);
 		HttpEntity<String> entity = new HttpEntity<String>(json, this.restTemplateService.getHeaders());
 		try {
-			ResponseEntity<String> response = this.restTemplateService.getRestTemplate().exchange(url, HttpMethod.PUT,
-					entity, String.class);
-			var zgwResponse = response.getBody();
+			String finalUrl = url;
+			String zgwResponse = (String) debug.endpoint(debugName, () -> {
+				ResponseEntity<String> response = this.restTemplateService.getRestTemplate().exchange(finalUrl,
+						HttpMethod.PUT, entity, String.class);
+				return response.getBody();
+			});
 			log.debug("PUT response: " + zgwResponse);
 			return zgwResponse;
 		} catch (HttpStatusCodeException hsce) {
@@ -200,13 +231,17 @@ public class ZGWClient {
 	}
 
 	public String getBas64Inhoud(String url) {
+		String debugName = "ZGWClient GET(BASE64)";
+		debug.startpoint(debugName);
+		url = debug.inputpoint("url", url);
 		log.debug("GET(BASE64): " + url);
 		HttpEntity entity = new HttpEntity(this.restTemplateService.getHeaders());
 		try {
-			ResponseEntity<byte[]> response = this.restTemplateService.getRestTemplate().exchange(url, HttpMethod.GET,
-					entity, byte[].class);
-
-			byte[] data = response.getBody();
+			String finalUrl = url;
+			byte[] data = (byte[]) debug.endpoint(debugName, () -> {
+				return this.restTemplateService.getRestTemplate()
+						.exchange(finalUrl, HttpMethod.GET, entity, byte[].class).getBody();
+			});
 			log.debug("BASE64 INHOUD DOWNLOADED:" + data.length + " bytes");
 			return java.util.Base64.getEncoder().encodeToString(data);
 
@@ -215,11 +250,11 @@ public class ZGWClient {
 					"\"\n}");
 			var details = "--------------GET:\n" + url + "\n--------------RESPONSE:\n" + response;
 			log.warn("GET(BASE64) naar OpenZaak: " + url + " gaf foutmelding:\n" + details, hsce);
-			throw new ConverterException("GET naar OpenZaak: " + url + " gaf foutmelding:" + hsce.toString(), details,
+			throw new ConverterException("GET(BASE64) naar OpenZaak: " + url + " gaf foutmelding:" + hsce.toString(), details,
 					hsce);
 		} catch (org.springframework.web.client.ResourceAccessException rae) {
 			log.warn("GET(BASE64) naar OpenZaak: " + url + " niet geslaagd", rae);
-			throw new ConverterException("GET naar OpenZaak: " + url + " niet geslaagd", rae);
+			throw new ConverterException("GET(BASE64) naar OpenZaak: " + url + " niet geslaagd", rae);
 		}
 	}
 
