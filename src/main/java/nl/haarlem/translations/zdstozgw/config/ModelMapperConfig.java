@@ -27,6 +27,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import nl.haarlem.translations.zdstozgw.converter.ConverterException;
+import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsAdres;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsGerelateerde;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsHeeft;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsHeeftRelevant;
@@ -37,6 +38,7 @@ import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsRol;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsZaak;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsZaakDocument;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsZaakDocumentInhoud;
+import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwAdres;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwBetrokkeneIdentificatie;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwEnkelvoudigInformatieObject;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwOpschorting;
@@ -92,16 +94,30 @@ public class ModelMapperConfig {
 		addZgwZaakPutToZdsZaakTypeMapping(modelMapper);
 
 		addZgwBetrokkeneIdentificatieToNatuurlijkPersoonTypeMapping(modelMapper);
+		addZgwAdresToZdsAdresTypeMapping(modelMapper);
 		addZgwEnkelvoudigInformatieObjectToZaakDocumentLinkTypeMapping(modelMapper);
 		addZgwEnkelvoudigInformatieObjectToZdsZaakDocumentInhoudTypeMapping(modelMapper);
+		
+		addZdsZaakDocumentInhoudToZgwEnkelvoudigInformatieObjectTypeMapping(modelMapper);
+		
 		addZdsNatuurlijkPersoonToZgwBetrokkeneIdentificatieTypeMapping(modelMapper);
+		addZdsAdresToZgwAdresTypeMapping(modelMapper);		
 		addZdsZaakDocumentToZgwEnkelvoudigInformatieObjectTypeMapping(modelMapper);
 		addZdsZaakDocumentRelevantToZgwEnkelvoudigInformatieObjectTypeMapping(modelMapper);
+		
 		addZgwZaakToGeefZaakDetailsTypeMappingTypeMapping(modelMapper);
 
 		modelMapper.addConverter(convertZgwRolToZdsRol());
 
 		return modelMapper;
+	}
+
+	private void addZdsAdresToZgwAdresTypeMapping(ModelMapper modelMapper) {
+		modelMapper.typeMap(ZdsAdres.class, ZgwAdres.class);		
+	}
+
+	private void addZgwAdresToZdsAdresTypeMapping(ModelMapper modelMapper) {
+		modelMapper.typeMap(ZgwAdres.class, ZdsAdres.class);
 	}
 
 	private void addZgwBetrokkeneIdentificatieToNatuurlijkPersoonTypeMapping(ModelMapper modelMapper) {
@@ -185,6 +201,20 @@ public class ModelMapperConfig {
 						ZdsZaakDocument::setVertrouwelijkAanduiding));
 	}
 
+	public void addZdsZaakDocumentInhoudToZgwEnkelvoudigInformatieObjectTypeMapping(ModelMapper modelMapper) {
+		modelMapper.typeMap(ZdsZaakDocumentInhoud.class, ZgwEnkelvoudigInformatieObject.class)
+//				.includeBase(ZgwEnkelvoudigInformatieObject.class, ZdsZaakDocument.class)
+				.addMappings(mapper -> mapper.using(convertStufDateToZgwDate())
+						.map(ZdsZaakDocument::getCreatiedatum, ZgwEnkelvoudigInformatieObject::setCreatiedatum))
+				.addMappings(mapper -> mapper.using(convertStufDateToZgwDate())
+						.map(ZdsZaakDocument::getOntvangstdatum, ZgwEnkelvoudigInformatieObject::setOntvangstdatum))
+				.addMappings(mapper -> mapper.using(convertStufDateToZgwDate())
+						.map(ZdsZaakDocument::getVerzenddatum, ZgwEnkelvoudigInformatieObject::setVerzenddatum))
+				.addMappings(mapper -> mapper.using(convertToLowerCase()).map(
+						ZdsZaakDocument::getVertrouwelijkAanduiding,
+						ZgwEnkelvoudigInformatieObject::setVertrouwelijkheidaanduiding));
+	}	
+	
 	public void addZdsZaakToZgwZaakTypeMapping(ModelMapper modelMapper) {
 		modelMapper.typeMap(ZdsZaak.class, ZgwZaak.class)
 				.addMappings(mapper -> mapper.using(convertStufDateToZgwDate()).map(ZdsZaak::getStartdatum,
@@ -257,19 +287,12 @@ public class ModelMapperConfig {
 					return null;
 				}
 				var zdsDateFormatter = new SimpleDateFormat("yyyyMMdd");
-				zdsDateFormatter.setTimeZone(TimeZone.getTimeZone("Europe/Amsterdam"));
 				var zgwDateFormatter = new SimpleDateFormat("yyyy-MM-dd");
-				zgwDateFormatter.setTimeZone(TimeZone.getTimeZone("GMT"));
 				try {
 					if (stufDate.contains("-")) {
 						throw new ConverterException("stuf date: " + stufDate + " may not contain the character '-'");
 					}
 					var date = zdsDateFormatter.parse(stufDate);
-					// log.debug("date:" + date);
-					Calendar cal = Calendar.getInstance();
-					cal.setTime(date);
-					cal.add(Calendar.MINUTE, Integer.parseInt(ModelMapperConfig.singleton.timeoffset));
-					date = cal.getTime();
 					var zgwDate = zgwDateFormatter.format(date);
 					log.debug("convertStufDateToZgwDate: " + stufDate + " (amsterdam) --> " + zgwDate
 							+ "(gmt) with offset minutes:" + ModelMapperConfig.singleton.timeoffset  + "(date:" + date + ")");

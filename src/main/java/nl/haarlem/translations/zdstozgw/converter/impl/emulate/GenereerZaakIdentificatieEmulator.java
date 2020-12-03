@@ -37,12 +37,14 @@ public class GenereerZaakIdentificatieEmulator extends Converter {
 		var identificatie = Long.parseLong(idparam.getParameterValue()) + 1;
 		idparam.setParameterValue(Long.toString(identificatie));
 		repository.save(idparam);
-
+		var zid = prefixparam.getParameterValue() + identificatie;
+		this.context.setKenmerk("zaakidentificatie:" + zid);
+		
 		var di02 = (ZdsGenereerZaakIdentificatieDi02) this.zdsDocument;
 		var du02 = new ZdsGenereerZaakIdentificatieDu02(di02.stuurgegevens, this.context.getReferentienummer());
 		du02.zaak = new ZdsZaakIdentificatie();
 		du02.zaak.functie = "entiteit";
-		du02.zaak.identificatie = prefixparam.getParameterValue() + identificatie;
+		du02.zaak.identificatie = zid;
 
 		var response = XmlUtils.getSOAPMessageFromObject(du02);
 		return new ResponseEntity<>(response, HttpStatus.OK);

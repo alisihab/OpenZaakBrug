@@ -14,7 +14,7 @@ import lombok.Data;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ZdsZakLv01 extends ZdsZknDocument {
 	@XmlElement(namespace = ZKN)
-	public ZdsParameters parameters;
+	public ZdsParametersMetSortering parameters;
 
 	@XmlElement(namespace = ZKN)
 	public ZdsZaak gelijk;

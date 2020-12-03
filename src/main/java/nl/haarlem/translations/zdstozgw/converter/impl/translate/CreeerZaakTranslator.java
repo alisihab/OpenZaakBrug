@@ -30,6 +30,7 @@ public class CreeerZaakTranslator extends Converter {
 
 		ZdsZakLk01 zdsZakLk01 = (ZdsZakLk01) this.zdsDocument;
 		ZdsZaak zdsZaak = zdsZakLk01.objects.get(0);
+		this.context.setKenmerk("zaakidentificatie:" + zdsZaak.identificatie);
 		var zgwZaak = this.getZaakService().creeerZaak(rsin, zdsZaak);
 		var bv03 = new ZdsBv03(zdsZakLk01.stuurgegevens, this.context.getReferentienummer());
 		var response = XmlUtils.getSOAPMessageFromObject(bv03);
