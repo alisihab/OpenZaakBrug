@@ -5,11 +5,11 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.request.RequestContextHolder;
 
+import nl.haarlem.translations.zdstozgw.config.SpringContext;
 import nl.haarlem.translations.zdstozgw.controller.SoapController;
 import nl.nn.testtool.Checkpoint;
 import nl.nn.testtool.Report;
@@ -19,20 +19,18 @@ import nl.nn.testtool.run.ReportRunner;
 /**
  * @author Jaco de Groot
  */
-@Configuration
+@Component
 public class Rerunner implements nl.nn.testtool.Rerunner {
 
 	private static final Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
-	private SoapController soapController;
-
-	public Rerunner(@Lazy SoapController soapController) {
-		this.soapController = soapController;
-	}
-
 	@Transactional
 	public String rerun(String correlationId, Report originalReport, SecurityContext securityContext,
 			ReportRunner reportRunner) {
+		// Get bean here instead of specifying the bean in the constructor (with @Lazy) and have it auto wired to
+		// prevent cycle of bean dependencies between bean rerunner and bean testTool that sometimes occurs when running
+		// with java -jar (problem has not been observed with mvn spring-boot:run)
+		SoapController soapController = SpringContext.getBean(SoapController.class);
 		String errorMessage = null;
 		String modus = null;
 		String version = null;
