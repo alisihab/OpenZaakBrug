@@ -41,7 +41,7 @@ public class Rerunner implements nl.nn.testtool.Rerunner {
 		String soapAction = null;
 		String body = null;
 		List<Checkpoint> checkpoints = originalReport.getCheckpoints();
-		if (checkpoints.size() > 6) {
+		if (checkpoints.size() > 5) {
 			if ("modus".equals(checkpoints.get(1).getName())) {
 				modus = checkpoints.get(1).getMessage();
 				if ("version".equals(checkpoints.get(2).getName())) {
@@ -50,8 +50,8 @@ public class Rerunner implements nl.nn.testtool.Rerunner {
 						protocol = checkpoints.get(3).getMessage();
 						if ("endpoint".equals(checkpoints.get(4).getName())) {
 							endpoint = checkpoints.get(4).getMessage();
-							if ("soapAction".equals(checkpoints.get(6).getName())) {
-								soapAction = checkpoints.get(6).getMessage();
+							if ("soapAction".equals(checkpoints.get(5).getName())) {
+								soapAction = checkpoints.get(5).getMessage();
 								body = checkpoints.get(0).getMessage();
 								try {
 									RequestContextHolder.setRequestAttributes(new MockRequestAttributes());
@@ -62,7 +62,7 @@ public class Rerunner implements nl.nn.testtool.Rerunner {
 									log.error(errorMessage, t);
 								}
 							} else {
-								errorMessage = "Checkpoint soapAction not found in original report at position 6";
+								errorMessage = "Checkpoint soapAction not found in original report at position 5";
 							}
 						} else {
 							errorMessage = "Checkpoint endpoint not found in original report at position 4";
