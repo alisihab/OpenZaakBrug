@@ -13,7 +13,6 @@
 		<property name="locations">
 			<list>
 				<value>classpath:application.properties</value>
-				<value>classpath:META-INF/maven/nl.haarlem.translations/zds-to-zgw/pom.properties</value>
 			</list>
 		</property>
 	</bean>
@@ -28,7 +27,7 @@
 
 	<bean name="testTool" class="nl.nn.testtool.TestTool" autowire="byName">
 		<property name="configName" value="OpenZaakBrug"/>
-		<property name="configVersion" value="${version}"/>
+		<property name="configVersion" value="${version:?.?.?}"/>
 		<property name="maxCheckpoints" value="${ladybug.maxCheckpoints}"/>
 		<property name="maxMemoryUsage" value="${ladybug.maxMemoryUsage}"/>
 		<property name="maxMessageLength" value="${ladybug.maxMessageLength}"/>
