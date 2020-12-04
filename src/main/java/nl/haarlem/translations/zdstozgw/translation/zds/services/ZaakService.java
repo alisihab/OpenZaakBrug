@@ -158,7 +158,7 @@ public class ZaakService {
 				if(zdsRol.gerelateerde.natuurlijkPersoon.verblijfsadres != null) {
 					if(zdsRol.gerelateerde.natuurlijkPersoon.verblijfsadres.identificatie == null || zdsRol.gerelateerde.natuurlijkPersoon.verblijfsadres.identificatie.length() == 0) {
 						// https://github.com/Sudwest-Fryslan/OpenZaakBrug/issues/55
-						log.warn("No aoaIdentificatie found for zaak with id: " + createdZaak.identificatie + " with betrokkeneIdentificatie bsn:" + zdsRol.gerelateerde.natuurlijkPersoon.bsn);
+						log.warn("No aoaIdentificatie found for zaak with id: " + createdZaak.identificatie + " in rol: " + typeRolOmschrijving + " for natuurlijkPersoon");
 					}
 					else {
 						zgwRol.betrokkeneIdentificatie.verblijfsadres = this.modelMapper.map(zdsRol.gerelateerde.natuurlijkPersoon.verblijfsadres, ZgwAdres.class);
@@ -562,8 +562,10 @@ public class ZaakService {
 			changeDetector.filterChangesByType(rolChanges, ChangeDetector.ChangeType.DELETED)
 					.forEach((change, changeType) -> {
 						var rolnaam = getRolOmschrijvingGeneriekByRolName(change.getField().getName());
-						log.debug("[CHANGE ROL] Deleted Rol:" + rolnaam);
-						deleteRolFromZgw(rolnaam, zgwZaak);
+						if(rolnaam != null) {						
+							log.info("[CHANGE ROL] Deleted Rol:" + rolnaam);
+							deleteRolFromZgw(rolnaam, zgwZaak);
+						}
 					});
 
 			changeDetector.filterChangesByType(rolChanges, ChangeDetector.ChangeType.CHANGED)
@@ -630,17 +632,20 @@ public class ZaakService {
 			this.zgwClient.actualiseerZaakStatus(zgwStatus);
 
 			// was the final status expected? 
-			if(eindezaak && zgwStatusType.isEindstatus.equals("true")) {
-				log.info("Zaak beëindigd met id:" + zdsWasZaak.identificatie);
+			if(eindezaak) {
+				if(zgwStatusType.isEindstatus.equals("true")) {
+					log.info("Zaak beëindigd met id:" + zdsWasZaak.identificatie);
+				}
+				else { 
+					log.warn("Update of zaakid:" + zdsWasZaak.identificatie + " has resultaat(and eindstatus) but the status is not the final status (Eindstatus = true)");
+				}
 			}
-			else { 
-				log.warn("Update of zaakid:" + zdsWasZaak.identificatie + " has resultaat(and eindstatus) but the status is not the final status (Eindstatus = true)");
-			}
-
 			changed = true;
 		}
 		else {
-			log.warn("Update of zaakid:" + zdsWasZaak.identificatie + " has resultaat(and eindstatus) but the status is not changed to another status (also not to the final status)");
+			if(eindezaak) {
+				log.warn("Update of zaakid:" + zdsWasZaak.identificatie + " has resultaat(and eindstatus) but the status is not changed to another status (also not to the final status)");
+			}
 		}
 
 		if (!changed) {
