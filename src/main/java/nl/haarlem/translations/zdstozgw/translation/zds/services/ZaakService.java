@@ -156,20 +156,21 @@ public class ZaakService {
 				// https://github.com/Sudwest-Fryslan/OpenZaakBrug/issues/54
 				// 		Move code to the ModelMapperConfig.java
 				if(zdsRol.gerelateerde.natuurlijkPersoon.verblijfsadres != null) {
-					zgwRol.betrokkeneIdentificatie.verblijfsadres = new ZgwAdres();
-					zgwRol.betrokkeneIdentificatie.verblijfsadres.aoaIdentificatie = zdsRol.gerelateerde.natuurlijkPersoon.verblijfsadres.identificatie;
 					if(zgwRol.betrokkeneIdentificatie.verblijfsadres.aoaIdentificatie == null || zgwRol.betrokkeneIdentificatie.verblijfsadres.aoaIdentificatie.length() == 0) {
 						// https://github.com/Sudwest-Fryslan/OpenZaakBrug/issues/55
-						// 		Retrieve aoa-identification from BAG
-						zgwRol.betrokkeneIdentificatie.verblijfsadres.aoaIdentificatie = "1900200000314240";
+						log.warn("No aoaIdentificatie found for zaak with id: " + createdZaak.identificatie + " with betrokkeneIdentificatie bsn:" + zdsRol.gerelateerde.natuurlijkPersoon.bsn);
 					}
-					zgwRol.betrokkeneIdentificatie.verblijfsadres.wplWoonplaatsNaam = zdsRol.gerelateerde.natuurlijkPersoon.verblijfsadres.woonplaatsnaam;
-					zgwRol.betrokkeneIdentificatie.verblijfsadres.gorOpenbareRuimteNaam = zdsRol.gerelateerde.natuurlijkPersoon.verblijfsadres.straatnaam;
-					zgwRol.betrokkeneIdentificatie.verblijfsadres.aoaPostcode = zdsRol.gerelateerde.natuurlijkPersoon.verblijfsadres.postcode;
-					zgwRol.betrokkeneIdentificatie.verblijfsadres.aoaHuisnummer = zdsRol.gerelateerde.natuurlijkPersoon.verblijfsadres.huisnummer;
-					zgwRol.betrokkeneIdentificatie.verblijfsadres.aoaHuisletter = zdsRol.gerelateerde.natuurlijkPersoon.verblijfsadres.huisletter;
-					zgwRol.betrokkeneIdentificatie.verblijfsadres.aoaHuisnummertoevoeging = zdsRol.gerelateerde.natuurlijkPersoon.verblijfsadres.huisnummertoevoeging;
-					zgwRol.betrokkeneIdentificatie.verblijfsadres.inpLocatiebeschrijving  = zdsRol.gerelateerde.natuurlijkPersoon.verblijfsadres.locatiebeschrijving;					
+					else {
+						zgwRol.betrokkeneIdentificatie.verblijfsadres = new ZgwAdres();
+						zgwRol.betrokkeneIdentificatie.verblijfsadres.aoaIdentificatie = zdsRol.gerelateerde.natuurlijkPersoon.verblijfsadres.identificatie;
+						zgwRol.betrokkeneIdentificatie.verblijfsadres.wplWoonplaatsNaam = zdsRol.gerelateerde.natuurlijkPersoon.verblijfsadres.woonplaatsnaam;
+						zgwRol.betrokkeneIdentificatie.verblijfsadres.gorOpenbareRuimteNaam = zdsRol.gerelateerde.natuurlijkPersoon.verblijfsadres.straatnaam;
+						zgwRol.betrokkeneIdentificatie.verblijfsadres.aoaPostcode = zdsRol.gerelateerde.natuurlijkPersoon.verblijfsadres.postcode;
+						zgwRol.betrokkeneIdentificatie.verblijfsadres.aoaHuisnummer = zdsRol.gerelateerde.natuurlijkPersoon.verblijfsadres.huisnummer;
+						zgwRol.betrokkeneIdentificatie.verblijfsadres.aoaHuisletter = zdsRol.gerelateerde.natuurlijkPersoon.verblijfsadres.huisletter;
+						zgwRol.betrokkeneIdentificatie.verblijfsadres.aoaHuisnummertoevoeging = zdsRol.gerelateerde.natuurlijkPersoon.verblijfsadres.huisnummertoevoeging;
+						zgwRol.betrokkeneIdentificatie.verblijfsadres.inpLocatiebeschrijving  = zdsRol.gerelateerde.natuurlijkPersoon.verblijfsadres.locatiebeschrijving;
+					}
 				}				
 			}
 			zgwRol.betrokkeneType = BetrokkeneType.NATUURLIJK_PERSOON.getDescription();
