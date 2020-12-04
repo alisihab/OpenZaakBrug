@@ -1,22 +1,27 @@
 package nl.haarlem.translations.zdstozgw;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-//import org.junit.Assert;
-//import org.junit.Test;
-
-import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
-import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
-
 import nl.haarlem.translations.zdstozgw.config.ModelMapperConfig;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsHeeft;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsZaakDocument;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwEnkelvoudigInformatieObject;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwStatus;
+
+//import org.junit.Assert;
+//import org.junit.Test;
+
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import org.junit.runner.RunWith;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.ui.Model;
+
+import javax.validation.constraints.AssertTrue;
+import java.time.ZoneId;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ModelMapperConfig.class)
