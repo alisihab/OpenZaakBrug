@@ -13,7 +13,6 @@
 		<property name="locations">
 			<list>
 				<value>classpath:application.properties</value>
-				<value>classpath:META-INF/maven/nl.haarlem.translations/zds-to-zgw/pom.properties</value>
 			</list>
 		</property>
 	</bean>
