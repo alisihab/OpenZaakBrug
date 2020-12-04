@@ -31,7 +31,7 @@ public class UpdateZaakdocumentTranslator extends Converter {
 		var zdsUpdateZaakdocumentDi02 = (ZdsUpdateZaakdocumentDi02) this.getZdsDocument();
 		var zdsInformatieObject = zdsUpdateZaakdocumentDi02.objects.get(0);
 		this.context.setKenmerk("documentidentificatie:" + zdsInformatieObject.identificatie);		
-		this.getZaakService().UpdateZaakDocument(zdsInformatieObject);
+		this.getZaakService().updateZaakDocument(zdsInformatieObject);
 		/*
 		var bv03 = new ZdsBv03(zdsEdcLk01.stuurgegevens, this.context.getReferentienummer());
 		var response = XmlUtils.getSOAPMessageFromObject(bv03);

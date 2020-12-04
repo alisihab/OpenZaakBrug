@@ -37,6 +37,7 @@ import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwBetrokkeneIdent
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwEnkelvoudigInformatieObject;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwInformatieObjectType;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwKenmerk;
+import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwLock;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwResultaat;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwRol;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwStatus;
@@ -708,17 +709,33 @@ public class ZaakService {
 		}
 	}
 
-	public Object CheckOutZaakDocument(String documentIdentificatie) {
-		// TODO Auto-generated method stub
+	public String checkOutZaakDocument(String documentIdentificatie) {
+		log.info("checkOutZaakDocument:" + documentIdentificatie);
+		ZgwEnkelvoudigInformatieObject zgwEnkelvoudigInformatieObject = this.zgwClient.getZgwEnkelvoudigInformatieObjectByIdentiticatie(documentIdentificatie);
+		if (zgwEnkelvoudigInformatieObject == null) {
+			throw new ConverterException(
+					"ZgwEnkelvoudigInformatieObject #" + documentIdentificatie + " could not be found");
+		}
+		ZgwLock lock = this.zgwClient.getZgwInformatieObjectLock(zgwEnkelvoudigInformatieObject);
+		log.info("received lock:" + lock.lock);
+		return lock.lock;
+	}
+
+	public Object cancelCheckOutZaakDocument(String documentIdentificatie, String lock) {
+		log.info("checkOutZaakDocument:" + documentIdentificatie);
+		ZgwEnkelvoudigInformatieObject zgwEnkelvoudigInformatieObject = this.zgwClient
+				.getZgwEnkelvoudigInformatieObjectByIdentiticatie(documentIdentificatie);
+		if (zgwEnkelvoudigInformatieObject == null) {
+			throw new ConverterException(
+					"ZgwEnkelvoudigInformatieObject #" + documentIdentificatie + " could not be found");
+		}
+		ZgwLock zgwLock = new ZgwLock();
+		zgwLock.lock = lock;
+		this.zgwClient.getZgwInformatieObjectUnLock(zgwEnkelvoudigInformatieObject, zgwLock);
 		return null;
 	}
 
-	public Object CancelCheckOutZaakDocument(String documentIdentificatie) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public void UpdateZaakDocument(ZdsZaakDocumentInhoud zdsInformatieObject) {
+	public void updateZaakDocument(ZdsZaakDocumentInhoud zdsInformatieObject) {
 		// TODO Auto-generated method stub
 		
 	}

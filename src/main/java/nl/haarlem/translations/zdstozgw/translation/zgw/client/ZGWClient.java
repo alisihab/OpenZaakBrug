@@ -25,6 +25,7 @@ import nl.haarlem.translations.zdstozgw.debug.Debugger;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.QueryResult;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwEnkelvoudigInformatieObject;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwInformatieObjectType;
+import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwLock;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwResultaat;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwResultaatType;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwRol;
@@ -95,7 +96,9 @@ public class ZGWClient {
 			log.debug("POST response: " + zgwResponse);
 			return zgwResponse;
 		} catch (HttpStatusCodeException hsce) {
-			json = json.replace("{", "{\n").replace("\",", "\",\n").replace("\"}", "\"\n}");
+			if(json!=null) {
+				json = json.replace("{", "{\n").replace("\",", "\",\n").replace("\"}", "\"\n}");
+			}
 			var response = hsce.getResponseBodyAsString().replace("{", "{\n").replace("\",", "\",\n").replace("\"}",
 					"\"\n}");
 			var details = "--------------POST:\n" + url + "\n" + json + "\n--------------RESPONSE:\n" + response;
@@ -580,5 +583,20 @@ public class ZGWClient {
 		Gson gson = new Gson();
 		ZgwInformatieObjectType result = gson.fromJson(documentType, ZgwInformatieObjectType.class);
 		return result;
+	}
+
+	public ZgwLock getZgwInformatieObjectLock(ZgwEnkelvoudigInformatieObject zgwEnkelvoudigInformatieObject) {
+		var lock = post(zgwEnkelvoudigInformatieObject.url + "/lock", null);
+		Gson gson = new Gson();
+		ZgwLock result = gson.fromJson(lock, ZgwLock.class);
+		return result;
+	}
+
+	public void getZgwInformatieObjectUnLock(ZgwEnkelvoudigInformatieObject zgwEnkelvoudigInformatieObject, ZgwLock zgwLock) {
+			Gson gson = new Gson();
+			String json = gson.toJson(zgwLock);		
+			var lock = post(zgwEnkelvoudigInformatieObject.url + "/unlock", json);
+			Object result = gson.fromJson(lock, Object.class);
+			return;
 	}
 }

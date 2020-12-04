@@ -20,5 +20,5 @@ public class ZdsCancelCheckoutDi02 extends ZdsZknDocument {
 	public ZdsParameters parameters;
 
 	@XmlElement(namespace = ZKN)
-	public ZdsZaakDocument gelijk;
+	public ZdsZaakDocument document;
 }

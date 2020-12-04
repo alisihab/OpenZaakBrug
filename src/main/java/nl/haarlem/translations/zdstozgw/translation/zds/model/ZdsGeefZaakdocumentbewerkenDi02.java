@@ -17,8 +17,6 @@ import lombok.Data;
 public class ZdsGeefZaakdocumentbewerkenDi02 extends ZdsZknDocument {
 
 	@XmlElement(namespace = ZKN)
-	public ZdsParameters parameters;
+	public ZdsEdcLv01 edcLv01;
 
-	@XmlElement(namespace = ZKN)
-	public ZdsZaakDocument gelijk;
 }

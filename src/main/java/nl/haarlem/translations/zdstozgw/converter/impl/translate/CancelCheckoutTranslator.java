@@ -29,9 +29,12 @@ public class CancelCheckoutTranslator extends Converter {
 	@Override
 	public ResponseEntity<?> execute() throws ResponseStatusException {
 		var zdsCancelCheckoutDi02 = (ZdsCancelCheckoutDi02) this.getZdsDocument();
-		var documentIdentificatie = zdsCancelCheckoutDi02.gelijk.identificatie;
-		this.context.setKenmerk("documentidentificatie:" + documentIdentificatie);
-		var result = this.getZaakService().CancelCheckOutZaakDocument(documentIdentificatie);
+		var lock = zdsCancelCheckoutDi02.parameters.checkedOutId;
+		var documentIdentificatie = zdsCancelCheckoutDi02.document.identificatie;
+		this.context.setKenmerk("documentidentificatie:" + documentIdentificatie + " with lock:" + lock);
+		var result = this.getZaakService().cancelCheckOutZaakDocument(documentIdentificatie, lock);
+		
+		
 /*		var edcLa01 = new ZdsEdcLa01GeefZaakdocumentLezen(zdsEdcLv01.stuurgegevens, this.context.getReferentienummer());
 		edcLa01.antwoord = new ZdsZaakDocumentAntwoord();
 		edcLa01.antwoord.document = new ArrayList<ZdsZaakDocumentInhoud>();
