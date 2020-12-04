@@ -17,5 +17,5 @@ before_script:
 
 script:
   - mvn install -Dmaven.javadoc.skip=true -B -V
-  - docker-compose up --build
+  - docker-compose up --build --exit-code-from web
   - docker-compose down
