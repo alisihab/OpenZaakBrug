@@ -25,6 +25,8 @@ import nl.haarlem.translations.zdstozgw.debug.Debugger;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.QueryResult;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwEnkelvoudigInformatieObject;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwInformatieObjectType;
+import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwResultaat;
+import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwResultaatType;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwRol;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwRolType;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwStatus;
@@ -56,9 +58,15 @@ public class ZGWClient {
 	@Value("${zgw.endpoint.status:/zaken/api/v1/statussen}")
 	private String endpointStatus;
 
+	@Value("${zgw.endpoint.resultaat:/zaken/api/v1/resultaten}")
+	private String endpointResultaat;
+	
 	@Value("${zgw.endpoint.statustype:/catalogi/api/v1/statustypen}")
 	private String endpointStatustype;
 
+	@Value("${zgw.endpoint.resultaattype:/catalogi/api/v1/resultaattypen}")
+	private String endpointResultaattype;
+		
 	@Value("${zgw.endpoint.zaakinformatieobject:/zaken/api/v1/zaakinformatieobjecten}")
 	private String endpointZaakinformatieobject;
 
@@ -324,6 +332,15 @@ public class ZGWClient {
 		QueryResult<ZgwStatusType> queryResult = gson.fromJson(statusTypeJson, type);
 		return queryResult.getResults();
 	}
+	
+	public List<ZgwResultaatType> getResultaatTypes(Map<String, String> parameters) {
+		var restulaatTypeJson = get(this.baseUrl + this.endpointResultaattype, parameters);
+		Type type = new TypeToken<QueryResult<ZgwResultaatType>>() {
+		}.getType();
+		Gson gson = new Gson();
+		QueryResult<ZgwResultaatType> queryResult = gson.fromJson(restulaatTypeJson, type);
+		return queryResult.getResults();
+	}		
 
 	public List<ZgwStatus> getStatussen(Map<String, String> parameters) {
 		var statusTypeJson = get(this.baseUrl + this.endpointStatus, parameters);
@@ -347,6 +364,13 @@ public class ZGWClient {
 		return gson.fromJson(response, ZgwStatus.class);
 	}
 
+	public ZgwResultaat actualiseerZaakResultaat(ZgwResultaat zgwResultaat) {
+		Gson gson = new Gson();
+		String json = gson.toJson(zgwResultaat);
+		String response = this.post(this.baseUrl + this.endpointResultaat, json);
+		return gson.fromJson(response, ZgwResultaat.class);
+	}		
+	
 	public List<ZgwZaakType> getZaakTypes(Map<String, String> parameters) {
 		var zaakTypeJson = get(this.baseUrl + this.endpointZaaktype, parameters);
 		Type type = new TypeToken<QueryResult<ZgwZaakType>>() {
@@ -477,6 +501,23 @@ public class ZGWClient {
 		throw new ConverterException("zaakstatus niet gevonden voor omschrijving: '" + statusOmschrijving + "'");
 	}
 
+
+	public ZgwResultaatType getResultaatTypeByZaakTypeAndOmschrijving(String zaakTypeUrl, String resultaatOmschrijving) {
+		Map<String, String> parameters = new HashMap();
+		parameters.put("zaaktype", zaakTypeUrl);
+		//default behaviour parameters.put("status", "definitief");
+		List<ZgwResultaatType> resultaattypes = this.getResultaatTypes(parameters);
+
+		for (ZgwResultaatType resultaattype : resultaattypes) {
+			log.debug("opgehaald:" + resultaattype.omschrijving + " zoeken naar: " + resultaatOmschrijving);
+			if (resultaattype.omschrijving.startsWith(resultaatOmschrijving)) {
+				log.debug("gevonden:" + resultaattype.omschrijving + " zoeken naar: " + resultaatOmschrijving);
+				return resultaattype;
+			}
+		}
+		throw new ConverterException("zaakresultaat niet gevonden voor omschrijving: '" + resultaatOmschrijving + "'");
+	}		
+	
 	public List<ZgwRol> getRollenByZaakUrl(String zaakUrl) {
 		Map<String, String> parameters = new HashMap();
 		parameters.put("zaak", zaakUrl);
