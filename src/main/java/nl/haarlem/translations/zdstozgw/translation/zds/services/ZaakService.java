@@ -152,15 +152,15 @@ public class ZaakService {
 			}
 			zgwRol.betrokkeneIdentificatie = this.modelMapper.map(zdsRol.gerelateerde.natuurlijkPersoon, ZgwBetrokkeneIdentificatie.class);
 			if(zdsRol.gerelateerde.natuurlijkPersoon.verblijfsadres != null) {
-				zgwRol.betrokkeneIdentificatie.verblijfsadres = this.modelMapper.map(zdsRol.gerelateerde.natuurlijkPersoon.verblijfsadres, ZgwAdres.class);
-				// https://github.com/Sudwest-Fryslan/OpenZaakBrug/issues/54
-				// 		Move code to the ModelMapperConfig.java
 				if(zdsRol.gerelateerde.natuurlijkPersoon.verblijfsadres != null) {
-					if(zgwRol.betrokkeneIdentificatie.verblijfsadres.aoaIdentificatie == null || zgwRol.betrokkeneIdentificatie.verblijfsadres.aoaIdentificatie.length() == 0) {
+					if(zdsRol.gerelateerde.natuurlijkPersoon.verblijfsadres.identificatie == null || zdsRol.gerelateerde.natuurlijkPersoon.verblijfsadres.identificatie.length() == 0) {
 						// https://github.com/Sudwest-Fryslan/OpenZaakBrug/issues/55
 						log.warn("No aoaIdentificatie found for zaak with id: " + createdZaak.identificatie + " with betrokkeneIdentificatie bsn:" + zdsRol.gerelateerde.natuurlijkPersoon.bsn);
 					}
 					else {
+						zgwRol.betrokkeneIdentificatie.verblijfsadres = this.modelMapper.map(zdsRol.gerelateerde.natuurlijkPersoon.verblijfsadres, ZgwAdres.class);
+						// https://github.com/Sudwest-Fryslan/OpenZaakBrug/issues/54
+						// 		Move code to the ModelMapperConfig.java						
 						zgwRol.betrokkeneIdentificatie.verblijfsadres = new ZgwAdres();
 						zgwRol.betrokkeneIdentificatie.verblijfsadres.aoaIdentificatie = zdsRol.gerelateerde.natuurlijkPersoon.verblijfsadres.identificatie;
 						zgwRol.betrokkeneIdentificatie.verblijfsadres.wplWoonplaatsNaam = zdsRol.gerelateerde.natuurlijkPersoon.verblijfsadres.woonplaatsnaam;
@@ -171,8 +171,8 @@ public class ZaakService {
 						zgwRol.betrokkeneIdentificatie.verblijfsadres.aoaHuisnummertoevoeging = zdsRol.gerelateerde.natuurlijkPersoon.verblijfsadres.huisnummertoevoeging;
 						zgwRol.betrokkeneIdentificatie.verblijfsadres.inpLocatiebeschrijving  = zdsRol.gerelateerde.natuurlijkPersoon.verblijfsadres.locatiebeschrijving;
 					}
-				}				
-			}
+				}
+			}			
 			zgwRol.betrokkeneType = BetrokkeneType.NATUURLIJK_PERSOON.getDescription();
 		}
 		if (zgwRol.betrokkeneIdentificatie == null) {
