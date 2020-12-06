@@ -665,6 +665,12 @@ public class ZaakService {
 			log.debug("Not adding the rol:"  + typeRolOmschrijving + ", gerelateerde == null ");
 			return;
 		}
+
+		if(typeRolOmschrijving == null) {
+			log.warn("Not adding the rol, typeRolOmschrijving == null ");
+			return;
+		}				
+		
 		addRolToZgw(newValue, typeRolOmschrijving, zgwZaak);
 	}
 
