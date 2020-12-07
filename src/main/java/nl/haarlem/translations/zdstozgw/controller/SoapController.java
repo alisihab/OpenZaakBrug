@@ -95,7 +95,7 @@ public class SoapController {
 			if (soapAction != null) {
 				int i = soapAction.lastIndexOf('/');
 				if (i != -1 ) {
-					reportName = reportName + " " + soapAction.substring(i + 1);
+					reportName = reportName + " " + soapAction.substring(i + 1, soapAction.length() - 2);
 				}
 			}
 		}
