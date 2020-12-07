@@ -68,7 +68,11 @@ public class ZDSClient {
 			this.repository.save(zdsRequestResponseCycle);
 
 			if(responsecode != 200) {
-				throw new ConverterException("Error: responsecode #" + responsecode + " (not 200) while requesting url:" + zdsUrl + " with soapaction: " + zdsSoapAction);
+				String message = "Error: responsecode #" + responsecode + " (not 200) while requesting url:" + zdsUrl + " with soapaction: " + zdsSoapAction;
+				debugName = "Invalid response code";
+				debug.startpoint(debugName, responsecode);
+				debug.abortpoint(debugName, message);
+				throw new ConverterException(message);
 			}
 			return new ResponseEntity<>(zdsResponseBody, HttpStatus.valueOf(responsecode));
 		} catch (IOException ce) {
