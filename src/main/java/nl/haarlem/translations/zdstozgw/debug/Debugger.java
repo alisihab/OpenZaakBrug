@@ -51,7 +51,8 @@ public class Debugger {
 
 	public <E extends Exception> Object endpoint(String name,
 			ExternalConnectionCodeThrowsException externalConnectionCodeThrowsException, E throwsException) throws E {
-		return testTool.endpoint(getReferentienummer(), sourceClassName, name, externalConnectionCodeThrowsException);
+		return testTool.endpoint(getReferentienummer(), sourceClassName, name, externalConnectionCodeThrowsException,
+				throwsException);
 	}
 
 	public String inputpoint(String name, String message) {
