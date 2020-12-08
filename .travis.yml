@@ -14,8 +14,16 @@ before_script:
  - mv ./src/main/resources/application.properties_example ./src/main/resources/application.properties
  - mv ./src/main/resources/config.json_example ./src/main/resources/config.json
  - export TZ=Europe/Amsterdam
+ - chmod +x docker_start.sh
+ - chmod +x docker_push.sh
 
 script:
-  - mvn install -Dmaven.javadoc.skip=true -B -V
-  - docker-compose up --build --exit-code-from web
-  - docker-compose down
+  - mvn install -Dmaven.javadoc.skip=true -B -V || travis_terminate 1;
+  - ./docker_start.sh || travis_terminate 1;
+  - docker-compose down --remove-orphans || travis_terminate 1;
+
+deploy:
+  provider: script
+  script: ./docker_push.sh
+  on:
+    branch: master
