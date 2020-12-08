@@ -21,61 +21,78 @@
 		<!-- <xsl:apply-templates select="Checkpoint[@Name='Pipe Example']"/> -->
 	</xsl:template>
 
-	<!-- Ignore content of checkpoint referentienummer that contains a UUID -->
+	<!-- Ignore content of checkpoint referentienummer that contains a UUID like ozb-a71a7abb-8fb7-4466-9328-b7502eb90d68 -->
 	<xsl:template match="*[local-name()='Checkpoint' and @Name='referentienummer' and @Type='Infopoint' and @Level='1']">
 		<xsl:copy>
 			<xsl:apply-templates select="@*"/>
 			<xsl:choose>
 				<xsl:when test="string-length(.) > 10"><xsl:value-of select="'IGNORED'"/></xsl:when>
-				<xsl:otherwise><xsl:value-of select="concat(current-dateTime(), ' Wrong or empty referentienummer ''', ., '''')"/></xsl:otherwise>
+				<xsl:otherwise><xsl:value-of select="concat('[', current-dateTime(), ' WRONG referentienummer: ', ., ']')"/></xsl:otherwise>
 			</xsl:choose>
 		</xsl:copy>
 	</xsl:template>
 
-	<!-- Ignore content of element referentienummer that contains a UUID -->
+	<!-- Ignore content of element referentienummer that contains a UUID like ozb-a71a7abb-8fb7-4466-9328-b7502eb90d68-->
 	<xsl:template match="*[local-name()='referentienummer']">
-		<xsl:element namespace="{namespace-uri()}" name="{name()}">
+		<xsl:copy>
+			<xsl:apply-templates select="@*"/>
 			<xsl:choose>
 				<xsl:when test="string-length(.) > 10"><xsl:value-of select="'IGNORED'"/></xsl:when>
-				<xsl:otherwise><xsl:value-of select="concat(current-dateTime(), ' Wrong or empty referentienummer ''', ., '''')"/></xsl:otherwise>
+				<xsl:otherwise><xsl:value-of select="concat('[', current-dateTime(), ' WRONG referentienummer: ', ., ']')"/></xsl:otherwise>
 			</xsl:choose>
-		</xsl:element>
+		</xsl:copy>
 	</xsl:template>
 
-	<!-- Ignore content of element identificatie that contains an id -->
+	<!-- Ignore content of element identificatie that contains an id like 190028 or can be empty -->
 	<xsl:template match="*[local-name()='identificatie']">
-		<xsl:element namespace="{namespace-uri()}" name="{name()}">
-			<xsl:value-of select="substring(., 1, 2)"/>
-			<xsl:value-of select="'IGNORED'"/>
-		</xsl:element>
+		<xsl:copy>
+			<xsl:apply-templates select="@*"/>
+			<xsl:choose>
+				<xsl:when test="string-length(.) = 0"/>
+				<xsl:when test="string-length(.) > 4"><xsl:value-of select="'IGNORED'"/></xsl:when>
+				<xsl:otherwise><xsl:value-of select="concat('[', current-dateTime(), ' WRONG identificatie: ', ., ']')"/></xsl:otherwise>
+			</xsl:choose>
+		</xsl:copy>
 	</xsl:template>
 
-	<!-- Ignore content of element tijdstipBericht that contains a timestamp -->
+	<!-- Ignore content of element tijdstipBericht that contains a timestamp like 20201207224233 -->
 	<xsl:template match="*[local-name()='tijdstipBericht']">
-		<xsl:element namespace="{namespace-uri()}" name="{name()}">
+		<xsl:copy>
+			<xsl:apply-templates select="@*"/>
 			<xsl:value-of select="substring(., 1, 2)"/>
 			<xsl:value-of select="'IGNORED'"/>
 			<xsl:value-of select="string-length(.) - 2"/>
 			<xsl:value-of select="'CHARS'"/>
-		</xsl:element>
+		</xsl:copy>
 	</xsl:template>
 
 	<!-- Ignore hostname in checkpoint url that will change when switching backend between fieldlab and local -->
 	<xsl:template match="*[local-name()='Checkpoint' and @Name='url' and @Type='Inputpoint' and @Level='2']">
-		<Checkpoint Name="url" Type="Inputpoint" Level="2">
+		<xsl:copy>
+			<xsl:apply-templates select="@*"/>
 			<xsl:value-of select="replace(replace(replace(., 'fieldlab.westeurope.cloudapp.azure.com', 'IGNORED'), 'fieldlab.westeurope.cloudapp.azure.com', 'IGNORED'), 'openzaak.local', 'IGNORED')"/>
-		</Checkpoint>
+		</xsl:copy>
 	</xsl:template>
 
-	<!-- Ignore content of checkpoint kenmerk that contains an id -->
+	<!-- Ignore content of checkpoint kenmerk that contains an id like zaakidentificatie:8000361, documentidentificatie:8000325 and bsn:111111110 -->
 	<xsl:template match="*[local-name()='Checkpoint' and @Name='kenmerk' and @Type='Outputpoint' and @Level='1']">
 		<xsl:copy>
 			<xsl:apply-templates select="@*"/>
-			<xsl:value-of select="substring(., 1, 18)"/>
+			<xsl:value-of select="concat(substring-before(., ':'), ':')"/>
 			<xsl:choose>
-				<xsl:when test="string-length(.) > 18"><xsl:value-of select="'IGNORED'"/></xsl:when>
-				<xsl:otherwise><xsl:value-of select="concat(current-dateTime(), ' Wrong or empty kenmerk ''', ., '''')"/></xsl:otherwise>
+				<xsl:when test="substring-before(., ':') = 'zaakidentificatie'"><xsl:value-of select="'IGNORED'"/></xsl:when>
+				<xsl:when test="substring-before(., ':') = 'bsn'"><xsl:value-of select="'IGNORED'"/></xsl:when>
+				<xsl:when test="substring-before(., ':') = 'documentidentificatie'"><xsl:value-of select="'IGNORED'"/></xsl:when>
+				<xsl:otherwise><xsl:value-of select="concat('[', current-dateTime(), ' WRONG kenmerk: ', ., ']')"/></xsl:otherwise>
 			</xsl:choose>
+		</xsl:copy>
+	</xsl:template>
+
+	<!-- Ignore java version like 11.0.2 and 15 -->
+	<xsl:template match="*[local-name()='java' and @class='java.beans.XMLDecoder']">
+		<xsl:copy>
+			<xsl:attribute name="version"><xsl:value-of select="'IGNORED'"/></xsl:attribute>
+			<xsl:apply-templates select="node() | @*[local-name() != 'version']"/>
 		</xsl:copy>
 	</xsl:template>
 

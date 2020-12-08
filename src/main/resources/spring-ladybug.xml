@@ -55,8 +55,8 @@
 
 	<bean name="testStorage" class="nl.nn.testtool.storage.xml.XmlStorage" autowire="byName" init-method="init">
 		<property name="name" value="Test"/>
-		<property name="metadataFile" value="data/metadata.xml"/>
-		<property name="reportsFolder" value="data"/>
+		<property name="metadataFile" value="src/test/resources/ladybug/metadata.xml"/>
+		<property name="reportsFolder" value="src/test/resources/ladybug"/>
 	</bean>
 
 	<bean name="whiteBoxViewMetadataNames" class="java.util.ArrayList">
