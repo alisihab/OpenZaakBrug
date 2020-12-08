@@ -15,23 +15,14 @@ zgw.endpoint.roltype = /catalogi/api/v1/roltypen
 zgw.endpoint.rol = /zaken/api/v1/rollen
 zgw.endpoint.zaaktype = /catalogi/api/v1/zaaktypen
 zgw.endpoint.status = /zaken/api/v1/statussen
+zgw.endpoint.resultaat = /zaken/api/v1/resultaten
 zgw.endpoint.statustype = /catalogi/api/v1/statustypen
+zgw.endpoint.resultaattype = /catalogi/api/v1/resultaattypen
 zgw.endpoint.zaakinformatieobject = /zaken/api/v1/zaakinformatieobjecten
 zgw.endpoint.enkelvoudiginformatieobject = /documenten/api/v1/enkelvoudiginformatieobjecten
 zgw.endpoint.zaak = /zaken/api/v1/zaken
 
 #spring.datasource.initialize=true
-spring.datasource.url=jdbc:h2:./data/OpenZaakBrug
-spring.datasource.driverClassName=org.h2.Driver
-spring.datasource.username=sa
-spring.datasource.password=
-spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
-spring.jpa.hibernate.ddl-auto=update
-# Enabling H2 Console on http://localhost:8080/h2-console
-spring.h2.console.enabled=true
-spring.h2.console.path=/h2-console
-spring.h2.console.settings.trace=true
-spring.h2.console.settings.web-allow-others=true#spring.datasource.initialize=true
 #spring.jpa.generate-ddl=true
 #spring.jpa.show-sql=true
 #spring.jpa.hibernate.ddl-auto=create
@@ -55,3 +46,10 @@ spring.h2.console.enabled=true
 spring.h2.console.path=/h2-console
 spring.h2.console.settings.trace=true
 spring.h2.console.settings.web-allow-others=true
+
+version=@version@ 
+ladybug.maxCheckpoints=2500
+ladybug.maxMemoryUsage=100000000
+ladybug.maxMessageLength=1000000
+ladybug.regexFilter=.*
+ladybug.reportTransformation=transform-ladybug-report.xslt

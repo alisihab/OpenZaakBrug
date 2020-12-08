@@ -18,6 +18,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 
 import nl.haarlem.translations.zdstozgw.config.ConfigService;
 import nl.haarlem.translations.zdstozgw.converter.ConverterFactory;
+import nl.haarlem.translations.zdstozgw.debug.Debugger;
 import nl.haarlem.translations.zdstozgw.requesthandler.RequestHandlerContext;
 import nl.haarlem.translations.zdstozgw.requesthandler.RequestHandlerFactory;
 
@@ -25,6 +26,8 @@ import nl.haarlem.translations.zdstozgw.requesthandler.RequestHandlerFactory;
 public class SoapController {
 
 	private static final Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+
+	private static final Debugger debug = Debugger.getDebugger(MethodHandles.lookup().lookupClass());
 
 	private final ConverterFactory converterFactory;
 	private final ConfigService configService;
@@ -46,7 +49,7 @@ public class SoapController {
      */
 	@GetMapping(path = { "/" }, produces = MediaType.TEXT_HTML_VALUE)
 	public ResponseEntity<?> HandleRequest() {
-		var context = new RequestHandlerContext("/", "", "");
+		var context = new RequestHandlerContext("", "", "", "", "/", "", "", null);
 		this.requestHandlerFactory.getRequestHandler(this.converterFactory.getConverter(context));
 		return null;
 	}
@@ -67,18 +70,55 @@ public class SoapController {
 	public ResponseEntity<?> HandleRequest(
 			@PathVariable String modus, @PathVariable String version, @PathVariable String protocol,
 			@PathVariable String endpoint, @RequestHeader(name = "SOAPAction", required = true) String soapAction,
-			@RequestBody String body) {
+			@RequestBody String body, String referentienummer) {
 
 		var path = modus + "/" + version + "/" + protocol + "/" + endpoint;
-		var context = new RequestHandlerContext(path, soapAction.replace("\"", ""), body);
+		if (referentienummer == null) {
+			referentienummer = "ozb-" + java.util.UUID.randomUUID().toString();
+		}
+		var context = new RequestHandlerContext(modus, version, protocol, endpoint, path, soapAction.replace("\"", ""),
+				body, referentienummer);
 		log.info("Processing request for path: /" + path + "/ with soapaction: " + soapAction
-				+ " with referentienummer:" + context.getReferentienummer());
+				+ " with referentienummer:" + referentienummer);
 
-		RequestContextHolder.getRequestAttributes().setAttribute("referentienummer", context.getReferentienummer(),
+		RequestContextHolder.getRequestAttributes().setAttribute("referentienummer", referentienummer,
 				RequestAttributes.SCOPE_REQUEST);
 
 		var converter = this.converterFactory.getConverter(context);
 		var handler = this.requestHandlerFactory.getRequestHandler(converter);
-		return handler.execute();
+
+		String reportName = context.getModus();
+		if (reportName == null || reportName.length() < 1) {
+			reportName = "Execute";
+		} else {
+			reportName = reportName.substring(0, 1).toUpperCase() + reportName.substring(1);
+			if (soapAction != null) {
+				int i = soapAction.lastIndexOf('/');
+				if (i != -1 ) {
+					reportName = reportName + " " + soapAction.substring(i + 1, soapAction.length() - 2);
+				}
+			}
+		}
+		debug.startpoint(reportName, body);
+		debug.inputpoint("modus", modus);
+		debug.inputpoint("version", version);
+		debug.inputpoint("protocol", protocol);
+		debug.inputpoint("endpoint", endpoint);
+		debug.inputpoint("soapAction", soapAction);
+		debug.infopoint("referentienummer", referentienummer);
+		debug.infopoint("converter", converter.getClass().getCanonicalName());
+		debug.infopoint("handler", handler.getClass().getCanonicalName());
+		debug.infopoint("path", path);
+		ResponseEntity<?> response;
+		try {
+			response = handler.execute();
+			debug.outputpoint("statusCode", response.getStatusCodeValue());
+			debug.outputpoint("kenmerk", context.getKenmerk());
+			debug.endpoint(reportName, response.getBody().toString());
+		} catch(Throwable t) {
+			debug.abortpoint(reportName, t.toString());
+			throw t;
+		}
+		return response;
 	}
 }

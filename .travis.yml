@@ -11,16 +11,22 @@ cache:
 install: echo 'Skipping separate install phase'
 
 before_script:
- - chmod +x dockerPush.sh
  - mv ./src/main/resources/application.properties_example ./src/main/resources/application.properties
  - mv ./src/main/resources/config.json_example ./src/main/resources/config.json
  - export TZ=Europe/Amsterdam
+ - chmod +x docker_start.sh
+
 
 script:
-  - mvn install -Dmaven.javadoc.skip=true -B -V
-  - jar -xvf ./target/zds-to-zgw.jar
-  - docker-compose up --build
-  - curl http://localhost:8080
-  - docker-compose down
-  - ./dockerPush.sh
+  - mvn install -Dmaven.javadoc.skip=true -B -V || travis_terminate 1;
+  - ./docker_start.sh || travis_terminate 1;
+  - docker-compose down --remove-orphans || travis_terminate 1;
 
+before_deploy:
+ - chmod +x docker_push.sh
+deploy:
+  provider: script
+  skip_cleanup: true
+  script: ./docker_push.sh
+  on:
+    branch: master
