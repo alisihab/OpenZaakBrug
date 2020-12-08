@@ -21,7 +21,6 @@
 		<!-- <xsl:apply-templates select="Checkpoint[@Name='Pipe Example']"/> -->
 	</xsl:template>
 
-
 	<!-- Ignore content of checkpoint referentienummer that contains a UUID -->
 	<xsl:template match="*[local-name()='Checkpoint' and @Name='referentienummer' and @Type='Infopoint' and @Level='1']">
 		<xsl:copy>
@@ -66,6 +65,18 @@
 		<Checkpoint Name="url" Type="Inputpoint" Level="2">
 			<xsl:value-of select="replace(replace(replace(., 'fieldlab.westeurope.cloudapp.azure.com', 'IGNORED'), 'fieldlab.westeurope.cloudapp.azure.com', 'IGNORED'), 'openzaak.local', 'IGNORED')"/>
 		</Checkpoint>
+	</xsl:template>
+
+	<!-- Ignore content of checkpoint kenmerk that contains an id -->
+	<xsl:template match="*[local-name()='Checkpoint' and @Name='kenmerk' and @Type='Outputpoint' and @Level='1']">
+		<xsl:copy>
+			<xsl:apply-templates select="@*"/>
+			<xsl:value-of select="substring(., 1, 18)"/>
+			<xsl:choose>
+				<xsl:when test="string-length(.) > 18"><xsl:value-of select="'IGNORED'"/></xsl:when>
+				<xsl:otherwise><xsl:value-of select="concat(current-dateTime(), ' Wrong or empty kenmerk ''', ., '''')"/></xsl:otherwise>
+			</xsl:choose>
+		</xsl:copy>
 	</xsl:template>
 
 	<!-- General template -->
