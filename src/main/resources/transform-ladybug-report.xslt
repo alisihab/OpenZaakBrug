@@ -34,32 +34,36 @@
 
 	<!-- Ignore content of element referentienummer that contains a UUID like ozb-a71a7abb-8fb7-4466-9328-b7502eb90d68-->
 	<xsl:template match="*[local-name()='referentienummer']">
-		<xsl:element namespace="{namespace-uri()}" name="{name()}">
+		<xsl:copy>
+			<xsl:apply-templates select="@*"/>
 			<xsl:choose>
 				<xsl:when test="string-length(.) > 10"><xsl:value-of select="'IGNORED'"/></xsl:when>
 				<xsl:otherwise><xsl:value-of select="concat('[', current-dateTime(), ' WRONG referentienummer: ', ., ']')"/></xsl:otherwise>
 			</xsl:choose>
-		</xsl:element>
+		</xsl:copy>
 	</xsl:template>
 
-	<!-- Ignore content of element identificatie that contains an id like 190028 -->
+	<!-- Ignore content of element identificatie that contains an id like 190028 or can be empty -->
 	<xsl:template match="*[local-name()='identificatie']">
-		<xsl:element namespace="{namespace-uri()}" name="{name()}">
+		<xsl:copy>
+			<xsl:apply-templates select="@*"/>
 			<xsl:choose>
+				<xsl:when test="string-length(.) = 0"/>
 				<xsl:when test="string-length(.) > 4"><xsl:value-of select="'IGNORED'"/></xsl:when>
 				<xsl:otherwise><xsl:value-of select="concat('[', current-dateTime(), ' WRONG identificatie: ', ., ']')"/></xsl:otherwise>
 			</xsl:choose>
-		</xsl:element>
+		</xsl:copy>
 	</xsl:template>
 
 	<!-- Ignore content of element tijdstipBericht that contains a timestamp like 20201207224233 -->
 	<xsl:template match="*[local-name()='tijdstipBericht']">
-		<xsl:element namespace="{namespace-uri()}" name="{name()}">
+		<xsl:copy>
+			<xsl:apply-templates select="@*"/>
 			<xsl:value-of select="substring(., 1, 2)"/>
 			<xsl:value-of select="'IGNORED'"/>
 			<xsl:value-of select="string-length(.) - 2"/>
 			<xsl:value-of select="'CHARS'"/>
-		</xsl:element>
+		</xsl:copy>
 	</xsl:template>
 
 	<!-- Ignore hostname in checkpoint url that will change when switching backend between fieldlab and local -->
