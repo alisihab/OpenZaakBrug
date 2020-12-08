@@ -41,6 +41,10 @@ public class Debugger {
 		return (String)testTool.startpoint(getReferentienummer(), sourceClassName, name, message);
 	}
 
+	public Object startpoint(String name, Object message) {
+		return testTool.startpoint(getReferentienummer(), sourceClassName, name, message);
+	}
+
 	public Object endpoint(String name, Object message) {
 		return testTool.endpoint(getReferentienummer(), sourceClassName, name, message);
 	}
