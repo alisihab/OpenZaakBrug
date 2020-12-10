@@ -342,6 +342,16 @@ public class ZGWClient {
 		return queryResult.getResults();
 	}		
 
+	public List<ZgwResultaat> getResultaten(Map<String, String> parameters) {
+		var restulaatJson = get(this.baseUrl + this.endpointResultaat, parameters);
+		Type type = new TypeToken<QueryResult<ZgwResultaat>>() {
+		}.getType();
+		Gson gson = new Gson();
+		QueryResult<ZgwResultaat> queryResult = gson.fromJson(restulaatJson, type);
+		return queryResult.getResults();
+	}		
+	
+	
 	public List<ZgwStatus> getStatussen(Map<String, String> parameters) {
 		var statusTypeJson = get(this.baseUrl + this.endpointStatus, parameters);
 		Type type = new TypeToken<QueryResult<ZgwStatus>>() {
@@ -517,6 +527,12 @@ public class ZGWClient {
 		}
 		throw new ConverterException("zaakresultaat niet gevonden voor omschrijving: '" + resultaatOmschrijving + "'");
 	}		
+	
+	public List<ZgwResultaat> getResultatenByZaakUrl(String zaakUrl) {
+		Map<String, String> parameters = new HashMap();
+		parameters.put("zaak", zaakUrl);
+		return this.getResultaten(parameters);
+	}	
 	
 	public List<ZgwRol> getRollenByZaakUrl(String zaakUrl) {
 		Map<String, String> parameters = new HashMap();
