@@ -3,22 +3,30 @@
 	<xsl:strip-space elements="*"/>
 	
 	<xsl:template match="/Report">
-		<!-- Ignore the report's name to prevent renaming-related run failures -->
-		<!-- Select the report name attribute -->
-		<!-- <xsl:apply-templates select="@Name"/> -->
+		<xsl:copy>
+			<!-- Select all report attributes -->
+			<!-- <xsl:apply-templates select="@*"/> -->
 
-		<!-- Select all report attributes -->
-		<!-- <xsl:apply-templates select="@*"/> -->
+			<!-- Select the report name attribute -->
+			<!-- <xsl:apply-templates select="@Name"/> -->
 
-		<!-- Select the first and last checkpoint -->
-		<!-- <xsl:apply-templates select="Checkpoint[1]"/> -->
-		<!-- <xsl:apply-templates select="Checkpoint[last()]"/> -->
+			<!-- Select all report attributes except the name attribute -->
+			<!-- <xsl:apply-templates select="@*[local-name() != 'Name']"/> -->
 
-		<!-- Select all checkpoints -->
-		<xsl:apply-templates select="node()"/>
+			<!-- For comparing reports it's better not to select (most of) the report attributes (and not enable the -->
+			<!-- examples above) because (most of) the report attributes change on every rerun or can be adjusted by -->
+			<!-- the user in between runs (e.g. when renaming a report) -->
+	
+			<!-- Select the first and last checkpoint -->
+			<!-- <xsl:apply-templates select="Checkpoint[1]"/> -->
+			<!-- <xsl:apply-templates select="Checkpoint[last()]"/> -->
+	
+			<!-- Select all checkpoints -->
+			<xsl:apply-templates select="node()"/>
 
-		<!-- Select the checkpoint with name "Pipe Example" -->
-		<!-- <xsl:apply-templates select="Checkpoint[@Name='Pipe Example']"/> -->
+			<!-- Select the checkpoint with name "Pipe Example" -->
+			<!-- <xsl:apply-templates select="Checkpoint[@Name='Pipe Example']"/> -->
+		</xsl:copy>
 	</xsl:template>
 
 	<!-- Ignore content of checkpoint referentienummer that contains a UUID like ozb-a71a7abb-8fb7-4466-9328-b7502eb90d68 -->
