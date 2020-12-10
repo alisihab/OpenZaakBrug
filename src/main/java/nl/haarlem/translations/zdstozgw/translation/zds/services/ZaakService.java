@@ -219,13 +219,19 @@ public class ZaakService {
 			//this.zgwClient.actualiseerZaakStatus(zgwStatus);
 			//changed = true;
 			log.debug("Using resultaattype:" + zgwResultaatType.omschrijving);
-
-			ZgwResultaat zgwResultaat = new ZgwResultaat();
-			zgwResultaat.zaak = zgwZaak.url;
-			zgwResultaat.resultaattype = zgwResultaatType.url;
-			zgwResultaat.toelichting = zdsZaak.resultaat.omschrijving;
-			this.zgwClient.actualiseerZaakResultaat(zgwResultaat);
-
+			
+			var resultaten = this.zgwClient.getResultatenByZaakUrl(zgwZaak.url);
+			if(resultaten.size() > 0) {
+				log.warn("Zaak met identitifatie:" + zdsZaak.identificatie + " already has #" + resultaten.size() + " resultaten,  resultaat[0] = " + resultaten.get(0).toelichting);
+			}
+			else {
+				ZgwResultaat zgwResultaat = new ZgwResultaat();
+				zgwResultaat.zaak = zgwZaak.url;
+				zgwResultaat.resultaattype = zgwResultaatType.url;
+				zgwResultaat.toelichting = zdsZaak.resultaat.omschrijving;
+				this.zgwClient.actualiseerZaakResultaat(zgwResultaat);
+			}
+			
 			var today = new SimpleDateFormat("yyyyMMdd").format(new Date());
 			if(zdsZaak.einddatum == null) {
 				log.warn("Update of zaakid:" + zdsZaak.identificatie + " has resultaat but no einddatum");
