@@ -105,7 +105,7 @@
 &lt;/soapenv:Envelope&gt;</string>
      </void>
      <void property="name">
-      <string>Translate geefZaakdetails_Lv0</string>
+      <string>Translate geefZaakdetails_Lv01</string>
      </void>
      <void property="report">
       <object idref="Report0"/>
@@ -2468,7 +2468,7 @@
 </string>
      </void>
      <void property="name">
-      <string>Translate geefZaakdetails_Lv0</string>
+      <string>Translate geefZaakdetails_Lv01</string>
      </void>
      <void property="report">
       <object idref="Report0"/>
@@ -2498,16 +2498,16 @@
    <long>188360</long>
   </void>
   <void property="name">
-   <string>11 Translate geefZaakdetails_Lv0</string>
+   <string>11 Translate geefZaakdetails_Lv01</string>
   </void>
   <void property="path">
-   <string></string>
+   <string>/</string>
   </void>
   <void property="startTime">
    <long>1607377362744</long>
   </void>
   <void property="storageId">
-   <int>114</int>
+   <int>189</int>
   </void>
   <void property="stubStrategy">
    <string>Stub all external connection code</string>
