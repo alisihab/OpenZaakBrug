@@ -74,7 +74,7 @@
 &lt;/SOAP-ENV:Envelope&gt;</string>
      </void>
      <void property="name">
-      <string>Translate updateZaak_Lk0</string>
+      <string>Translate updateZaak_Lk01</string>
      </void>
      <void property="report">
       <object idref="Report0"/>
@@ -991,7 +991,7 @@
 </string>
      </void>
      <void property="name">
-      <string>Translate updateZaak_Lk0</string>
+      <string>Translate updateZaak_Lk01</string>
      </void>
      <void property="report">
       <object idref="Report0"/>
@@ -1021,16 +1021,16 @@
    <long>53170</long>
   </void>
   <void property="name">
-   <string>06 Translate updateZaak_Lk0 (A Verantwoordelijke)</string>
+   <string>06 Translate updateZaak_Lk01 (A Verantwoordelijke)</string>
   </void>
   <void property="path">
-   <string></string>
+   <string>/</string>
   </void>
   <void property="startTime">
    <long>1607377358656</long>
   </void>
   <void property="storageId">
-   <int>108</int>
+   <int>177</int>
   </void>
   <void property="stubStrategy">
    <string>Stub all external connection code</string>
