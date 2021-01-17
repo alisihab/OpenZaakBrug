@@ -12,7 +12,7 @@ import lombok.Data;
 @Data
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ZdsParameters extends ZdsObject {
-	@XmlElement(namespace = STUF, nillable = true)
+	@XmlElement(namespace = STUF)
 	public String indicatorVervolgvraag;
 
 	@XmlElement(namespace = ZKN)	

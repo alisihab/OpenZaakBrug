@@ -16,6 +16,6 @@ import lombok.Data;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ZdsUpdateZaakdocumentDi02 extends ZdsZknDocument {
 
-	@XmlElement(namespace = ZKN, name = "object")
-	public List<ZdsZaakDocumentInhoud> objects;
+	@XmlElement(namespace = ZKN)
+	public ZdsEdcLk02 edcLk02;
 }
