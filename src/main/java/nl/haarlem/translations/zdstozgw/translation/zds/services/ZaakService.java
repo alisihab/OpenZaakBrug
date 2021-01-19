@@ -757,7 +757,6 @@ public class ZaakService {
 	}
 
 	public void updateZaakDocument(ZdsZaakDocumentInhoud zdsInformatieObject) {
-		// TODO Auto-generated method stub
-		
+		log.error("NOT IMPLEMENTED!!");
 	}
 }

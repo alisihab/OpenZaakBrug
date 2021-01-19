@@ -7,6 +7,7 @@ import org.springframework.web.server.ResponseStatusException;
 import nl.haarlem.translations.zdstozgw.config.model.Translation;
 import nl.haarlem.translations.zdstozgw.converter.Converter;
 import nl.haarlem.translations.zdstozgw.requesthandler.RequestHandlerContext;
+import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsBv02;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsBv03;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsEdcLk01;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsGeefZaakdocumentbewerkenDu02;
@@ -34,11 +35,8 @@ public class UpdateZaakdocumentTranslator extends Converter {
 		this.context.setKenmerk("documentidentificatie:" + zdsInformatieObject.identificatie);
 		this.getZaakService().updateZaakDocument(zdsInformatieObject);
 
-		throw new RuntimeException("updateZaakDocument");
-		/*		
-		var du02 = new ZdsGeefZaakdocumentbewerkenDu02(zdsUpdateZaakdocumentDi02.stuurgegevens, this.context.getReferentienummer());
-		var response = XmlUtils.getSOAPMessageFromObject(du02);
+		var bv02 = new ZdsBv02();
+		var response = XmlUtils.getSOAPMessageFromObject(bv02);
 		return new ResponseEntity<>(response, HttpStatus.OK);
-		 */
 	}
 }
