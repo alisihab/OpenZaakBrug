@@ -18,4 +18,7 @@ public class ZdsUpdateZaakdocumentDi02 extends ZdsZknDocument {
 
 	@XmlElement(namespace = ZKN)
 	public ZdsEdcLk02 edcLk02;
+
+	@XmlElement(namespace = ZKN)
+	public ZdsParameters parameters;
 }

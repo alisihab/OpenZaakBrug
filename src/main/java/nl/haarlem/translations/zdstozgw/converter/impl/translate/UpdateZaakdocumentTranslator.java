@@ -31,9 +31,11 @@ public class UpdateZaakdocumentTranslator extends Converter {
 	@Override
 	public ResponseEntity<?> execute() throws ResponseStatusException {
 		var zdsUpdateZaakdocumentDi02 = (ZdsUpdateZaakdocumentDi02) this.getZdsDocument();
-		var zdsInformatieObject = zdsUpdateZaakdocumentDi02.edcLk02.documenten.get(0);
-		this.context.setKenmerk("documentidentificatie:" + zdsInformatieObject.identificatie);
-		this.getZaakService().updateZaakDocument(zdsInformatieObject);
+		var lock = zdsUpdateZaakdocumentDi02.parameters.checkedOutId;
+		var zdsWasInformatieObject = zdsUpdateZaakdocumentDi02.edcLk02.documenten.get(0);
+		var zdsWordtInformatieObject = zdsUpdateZaakdocumentDi02.edcLk02.documenten.get(1);
+		this.context.setKenmerk("documentidentificatie:" + zdsWasInformatieObject.identificatie);
+		this.getZaakService().updateZaakDocument(lock, zdsWasInformatieObject, zdsWordtInformatieObject);
 
 		var bv02 = new ZdsBv02();
 		var response = XmlUtils.getSOAPMessageFromObject(bv02);

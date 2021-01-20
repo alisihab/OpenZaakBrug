@@ -615,4 +615,11 @@ public class ZGWClient {
 			Object result = gson.fromJson(lock, Object.class);
 			return;
 	}
+
+	public ZgwEnkelvoudigInformatieObject putZaakDocument(ZgwEnkelvoudigInformatieObject zgwEnkelvoudigInformatieObject) {
+		Gson gson = new Gson();
+		String json = gson.toJson(zgwEnkelvoudigInformatieObject);
+		String response = this.put(zgwEnkelvoudigInformatieObject.url, json);
+		return gson.fromJson(response, ZgwEnkelvoudigInformatieObject.class);
+	}
 }

@@ -756,7 +756,44 @@ public class ZaakService {
 		return null;
 	}
 
-	public void updateZaakDocument(ZdsZaakDocumentInhoud zdsInformatieObject) {
-		log.error("NOT IMPLEMENTED!!");
+	public ZgwEnkelvoudigInformatieObject updateZaakDocument(String lock, ZdsZaakDocumentInhoud zdsWasInformatieObject, ZdsZaakDocumentInhoud zdsWordtInformatieObject) {
+		log.info("updateZaakDocument lock:" + lock + " informatieobject:" + zdsWasInformatieObject.identificatie);
+
+		var zgwWasEnkelvoudigInformatieObject = this.zgwClient.getZgwEnkelvoudigInformatieObjectByIdentiticatie(zdsWasInformatieObject.identificatie);
+		if (zgwWasEnkelvoudigInformatieObject == null) {
+			throw new RuntimeException("ZgwEnkelvoudigInformatieObjectByIdentiticatie not found for identificatie: " + zdsWasInformatieObject.identificatie);
+		}
+
+		// https://github.com/Sudwest-Fryslan/OpenZaakBrug/issues/54
+		// 		Move code to the ModelMapperConfig.java
+		//		Also merge, we shouldnt overwrite the old values this hard
+		var zgwWordtEnkelvoudigInformatieObject = this.modelMapper.map(zdsWordtInformatieObject, ZgwEnkelvoudigInformatieObject.class);
+		if(zgwWordtEnkelvoudigInformatieObject.verzenddatum != null && zgwWordtEnkelvoudigInformatieObject.verzenddatum.length() == 0) {
+			zgwWordtEnkelvoudigInformatieObject.verzenddatum = null;
+		}
+		//zgwEnkelvoudigInformatieObject.indicatieGebruiksrecht = "false";
+		zgwWordtEnkelvoudigInformatieObject.bronorganisatie = zgwWasEnkelvoudigInformatieObject.bronorganisatie;
+		//zgwWordtEnkelvoudigInformatieObject.taal = zgwWasEnkelvoudigInformatieObject.taal;
+		zgwWordtEnkelvoudigInformatieObject.lock = lock;
+		zgwWordtEnkelvoudigInformatieObject.url = zgwWasEnkelvoudigInformatieObject.url;
+		
+		zgwWasEnkelvoudigInformatieObject = this.zgwClient.putZaakDocument(zgwWordtEnkelvoudigInformatieObject);
+		//ZgwZaak zgwZaak = this.zgwClient.getZaakByIdentificatie(zdsInformatieObject.isRelevantVoor.gerelateerde.identificatie);
+		//ZgwZaakInformatieObject zgwZaakInformatieObject = addZaakInformatieObject(zgwEnkelvoudigInformatieObject, zgwZaak.url);
+
+		// status
+		//if (zdsInformatieObject.isRelevantVoor.volgnummer != null
+		//		&& zdsInformatieObject.isRelevantVoor.omschrijving != null
+		//		&& zdsInformatieObject.isRelevantVoor.datumStatusGezet != null) {
+		//	log.debug("Update of zaakid:" + zgwZaak.identificatie + " has  status changes");
+		//	var zgwStatusType = this.zgwClient.getStatusTypeByZaakTypeAndOmschrijving(zgwZaak.zaaktype,
+		//			zdsInformatieObject.isRelevantVoor.omschrijving, zdsInformatieObject.isRelevantVoor.volgnummer);
+		//	// ZgwStatus zgwStatus = modelMapper.map(zdsHeeft, ZgwStatus.class);
+		//	ZgwStatus zgwStatus = new ZgwStatus();
+		//	zgwStatus.zaak = zgwZaak.url;
+		//	zgwStatus.statustype = zgwStatusType.url;
+		//	this.zgwClient.actualiseerZaakStatus(zgwStatus);
+		//}
+		return zgwWasEnkelvoudigInformatieObject;
 	}
 }
