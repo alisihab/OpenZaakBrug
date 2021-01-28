@@ -737,6 +737,13 @@ public class ZaakService {
 			throw new ConverterException(
 					"ZgwEnkelvoudigInformatieObject #" + documentIdentificatie + " could not be found");
 		}
+		if (zgwEnkelvoudigInformatieObject == null) {
+			throw new ConverterException("ZgwEnkelvoudigInformatieObjectByIdentiticatie not found for identificatie: " + zgwEnkelvoudigInformatieObject.identificatie);
+		}
+		if(zgwEnkelvoudigInformatieObject.locked) {
+			throw new ConverterException("ZgwEnkelvoudigInformatieObjectByIdentiticatie with identificatie: " + zgwEnkelvoudigInformatieObject.identificatie + " cannot be locked and then changed");
+		}		
+		
 		ZgwLock lock = this.zgwClient.getZgwInformatieObjectLock(zgwEnkelvoudigInformatieObject);
 		log.info("received lock:" + lock.lock);
 		return lock.lock;
@@ -760,9 +767,10 @@ public class ZaakService {
 		log.info("updateZaakDocument lock:" + lock + " informatieobject:" + zdsWasInformatieObject.identificatie);
 
 		var zgwWasEnkelvoudigInformatieObject = this.zgwClient.getZgwEnkelvoudigInformatieObjectByIdentiticatie(zdsWasInformatieObject.identificatie);
-		if (zgwWasEnkelvoudigInformatieObject == null) {
-			throw new RuntimeException("ZgwEnkelvoudigInformatieObjectByIdentiticatie not found for identificatie: " + zdsWasInformatieObject.identificatie);
+		if("definitief".equals(zgwWasEnkelvoudigInformatieObject.status)) {
+			throw new RuntimeException("ZgwEnkelvoudigInformatieObjectByIdentiticatie with identificatie: " + zdsWasInformatieObject.identificatie + " cannot be locked and then changed");
 		}
+			
 
 		// https://github.com/Sudwest-Fryslan/OpenZaakBrug/issues/54
 		// 		Move code to the ModelMapperConfig.java
@@ -773,14 +781,19 @@ public class ZaakService {
 		}
 		//zgwEnkelvoudigInformatieObject.indicatieGebruiksrecht = "false";
 		zgwWordtEnkelvoudigInformatieObject.bronorganisatie = zgwWasEnkelvoudigInformatieObject.bronorganisatie;
-		//zgwWordtEnkelvoudigInformatieObject.taal = zgwWasEnkelvoudigInformatieObject.taal;
+		zgwWordtEnkelvoudigInformatieObject.informatieobjecttype = zgwWasEnkelvoudigInformatieObject.informatieobjecttype;
+		
+		//	"in_bewerking" "ter_vaststelling" "definitief" "gearchiveerd"
+		zgwWordtEnkelvoudigInformatieObject.status = zgwWordtEnkelvoudigInformatieObject.status.toLowerCase();
 		zgwWordtEnkelvoudigInformatieObject.lock = lock;
 		zgwWordtEnkelvoudigInformatieObject.url = zgwWasEnkelvoudigInformatieObject.url;
-		
 		zgwWasEnkelvoudigInformatieObject = this.zgwClient.putZaakDocument(zgwWordtEnkelvoudigInformatieObject);
 		//ZgwZaak zgwZaak = this.zgwClient.getZaakByIdentificatie(zdsInformatieObject.isRelevantVoor.gerelateerde.identificatie);
 		//ZgwZaakInformatieObject zgwZaakInformatieObject = addZaakInformatieObject(zgwEnkelvoudigInformatieObject, zgwZaak.url);
-
+		ZgwLock zgwLock = new ZgwLock();
+		zgwLock.lock = lock;
+		this.zgwClient.getZgwInformatieObjectUnLock(zgwWordtEnkelvoudigInformatieObject, zgwLock);
+		
 		// status
 		//if (zdsInformatieObject.isRelevantVoor.volgnummer != null
 		//		&& zdsInformatieObject.isRelevantVoor.omschrijving != null

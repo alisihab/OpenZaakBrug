@@ -82,5 +82,9 @@ public class ZgwEnkelvoudigInformatieObject {
 	
 	@SerializedName("lock")
 	@Expose
-	public String lock;	
+	public String lock;
+	
+	@SerializedName("locked")
+	@Expose
+	public boolean locked;	
 }
