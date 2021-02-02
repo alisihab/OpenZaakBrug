@@ -37,7 +37,7 @@ public class ZdsStuurgegevens extends ZdsObject {
 	@XmlElement(namespace = STUF)
 	public String entiteittype;
 
-	private ZdsStuurgegevens() {
+	public ZdsStuurgegevens() {
 	}
 
 	public ZdsStuurgegevens(ZdsStuurgegevens stuurgegevens, String referentienummer) {

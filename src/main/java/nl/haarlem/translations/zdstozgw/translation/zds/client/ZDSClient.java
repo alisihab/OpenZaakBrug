@@ -43,6 +43,7 @@ public class ZDSClient {
 		log.debug("Requestbody:\n" + zdsRequest);
 		var method = new PostMethod(zdsUrl);
 		try {
+			long startTime = System.currentTimeMillis();
 			method.setRequestHeader("SOAPAction", zdsSoapAction);
 			method.setRequestHeader("Content-Type", "text/xml; charset=utf-8");
 			StringRequestEntity requestEntity = new org.apache.commons.httpclient.methods.StringRequestEntity(
@@ -74,6 +75,8 @@ public class ZDSClient {
 				debug.abortpoint(debugName, message);
 				throw new ConverterException(message);
 			}
+			long endTime = System.currentTimeMillis();
+			log.info("Soapaction: " + zdsSoapAction + " took " + (endTime - startTime) + " milliseconds");
 			return new ResponseEntity<>(zdsResponseBody, HttpStatus.valueOf(responsecode));
 		} catch (IOException ce) {
 			throw new ConverterException(

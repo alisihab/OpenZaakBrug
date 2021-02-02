@@ -48,8 +48,9 @@ public class LoggingRequestHandler extends RequestHandler {
 				.setConverterTemplate(this.getConverter().getTranslation().getTemplate());
 		this.sessionService.save(session);
 
-		this.converter.load();
 		try {
+			this.converter.load();
+			
 			var response = this.converter.execute();
 			session.setKenmerk(this.getConverter().getContext().getKenmerk());
 			session.setClientResponseBody(response.getBody().toString());
