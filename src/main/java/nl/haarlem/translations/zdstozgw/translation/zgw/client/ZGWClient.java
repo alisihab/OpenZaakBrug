@@ -25,6 +25,7 @@ import nl.haarlem.translations.zdstozgw.debug.Debugger;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.QueryResult;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwEnkelvoudigInformatieObject;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwInformatieObjectType;
+import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwLock;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwResultaat;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwResultaatType;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwRol;
@@ -89,13 +90,18 @@ public class ZGWClient {
 		log.debug("POST: " + url + ", json: " + json);
 		HttpEntity<String> entity = new HttpEntity<String>(json, this.restTemplateService.getHeaders());
 		try {
+			long startTime = System.currentTimeMillis();
 			String finalUrl = url;
 			String zgwResponse = (String) debug.endpoint(debugName,
 					() -> this.restTemplateService.getRestTemplate().postForObject(finalUrl, entity, String.class));
+			long endTime = System.currentTimeMillis();
+			log.info("POST to: " + url + " took " + (endTime - startTime) + " milliseconds");
 			log.debug("POST response: " + zgwResponse);
 			return zgwResponse;
 		} catch (HttpStatusCodeException hsce) {
-			json = json.replace("{", "{\n").replace("\",", "\",\n").replace("\"}", "\"\n}");
+			if(json!=null) {
+				json = json.replace("{", "{\n").replace("\",", "\",\n").replace("\"}", "\"\n}");
+			}
 			var response = hsce.getResponseBodyAsString().replace("{", "{\n").replace("\",", "\",\n").replace("\"}",
 					"\"\n}");
 			var details = "--------------POST:\n" + url + "\n" + json + "\n--------------RESPONSE:\n" + response;
@@ -123,12 +129,15 @@ public class ZGWClient {
 		log.debug("GET: " + url);
 		HttpEntity entity = new HttpEntity(this.restTemplateService.getHeaders());
 		try {
+			long startTime = System.currentTimeMillis();
 			String finalUrl = url;
 			String zgwResponse = (String) debug.endpoint(debugName, () -> {
 				ResponseEntity<String> response = this.restTemplateService.getRestTemplate().exchange(finalUrl,
 						HttpMethod.GET, entity, String.class);
 				return response.getBody();
 			});
+			long endTime = System.currentTimeMillis();
+			log.info("GET to: " + url + " took " + (endTime - startTime) + " milliseconds");
 			log.debug("GET response: " + zgwResponse);
 			return zgwResponse;
 		} catch (HttpStatusCodeException hsce) {
@@ -151,12 +160,15 @@ public class ZGWClient {
 		log.debug("DELETE: " + url);
 		HttpEntity entity = new HttpEntity(this.restTemplateService.getHeaders());
 		try {
+			long startTime = System.currentTimeMillis();
 			String finalUrl = url;
 			String zgwResponse = (String) debug.endpoint(debugName, () -> {
 				ResponseEntity<String> response = this.restTemplateService.getRestTemplate().exchange(finalUrl,
 						HttpMethod.DELETE, entity, String.class);
 				return response.getBody();
 			});
+			long endTime = System.currentTimeMillis();
+			log.info("DELETE to: " + url + " took " + (endTime - startTime) + " milliseconds");
 			log.debug("DELETE response: " + zgwResponse);
 			return zgwResponse;
 		} catch (HttpStatusCodeException hsce) {
@@ -179,12 +191,15 @@ public class ZGWClient {
 		log.debug("PUT: " + url + ", json: " + json);
 		HttpEntity<String> entity = new HttpEntity<String>(json, this.restTemplateService.getHeaders());
 		try {
+			long startTime = System.currentTimeMillis();
 			String finalUrl = url;
 			String zgwResponse = (String) debug.endpoint(debugName, () -> {
 				ResponseEntity<String> response = this.restTemplateService.getRestTemplate().exchange(finalUrl,
 						HttpMethod.PUT, entity, String.class);
 				return response.getBody();
 			});
+			long endTime = System.currentTimeMillis();
+			log.info("PUT to: " + url + " took " + (endTime - startTime) + " milliseconds");
 			log.debug("PUT response: " + zgwResponse);
 			return zgwResponse;
 		} catch (HttpStatusCodeException hsce) {
@@ -596,5 +611,27 @@ public class ZGWClient {
 		Gson gson = new Gson();
 		ZgwInformatieObjectType result = gson.fromJson(documentType, ZgwInformatieObjectType.class);
 		return result;
+	}
+
+	public ZgwLock getZgwInformatieObjectLock(ZgwEnkelvoudigInformatieObject zgwEnkelvoudigInformatieObject) {
+		var lock = post(zgwEnkelvoudigInformatieObject.url + "/lock", null);
+		Gson gson = new Gson();
+		ZgwLock result = gson.fromJson(lock, ZgwLock.class);
+		return result;
+	}
+
+	public void getZgwInformatieObjectUnLock(ZgwEnkelvoudigInformatieObject zgwEnkelvoudigInformatieObject, ZgwLock zgwLock) {
+			Gson gson = new Gson();
+			String json = gson.toJson(zgwLock);		
+			var lock = post(zgwEnkelvoudigInformatieObject.url + "/unlock", json);
+			Object result = gson.fromJson(lock, Object.class);
+			return;
+	}
+
+	public ZgwEnkelvoudigInformatieObject putZaakDocument(ZgwEnkelvoudigInformatieObject zgwEnkelvoudigInformatieObject) {
+		Gson gson = new Gson();
+		String json = gson.toJson(zgwEnkelvoudigInformatieObject);
+		String response = this.put(zgwEnkelvoudigInformatieObject.url, json);
+		return gson.fromJson(response, ZgwEnkelvoudigInformatieObject.class);
 	}
 }
