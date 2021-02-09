@@ -12,6 +12,7 @@ import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import nl.haarlem.translations.zdstozgw.config.ConfigService;
@@ -54,6 +55,9 @@ public class ZaakService {
 
 	private static final Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
+	@Value("${nl.haarlem.translations.zdstozgw.auto.laststatus}")
+	public Boolean autoLastStatus;	
+	
 	public final ZGWClient zgwClient;
 
 	private final ModelMapper modelMapper;
@@ -182,98 +186,110 @@ public class ZaakService {
 	}
 	
 	private boolean setResultaatAndStatus(ZdsZaak zdsZaak, ZgwZaak zgwZaak) {
-		var changed = false;
-		/*
-		// status
-		if (zdsZaak.heeft != null && zdsZaak.heeft.size() > 0 && zdsZaak.heeft.get(0).gerelateerde != null) {
-			log.debug("Update of zaakid:" + zdsZaak.identificatie + " has status changes");
-
-			var zdsHeeft = zdsZaak.heeft.get(0);
-			var zdsStatus = zdsHeeft.gerelateerde;
-			var zgwStatusType = this.zgwClient.getStatusTypeByZaakTypeAndOmschrijving(zgwZaak.zaaktype,
-					zdsStatus.omschrijving, zdsStatus.volgnummer);
-			ZgwStatus zgwStatus = this.modelMapper.map(zdsHeeft, ZgwStatus.class);
-			zgwStatus.zaak = zgwZaak.url;
-			zgwStatus.statustype = zgwStatusType.url;
-			this.zgwClient.actualiseerZaakStatus(zgwStatus);
-		}
-		*/
-		// Difference between ZDS --> ZGW the behaviour of ending a zaak has changed.
-		// (more info at: https://vng-realisatie.github.io/gemma-zaken/standaard/zaken/index#zrc-007 ) 
-		//
-		// in ZDS:
-		//	- object/einddatum contained the einddatum
-		//	- object/resultaat/omgeschrijving contained the resultaat-omschrijving
-		// 
-		// in ZGW:
-		//	- resultaat an reference and status has to be set to the one with the highest volgnummer
-
-		// resultaat
-		var eindezaak = false; 
+		var changed = false;		
+		
 		if (zdsZaak.resultaat != null && zdsZaak.resultaat.omschrijving != null) {
+			// wanneer eindezaak
+
+			// Difference between ZDS --> ZGW the behaviour of ending a zaak has changed.
+			// (more info at: https://vng-realisatie.github.io/gemma-zaken/standaard/zaken/index#zrc-007 ) 
+			//
+			// in ZDS:
+			//	- object/einddatum contained the einddatum
+			//	- object/resultaat/omgeschrijving contained the resultaat-omschrijving
+			// 
+			// in ZGW:
+			//	- resultaat an reference and status has to be set to the one with the highest volgnummer
+			var zaakid = zdsZaak.identificatie;
 			var resultaatomschrijving = zdsZaak.resultaat.omschrijving;
-			log.debug("Update of zaakid:" + zdsZaak.identificatie + " with resultaatomschrijving:" + resultaatomschrijving );
-			var zgwResultaatType = this.zgwClient.getResultaatTypeByZaakTypeAndOmschrijving(zgwZaak.zaaktype, resultaatomschrijving);
-			//ZgwStatus zgwStatus = this.modelMapper.map(zdsHeeft, ZgwStatus.class);
-			//zgwStatus.zaak = zgwZaak.url;
-			//zgwStatus.statustype = zgwStatusType.url;
-			//this.zgwClient.actualiseerZaakStatus(zgwStatus);
-			//changed = true;
-			log.debug("Using resultaattype:" + zgwResultaatType.omschrijving);
+			var einddatum = zdsZaak.einddatum;			
+			var today = new SimpleDateFormat("yyyyMMdd").format(new Date()); 
 			
-			var resultaten = this.zgwClient.getResultatenByZaakUrl(zgwZaak.url);
-			if(resultaten.size() > 0) {
-				log.warn("Zaak met identitifatie:" + zdsZaak.identificatie + " already has #" + resultaten.size() + " resultaten,  resultaat[0] = " + resultaten.get(0).toelichting);
+			if(einddatum == null) {
+				log.warn("Update of zaakid:" + zaakid + " has resultaat but no einddatum, using today");
+				einddatum = today;
+			}
+			//else if(!einddatum.equals(today)) {
+			//	log.warn("Update of zaakid:" + zaakid + " has resultaat and einddatum, einddatum:" + zdsZaak.einddatum + " is not today (" + today + ")");				
+			//}
+			log.info("Update of zaakid:" + zaakid + " with resultaatomschrijving:" + resultaatomschrijving );
+			var zgwResultaatType = this.zgwClient.getResultaatTypeByZaakTypeAndOmschrijving(zgwZaak.zaaktype, resultaatomschrijving);			
+			log.info("Gevonden restulaattype:" + zgwResultaatType.omschrijving);						
+			var resultaten = this.zgwClient.getResultatenByZaakUrl(zgwZaak.url);			
+			
+			for (ZgwResultaat resultaat : resultaten) {
+				log.warn("Zaak met identitifatie:" + zaakid+ " already has resultaat #" + resultaten.indexOf(resultaat) + " met toelichting:" +  resultaat.toelichting);
+				if(resultaat.toelichting.equals(zdsZaak.resultaat.omschrijving)) {
+					log.warn("Gevonden resultaat:" + resultaat.toelichting + " is hetzelfde als waar het resultaat opgezet moet worden, kan zo niet goed gaan");
+				}
+			}			
+			ZgwResultaat zgwResultaat = new ZgwResultaat();
+			zgwResultaat.zaak = zgwZaak.url;
+			zgwResultaat.resultaattype = zgwResultaatType.url;
+			zgwResultaat.toelichting = zdsZaak.resultaat.omschrijving;
+			this.zgwClient.actualiseerZaakResultaat(zgwResultaat);
+
+					
+			// Bekijken wat de laatste status is, deze moet gezet worden bij het afsltuiden van de zaak
+			var statustypes = this.zgwClient.getStatusTypesByZaakType(zgwZaak.zaaktype);
+			ZgwStatusType laststatustype = null;
+			for (ZgwStatusType statustype : statustypes) {
+				if(laststatustype == null || laststatustype.volgnummer < statustype.volgnummer) {
+					laststatustype = statustype;
+				}
+			}					
+			if(laststatustype == null) {
+				throw new ConverterException("no statuses found for zaaktype:" + zgwZaak.zaaktype);
+			}
+			
+			// nu kijken of we een status hebben die gelijk is aan wat de laatste status zou moeten zijn,...
+			ZgwStatusType foundstatustype = null;
+			ZdsHeeft zdsHeeft = null;
+			if (zdsZaak.heeft != null && zdsZaak.heeft.size() > 0 && zdsZaak.heeft.get(0).gerelateerde != null) {
+				zdsHeeft = zdsZaak.heeft.get(0);
+				var zdsStatus = zdsHeeft.gerelateerde;
+				foundstatustype = this.zgwClient.getStatusTypeByZaakTypeAndOmschrijving(zgwZaak.zaaktype, zdsStatus.omschrijving, zdsStatus.volgnummer);				
+			}
+			
+			if(foundstatustype == null) {
+				log.warn("einddatum and resultaat without a status");
+				if(this.autoLastStatus) {
+					log.info("autoLastStatus = enabled: setting status to:" + laststatustype.omschrijving);
+					foundstatustype = laststatustype;
+					// de status heeft straks info nodig
+					zdsHeeft = new ZdsHeeft();
+					zdsHeeft.datumStatusGezet = einddatum;
+				}
+			}
+			else if(!laststatustype.url.equals(foundstatustype.url)) {
+				log.warn("einddatum and resultaat but found status:" + foundstatustype.omschrijving + " is not the last status:" + laststatustype.omschrijving);
+				if(this.autoLastStatus) {
+					log.info("autoLastStatus = enabled: overriding status to:" + laststatustype.omschrijving);
+					foundstatustype = laststatustype;
+				}
+			}
+			if(foundstatustype != null) {			
+				ZgwStatus zgwStatus = this.modelMapper.map(zdsHeeft, ZgwStatus.class);
+				zgwStatus.zaak = zgwZaak.url;
+				zgwStatus.statustype = foundstatustype.url;			
+				this.zgwClient.actualiseerZaakStatus(zgwStatus);
 			}
 			else {
-				ZgwResultaat zgwResultaat = new ZgwResultaat();
-				zgwResultaat.zaak = zgwZaak.url;
-				zgwResultaat.resultaattype = zgwResultaatType.url;
-				zgwResultaat.toelichting = zdsZaak.resultaat.omschrijving;
-				this.zgwClient.actualiseerZaakResultaat(zgwResultaat);
-			}
-			
-			var today = new SimpleDateFormat("yyyyMMdd").format(new Date());
-			if(zdsZaak.einddatum == null) {
-				log.warn("Update of zaakid:" + zdsZaak.identificatie + " has resultaat but no einddatum");
-			}
-			else if(!zdsZaak.einddatum.equals(today)) {
-				log.warn("Update of zaakid:" + zdsZaak.identificatie + " has resultaat and einddatum, einddatum:" + zdsZaak.einddatum + " is not today (" + today + ")");				
-			}			
-			eindezaak = true;
-			changed = true;
-		}				
-		
-		// status
-		if (zdsZaak.heeft != null && zdsZaak.heeft.size() > 0
-				&& zdsZaak.heeft.get(0).gerelateerde != null) {
-			log.debug("Update of zaakid:" + zdsZaak.identificatie + " has  status changes");
-
-			var zdsHeeft = zdsZaak.heeft.get(0);
-			var zdsStatus = zdsHeeft.gerelateerde;
-			var zgwStatusType = this.zgwClient.getStatusTypeByZaakTypeAndOmschrijving(zgwZaak.zaaktype,
-					zdsStatus.omschrijving, zdsStatus.volgnummer);			
-			ZgwStatus zgwStatus = this.modelMapper.map(zdsHeeft, ZgwStatus.class);
-			zgwStatus.zaak = zgwZaak.url;
-			zgwStatus.statustype = zgwStatusType.url;
-			this.zgwClient.actualiseerZaakStatus(zgwStatus);
-
-			// was the final status expected? 
-			if(eindezaak) {
-				if(zgwStatusType.isEindstatus.equals("true")) {
-					log.info("Zaak beëindigd met id:" + zdsZaak.identificatie);
-				}
-				else { 
-					log.warn("Update of zaakid:" + zdsZaak.identificatie + " has resultaat(and eindstatus) but the status is not the final status (Eindstatus = true)");
-				}
+				log.warn("No status, while einddatum and resultaat were supplied");	
 			}
 			changed = true;
 		}
-		else {
-			if(eindezaak) {
-				log.warn("Update of zaakid:" + zdsZaak.identificatie + " has resultaat(and eindstatus) but the status is not changed to another status (also not to the final status)");
-			}
-		}		
+		else if (zdsZaak.heeft != null && zdsZaak.heeft.size() > 0 && zdsZaak.heeft.get(0).gerelateerde != null) {
+				var zdsHeeft = zdsZaak.heeft.get(0);
+				var zdsStatus = zdsHeeft.gerelateerde;
+				log.info("Update of zaakid:" + zdsZaak.identificatie + " wants status to be changed to:" + zdsStatus.omschrijving);				
+				var zgwStatusType = this.zgwClient.getStatusTypeByZaakTypeAndOmschrijving(zgwZaak.zaaktype, zdsStatus.omschrijving, zdsStatus.volgnummer);			
+				ZgwStatus zgwStatus = this.modelMapper.map(zdsHeeft, ZgwStatus.class);
+				zgwStatus.zaak = zgwZaak.url;
+				zgwStatus.statustype = zgwStatusType.url;
+				this.zgwClient.actualiseerZaakStatus(zgwStatus);	
+				changed = true;
+		}
 		return changed;
 	}
 
