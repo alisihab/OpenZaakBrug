@@ -499,6 +499,14 @@ public class ZGWClient {
 		return zaakinformatieobjecten.get(0);
 	}
 
+	public List<ZgwStatusType> getStatusTypesByZaakType(String zaakTypeUrl) {
+		Map<String, String> parameters = new HashMap();
+		parameters.put("zaaktype", zaakTypeUrl);
+		List<ZgwStatusType> statustypes = this.getStatusTypes(parameters);
+		return statustypes;
+	}
+	
+	
 	// TODO: we really need a zaakstatus-type-identificatie in openzaak
 	public ZgwStatusType getStatusTypeByZaakTypeAndOmschrijving(String zaakTypeUrl, String statusOmschrijving,
 			String verwachteVolgnummer) {
