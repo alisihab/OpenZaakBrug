@@ -72,6 +72,8 @@ public class SoapController {
 			@PathVariable String endpoint, @RequestHeader(name = "SOAPAction", required = true) String soapAction,
 			@RequestBody String body, String referentienummer) {
 
+		long startTime = System.currentTimeMillis();
+
 		var path = modus + "/" + version + "/" + protocol + "/" + endpoint;
 		if (referentienummer == null) {
 			referentienummer = "ozb-" + java.util.UUID.randomUUID().toString();
@@ -114,6 +116,12 @@ public class SoapController {
 			response = handler.execute();
 			debug.outputpoint("statusCode", response.getStatusCodeValue());
 			debug.outputpoint("kenmerk", context.getKenmerk());
+
+			long endTime = System.currentTimeMillis();
+			var duration = endTime - startTime;
+			var message = "Soapaction: " + soapAction + " took " + duration + " milliseconds";			
+			debug.infopoint("Total translation took: " + duration + " ms.", message);
+			
 			debug.endpoint(reportName, response.getBody().toString());
 		} catch(Throwable t) {
 			debug.abortpoint(reportName, t.toString());

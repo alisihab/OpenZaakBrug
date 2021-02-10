@@ -76,7 +76,10 @@ public class ZDSClient {
 				throw new ConverterException(message);
 			}
 			long endTime = System.currentTimeMillis();
-			log.info("Soapaction: " + zdsSoapAction + " took " + (endTime - startTime) + " milliseconds");
+			var duration = endTime - startTime;
+			var message = "Soapaction: " + zdsSoapAction + " took " + duration + " milliseconds";
+			log.info(message);
+			debug.infopoint("Took: " + duration + " ms.", message);
 			return new ResponseEntity<>(zdsResponseBody, HttpStatus.valueOf(responsecode));
 		} catch (IOException ce) {
 			throw new ConverterException(

@@ -19,6 +19,7 @@ import nl.haarlem.translations.zdstozgw.config.ConfigService;
 import nl.haarlem.translations.zdstozgw.config.model.Organisatie;
 import nl.haarlem.translations.zdstozgw.config.model.ZgwRolOmschrijving;
 import nl.haarlem.translations.zdstozgw.converter.ConverterException;
+import nl.haarlem.translations.zdstozgw.debug.Debugger;
 import nl.haarlem.translations.zdstozgw.translation.BetrokkeneType;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsGerelateerde;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsHeeft;
@@ -54,6 +55,8 @@ import nl.haarlem.translations.zdstozgw.utils.ChangeDetector.Change;
 public class ZaakService {
 
 	private static final Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+
+	private static final Debugger debug = Debugger.getDebugger(MethodHandles.lookup().lookupClass());
 
 	@Value("${nl.haarlem.translations.zdstozgw.auto.laststatus}")
 	public Boolean autoLastStatus;	
@@ -164,7 +167,7 @@ public class ZaakService {
 					.forEach((change, changeType) -> {
 						var rolnaam = getRolOmschrijvingGeneriekByRolName(change.getField().getName());
 						if(rolnaam != null) {						
-							log.info("[CHANGE ROL] Deleted Rol:" + rolnaam);
+							info("[CHANGE ROL] Deleted Rol:" + rolnaam);
 							deleteRolFromZgw(rolnaam, zgwZaak);
 						}
 					});
@@ -181,7 +184,7 @@ public class ZaakService {
 		boolean rasChanged = setResultaatAndStatus(zdsWordtZaak, zgwZaak);
 				
 		if (!changed && ! rasChanged) {
-			log.warn("Update of zaakid:" + zdsWasZaak.identificatie + " without any changes");
+			warn("Update of zaakid:" + zdsWasZaak.identificatie + " without any changes");
 		}
 	}
 	
@@ -206,21 +209,21 @@ public class ZaakService {
 			var today = new SimpleDateFormat("yyyyMMdd").format(new Date()); 
 			
 			if(einddatum == null) {
-				log.warn("Update of zaakid:" + zaakid + " has resultaat but no einddatum, using today");
+				warn("Update of zaakid:" + zaakid + " has resultaat but no einddatum, using today");
 				einddatum = today;
 			}
 			//else if(!einddatum.equals(today)) {
 			//	log.warn("Update of zaakid:" + zaakid + " has resultaat and einddatum, einddatum:" + zdsZaak.einddatum + " is not today (" + today + ")");				
 			//}
-			log.info("Update of zaakid:" + zaakid + " with resultaatomschrijving:" + resultaatomschrijving );
+			info("Update of zaakid:" + zaakid + " with resultaatomschrijving:" + resultaatomschrijving );
 			var zgwResultaatType = this.zgwClient.getResultaatTypeByZaakTypeAndOmschrijving(zgwZaak.zaaktype, resultaatomschrijving);			
-			log.info("Gevonden restulaattype:" + zgwResultaatType.omschrijving);						
+			info("Gevonden restulaattype:" + zgwResultaatType.omschrijving);						
 			var resultaten = this.zgwClient.getResultatenByZaakUrl(zgwZaak.url);			
 			
 			for (ZgwResultaat resultaat : resultaten) {
-				log.warn("Zaak met identitifatie:" + zaakid+ " already has resultaat #" + resultaten.indexOf(resultaat) + " met toelichting:" +  resultaat.toelichting);
+				warn("Zaak met identitifatie:" + zaakid+ " already has resultaat #" + resultaten.indexOf(resultaat) + " met toelichting:" +  resultaat.toelichting);
 				if(resultaat.toelichting.equals(zdsZaak.resultaat.omschrijving)) {
-					log.warn("Gevonden resultaat:" + resultaat.toelichting + " is hetzelfde als waar het resultaat opgezet moet worden, kan zo niet goed gaan");
+					warn("Gevonden resultaat:" + resultaat.toelichting + " is hetzelfde als waar het resultaat opgezet moet worden, kan zo niet goed gaan");
 				}
 			}			
 			ZgwResultaat zgwResultaat = new ZgwResultaat();
@@ -252,9 +255,9 @@ public class ZaakService {
 			}
 			
 			if(foundstatustype == null) {
-				log.warn("einddatum and resultaat without a status");
+				warn("einddatum and resultaat without a status");
 				if(this.autoLastStatus) {
-					log.info("autoLastStatus = enabled: setting status to:" + laststatustype.omschrijving);
+					info("autoLastStatus = enabled: setting status to:" + laststatustype.omschrijving);
 					foundstatustype = laststatustype;
 					// de status heeft straks info nodig
 					zdsHeeft = new ZdsHeeft();
@@ -262,9 +265,9 @@ public class ZaakService {
 				}
 			}
 			else if(!laststatustype.url.equals(foundstatustype.url)) {
-				log.warn("einddatum and resultaat but found status:" + foundstatustype.omschrijving + " is not the last status:" + laststatustype.omschrijving);
+				warn("einddatum and resultaat but found status:" + foundstatustype.omschrijving + " is not the last status:" + laststatustype.omschrijving);
 				if(this.autoLastStatus) {
-					log.info("autoLastStatus = enabled: overriding status to:" + laststatustype.omschrijving);
+					info("autoLastStatus = enabled: overriding status to:" + laststatustype.omschrijving);
 					foundstatustype = laststatustype;
 				}
 			}
@@ -275,14 +278,14 @@ public class ZaakService {
 				this.zgwClient.actualiseerZaakStatus(zgwStatus);
 			}
 			else {
-				log.warn("No status, while einddatum and resultaat were supplied");	
+				warn("No status, while einddatum and resultaat were supplied");	
 			}
 			changed = true;
 		}
 		else if (zdsZaak.heeft != null && zdsZaak.heeft.size() > 0 && zdsZaak.heeft.get(0).gerelateerde != null) {
 				var zdsHeeft = zdsZaak.heeft.get(0);
 				var zdsStatus = zdsHeeft.gerelateerde;
-				log.info("Update of zaakid:" + zdsZaak.identificatie + " wants status to be changed to:" + zdsStatus.omschrijving);				
+				info("Update of zaakid:" + zdsZaak.identificatie + " wants status to be changed to:" + zdsStatus.omschrijving);				
 				var zgwStatusType = this.zgwClient.getStatusTypeByZaakTypeAndOmschrijving(zgwZaak.zaaktype, zdsStatus.omschrijving, zdsStatus.volgnummer);			
 				ZgwStatus zgwStatus = this.modelMapper.map(zdsHeeft, ZgwStatus.class);
 				zgwStatus.zaak = zgwZaak.url;
@@ -300,7 +303,7 @@ public class ZaakService {
 		}
 		if (zdsRol.gerelateerde == null) {
 			// throw new ConverterException("Rol:" + typeRolOmschrijving + " zonder gerelateerde informatie");
-			log.warn("Rol:" + typeRolOmschrijving + " zonder gerelateerde informatie");
+			warn("Rol:" + typeRolOmschrijving + " zonder gerelateerde informatie");
 			return;
 		}
 		ZgwRol zgwRol = new ZgwRol();
@@ -320,7 +323,7 @@ public class ZaakService {
 				if(zdsRol.gerelateerde.natuurlijkPersoon.verblijfsadres != null) {
 					if(zdsRol.gerelateerde.natuurlijkPersoon.verblijfsadres.identificatie == null || zdsRol.gerelateerde.natuurlijkPersoon.verblijfsadres.identificatie.length() == 0) {
 						// https://github.com/Sudwest-Fryslan/OpenZaakBrug/issues/55
-						log.warn("No aoaIdentificatie found for zaak with id: " + createdZaak.identificatie + " in rol: " + typeRolOmschrijving + " for natuurlijkPersoon");
+						warn("No aoaIdentificatie found for zaak with id: " + createdZaak.identificatie + " in rol: " + typeRolOmschrijving + " for natuurlijkPersoon");
 					}
 					else {
 						zgwRol.betrokkeneIdentificatie.verblijfsadres = this.modelMapper.map(zdsRol.gerelateerde.natuurlijkPersoon.verblijfsadres, ZgwAdres.class);
@@ -356,7 +359,7 @@ public class ZaakService {
 	}
 
 	public List<ZdsHeeftRelevant> geefLijstZaakdocumenten(String zaakidentificatie) {
-		log.info("geefLijstZaakdocumenten:" + zaakidentificatie);
+		log.debug("geefLijstZaakdocumenten:" + zaakidentificatie);
 		ZgwZaak zgwZaak = this.zgwClient.getZaakByIdentificatie(zaakidentificatie);
 
 		var relevanteDocumenten = new ArrayList<ZdsHeeftRelevant>();
@@ -414,7 +417,7 @@ public class ZaakService {
 	}
 
 	public ZgwEnkelvoudigInformatieObject voegZaakDocumentToe(String rsin, ZdsZaakDocumentInhoud zdsInformatieObject) {
-		log.info("voegZaakDocumentToe:" + zdsInformatieObject.identificatie);
+		log.debug("voegZaakDocumentToe:" + zdsInformatieObject.identificatie);
 
 		var zgwInformatieObjectType = this.zgwClient.getZgwInformatieObjectTypeByOmschrijving(zdsInformatieObject.omschrijving);
 		if (zgwInformatieObjectType == null) {
@@ -462,7 +465,7 @@ public class ZaakService {
 	}
 
 	public ZdsZaakDocumentInhoud getZaakDocumentLezen(String documentIdentificatie) {
-		log.info("getZaakDocumentLezen:" + documentIdentificatie);
+		log.debug("getZaakDocumentLezen:" + documentIdentificatie);
 		ZgwEnkelvoudigInformatieObject zgwEnkelvoudigInformatieObject = this.zgwClient
 				.getZgwEnkelvoudigInformatieObjectByIdentiticatie(documentIdentificatie);
 		if (zgwEnkelvoudigInformatieObject == null) {
@@ -531,7 +534,7 @@ public class ZaakService {
 	}
 
 	public ZgwZaak actualiseerZaakstatus(ZdsZaak wasZaak, ZdsZaak wordtZaak) {
-		log.info("actualiseerZaakstatus:" + wasZaak.identificatie);
+		log.debug("actualiseerZaakstatus:" + wasZaak.identificatie);
 		ZgwZaak zgwZaak = this.zgwClient.getZaakByIdentificatie(wasZaak.identificatie);
 		var zdsHeeft = wordtZaak.heeft.get(0);
 		var zdsStatus = zdsHeeft.gerelateerde;
@@ -550,7 +553,7 @@ public class ZaakService {
 	}
 
 	public List<ZdsZaak> getZaakDetailsByBsn(String bsn) {
-		log.info("getZaakDetailsByBsn:" + bsn);
+		log.debug("getZaakDetailsByBsn:" + bsn);
 		var zgwRollen = this.zgwClient.getRollenByBsn(bsn);
 		var zdsZaken = new ArrayList<ZdsZaak>();
 		var result = new ArrayList<ZdsZaak>();
@@ -564,7 +567,7 @@ public class ZaakService {
 			}
 			if(result.size() >= 20) {
 				// Max 20 results, it seems we get get unpredicted results after that
-				log.warn("Limit activated, no more than 20 results! (total amound found: " + zgwRollen.size() + " relations)");
+				warn("Limit activated, no more than 20 results! (total amound found: " + zgwRollen.size() + " relations)");
 				break;
 			}
 		}
@@ -572,7 +575,7 @@ public class ZaakService {
 	}
 
 	public ZdsZaak getZaakDetailsByIdentificatie(String zaakidentificatie) {
-		log.info("getZaakDetailsByIdentificatie:" + zaakidentificatie);
+		log.debug("getZaakDetailsByIdentificatie:" + zaakidentificatie);
 		var zgwZaak = this.zgwClient.getZaakByIdentificatie(zaakidentificatie);
 		if (zgwZaak == null) {
 			throw new ConverterException("Zaak not found for identification: '" + zaakidentificatie + "'");
@@ -699,7 +702,7 @@ public class ZaakService {
 		}
 
 		if(typeRolOmschrijving == null) {
-			log.warn("Not adding the rol, typeRolOmschrijving == null ");
+			warn("Not adding the rol, typeRolOmschrijving == null ");
 			return;
 		}				
 		
@@ -712,13 +715,13 @@ public class ZaakService {
 		var roltype = this.zgwClient.getRolTypeByZaaktypeUrlAndOmschrijving(zgwZaak.zaaktype, typeRolOmschrijving);
 		if (roltype == null) {
 			// throw new ConverterException("Roltype: " + typeRolOmschrijving + " niet gevonden bij zaaktype voor zaak: " + zgwZaak.identificatie);
-			log.warn("Roltype: " + typeRolOmschrijving + " niet gevonden bij zaaktype voor zaak: " + zgwZaak.identificatie);
+			warn("Roltype: " + typeRolOmschrijving + " niet gevonden bij zaaktype voor zaak: " + zgwZaak.identificatie);
 			return;
 		}
 		var rol = this.zgwClient.getRolByZaakUrlAndRolTypeUrl(zgwZaak.url, roltype.url);
 		if (rol == null) {
 			//throw new ConverterException("Rol: " + typeRolOmschrijving + " niet gevonden bij zaak: " + zgwZaak.identificatie);
-			log.warn("Rol: " + typeRolOmschrijving + " niet gevonden bij zaaktype voor zaak: " + zgwZaak.identificatie);
+			warn("Rol: " + typeRolOmschrijving + " niet gevonden bij zaaktype voor zaak: " + zgwZaak.identificatie);
 			return;			
 			
 		}
@@ -747,7 +750,7 @@ public class ZaakService {
 	}
 
 	public String checkOutZaakDocument(String documentIdentificatie) {
-		log.info("checkOutZaakDocument:" + documentIdentificatie);
+		log.debug("checkOutZaakDocument:" + documentIdentificatie);
 		ZgwEnkelvoudigInformatieObject zgwEnkelvoudigInformatieObject = this.zgwClient.getZgwEnkelvoudigInformatieObjectByIdentiticatie(documentIdentificatie);
 		if (zgwEnkelvoudigInformatieObject == null) {
 			throw new ConverterException(
@@ -761,12 +764,12 @@ public class ZaakService {
 		}		
 		
 		ZgwLock lock = this.zgwClient.getZgwInformatieObjectLock(zgwEnkelvoudigInformatieObject);
-		log.info("received lock:" + lock.lock);
+		info("received lock:" + lock.lock);
 		return lock.lock;
 	}
 
 	public Object cancelCheckOutZaakDocument(String documentIdentificatie, String lock) {
-		log.info("checkOutZaakDocument:" + documentIdentificatie);
+		log.debug("checkOutZaakDocument:" + documentIdentificatie);
 		ZgwEnkelvoudigInformatieObject zgwEnkelvoudigInformatieObject = this.zgwClient
 				.getZgwEnkelvoudigInformatieObjectByIdentiticatie(documentIdentificatie);
 		if (zgwEnkelvoudigInformatieObject == null) {
@@ -780,7 +783,7 @@ public class ZaakService {
 	}
 
 	public ZgwEnkelvoudigInformatieObject updateZaakDocument(String lock, ZdsZaakDocumentInhoud zdsWasInformatieObject, ZdsZaakDocumentInhoud zdsWordtInformatieObject) {
-		log.info("updateZaakDocument lock:" + lock + " informatieobject:" + zdsWasInformatieObject.identificatie);
+		log.debug("updateZaakDocument lock:" + lock + " informatieobject:" + zdsWasInformatieObject.identificatie);
 
 		var zgwWasEnkelvoudigInformatieObject = this.zgwClient.getZgwEnkelvoudigInformatieObjectByIdentiticatie(zdsWasInformatieObject.identificatie);
 		if("definitief".equals(zgwWasEnkelvoudigInformatieObject.status)) {
@@ -825,4 +828,14 @@ public class ZaakService {
 		//}
 		return zgwWasEnkelvoudigInformatieObject;
 	}
+	
+	private void warn(String message) {
+		log.warn(message);
+		debug.infopoint("WARN:" + message.substring(0, 25) + "...", message);
+	}
+	
+	private void info(String message) {
+		log.info(message);
+		debug.infopoint("INFO:" + message.substring(0, 25) + "...", message);
+	}	
 }
