@@ -9,14 +9,6 @@
 	"
 	>
 
-	<bean class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer">
-		<property name="locations">
-			<list>
-				<value>classpath:application.properties</value>
-			</list>
-		</property>
-	</bean>
-
 	<bean name="metadataExtractor" class="nl.nn.testtool.MetadataExtractor">
 		<property name="extraMetadataFieldExtractors">
 			<list>
@@ -28,10 +20,10 @@
 	<bean name="testTool" class="nl.nn.testtool.TestTool" autowire="byName">
 		<property name="configName" value="OpenZaakBrug"/>
 		<property name="configVersion" value="${version:?.?.?}"/>
-		<property name="maxCheckpoints" value="${ladybug.maxCheckpoints}"/>
-		<property name="maxMemoryUsage" value="${ladybug.maxMemoryUsage}"/>
-		<property name="maxMessageLength" value="${ladybug.maxMessageLength}"/>
-		<property name="regexFilter" value="${ladybug.regexFilter}"/>
+		<property name="maxCheckpoints" value="${ladybug.maxCheckpoints:2500}"/>
+		<property name="maxMemoryUsage" value="${ladybug.maxMemoryUsage:100000000}"/>
+		<property name="maxMessageLength" value="${ladybug.maxMessageLength:1000000}"/>
+		<property name="regexFilter" value="${ladybug.regexFilter:.*}"/>
 	</bean>
 
 	<bean name="debugStorage" class="nl.nn.testtool.storage.file.Storage" autowire="byName" init-method="init" destroy-method="close">
@@ -94,7 +86,7 @@
 	</bean>
 
 	<bean name="reportXmlTransformer" class="nl.nn.testtool.transform.ReportXmlTransformer">
-		<property name="xsltResource" value="${ladybug.reportTransformation}"/>
+		<property name="xsltResource" value="${ladybug.reportTransformation:transform-ladybug-report.xslt}"/>
 	</bean>
 
 	<bean name="treePane" class="nl.nn.testtool.echo2.reports.TreePane" autowire="byName" init-method="initBean" scope="prototype"/>

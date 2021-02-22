@@ -9,6 +9,8 @@ git_hash=${TRAVIS_COMMIT:-`git rev-parse HEAD`}
 rm -f ./src/main/resources/application.properties
 rm -f ./src/main/resources/config.json
 
+mvn clean install -Dmaven.javadoc.skip=true -B -V -DskipTests
+
 # Login to Docker Hub
 docker login -u "$DOCKER_USERNAME" --password "$DOCKER_PASSWORD"
 
