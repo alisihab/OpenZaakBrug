@@ -15,7 +15,7 @@ docker login -u "$DOCKER_USERNAME" --password "$DOCKER_PASSWORD"
 # Echo script commands
 set -x
 
-REPO=openzaakbrug/openzaakbrug
+REPO=sihab/brug
 TAG=${TRAVIS_TAG:-latest}
 
 # Build the image
