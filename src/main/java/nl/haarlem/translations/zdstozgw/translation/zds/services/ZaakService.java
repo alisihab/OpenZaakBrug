@@ -167,7 +167,7 @@ public class ZaakService {
 					.forEach((change, changeType) -> {
 						var rolnaam = getRolOmschrijvingGeneriekByRolName(change.getField().getName());
 						if(rolnaam != null) {						
-							info("[CHANGE ROL] Deleted Rol:" + rolnaam);
+							log.debug("[CHANGE ROL] Deleted Rol:" + rolnaam);
 							deleteRolFromZgw(rolnaam, zgwZaak);
 						}
 					});
@@ -215,9 +215,9 @@ public class ZaakService {
 			//else if(!einddatum.equals(today)) {
 			//	log.warn("Update of zaakid:" + zaakid + " has resultaat and einddatum, einddatum:" + zdsZaak.einddatum + " is not today (" + today + ")");				
 			//}
-			info("Update of zaakid:" + zaakid + " with resultaatomschrijving:" + resultaatomschrijving );
+			log.debug("Update of zaakid:" + zaakid + " with resultaatomschrijving:" + resultaatomschrijving );
 			var zgwResultaatType = this.zgwClient.getResultaatTypeByZaakTypeAndOmschrijving(zgwZaak.zaaktype, resultaatomschrijving);			
-			info("Gevonden restulaattype:" + zgwResultaatType.omschrijving);						
+			log.debug("Gevonden restulaattype:" + zgwResultaatType.omschrijving);						
 			var resultaten = this.zgwClient.getResultatenByZaakUrl(zgwZaak.url);			
 			
 			for (ZgwResultaat resultaat : resultaten) {
@@ -257,7 +257,7 @@ public class ZaakService {
 			if(foundstatustype == null) {
 				warn("einddatum and resultaat without a status");
 				if(this.autoLastStatus) {
-					info("autoLastStatus = enabled: setting status to:" + laststatustype.omschrijving);
+					warn("autoLastStatus = enabled: setting status to:" + laststatustype.omschrijving);
 					foundstatustype = laststatustype;
 					// de status heeft straks info nodig
 					zdsHeeft = new ZdsHeeft();
@@ -267,7 +267,7 @@ public class ZaakService {
 			else if(!laststatustype.url.equals(foundstatustype.url)) {
 				warn("einddatum and resultaat but found status:" + foundstatustype.omschrijving + " is not the last status:" + laststatustype.omschrijving);
 				if(this.autoLastStatus) {
-					info("autoLastStatus = enabled: overriding status to:" + laststatustype.omschrijving);
+					warn("autoLastStatus = enabled: overriding status to:" + laststatustype.omschrijving);
 					foundstatustype = laststatustype;
 				}
 			}
@@ -285,7 +285,7 @@ public class ZaakService {
 		else if (zdsZaak.heeft != null && zdsZaak.heeft.size() > 0 && zdsZaak.heeft.get(0).gerelateerde != null) {
 				var zdsHeeft = zdsZaak.heeft.get(0);
 				var zdsStatus = zdsHeeft.gerelateerde;
-				info("Update of zaakid:" + zdsZaak.identificatie + " wants status to be changed to:" + zdsStatus.omschrijving);				
+				warn("Update of zaakid:" + zdsZaak.identificatie + " wants status to be changed to:" + zdsStatus.omschrijving);				
 				var zgwStatusType = this.zgwClient.getStatusTypeByZaakTypeAndOmschrijving(zgwZaak.zaaktype, zdsStatus.omschrijving, zdsStatus.volgnummer);			
 				ZgwStatus zgwStatus = this.modelMapper.map(zdsHeeft, ZgwStatus.class);
 				zgwStatus.zaak = zgwZaak.url;
@@ -764,7 +764,7 @@ public class ZaakService {
 		}		
 		
 		ZgwLock lock = this.zgwClient.getZgwInformatieObjectLock(zgwEnkelvoudigInformatieObject);
-		info("received lock:" + lock.lock);
+		log.debug("received lock:" + lock.lock);
 		return lock.lock;
 	}
 
@@ -832,10 +832,5 @@ public class ZaakService {
 	private void warn(String message) {
 		log.warn(message);
 		debug.infopoint("WARN:" + message.substring(0, 25) + "...", message);
-	}
-	
-	private void info(String message) {
-		log.info(message);
-		debug.infopoint("INFO:" + message.substring(0, 25) + "...", message);
 	}	
 }
