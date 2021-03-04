@@ -97,7 +97,7 @@ public class ZGWClient {
 			long endTime = System.currentTimeMillis();			
 			var duration = endTime - startTime;
 			var message = "POST to: " + url + " took " + duration + " milliseconds";
-			log.info(message);
+			log.debug(message);
 			debug.infopoint("Took: " + duration + " ms.", message);
 			log.debug("POST response: " + zgwResponse);
 			return zgwResponse;
@@ -142,9 +142,8 @@ public class ZGWClient {
 			long endTime = System.currentTimeMillis();
 			var duration = endTime - startTime;
 			var message = "GET to: " + url + " took " + duration + " milliseconds";
-			log.info(message);
-			debug.infopoint("Took: " + duration + " ms.", message);
-			
+			log.debug(message);
+			debug.infopoint("Took: " + duration + " ms.", message);			
 			log.debug("GET response: " + zgwResponse);
 			return zgwResponse;
 		} catch (HttpStatusCodeException hsce) {
@@ -178,7 +177,7 @@ public class ZGWClient {
 
 			var duration = endTime - startTime;
 			var message = "DELETE to: " + url + " took " + duration + " milliseconds";
-			log.info(message);
+			log.debug(message);
 			log.debug("DELETE response: " + zgwResponse);
 			return zgwResponse;
 		} catch (HttpStatusCodeException hsce) {
@@ -211,7 +210,7 @@ public class ZGWClient {
 			long endTime = System.currentTimeMillis();
 			var duration = endTime - startTime;
 			var message = "PUT to: " + url + " took " + duration + " milliseconds";
-			log.info(message);
+			log.debug(message);
 			log.debug("PUT response: " + zgwResponse);
 			return zgwResponse;
 		} catch (HttpStatusCodeException hsce) {
