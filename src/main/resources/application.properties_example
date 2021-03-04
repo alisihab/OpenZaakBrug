@@ -4,6 +4,10 @@ openzaak.jwt.secret=test
 openzaak.jwt.issuer=test
 openzaak.baseUrl = https://openzaak.local
 
+## config.json file location (allow it to be external resource out of jar)
+## e.g. 'file:./config/config.json' defaults to 'config.json'
+## config.json.location=
+
 nl.haarlem.translations.zdstozgw.trustAllCerts = false
 nl.haarlem.translations.zdstozgw.enableJWTEntpoint = false
 nl.haarlem.translations.zdstozgw.timeoffset.minutes = -5
