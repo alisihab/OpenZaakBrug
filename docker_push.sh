@@ -15,6 +15,10 @@ docker login -u "$DOCKER_USERNAME" --password "$DOCKER_PASSWORD"
 # Echo script commands
 set -x
 
+t_tag=$(git describe)
+
+echo "$t_tag"
+
 REPO=sihab/brug
 TAG=${TRAVIS_TAG:-latest}
 
