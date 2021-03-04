@@ -2,8 +2,6 @@
 
 [![Build Status](https://travis-ci.com/Sudwest-Fryslan/OpenZaakBrug.svg?branch=master)](https://travis-ci.com/Sudwest-Fryslan/OpenZaakBrug) travis-ci
 
-[![codecov](https://codecov.io/gh/Sudwest-Fryslan/OpenZaakBrug/branch/master/graph/badge.svg)](https://codecov.io/gh/Sudwest-Fryslan/OpenZaakBrug) codecov.io
-
 Niet meer investeren in de oude-zds-koppelingen van het zaakgericht werken, maar  zo snel mogelijk de nieuwe zaakgericht werken-api’s gebruiken. Daarom wil team OpenZaakBrug het nieuwe zaaksysteem met deze oude-zds-standaard aanbieden zodat alles blijft draaien. Daarmee kunnen alle nieuwe applicaties via deze nieuwe standaard aansluiten en krijgen de leveranciers van de bestaande applicaties de tijd om de ZGW koppeling in te bouwen.
 
 ## Over OpenZaakBrug
