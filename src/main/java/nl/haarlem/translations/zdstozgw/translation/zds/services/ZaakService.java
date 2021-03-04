@@ -831,6 +831,6 @@ public class ZaakService {
 	
 	private void debugWarning(String message) {
 		log.info("[processing warning] " + message);
-		debug.infopoint("WARN:" + message.substring(0, 25) + "...", message);
+		debug.infopoint("Warning", message);
 	}	
 }

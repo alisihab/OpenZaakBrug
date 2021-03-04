@@ -120,7 +120,7 @@ public class SoapController {
 			long endTime = System.currentTimeMillis();
 			var duration = endTime - startTime;
 			var message = "Soapaction: " + soapAction + " took " + duration + " milliseconds";			
-			debug.infopoint("Total translation took: " + duration + " ms.", message);
+			debug.infopoint("Total duration", message);
 			
 			debug.endpoint(reportName, response.getBody().toString());
 		} catch(Throwable t) {

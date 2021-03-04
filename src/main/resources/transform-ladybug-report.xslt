@@ -81,6 +81,30 @@
 			<xsl:value-of select="replace(replace(replace(., 'fieldlab.westeurope.cloudapp.azure.com', 'IGNORED'), 'fieldlab.westeurope.cloudapp.azure.com', 'IGNORED'), 'openzaak.local', 'IGNORED')"/>
 		</xsl:copy>
 	</xsl:template>
+	
+	<!-- Ignore time taken in checkpoint "Total duration" that will change based upon the duration of handling the complete translation -->
+	<xsl:template match="*[local-name()='Checkpoint' and @Name='Total duration' and @Type='Infopoint' and @Level='1']">
+		<xsl:copy>
+			<xsl:apply-templates select="@*"/>
+			<xsl:value-of select="'IGNORED'"/>
+		</xsl:copy>
+	</xsl:template>	
+
+	<!-- Ignore time taken in checkpoint "Duration" that will change based upon the duration of a request to a client -->
+	<xsl:template match="*[local-name()='Checkpoint' and @Name='Duration' and @Type='Infopoint' and @Level='1']">
+		<xsl:copy>
+			<xsl:apply-templates select="@*"/>
+			<xsl:value-of select="'IGNORED'"/>
+		</xsl:copy>
+	</xsl:template>	
+
+	<!-- Ignore time taken in checkpoint "Duration" that will change based upon the duration of a request to a client -->
+	<xsl:template match="*[local-name()='Checkpoint' and @Name='Warning' and @Type='Infopoint' and @Level='1']">
+		<xsl:copy>
+			<xsl:apply-templates select="@*"/>
+			<xsl:value-of select="'IGNORED'"/>
+		</xsl:copy>
+	</xsl:template>	
 
 	<!-- Ignore content of checkpoint kenmerk that contains an id like zaakidentificatie:8000361, documentidentificatie:8000325 and bsn:111111110 -->
 	<xsl:template match="*[local-name()='Checkpoint' and @Name='kenmerk' and @Type='Outputpoint' and @Level='1']">

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<java version="15" class="java.beans.XMLDecoder">
+<java version="13.0.2" class="java.beans.XMLDecoder">
  <object class="nl.nn.testtool.Report" id="Report0">
   <void property="checkpoints">
    <void method="add">
@@ -92,7 +92,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-6</string>
+      <string>Thread-16</string>
      </void>
      <void property="type">
       <int>1</int>
@@ -120,7 +120,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-6</string>
+      <string>Thread-16</string>
      </void>
      <void property="type">
       <int>4</int>
@@ -148,7 +148,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-6</string>
+      <string>Thread-16</string>
      </void>
      <void property="type">
       <int>4</int>
@@ -176,7 +176,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-6</string>
+      <string>Thread-16</string>
      </void>
      <void property="type">
       <int>4</int>
@@ -204,7 +204,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-6</string>
+      <string>Thread-16</string>
      </void>
      <void property="type">
       <int>4</int>
@@ -232,7 +232,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-6</string>
+      <string>Thread-16</string>
      </void>
      <void property="type">
       <int>4</int>
@@ -242,13 +242,13 @@
    <void method="add">
     <object class="nl.nn.testtool.Checkpoint">
      <void property="estimatedMemoryUsage">
-      <long>80</long>
+      <long>134</long>
      </void>
      <void property="level">
       <int>1</int>
      </void>
      <void property="message">
-      <string>ozb-05df229a-5900-4dc1-bcb5-474a55d15a73</string>
+      <string>Ladybug_Test_Tool-2.0.15-20210115.140317--68b28a3:177ff2131be:-7fea</string>
      </void>
      <void property="name">
       <string>referentienummer</string>
@@ -260,7 +260,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-6</string>
+      <string>Thread-16</string>
      </void>
      <void property="type">
       <int>6</int>
@@ -288,7 +288,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-6</string>
+      <string>Thread-16</string>
      </void>
      <void property="type">
       <int>6</int>
@@ -316,7 +316,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-6</string>
+      <string>Thread-16</string>
      </void>
      <void property="type">
       <int>6</int>
@@ -344,7 +344,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-6</string>
+      <string>Thread-16</string>
      </void>
      <void property="type">
       <int>6</int>
@@ -366,7 +366,7 @@
       <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-6</string>
+      <string>Thread-16</string>
      </void>
      <void property="type">
       <int>1</int>
@@ -394,7 +394,7 @@
       <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-6</string>
+      <string>Thread-16</string>
      </void>
      <void property="type">
       <int>4</int>
@@ -422,7 +422,7 @@
       <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-6</string>
+      <string>Thread-16</string>
      </void>
      <void property="type">
       <int>4</int>
@@ -440,6 +440,9 @@
      <void property="message">
       <string>{&quot;count&quot;:1,&quot;next&quot;:null,&quot;previous&quot;:null,&quot;results&quot;:[{&quot;url&quot;:&quot;https://fieldlab.westeurope.cloudapp.azure.com/zaken/api/v1/zaken/15aafcbe-6508-49a3-951e-a8496b7fb22d&quot;,&quot;uuid&quot;:&quot;15aafcbe-6508-49a3-951e-a8496b7fb22d&quot;,&quot;identificatie&quot;:&quot;8000371&quot;,&quot;bronorganisatie&quot;:&quot;823288444&quot;,&quot;omschrijving&quot;:&quot;Aanvraag minimaregelingen (Z)&quot;,&quot;toelichting&quot;:&quot;&quot;,&quot;zaaktype&quot;:&quot;https://fieldlab.westeurope.cloudapp.azure.com/catalogi/api/v1/zaaktypen/8a0ecb65-c3fd-4110-8599-297f84236ae5&quot;,&quot;registratiedatum&quot;:&quot;2020-12-07&quot;,&quot;verantwoordelijkeOrganisatie&quot;:&quot;823288444&quot;,&quot;startdatum&quot;:&quot;2020-12-07&quot;,&quot;einddatum&quot;:null,&quot;einddatumGepland&quot;:&quot;2021-01-01&quot;,&quot;uiterlijkeEinddatumAfdoening&quot;:null,&quot;publicatiedatum&quot;:null,&quot;communicatiekanaal&quot;:&quot;&quot;,&quot;productenOfDiensten&quot;:[],&quot;vertrouwelijkheidaanduiding&quot;:&quot;vertrouwelijk&quot;,&quot;betalingsindicatie&quot;:&quot;&quot;,&quot;betalingsindicatieWeergave&quot;:&quot;&quot;,&quot;laatsteBetaaldatum&quot;:null,&quot;zaakgeometrie&quot;:null,&quot;verlenging&quot;:{&quot;reden&quot;:&quot;&quot;,&quot;duur&quot;:null},&quot;opschorting&quot;:{&quot;indicatie&quot;:true,&quot;reden&quot;:&quot;niet tijdig verstrekken inform&quot;},&quot;selectielijstklasse&quot;:&quot;&quot;,&quot;hoofdzaak&quot;:null,&quot;deelzaken&quot;:[],&quot;relevanteAndereZaken&quot;:[],&quot;eigenschappen&quot;:[],&quot;status&quot;:&quot;https://fieldlab.westeurope.cloudapp.azure.com/zaken/api/v1/statussen/da6cb48b-8cdf-46ca-ac1e-b6db2e1aa719&quot;,&quot;kenmerken&quot;:[{&quot;kenmerk&quot;:&quot;273846&quot;,&quot;bron&quot;:&quot;GWS4all&quot;}],&quot;archiefnominatie&quot;:&quot;vernietigen&quot;,&quot;archiefstatus&quot;:&quot;nog_te_archiveren&quot;,&quot;archiefactiedatum&quot;:null,&quot;resultaat&quot;:null}]}</string>
      </void>
+     <void property="messageHasBeenStubbed">
+      <boolean>true</boolean>
+     </void>
      <void property="name">
       <string>ZGWClient GET</string>
      </void>
@@ -450,10 +453,38 @@
       <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-6</string>
+      <string>Thread-16</string>
      </void>
      <void property="type">
       <int>2</int>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="nl.nn.testtool.Checkpoint">
+     <void property="estimatedMemoryUsage">
+      <long>230</long>
+     </void>
+     <void property="level">
+      <int>1</int>
+     </void>
+     <void property="message">
+      <string>GET to: https://fieldlab.westeurope.cloudapp.azure.com/zaken/api/v1/zaken?identificatie=8000371 took 0 milliseconds</string>
+     </void>
+     <void property="name">
+      <string>Duration</string>
+     </void>
+     <void property="report">
+      <object idref="Report0"/>
+     </void>
+     <void property="sourceClassName">
+      <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
+     </void>
+     <void property="threadName">
+      <string>Thread-16</string>
+     </void>
+     <void property="type">
+      <int>6</int>
      </void>
     </object>
    </void>
@@ -472,7 +503,7 @@
       <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-6</string>
+      <string>Thread-16</string>
      </void>
      <void property="type">
       <int>1</int>
@@ -500,7 +531,7 @@
       <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-6</string>
+      <string>Thread-16</string>
      </void>
      <void property="type">
       <int>4</int>
@@ -528,7 +559,7 @@
       <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-6</string>
+      <string>Thread-16</string>
      </void>
      <void property="type">
       <int>4</int>
@@ -546,6 +577,9 @@
      <void property="message">
       <string>{&quot;count&quot;:9,&quot;next&quot;:null,&quot;previous&quot;:null,&quot;results&quot;:[{&quot;url&quot;:&quot;https://fieldlab.westeurope.cloudapp.azure.com/catalogi/api/v1/statustypen/8faa5c69-4e00-422d-90a7-f844cdc6074d&quot;,&quot;omschrijving&quot;:&quot;einde&quot;,&quot;omschrijvingGeneriek&quot;:&quot;&quot;,&quot;statustekst&quot;:&quot;&quot;,&quot;zaaktype&quot;:&quot;https://fieldlab.westeurope.cloudapp.azure.com/catalogi/api/v1/zaaktypen/8a0ecb65-c3fd-4110-8599-297f84236ae5&quot;,&quot;volgnummer&quot;:9,&quot;isEindstatus&quot;:true,&quot;informeren&quot;:false},{&quot;url&quot;:&quot;https://fieldlab.westeurope.cloudapp.azure.com/catalogi/api/v1/statustypen/9a11d084-605c-4f3e-8401-2658f6c44dc2&quot;,&quot;omschrijving&quot;:&quot;Ingetrokken&quot;,&quot;omschrijvingGeneriek&quot;:&quot;&quot;,&quot;statustekst&quot;:&quot;&quot;,&quot;zaaktype&quot;:&quot;https://fieldlab.westeurope.cloudapp.azure.com/catalogi/api/v1/zaaktypen/8a0ecb65-c3fd-4110-8599-297f84236ae5&quot;,&quot;volgnummer&quot;:8,&quot;isEindstatus&quot;:false,&quot;informeren&quot;:false},{&quot;url&quot;:&quot;https://fieldlab.westeurope.cloudapp.azure.com/catalogi/api/v1/statustypen/8a47915c-6ff2-455d-9f7a-7d976f9628af&quot;,&quot;omschrijving&quot;:&quot;Besluitvorming afgerond&quot;,&quot;omschrijvingGeneriek&quot;:&quot;&quot;,&quot;statustekst&quot;:&quot;Deze status markeert dat er een besluit is genomen.&quot;,&quot;zaaktype&quot;:&quot;https://fieldlab.westeurope.cloudapp.azure.com/catalogi/api/v1/zaaktypen/8a0ecb65-c3fd-4110-8599-297f84236ae5&quot;,&quot;volgnummer&quot;:7,&quot;isEindstatus&quot;:false,&quot;informeren&quot;:false},{&quot;url&quot;:&quot;https://fieldlab.westeurope.cloudapp.azure.com/catalogi/api/v1/statustypen/11a7c5ab-9b39-47f4-bd10-dadedc3938d4&quot;,&quot;omschrijving&quot;:&quot;Voorstel voor besluitvorming opgesteld&quot;,&quot;omschrijvingGeneriek&quot;:&quot;&quot;,&quot;statustekst&quot;:&quot;Deze status markeert dat er een concept-besluit is opgesteld.&quot;,&quot;zaaktype&quot;:&quot;https://fieldlab.westeurope.cloudapp.azure.com/catalogi/api/v1/zaaktypen/8a0ecb65-c3fd-4110-8599-297f84236ae5&quot;,&quot;volgnummer&quot;:6,&quot;isEindstatus&quot;:false,&quot;informeren&quot;:false},{&quot;url&quot;:&quot;https://fieldlab.westeurope.cloudapp.azure.com/catalogi/api/v1/statustypen/1c3124fa-db88-459d-bee7-f1948d3fc780&quot;,&quot;omschrijving&quot;:&quot;Onderzoek afgerond&quot;,&quot;omschrijvingGeneriek&quot;:&quot;&quot;,&quot;statustekst&quot;:&quot;Deze status markeert dat de benodigde onderzoeken zijn afgerond.&quot;,&quot;zaaktype&quot;:&quot;https://fieldlab.westeurope.cloudapp.azure.com/catalogi/api/v1/zaaktypen/8a0ecb65-c3fd-4110-8599-297f84236ae5&quot;,&quot;volgnummer&quot;:5,&quot;isEindstatus&quot;:false,&quot;informeren&quot;:false},{&quot;url&quot;:&quot;https://fieldlab.westeurope.cloudapp.azure.com/catalogi/api/v1/statustypen/92988b9a-b051-4c83-a6fd-ec515da5d73a&quot;,&quot;omschrijving&quot;:&quot;Afgehandeld&quot;,&quot;omschrijvingGeneriek&quot;:&quot;&quot;,&quot;statustekst&quot;:&quot;Deze status markeert dat de zaak is afgesloten.&quot;,&quot;zaaktype&quot;:&quot;https://fieldlab.westeurope.cloudapp.azure.com/catalogi/api/v1/zaaktypen/8a0ecb65-c3fd-4110-8599-297f84236ae5&quot;,&quot;volgnummer&quot;:4,&quot;isEindstatus&quot;:false,&quot;informeren&quot;:false},{&quot;url&quot;:&quot;https://fieldlab.westeurope.cloudapp.azure.com/catalogi/api/v1/statustypen/c8572fcb-5dc9-4d08-82e0-5d858a79fbac&quot;,&quot;omschrijving&quot;:&quot;In behandeling genomen&quot;,&quot;omschrijvingGeneriek&quot;:&quot;&quot;,&quot;statustekst&quot;:&quot;Deze status markeert dat de zaak is toegekend aan een behandelaar.&quot;,&quot;zaaktype&quot;:&quot;https://fieldlab.westeurope.cloudapp.azure.com/catalogi/api/v1/zaaktypen/8a0ecb65-c3fd-4110-8599-297f84236ae5&quot;,&quot;volgnummer&quot;:3,&quot;isEindstatus&quot;:false,&quot;informeren&quot;:false},{&quot;url&quot;:&quot;https://fieldlab.westeurope.cloudapp.azure.com/catalogi/api/v1/statustypen/afd7999b-d304-4acd-b1e2-a2fe714669f1&quot;,&quot;omschrijving&quot;:&quot;Geaccepteerd&quot;,&quot;omschrijvingGeneriek&quot;:&quot;&quot;,&quot;statustekst&quot;:&quot;Deze status markeert dat de behandelende afdeling de zaak heeft geaccepteerd.&quot;,&quot;zaaktype&quot;:&quot;https://fieldlab.westeurope.cloudapp.azure.com/catalogi/api/v1/zaaktypen/8a0ecb65-c3fd-4110-8599-297f84236ae5&quot;,&quot;volgnummer&quot;:2,&quot;isEindstatus&quot;:false,&quot;informeren&quot;:false},{&quot;url&quot;:&quot;https://fieldlab.westeurope.cloudapp.azure.com/catalogi/api/v1/statustypen/0af4c8a5-3bb6-4211-b99f-d31c106dec40&quot;,&quot;omschrijving&quot;:&quot;Ontvangen&quot;,&quot;omschrijvingGeneriek&quot;:&quot;&quot;,&quot;statustekst&quot;:&quot;Deze status markeert dat het startdocument van de zaak is geregistreerd.&quot;,&quot;zaaktype&quot;:&quot;https://fieldlab.westeurope.cloudapp.azure.com/catalogi/api/v1/zaaktypen/8a0ecb65-c3fd-4110-8599-297f84236ae5&quot;,&quot;volgnummer&quot;:1,&quot;isEindstatus&quot;:false,&quot;informeren&quot;:false}]}</string>
      </void>
+     <void property="messageHasBeenStubbed">
+      <boolean>true</boolean>
+     </void>
      <void property="name">
       <string>ZGWClient GET</string>
      </void>
@@ -556,10 +590,38 @@
       <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-6</string>
+      <string>Thread-16</string>
      </void>
      <void property="type">
       <int>2</int>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="nl.nn.testtool.Checkpoint">
+     <void property="estimatedMemoryUsage">
+      <long>442</long>
+     </void>
+     <void property="level">
+      <int>1</int>
+     </void>
+     <void property="message">
+      <string>GET to: https://fieldlab.westeurope.cloudapp.azure.com/catalogi/api/v1/statustypen?zaaktype=https://fieldlab.westeurope.cloudapp.azure.com/catalogi/api/v1/zaaktypen/8a0ecb65-c3fd-4110-8599-297f84236ae5 took 0 milliseconds</string>
+     </void>
+     <void property="name">
+      <string>Duration</string>
+     </void>
+     <void property="report">
+      <object idref="Report0"/>
+     </void>
+     <void property="sourceClassName">
+      <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
+     </void>
+     <void property="threadName">
+      <string>Thread-16</string>
+     </void>
+     <void property="type">
+      <int>6</int>
      </void>
     </object>
    </void>
@@ -584,7 +646,7 @@
       <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-6</string>
+      <string>Thread-16</string>
      </void>
      <void property="type">
       <int>1</int>
@@ -612,7 +674,7 @@
       <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-6</string>
+      <string>Thread-16</string>
      </void>
      <void property="type">
       <int>4</int>
@@ -630,6 +692,9 @@
      <void property="message">
       <string>{&quot;url&quot;:&quot;https://fieldlab.westeurope.cloudapp.azure.com/zaken/api/v1/statussen/bee706ad-cac6-461f-a610-b2552dbd6793&quot;,&quot;uuid&quot;:&quot;bee706ad-cac6-461f-a610-b2552dbd6793&quot;,&quot;zaak&quot;:&quot;https://fieldlab.westeurope.cloudapp.azure.com/zaken/api/v1/zaken/15aafcbe-6508-49a3-951e-a8496b7fb22d&quot;,&quot;statustype&quot;:&quot;https://fieldlab.westeurope.cloudapp.azure.com/catalogi/api/v1/statustypen/92988b9a-b051-4c83-a6fd-ec515da5d73a&quot;,&quot;datumStatusGezet&quot;:&quot;2020-12-07T21:37:42.150000Z&quot;,&quot;statustoelichting&quot;:&quot;&quot;}</string>
      </void>
+     <void property="messageHasBeenStubbed">
+      <boolean>true</boolean>
+     </void>
      <void property="name">
       <string>ZGWClient POST</string>
      </void>
@@ -640,10 +705,38 @@
       <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-6</string>
+      <string>Thread-16</string>
      </void>
      <void property="type">
       <int>2</int>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="nl.nn.testtool.Checkpoint">
+     <void property="estimatedMemoryUsage">
+      <long>196</long>
+     </void>
+     <void property="level">
+      <int>1</int>
+     </void>
+     <void property="message">
+      <string>POST to: https://fieldlab.westeurope.cloudapp.azure.com/zaken/api/v1/statussen took 0 milliseconds</string>
+     </void>
+     <void property="name">
+      <string>Duration</string>
+     </void>
+     <void property="report">
+      <object idref="Report0"/>
+     </void>
+     <void property="sourceClassName">
+      <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
+     </void>
+     <void property="threadName">
+      <string>Thread-16</string>
+     </void>
+     <void property="type">
+      <int>6</int>
      </void>
     </object>
    </void>
@@ -653,14 +746,14 @@
       <int>1</int>
      </void>
      <void property="estimatedMemoryUsage">
-      <long>226</long>
+      <long>234</long>
      </void>
      <void property="level">
       <int>1</int>
      </void>
      <void property="message">
       <string>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
-&lt;java version=&quot;15&quot; class=&quot;java.beans.XMLDecoder&quot;&gt;
+&lt;java version=&quot;13.0.2&quot; class=&quot;java.beans.XMLDecoder&quot;&gt;
  &lt;int&gt;200&lt;/int&gt;
 &lt;/java&gt;
 </string>
@@ -675,7 +768,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-6</string>
+      <string>Thread-16</string>
      </void>
      <void property="type">
       <int>5</int>
@@ -703,7 +796,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-6</string>
+      <string>Thread-16</string>
      </void>
      <void property="type">
       <int>5</int>
@@ -713,7 +806,35 @@
    <void method="add">
     <object class="nl.nn.testtool.Checkpoint">
      <void property="estimatedMemoryUsage">
-      <long>1880</long>
+      <long>202</long>
+     </void>
+     <void property="level">
+      <int>1</int>
+     </void>
+     <void property="message">
+      <string>Soapaction: &quot;http://www.egem.nl/StUF/sector/zkn/0310/actualiseerZaakstatus_Lk01&quot; took 46 milliseconds</string>
+     </void>
+     <void property="name">
+      <string>Total duration</string>
+     </void>
+     <void property="report">
+      <object idref="Report0"/>
+     </void>
+     <void property="sourceClassName">
+      <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
+     </void>
+     <void property="threadName">
+      <string>Thread-16</string>
+     </void>
+     <void property="type">
+      <int>6</int>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="nl.nn.testtool.Checkpoint">
+     <void property="estimatedMemoryUsage">
+      <long>1934</long>
      </void>
      <void property="level">
       <int>1</int>
@@ -734,8 +855,8 @@
           &lt;applicatie&gt;GWS4all&lt;/applicatie&gt;&#13;
           &lt;gebruiker&gt;Gebruiker&lt;/gebruiker&gt;&#13;
         &lt;/ontvanger&gt;&#13;
-        &lt;referentienummer&gt;ozb-05df229a-5900-4dc1-bcb5-474a55d15a73&lt;/referentienummer&gt;&#13;
-        &lt;tijdstipBericht&gt;20201207224242&lt;/tijdstipBericht&gt;&#13;
+        &lt;referentienummer&gt;Ladybug_Test_Tool-2.0.15-20210115.140317--68b28a3:177ff2131be:-7fea&lt;/referentienummer&gt;&#13;
+        &lt;tijdstipBericht&gt;20210304222620&lt;/tijdstipBericht&gt;&#13;
         &lt;crossRefnummer&gt;44d5d4f8-ad72-4d43-87e9-c48a21973045&lt;/crossRefnummer&gt;&#13;
       &lt;/stuurgegevens&gt;&#13;
     &lt;/Bv03Bericht&gt;&#13;
@@ -753,7 +874,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-6</string>
+      <string>Thread-16</string>
      </void>
      <void property="type">
       <int>2</int>
@@ -762,16 +883,16 @@
    </void>
   </void>
   <void property="correlationId">
-   <string>ozb-05df229a-5900-4dc1-bcb5-474a55d15a73</string>
+   <string>Ladybug_Test_Tool-2.0.15-20210115.140317--68b28a3:177ff2131be:-7fea</string>
   </void>
   <void property="description">
    <string></string>
   </void>
   <void property="endTime">
-   <long>1607377362726</long>
+   <long>1614893180133</long>
   </void>
   <void property="estimatedMemoryUsage">
-   <long>24882</long>
+   <long>26068</long>
   </void>
   <void property="name">
    <string>10 Translate actualiseerZaakstatus_Lk01</string>
@@ -780,10 +901,10 @@
    <string>/</string>
   </void>
   <void property="startTime">
-   <long>1607377362153</long>
+   <long>1614893180089</long>
   </void>
   <void property="storageId">
-   <int>187</int>
+   <int>219</int>
   </void>
   <void property="stubStrategy">
    <string>Stub all external connection code</string>
