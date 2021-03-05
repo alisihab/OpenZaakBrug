@@ -15,8 +15,10 @@ docker login -u "$DOCKER_USERNAME" --password "$DOCKER_PASSWORD"
 # Echo script commands
 set -x
 
+git_tag=$(git tag --sort=-creatordate | head -1)
+
 REPO=openzaakbrug/openzaakbrug
-TAG=${TRAVIS_TAG:-latest}
+TAG=${git_tag:-latest}
 
 # Build the image
 docker build -t $REPO:$TAG .
