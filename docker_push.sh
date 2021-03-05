@@ -15,12 +15,12 @@ docker login -u "$DOCKER_USERNAME" --password "$DOCKER_PASSWORD"
 # Echo script commands
 set -x
 
-t_tag=$(git describe)
+git_tag=$(git tag --sort=-creatordate | head -1)
 
-echo "$t_tag"
+echo "$git_tag"
 
 REPO=sihab/brug
-TAG=${TRAVIS_TAG:-latest}
+TAG=${git_tag:-latest}
 
 # Build the image
 docker build -t $REPO:$TAG .
