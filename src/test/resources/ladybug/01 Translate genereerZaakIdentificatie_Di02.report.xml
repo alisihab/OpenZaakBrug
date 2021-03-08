@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<java version="15" class="java.beans.XMLDecoder">
+<java version="13.0.2" class="java.beans.XMLDecoder">
  <object class="nl.nn.testtool.Report" id="Report0">
   <void property="checkpoints">
    <void method="add">
@@ -41,7 +41,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-1</string>
+      <string>Thread-16</string>
      </void>
      <void property="type">
       <int>1</int>
@@ -69,7 +69,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-1</string>
+      <string>Thread-16</string>
      </void>
      <void property="type">
       <int>4</int>
@@ -97,7 +97,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-1</string>
+      <string>Thread-16</string>
      </void>
      <void property="type">
       <int>4</int>
@@ -125,7 +125,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-1</string>
+      <string>Thread-16</string>
      </void>
      <void property="type">
       <int>4</int>
@@ -153,7 +153,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-1</string>
+      <string>Thread-16</string>
      </void>
      <void property="type">
       <int>4</int>
@@ -181,7 +181,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-1</string>
+      <string>Thread-16</string>
      </void>
      <void property="type">
       <int>4</int>
@@ -191,13 +191,13 @@
    <void method="add">
     <object class="nl.nn.testtool.Checkpoint">
      <void property="estimatedMemoryUsage">
-      <long>80</long>
+      <long>134</long>
      </void>
      <void property="level">
       <int>1</int>
      </void>
      <void property="message">
-      <string>ozb-a71a7abb-8fb7-4466-9328-b7502eb90d68</string>
+      <string>Ladybug_Test_Tool-2.0.15-20210115.140317--68b28a3:177ff2131be:-7ff4</string>
      </void>
      <void property="name">
       <string>referentienummer</string>
@@ -209,7 +209,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-1</string>
+      <string>Thread-16</string>
      </void>
      <void property="type">
       <int>6</int>
@@ -237,7 +237,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-1</string>
+      <string>Thread-16</string>
      </void>
      <void property="type">
       <int>6</int>
@@ -265,7 +265,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-1</string>
+      <string>Thread-16</string>
      </void>
      <void property="type">
       <int>6</int>
@@ -293,7 +293,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-1</string>
+      <string>Thread-16</string>
      </void>
      <void property="type">
       <int>6</int>
@@ -306,14 +306,14 @@
       <int>1</int>
      </void>
      <void property="estimatedMemoryUsage">
-      <long>226</long>
+      <long>234</long>
      </void>
      <void property="level">
       <int>1</int>
      </void>
      <void property="message">
       <string>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
-&lt;java version=&quot;15&quot; class=&quot;java.beans.XMLDecoder&quot;&gt;
+&lt;java version=&quot;13.0.2&quot; class=&quot;java.beans.XMLDecoder&quot;&gt;
  &lt;int&gt;200&lt;/int&gt;
 &lt;/java&gt;
 </string>
@@ -328,7 +328,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-1</string>
+      <string>Thread-16</string>
      </void>
      <void property="type">
       <int>5</int>
@@ -338,13 +338,13 @@
    <void method="add">
     <object class="nl.nn.testtool.Checkpoint">
      <void property="estimatedMemoryUsage">
-      <long>50</long>
+      <long>52</long>
      </void>
      <void property="level">
       <int>1</int>
      </void>
      <void property="message">
-      <string>zaakidentificatie:8000371</string>
+      <string>zaakidentificatie:19009240</string>
      </void>
      <void property="name">
       <string>kenmerk</string>
@@ -356,7 +356,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-1</string>
+      <string>Thread-16</string>
      </void>
      <void property="type">
       <int>5</int>
@@ -366,7 +366,35 @@
    <void method="add">
     <object class="nl.nn.testtool.Checkpoint">
      <void property="estimatedMemoryUsage">
-      <long>2574</long>
+      <long>210</long>
+     </void>
+     <void property="level">
+      <int>1</int>
+     </void>
+     <void property="message">
+      <string>Soapaction: &quot;http://www.egem.nl/StUF/sector/zkn/0310/genereerZaakIdentificatie_Di02&quot; took 87 milliseconds</string>
+     </void>
+     <void property="name">
+      <string>Total duration</string>
+     </void>
+     <void property="report">
+      <object idref="Report0"/>
+     </void>
+     <void property="sourceClassName">
+      <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
+     </void>
+     <void property="threadName">
+      <string>Thread-16</string>
+     </void>
+     <void property="type">
+      <int>6</int>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="nl.nn.testtool.Checkpoint">
+     <void property="estimatedMemoryUsage">
+      <long>2630</long>
      </void>
      <void property="level">
       <int>1</int>
@@ -387,13 +415,13 @@
           &lt;ns1:applicatie&gt;GWS4all&lt;/ns1:applicatie&gt;&#13;
           &lt;ns1:gebruiker&gt;Gebruiker&lt;/ns1:gebruiker&gt;&#13;
         &lt;/ns1:ontvanger&gt;&#13;
-        &lt;ns1:referentienummer&gt;ozb-a71a7abb-8fb7-4466-9328-b7502eb90d68&lt;/ns1:referentienummer&gt;&#13;
-        &lt;ns1:tijdstipBericht&gt;20201207224233&lt;/ns1:tijdstipBericht&gt;&#13;
+        &lt;ns1:referentienummer&gt;Ladybug_Test_Tool-2.0.15-20210115.140317--68b28a3:177ff2131be:-7ff4&lt;/ns1:referentienummer&gt;&#13;
+        &lt;ns1:tijdstipBericht&gt;20210304222619&lt;/ns1:tijdstipBericht&gt;&#13;
         &lt;ns1:crossRefnummer&gt;c060e9cd-f98b-4407-9beb-738a8a387509&lt;/ns1:crossRefnummer&gt;&#13;
         &lt;ns1:functie&gt;genereerZaakidentificatie&lt;/ns1:functie&gt;&#13;
       &lt;/ns2:stuurgegevens&gt;&#13;
       &lt;ns2:zaak ns1:entiteittype=&quot;ZAK&quot; ns1:functie=&quot;entiteit&quot;&gt;&#13;
-        &lt;ns2:identificatie&gt;8000371&lt;/ns2:identificatie&gt;&#13;
+        &lt;ns2:identificatie&gt;19009240&lt;/ns2:identificatie&gt;&#13;
       &lt;/ns2:zaak&gt;&#13;
     &lt;/ns2:genereerZaakIdentificatie_Du02&gt;&#13;
   &lt;/SOAP-ENV:Body&gt;&#13;
@@ -410,7 +438,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-1</string>
+      <string>Thread-16</string>
      </void>
      <void property="type">
       <int>2</int>
@@ -419,16 +447,16 @@
    </void>
   </void>
   <void property="correlationId">
-   <string>ozb-a71a7abb-8fb7-4466-9328-b7502eb90d68</string>
+   <string>Ladybug_Test_Tool-2.0.15-20210115.140317--68b28a3:177ff2131be:-7ff4</string>
   </void>
   <void property="description">
    <string></string>
   </void>
   <void property="endTime">
-   <long>1607377353266</long>
+   <long>1614893179478</long>
   </void>
   <void property="estimatedMemoryUsage">
-   <long>6136</long>
+   <long>6466</long>
   </void>
   <void property="name">
    <string>01 Translate genereerZaakIdentificatie_Di02</string>
@@ -437,10 +465,10 @@
    <string>/</string>
   </void>
   <void property="startTime">
-   <long>1607377353201</long>
+   <long>1614893179396</long>
   </void>
   <void property="storageId">
-   <int>167</int>
+   <int>209</int>
   </void>
   <void property="stubStrategy">
    <string>Stub all external connection code</string>

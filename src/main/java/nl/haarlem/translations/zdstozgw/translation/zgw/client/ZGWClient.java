@@ -3,6 +3,7 @@ package nl.haarlem.translations.zdstozgw.translation.zgw.client;
 import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -94,8 +95,11 @@ public class ZGWClient {
 			String finalUrl = url;
 			String zgwResponse = (String) debug.endpoint(debugName,
 					() -> this.restTemplateService.getRestTemplate().postForObject(finalUrl, entity, String.class));
-			long endTime = System.currentTimeMillis();
-			log.info("POST to: " + url + " took " + (endTime - startTime) + " milliseconds");
+			long endTime = System.currentTimeMillis();			
+			var duration = endTime - startTime;
+			var message = "POST to: " + url + " took " + duration + " milliseconds";
+			log.debug(message);
+			debug.infopoint("Duration", message);
 			log.debug("POST response: " + zgwResponse);
 			return zgwResponse;
 		} catch (HttpStatusCodeException hsce) {
@@ -137,7 +141,10 @@ public class ZGWClient {
 				return response.getBody();
 			});
 			long endTime = System.currentTimeMillis();
-			log.info("GET to: " + url + " took " + (endTime - startTime) + " milliseconds");
+			var duration = endTime - startTime;
+			var message = "GET to: " + url + " took " + duration + " milliseconds";
+			log.debug(message);
+			debug.infopoint("Duration", message);			
 			log.debug("GET response: " + zgwResponse);
 			return zgwResponse;
 		} catch (HttpStatusCodeException hsce) {
@@ -168,7 +175,11 @@ public class ZGWClient {
 				return response.getBody();
 			});
 			long endTime = System.currentTimeMillis();
-			log.info("DELETE to: " + url + " took " + (endTime - startTime) + " milliseconds");
+
+			var duration = endTime - startTime;
+			var message = "DELETE to: " + url + " took " + duration + " milliseconds";
+			log.debug(message);
+			debug.infopoint("Duration", message);			
 			log.debug("DELETE response: " + zgwResponse);
 			return zgwResponse;
 		} catch (HttpStatusCodeException hsce) {
@@ -199,7 +210,10 @@ public class ZGWClient {
 				return response.getBody();
 			});
 			long endTime = System.currentTimeMillis();
-			log.info("PUT to: " + url + " took " + (endTime - startTime) + " milliseconds");
+			var duration = endTime - startTime;
+			var message = "PUT to: " + url + " took " + duration + " milliseconds";
+			log.debug(message);
+			debug.infopoint("Duration", message);						
 			log.debug("PUT response: " + zgwResponse);
 			return zgwResponse;
 		} catch (HttpStatusCodeException hsce) {
@@ -519,12 +533,12 @@ public class ZGWClient {
 			if (statustype.omschrijving.startsWith(statusOmschrijving)) {
 				try {
 					if (statustype.volgnummer != Integer.valueOf(verwachteVolgnummer)) {
-						log.warn("Zaakstatus verschil in zgw-statustype met omschrijving: " + statustype.omschrijving
+						debugWarning("Zaakstatus verschil in zgw-statustype met omschrijving: " + statustype.omschrijving
 								+ " met volgnummer #" + statustype.volgnummer + " en het meegestuurde volgnummer: '"
 								+ Integer.valueOf(verwachteVolgnummer) + "'");
 					}
 				} catch (java.lang.NumberFormatException nft) {
-					log.warn("Zaakstatus verschil in zgw-statustype met omschrijving: " + statustype.omschrijving
+					debugWarning("Zaakstatus verschil in zgw-statustype met omschrijving: " + statustype.omschrijving
 							+ " ongeldig volnummer: '" + verwachteVolgnummer + "'");
 				}
 				log.debug("gevonden:" + statustype.omschrijving + " zoeken naar: " + statusOmschrijving);
@@ -588,11 +602,33 @@ public class ZGWClient {
 	public ZgwZaakType getZgwZaakTypeByIdentificatie(String identificatie) {
 		Map<String, String> parameters = new HashMap<>();
 		parameters.put("identificatie", identificatie);
+		parameters.put("status", "definitief");
 		var types = this.getZaakTypes(parameters);
-		if (types.size() == 1) {
-			return types.get(0);
+			
+		var now = new Date();
+		var active = new ArrayList<ZgwZaakType>();
+		for(ZgwZaakType zaaktype : types) {
+			if(zaaktype.beginGeldigheid.before(now)){
+				if(zaaktype.eindeGeldigheid == null || zaaktype.eindeGeldigheid.after(now)){
+					active.add(zaaktype);
+				}
+				else {
+					debugWarning("zaaktype met identificatie: '" + identificatie + "' heeft een versie die al beeindigd is:" + zaaktype.beginGeldigheid + " (" + zaaktype.url + ")");
+				}				
+			}
+			else {
+				debugWarning("zaaktype met identificatie: '" + identificatie + "' heeft een versie die nog moet beginnen:" + zaaktype.beginGeldigheid + " (" + zaaktype.url + ")");
+			}
 		}
-		return null;
+		if (active.size() == 1) {
+			return active.get(0);
+		}
+		else if (active.size() > 1) {
+			throw new ConverterException("meerdere active zaaktype versies gevonden met de identificatie: '" + identificatie + "'");
+		}
+		else {
+			return null;
+		}
 	}
 
 	// TODO: filter by zaaktype
@@ -642,4 +678,9 @@ public class ZGWClient {
 		String response = this.put(zgwEnkelvoudigInformatieObject.url, json);
 		return gson.fromJson(response, ZgwEnkelvoudigInformatieObject.class);
 	}
+	
+	private void debugWarning(String message) {
+		log.info("[processing warning] " + message);
+		debug.infopoint("Warning", message);
+	}	
 }
