@@ -221,17 +221,14 @@ public class ZaakService {
 			var resultaten = this.zgwClient.getResultatenByZaakUrl(zgwZaak.url);			
 			
 			for (ZgwResultaat resultaat : resultaten) {
-				debugWarning("Zaak met identitifatie:" + zaakid+ " already has resultaat #" + resultaten.indexOf(resultaat) + " met toelichting:" +  resultaat.toelichting);
-				if(resultaat.toelichting.equals(zdsZaak.resultaat.omschrijving)) {
-					debugWarning("Gevonden resultaat:" + resultaat.toelichting + " is hetzelfde als waar het resultaat opgezet moet worden, kan zo niet goed gaan");
-				}
+				debugWarning("Zaak met identitifatie:" + zaakid + " already has resultaat #" + resultaten.indexOf(resultaat) + " met toelichting:" +  resultaat.toelichting + ", will be deleted");
+				this.zgwClient.deleteZaakResultaat(resultaat.uuid);
 			}			
 			ZgwResultaat zgwResultaat = new ZgwResultaat();
 			zgwResultaat.zaak = zgwZaak.url;
 			zgwResultaat.resultaattype = zgwResultaatType.url;
 			zgwResultaat.toelichting = zdsZaak.resultaat.omschrijving;
-			this.zgwClient.actualiseerZaakResultaat(zgwResultaat);
-
+			this.zgwClient.addZaakResultaat(zgwResultaat);
 					
 			// Bekijken wat de laatste status is, deze moet gezet worden bij het afsltuiden van de zaak
 			var statustypes = this.zgwClient.getStatusTypesByZaakType(zgwZaak.zaaktype);
@@ -275,7 +272,7 @@ public class ZaakService {
 				ZgwStatus zgwStatus = this.modelMapper.map(zdsHeeft, ZgwStatus.class);
 				zgwStatus.zaak = zgwZaak.url;
 				zgwStatus.statustype = foundstatustype.url;			
-				this.zgwClient.actualiseerZaakStatus(zgwStatus);
+				this.zgwClient.addZaakStatus(zgwStatus);
 			}
 			else {
 				debugWarning("No status, while einddatum and resultaat were supplied");	
@@ -290,7 +287,7 @@ public class ZaakService {
 				ZgwStatus zgwStatus = this.modelMapper.map(zdsHeeft, ZgwStatus.class);
 				zgwStatus.zaak = zgwZaak.url;
 				zgwStatus.statustype = zgwStatusType.url;
-				this.zgwClient.actualiseerZaakStatus(zgwStatus);	
+				this.zgwClient.addZaakStatus(zgwStatus);	
 				changed = true;
 		}
 		return changed;
@@ -450,7 +447,7 @@ public class ZaakService {
 			ZgwStatus zgwStatus = new ZgwStatus();
 			zgwStatus.zaak = zgwZaak.url;
 			zgwStatus.statustype = zgwStatusType.url;
-			this.zgwClient.actualiseerZaakStatus(zgwStatus);
+			this.zgwClient.addZaakStatus(zgwStatus);
 		}
 
 		return zgwEnkelvoudigInformatieObject;
@@ -548,7 +545,7 @@ public class ZaakService {
 		zgwStatus.zaak = zgwZaak.url;
 		zgwStatus.statustype = zgwStatusType.url;
 
-		this.zgwClient.actualiseerZaakStatus(zgwStatus);
+		this.zgwClient.addZaakStatus(zgwStatus);
 		return zgwZaak;
 	}
 
