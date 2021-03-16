@@ -592,43 +592,36 @@ public class ZaakService {
 		for (ZgwRol zgwRol : this.zgwClient.getRollenByZaakUrl(zgwZaak.url)) {
 			var rolGeconverteerd = false;
 
-			if (zgwRolOmschrijving.getHeeftAlsBelanghebbende() != null
-					&& zgwRolOmschrijving.getHeeftAlsBelanghebbende().equalsIgnoreCase(zgwRol.getOmschrijvingGeneriek())) {
+			if (zgwRolOmschrijving.getHeeftBetrekkingOp().equalsIgnoreCase(zgwRol.getOmschrijving())) {
+				zaak.heeftBetrekkingOp = getZdsRol(zgwZaak, zgwRolOmschrijving.getHeeftAlsBelanghebbende(), "ZAKOBJ");
+				rolGeconverteerd = true;
+			}
+			if (zgwRolOmschrijving.getHeeftAlsBelanghebbende().equalsIgnoreCase(zgwRol.getOmschrijving())) {
 				zaak.heeftAlsBelanghebbende = getZdsRol(zgwZaak, zgwRolOmschrijving.getHeeftAlsBelanghebbende(), "ZAKBTRBLH");
 				rolGeconverteerd = true;
 			}
-			if (zgwRolOmschrijving.getHeeftAlsInitiator() != null
-					&& zgwRolOmschrijving.getHeeftAlsInitiator().equalsIgnoreCase(zgwRol.getRoltoelichting())) {
+			if (zgwRolOmschrijving.getHeeftAlsInitiator().equalsIgnoreCase(zgwRol.getOmschrijving())) {
 				zaak.heeftAlsInitiator = getZdsRol(zgwZaak, zgwRolOmschrijving.getHeeftAlsInitiator(), "ZAKBTRINI");
 				rolGeconverteerd = true;
 			}
-			if (zgwRolOmschrijving.getHeeftAlsBelanghebbende() != null
-					&& zgwRolOmschrijving.getHeeftAlsBelanghebbende().equalsIgnoreCase(zgwRol.getRoltoelichting())) {
-				zaak.heeftAlsBelanghebbende = getZdsRol(zgwZaak, zgwRolOmschrijving.getHeeftAlsBelanghebbende(), "ZAKBTRBLH");
-				rolGeconverteerd = true;
-			}
-			if (zgwRolOmschrijving.getHeeftAlsUitvoerende() != null
-					&& zgwRolOmschrijving.getHeeftAlsUitvoerende().equalsIgnoreCase(zgwRol.getRoltoelichting())) {
+			if (zgwRolOmschrijving.getHeeftAlsUitvoerende().equalsIgnoreCase(zgwRol.getOmschrijving())) {
 				zaak.heeftAlsUitvoerende = getZdsRol(zgwZaak, zgwRolOmschrijving.getHeeftAlsUitvoerende(), "ZAKBTRUTV");
 				rolGeconverteerd = true;
 			}
-			if (zgwRolOmschrijving.getHeeftAlsVerantwoordelijke() != null
-					&& zgwRolOmschrijving.getHeeftAlsVerantwoordelijke().equalsIgnoreCase(zgwRol.getRoltoelichting())) {
+			if (zgwRolOmschrijving.getHeeftAlsVerantwoordelijke().equalsIgnoreCase(zgwRol.getOmschrijving())) {
 				zaak.heeftAlsVerantwoordelijke = getZdsRol(zgwZaak, zgwRolOmschrijving.getHeeftAlsVerantwoordelijke(), "ZAKBTRVRA");
 				rolGeconverteerd = true;
 			}
-			if (zgwRolOmschrijving.getHeeftAlsGemachtigde() != null
-					&& zgwRolOmschrijving.getHeeftAlsGemachtigde().equalsIgnoreCase(zgwRol.getRoltoelichting())) {
+			if (zgwRolOmschrijving.getHeeftAlsGemachtigde().equalsIgnoreCase(zgwRol.getOmschrijving())) {
 				zaak.heeftAlsGemachtigde = getZdsRol(zgwZaak, zgwRolOmschrijving.getHeeftAlsGemachtigde(), "ZAKBTRGMC");
 				rolGeconverteerd = true;
 			}
-			if (zgwRolOmschrijving.getHeeftAlsOverigBetrokkene() != null && zgwRolOmschrijving
-					.getHeeftAlsOverigBetrokkene().equalsIgnoreCase(zgwRol.getOmschrijvingGeneriek())) {
+			if (zgwRolOmschrijving.getHeeftAlsOverigBetrokkene().equalsIgnoreCase(zgwRol.getOmschrijving())) {
 				zaak.heeftAlsOverigBetrokkene = getZdsRol(zgwZaak, zgwRolOmschrijving.getHeeftAlsOverigBetrokkene(), "ZAKBTROVR");
 				rolGeconverteerd = true;
 			}
 			if (!rolGeconverteerd) {
-				throw new ConverterException("Rol: " + zgwRol.getOmschrijvingGeneriek() + " niet geconverteerd worden ("+ zgwRol.uuid + ")");
+				throw new ConverterException("Rol: " +  zgwRol.getOmschrijving() + " (" +  zgwRol.getOmschrijvingGeneriek() + ") niet geconverteerd worden ("+ zgwRol.uuid + ")");
 			}
 		}
 		ZgwZaakType zgwZaakType = this.getZaakTypeByUrl(zgwZaak.zaaktype);
