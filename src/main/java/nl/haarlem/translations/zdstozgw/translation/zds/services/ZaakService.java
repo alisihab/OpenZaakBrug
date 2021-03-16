@@ -221,8 +221,9 @@ public class ZaakService {
 			var resultaten = this.zgwClient.getResultatenByZaakUrl(zgwZaak.url);			
 			
 			for (ZgwResultaat resultaat : resultaten) {
-				debugWarning("Zaak met identitifatie:" + zaakid + " already has resultaat #" + resultaten.indexOf(resultaat) + " met toelichting:" +  resultaat.toelichting + ", will be deleted");
+				debugWarning("Zaak with identificatie:" + zaakid + " already has resultaat #" + resultaten.indexOf(resultaat) + " met toelichting:" +  resultaat.toelichting + ", will be deleted");
 				this.zgwClient.deleteZaakResultaat(resultaat.uuid);
+				debugWarning("Old resultaat: " + resultaat.toelichting + " (" + resultaat.uuid + ") has been deleted");
 			}			
 			ZgwResultaat zgwResultaat = new ZgwResultaat();
 			zgwResultaat.zaak = zgwZaak.url;
