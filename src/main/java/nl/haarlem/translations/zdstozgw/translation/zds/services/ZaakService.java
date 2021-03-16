@@ -271,7 +271,8 @@ public class ZaakService {
 			if(foundstatustype != null) {			
 				ZgwStatus zgwStatus = this.modelMapper.map(zdsHeeft, ZgwStatus.class);
 				zgwStatus.zaak = zgwZaak.url;
-				zgwStatus.statustype = foundstatustype.url;			
+				zgwStatus.statustype = foundstatustype.url;
+				zgwStatus.statustoelichting = foundstatustype.omschrijving;
 				this.zgwClient.addZaakStatus(zgwStatus);
 			}
 			else {
@@ -287,6 +288,7 @@ public class ZaakService {
 				ZgwStatus zgwStatus = this.modelMapper.map(zdsHeeft, ZgwStatus.class);
 				zgwStatus.zaak = zgwZaak.url;
 				zgwStatus.statustype = zgwStatusType.url;
+				zgwStatus.statustoelichting = zgwStatusType.omschrijving;
 				this.zgwClient.addZaakStatus(zgwStatus);	
 				changed = true;
 		}
@@ -304,9 +306,12 @@ public class ZaakService {
 			return;
 		}
 		ZgwRol zgwRol = new ZgwRol();
+		zgwRol.roltoelichting = typeRolOmschrijving + ": ";		
 		if (zdsRol.gerelateerde.medewerker != null) {
 			zgwRol.betrokkeneIdentificatie = this.modelMapper.map(zdsRol.gerelateerde.medewerker,
 					ZgwBetrokkeneIdentificatie.class);
+			// https://github.com/Sudwest-Fryslan/OpenZaakBrug/issues/118
+			zgwRol.roltoelichting += zdsRol.gerelateerde.medewerker.achternaam;
 			zgwRol.betrokkeneType = BetrokkeneType.MEDEWERKER.getDescription();
 		}
 		if (zdsRol.gerelateerde.natuurlijkPersoon != null) {
@@ -316,6 +321,8 @@ public class ZaakService {
 				}
 			}
 			zgwRol.betrokkeneIdentificatie = this.modelMapper.map(zdsRol.gerelateerde.natuurlijkPersoon, ZgwBetrokkeneIdentificatie.class);
+			// https://github.com/Sudwest-Fryslan/OpenZaakBrug/issues/118
+			zgwRol.roltoelichting  += zdsRol.gerelateerde.natuurlijkPersoon.geslachtsnaam;
 			if(zdsRol.gerelateerde.natuurlijkPersoon.verblijfsadres != null) {
 				if(zdsRol.gerelateerde.natuurlijkPersoon.verblijfsadres != null) {
 					if(zdsRol.gerelateerde.natuurlijkPersoon.verblijfsadres.identificatie == null || zdsRol.gerelateerde.natuurlijkPersoon.verblijfsadres.identificatie.length() == 0) {
@@ -343,7 +350,6 @@ public class ZaakService {
 		if (zgwRol.betrokkeneIdentificatie == null) {
 			throw new ConverterException("Rol: " + typeRolOmschrijving + " zonder Natuurlijkpersoon or Medewerker");
 		}
-		zgwRol.roltoelichting = typeRolOmschrijving;
 		var roltype = this.zgwClient.getRolTypeByZaaktypeUrlAndOmschrijving(createdZaak.zaaktype, typeRolOmschrijving);
 		if (roltype == null) {
 			var zaaktype = this.zgwClient.getZaakTypeByUrl(createdZaak.zaaktype);
