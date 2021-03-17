@@ -84,6 +84,7 @@ public class Replicator {
         var zdsSoapAction = this.converter.getZaakService().configService.getConfiguration().getReplication().getGeefLijstZaakdocumenten().getSoapaction();
         var zdsRequest = new ZdsReplicateGeefLijstZaakdocumentenLv01();
         zdsRequest.stuurgegevens = this.converter.getZdsDocument().stuurgegevens;
+        zdsRequest.stuurgegevens.berichtcode = "Lv01";
         zdsRequest.parameters = new ZdsParametersMetSortering();
         zdsRequest.parameters.setSortering("0");
         zdsRequest.parameters.setIndicatorVervolgvraag("false");
@@ -118,8 +119,9 @@ public class Replicator {
 
                 var zdsUrl = this.converter.getZaakService().configService.getConfiguration().getReplication().getGeefZaakdocumentLezen().getUrl();
                 var zdsSoapAction = this.converter.getZaakService().configService.getConfiguration().getReplication().getGeefZaakdocumentLezen().getSoapaction();
-                var zdsRequest = new ZdsReplicateGeefZaakdocumentLezenLv01();
+                var zdsRequest = new ZdsReplicateGeefZaakdocumentLezenLv01();                
                  zdsRequest.stuurgegevens = this.converter.getZdsDocument().stuurgegevens;
+                 zdsRequest.stuurgegevens.berichtcode = "Lv01";
                  zdsRequest.stuurgegevens.entiteittype = "EDC";
                  zdsRequest.parameters = new ZdsParametersMetSortering();
                  zdsRequest.parameters.setSortering("0");
