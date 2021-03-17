@@ -57,6 +57,7 @@ public class Replicator {
         var zdsSoapAction = this.converter.getZaakService().configService.getConfiguration().getReplication().getGeefZaakdetails().getSoapaction();
         var zdsRequest = new ZdsReplicateGeefZaakdetailsLv01();
         zdsRequest.stuurgegevens = this.converter.getZdsDocument().stuurgegevens;
+        zdsRequest.stuurgegevens.berichtcode = "Lv01";
         zdsRequest.parameters = new ZdsParametersMetSortering();
         zdsRequest.parameters.setSortering("0");
         zdsRequest.parameters.setIndicatorVervolgvraag("false");
@@ -66,6 +67,9 @@ public class Replicator {
         zdsRequest.scope.object = new ZdsScopeObject();
         zdsRequest.scope.object.setEntiteittype("ZAK");
         zdsRequest.scope.object.setScope("alles");
+        
+        debug.infopoint("StUF:berichtcode", "StUF:berichtcode:" + zdsRequest.stuurgegevens.berichtcode);
+        
         var zdsResponse = this.zdsClient.post(zdsUrl, zdsSoapAction, zdsRequest);
 
         // fetch the zaak details
