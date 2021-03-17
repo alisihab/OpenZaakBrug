@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import nl.haarlem.translations.zdstozgw.config.SpringContext;
 import nl.haarlem.translations.zdstozgw.converter.Converter;
 import nl.haarlem.translations.zdstozgw.converter.impl.replicate.model.*;
+import nl.haarlem.translations.zdstozgw.debug.Debugger;
 import nl.haarlem.translations.zdstozgw.translation.zds.client.ZDSClient;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.*;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwEnkelvoudigInformatieObject;
@@ -22,6 +23,7 @@ public class Replicator {
 	private static final Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 	private Converter converter;
     private final ZDSClient zdsClient;
+    private static final Debugger debug = Debugger.getDebugger(MethodHandles.lookup().lookupClass());    
 
 	@Autowired
 	private Replicator(ZDSClient zdsClient) {
@@ -34,15 +36,16 @@ public class Replicator {
 	}
 
 	public void replicateZaak(String zaakidentificatie) {
-		log.info("replicateZaak for zaakidentificatie:" + zaakidentificatie);
+		debug.infopoint("replicatie", "replicateZaak for zaakidentificatie:" + zaakidentificatie);
+		
 		String rsin = this.converter.getZaakService().getRSIN(this.converter.getZdsDocument().stuurgegevens.zender.organisatie);
 
 		var zgwZaak = this.converter.getZaakService().zgwClient.getZaakByIdentificatie(zaakidentificatie);
 		if (zgwZaak == null) {
-			log.info("REPLICATION [replicate] zaakidentificatie #" + zaakidentificatie);
+			debug.infopoint("replicatie", "REPLICATION [replicate] zaakidentificatie #" + zaakidentificatie);
             checkCreeerZaak(zaakidentificatie, rsin);
         } else {
-			log.info("REPLICATION [skip] zaakidentificatie #" + zaakidentificatie);
+        	debug.infopoint("replicatie", "REPLICATION [skip] zaakidentificatie #" + zaakidentificatie);
 		}
 
         List<ZdsHeeftRelevant> relevanteDocumenten = getLijstZaakdocumenten(zaakidentificatie);
@@ -71,7 +74,7 @@ public class Replicator {
 
         var zdsZaak = zakLa01.antwoord.zaak.get(0);
 
-        log.info("received data from zds-zaaksysteem, now storing in zgw-zaaksysteem");
+        debug.infopoint("replicatie", "received data from zds-zaaksysteem, now storing in zgw-zaaksysteem");
         this.converter.getZaakService().creeerZaak(rsin, zdsZaak);
     }
 
@@ -95,7 +98,7 @@ public class Replicator {
         zdsRequest.scope.object.heeftRelevant.gerelateerde.entiteittype = "EDC";
 
         var zdsResponse = this.zdsClient.post(zdsUrl, zdsSoapAction, zdsRequest);
-        log.info("GeefLijstZaakdocumenten voor zaak:" + zaakidentificatie);
+        debug.infopoint("replicatie", "GeefLijstZaakdocumenten voor zaak:" + zaakidentificatie);
         var zakZakLa01 = (ZdsZakLa01LijstZaakdocumenten) XmlUtils.getStUFObject(zdsResponse.getBody().toString(),ZdsZakLa01LijstZaakdocumenten.class);
 
         relevanteDocumenten = zakZakLa01.antwoord.object.heeftRelevant;
@@ -104,14 +107,14 @@ public class Replicator {
     }
 
     private void checkVoegZaakDocumentToe(String zaakidentificatie, String rsin, List<ZdsHeeftRelevant> relevanteDocumenten) {
-    	log.info("Zaakdocumenten, count: " + relevanteDocumenten.size() + " for zaak with zaakidentificatie:" + zaakidentificatie);
+    	debug.infopoint("replicatie", "Zaakdocumenten, count: " + relevanteDocumenten.size() + " for zaak with zaakidentificatie:" + zaakidentificatie);
         for (ZdsHeeftRelevant relevant : relevanteDocumenten) {
             var zaakdocumentidentificatie = relevant.gerelateerde.identificatie;
-    		log.warn("replicateZaakDocument for zaakidentificatie:" + zaakidentificatie + " with zaakdocumentidentificatie:" + zaakdocumentidentificatie);
+            debug.infopoint("replicatie", "WARN replicateZaakDocument for zaakidentificatie:" + zaakidentificatie + " with zaakdocumentidentificatie:" + zaakdocumentidentificatie);
 
             ZgwEnkelvoudigInformatieObject zgwEnkelvoudigInformatieObject = this.converter.getZaakService().zgwClient.getZgwEnkelvoudigInformatieObjectByIdentiticatie(zaakdocumentidentificatie);
             if (zgwEnkelvoudigInformatieObject == null) {
-                log.info("REPLICATION [replicate] documentidentificatie #" + zaakdocumentidentificatie);
+            	debug.infopoint("replicatie", "REPLICATION [replicate] documentidentificatie #" + zaakdocumentidentificatie);
 
                 var zdsUrl = this.converter.getZaakService().configService.getConfiguration().getReplication().getGeefZaakdocumentLezen().getUrl();
                 var zdsSoapAction = this.converter.getZaakService().configService.getConfiguration().getReplication().getGeefZaakdocumentLezen().getSoapaction();
@@ -139,11 +142,11 @@ public class Replicator {
                  zdsDocument.isRelevantVoor.gerelateerde = new ZdsGerelateerde();
                  zdsDocument.isRelevantVoor.gerelateerde.identificatie = zaakidentificatie;
 
-                 log.info("received data from zds-zaaksysteem, now storing in zgw-zaaksysteem");
+                 log.debug("received data from zds-zaaksysteem, now storing in zgw-zaaksysteem");
                  this.converter.getZaakService().voegZaakDocumentToe(rsin, zdsDocument);
             }
             else {
-                log.info("REPLICATION [skip] documentidentificatie #" + zaakdocumentidentificatie);
+            	debug.infopoint("replicatie", "REPLICATION [skip] documentidentificatie #" + zaakdocumentidentificatie);
                 // TODO: check if zaak-relation is there
             }
         }
@@ -153,8 +156,7 @@ public class Replicator {
 		var url = this.converter.getTranslation().getLegacyservice();
 		var soapaction = this.converter.getTranslation().getSoapAction();
 		var request = this.converter.getContext().getRequestBody();
-		log.info("relaying request to url: " + url + " with soapaction: " + soapaction + " request-size:"
-				+ request.length());
+		debug.infopoint("proxy", "relaying request to url: " + url + " with soapaction: " + soapaction + " request-size:" + request.length());
 		return this.zdsClient.post(url, soapaction, request);
 	}
 }
