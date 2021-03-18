@@ -1,6 +1,7 @@
 package nl.haarlem.translations.zdstozgw.converter.impl.replicate;
 
 import java.lang.invoke.MethodHandles;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -103,9 +104,12 @@ public class Replicator {
         var zdsResponse = this.zdsClient.post(zdsUrl, zdsSoapAction, zdsRequest);
         //debug.infopoint("replicatie", "GeefLijstZaakdocumenten voor zaak:" + zaakidentificatie);
         var zakZakLa01 = (ZdsZakLa01LijstZaakdocumenten) XmlUtils.getStUFObject(zdsResponse.getBody().toString(),ZdsZakLa01LijstZaakdocumenten.class);
-        relevanteDocumenten = zakZakLa01.antwoord.object.heeftRelevant;
-
-        return relevanteDocumenten;
+        if(zakZakLa01.antwoord != null && zakZakLa01.antwoord.object != null && zakZakLa01.antwoord.object.heeftRelevant != null) {
+        	return zakZakLa01.antwoord.object.heeftRelevant;	
+        }
+        else {
+        	return new ArrayList<ZdsHeeftRelevant>();
+        }
     }
 
     private void checkVoegZaakDocumentToe(String zaakidentificatie, String rsin, List<ZdsHeeftRelevant> relevanteDocumenten) {
