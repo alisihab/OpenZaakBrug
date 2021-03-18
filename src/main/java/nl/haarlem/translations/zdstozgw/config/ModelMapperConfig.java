@@ -14,6 +14,7 @@ import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.TimeZone;
 
 import org.modelmapper.AbstractConverter;
@@ -293,6 +294,12 @@ public class ModelMapperConfig {
 						throw new ConverterException("stuf date: " + stufDate + " may not contain the character '-'");
 					}
 					var date = zdsDateFormatter.parse(stufDate);
+					
+					// errors when 0001-01-01 was used to store documents
+					if (date.before(zdsDateFormatter.parse("19000101"))){
+						return null;
+					}
+					
 					var zgwDate = zgwDateFormatter.format(date);
 					log.debug("convertStufDateToZgwDate: " + stufDate + " (amsterdam) --> " + zgwDate
 							+ "(gmt) with offset minutes:" + ModelMapperConfig.singleton.timeoffset  + "(date:" + date + ")");
