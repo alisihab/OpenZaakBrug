@@ -624,11 +624,12 @@ public class ZaakService {
 				throw new ConverterException("Rol: " +  zgwRol.getOmschrijving() + " (" +  zgwRol.getOmschrijvingGeneriek() + ") niet geconverteerd worden ("+ zgwRol.uuid + ")");
 			}
 		}
-		ZgwZaakType zgwZaakType = this.getZaakTypeByUrl(zgwZaak.zaaktype);
 		zaak.isVan = new ZdsRol();
 		zaak.isVan.entiteittype = "ZAKZKT";
 		zaak.isVan.gerelateerde = new ZdsGerelateerde();
 		zaak.isVan.gerelateerde.entiteittype = "ZKT";
+
+		ZgwZaakType zgwZaakType = this.getZaakTypeByUrl(zgwZaak.zaaktype);		
 		zaak.isVan.gerelateerde.code = zgwZaakType.identificatie;
 		zaak.isVan.gerelateerde.omschrijving = zgwZaakType.omschrijving;
 
@@ -669,8 +670,11 @@ public class ZaakService {
 	}
 
 	private ZgwZaakType getZaakTypeByUrl(String url) {
-		return this.zgwClient.getZaakTypes(null).stream().filter(zgwZaakType -> zgwZaakType.url.equalsIgnoreCase(url))
-				.findFirst().orElse(null);
+		var zaakype = this.zgwClient.getZaakTypes(null).stream().filter(zgwZaakType -> zgwZaakType.url.equalsIgnoreCase(url)).findFirst().orElse(null);
+		if(zaakype == null) {
+			throw new ConverterException("Zaaktype met url:" + url + " niet gevonden!");
+		}
+		return zaakype;
 	}
 
 	private ZdsRol getZdsRol(ZgwZaak zgwZaak, String rolOmschrijving, String entiteittype) {
