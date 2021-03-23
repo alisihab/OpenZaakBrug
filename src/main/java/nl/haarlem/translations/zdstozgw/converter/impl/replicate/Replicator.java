@@ -111,6 +111,21 @@ public class Replicator {
         	return new ArrayList<ZdsHeeftRelevant>();
         }
     }
+    
+
+	public void replicateDocument(String documentidentificatie) {
+		debug.infopoint("replicatie", "Start repliceren van document met identificatie:" + documentidentificatie);
+		
+		String rsin = this.converter.getZaakService().getRSIN(this.converter.getZdsDocument().stuurgegevens.zender.organisatie);
+		 
+		var zgwDocument = this.converter.getZaakService().zgwClient.getZgwEnkelvoudigInformatieObjectByIdentiticatie(documentidentificatie);
+		if (zgwDocument == null) {
+			debug.infopoint("replicatie", "document not found, copying document with identificatie #" + documentidentificatie);
+			copyDocument(documentidentificatie, rsin);
+        } else {
+        	debug.infopoint("replicatie", "document already found, no need to copy document with identificatie #" + documentidentificatie);
+		}
+	}    
 
     private void checkVoegZaakDocumentToe(String zaakidentificatie, String rsin, List<ZdsHeeftRelevant> relevanteDocumenten) {
     	debug.infopoint("replicatie", "Aantal gekoppelde zaakdocumenten is: " + relevanteDocumenten.size() + "(zaakid: " + zaakidentificatie + ")");
@@ -121,7 +136,7 @@ public class Replicator {
             ZgwEnkelvoudigInformatieObject zgwEnkelvoudigInformatieObject = this.converter.getZaakService().zgwClient.getZgwEnkelvoudigInformatieObjectByIdentiticatie(zaakdocumentidentificatie);
             if (zgwEnkelvoudigInformatieObject == null) {
             	debug.infopoint("replicatie", "document not found, copying document with identificatie #" + zaakdocumentidentificatie);
-            	copyDocument(zaakdocumentidentificatie, zaakidentificatie, rsin);
+            	copyDocument(zaakdocumentidentificatie, rsin);
             }
             else {
             	debug.infopoint("replicatie", "document already found, no need to copy document with identificatie #" + zaakdocumentidentificatie);
@@ -130,7 +145,7 @@ public class Replicator {
         }
     }
     
-    private void copyDocument(String zaakdocumentidentificatie, String zaakidentificatie, String rsin) {
+    private void copyDocument(String zaakdocumentidentificatie, String rsin) {
         var zdsUrl = this.converter.getZaakService().configService.getConfiguration().getReplication().getGeefZaakdocumentLezen().getUrl();
         var zdsSoapAction = this.converter.getZaakService().configService.getConfiguration().getReplication().getGeefZaakdocumentLezen().getSoapaction();
         var zdsRequest = new ZdsReplicateGeefZaakdocumentLezenLv01();                
@@ -153,13 +168,16 @@ public class Replicator {
          var zdsEdcLa01 =  (ZdsEdcLa01GeefZaakdocumentLezen) XmlUtils.getStUFObject(zdsResponse.getBody().toString(), ZdsEdcLa01GeefZaakdocumentLezen.class);
          var zdsDocument = zdsEdcLa01.antwoord.document.get(0);
 
+ 		if (zdsDocument == null) {
+			throw new RuntimeException("Document not found for identificatie: " + zaakdocumentidentificatie);
+		}         
          // put the zaak in the object, so voegZaakDocument works as expected
-         zdsDocument.isRelevantVoor = new ZdsIsRelevantVoor();
-         zdsDocument.isRelevantVoor.gerelateerde = new ZdsGerelateerde();
-         zdsDocument.isRelevantVoor.gerelateerde.identificatie = zaakidentificatie;
+         // zdsDocument.isRelevantVoor = new ZdsIsRelevantVoor();
+         // zdsDocument.isRelevantVoor.gerelateerde = new ZdsGerelateerde();
+         // zdsDocument.isRelevantVoor.gerelateerde.identificatie = "piet";
 
          debug.infopoint("replicatie", "received document-data from zds-zaaksysteem for zaakdocument:" + zaakdocumentidentificatie + ", now storing in zgw-zaaksysteem");         
-         this.converter.getZaakService().voegZaakDocumentToe(rsin, zdsDocument);    	
+         this.converter.getZaakService().voegZaakDocumentToe(rsin, zdsDocument);
     }
 
     public ResponseEntity<?> proxy() {

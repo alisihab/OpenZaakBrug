@@ -439,8 +439,11 @@ public class ZaakService {
 		zgwEnkelvoudigInformatieObject.indicatieGebruiksrecht = "false";
 		
 		zgwEnkelvoudigInformatieObject = this.zgwClient.addZaakDocument(zgwEnkelvoudigInformatieObject);
-		ZgwZaak zgwZaak = this.zgwClient
-				.getZaakByIdentificatie(zdsInformatieObject.isRelevantVoor.gerelateerde.identificatie);
+		var zaakIdentificatie = zdsInformatieObject.isRelevantVoor.gerelateerde.identificatie;
+		ZgwZaak zgwZaak = this.zgwClient.getZaakByIdentificatie(zaakIdentificatie);
+		if (zgwZaak == null) {
+			throw new RuntimeException("Zaak not found for identificatie: " + zaakIdentificatie);
+		}
 		ZgwZaakInformatieObject zgwZaakInformatieObject = addZaakInformatieObject(zgwEnkelvoudigInformatieObject, zgwZaak.url);
 
 		// status

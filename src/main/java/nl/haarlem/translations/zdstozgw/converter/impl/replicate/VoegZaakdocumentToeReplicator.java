@@ -18,8 +18,7 @@ public class VoegZaakdocumentToeReplicator extends VoegZaakdocumentToeTranslator
 
 	private static final Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
-	public VoegZaakdocumentToeReplicator(RequestHandlerContext context, Translation translation,
-			ZaakService zaakService) {
+	public VoegZaakdocumentToeReplicator(RequestHandlerContext context, Translation translation, ZaakService zaakService) {
 		super(context, translation, zaakService);
 	}
 
