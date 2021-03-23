@@ -257,6 +257,9 @@ public class ZGWClient {
 		var rolTypeJson = get(url, null);
 		Gson gson = new Gson();
 		ZgwRolType result = gson.fromJson(rolTypeJson, ZgwRolType.class);
+		if(result == null) {
+			throw new ConverterException("Roltype met url:" + url + " niet gevonden!");
+		}
 		return result;
 	}
 
@@ -264,6 +267,9 @@ public class ZGWClient {
 		var zaakJson = get(url, null);
 		Gson gson = new Gson();
 		ZgwZaak result = gson.fromJson(zaakJson, ZgwZaak.class);
+		if(result == null) {
+			throw new ConverterException("Zaak met url:" + url + " niet gevonden!");
+		}
 		return result;
 	}
 
@@ -349,8 +355,12 @@ public class ZGWClient {
 
 	public ZgwEnkelvoudigInformatieObject getZaakDocumentByUrl(String url) {
 		var zaakInformatieObjectJson = get(url, null);
-		Gson gson = new Gson();
-		return gson.fromJson(zaakInformatieObjectJson, ZgwEnkelvoudigInformatieObject.class);
+		Gson gson = new Gson();		
+		var result = gson.fromJson(zaakInformatieObjectJson, ZgwEnkelvoudigInformatieObject.class);
+		if(result == null) {
+			throw new ConverterException("ZaakDocument met url:" + url + " niet gevonden!");
+		}
+		return result;
 	}
 
 	public List<ZgwStatusType> getStatusTypes(Map<String, String> parameters) {
@@ -396,14 +406,14 @@ public class ZGWClient {
 		return gson.fromJson(response, resourceType);
 	}
 
-	public ZgwStatus actualiseerZaakStatus(ZgwStatus zgwSatus) {
+	public ZgwStatus addZaakStatus(ZgwStatus zgwSatus) {
 		Gson gson = new Gson();
 		String json = gson.toJson(zgwSatus);
 		String response = this.post(this.baseUrl + this.endpointStatus, json);
 		return gson.fromJson(response, ZgwStatus.class);
 	}
 
-	public ZgwResultaat actualiseerZaakResultaat(ZgwResultaat zgwResultaat) {
+	public ZgwResultaat addZaakResultaat(ZgwResultaat zgwResultaat) {
 		Gson gson = new Gson();
 		String json = gson.toJson(zgwResultaat);
 		String response = this.post(this.baseUrl + this.endpointResultaat, json);
@@ -474,6 +484,13 @@ public class ZGWClient {
 		delete(this.baseUrl + this.endpointRol + "/" + uuid);
 	}
 
+	public void deleteZaakResultaat(String uuid) {
+		if (uuid == null) {
+			throw new ConverterException("zaakresultaat uuid may not be null");
+		}
+		delete(this.baseUrl + this.endpointResultaat + "/" + uuid);
+	}	
+		
 	public List<ZgwZaakInformatieObject> getZaakInformatieObjectenByZaak(String zaakUrl) {
 		Map<String, String> parameters = new HashMap();
 		parameters.put("zaak", zaakUrl);
@@ -682,5 +699,5 @@ public class ZGWClient {
 	private void debugWarning(String message) {
 		log.info("[processing warning] " + message);
 		debug.infopoint("Warning", message);
-	}	
+	}
 }
