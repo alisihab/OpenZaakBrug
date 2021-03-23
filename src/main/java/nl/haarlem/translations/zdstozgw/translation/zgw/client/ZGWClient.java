@@ -285,7 +285,7 @@ public class ZGWClient {
 				return this.restTemplateService.getRestTemplate()
 						.exchange(finalUrl, HttpMethod.GET, entity, byte[].class).getBody();
 			});
-			log.debug("BASE64 INHOUD DOWNLOADED:" + data.length + " bytes");
+			log.debug("BASE64 INHOUD DOWNLOADED:" + (data == null ? "[null], is openzaak dms-broken?" : data.length + " bytes"));
 			return java.util.Base64.getEncoder().encodeToString(data);
 
 		} catch (HttpStatusCodeException hsce) {
