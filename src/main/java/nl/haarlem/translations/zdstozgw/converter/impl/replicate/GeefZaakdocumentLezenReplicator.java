@@ -35,7 +35,7 @@ public class GeefZaakdocumentLezenReplicator extends GeefZaakdocumentLezenTransl
 		var zdsEdcLv01 = (ZdsEdcLv01) this.getZdsDocument();
 
 		var replicator = new Replicator(this);
-		replicator.replicateDocument(zdsEdcLv01.scope.object.identificatie);
+		replicator.replicateDocument(zdsEdcLv01.gelijk.identificatie);
 
 		var legacyresponse = replicator.proxy();
 		if (legacyresponse.getStatusCode() != HttpStatus.OK) {

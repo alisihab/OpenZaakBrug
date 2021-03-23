@@ -239,6 +239,11 @@ public class ZGWClient {
 
 	public ZgwEnkelvoudigInformatieObject getZgwEnkelvoudigInformatieObjectByIdentiticatie(String identificatie) {
 		log.debug("get zaakdocument #" + identificatie);
+		
+		if(identificatie == null || identificatie.length() == 0) {
+			throw new ConverterException("getZgwEnkelvoudigInformatieObjectByIdentiticatie without an identificatie");			
+		}
+		
 		var documentJson = get(
 				this.baseUrl + this.endpointEnkelvoudiginformatieobject + "?identificatie=" + identificatie, null);
 		Type type = new TypeToken<QueryResult<ZgwEnkelvoudigInformatieObject>>() {
@@ -498,6 +503,11 @@ public class ZGWClient {
 	}
 
 	public ZgwZaak getZaakByIdentificatie(String zaakIdentificatie) {
+		if(zaakIdentificatie == null || zaakIdentificatie.length() == 0) {
+			throw new ConverterException("getZaakByIdentificatie without an identificatie");			
+		}
+		
+		
 		Map<String, String> parameters = new HashMap();
 		parameters.put("identificatie", zaakIdentificatie);
 
@@ -617,6 +627,10 @@ public class ZGWClient {
 	}
 
 	public ZgwZaakType getZgwZaakTypeByIdentificatie(String identificatie) {
+		if(identificatie == null || identificatie.length() == 0) {
+			throw new ConverterException("getZgwZaakTypeByIdentificatie without an identificatie");			
+		}		
+		
 		Map<String, String> parameters = new HashMap<>();
 		parameters.put("identificatie", identificatie);
 		parameters.put("status", "definitief");
