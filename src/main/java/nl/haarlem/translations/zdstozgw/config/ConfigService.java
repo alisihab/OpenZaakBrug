@@ -1,7 +1,8 @@
 package nl.haarlem.translations.zdstozgw.config;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.lang.invoke.MethodHandles;
 
 import nl.haarlem.translations.zdstozgw.config.model.*;
@@ -26,12 +27,12 @@ public class ConfigService {
 
 	public ConfigService() throws Exception {
 		var cpr = new ClassPathResource("config.json");
-		var filename = cpr.getFile().getAbsoluteFile();
-		log.info("Loading config from:" + filename);
-		BufferedReader bufferedReader = new BufferedReader(new FileReader(filename));
 
-		Gson gson = new Gson();
-		this.configuration = gson.fromJson(bufferedReader, Configuration.class);
+		try(InputStream configStream = cpr.getInputStream()){
+			BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(configStream));
+			Gson gson = new Gson();
+			this.configuration = gson.fromJson(bufferedReader, Configuration.class);
+		}
 
 		validateConfiguration();
 		log.debug("ConfigService succesfully loaded");

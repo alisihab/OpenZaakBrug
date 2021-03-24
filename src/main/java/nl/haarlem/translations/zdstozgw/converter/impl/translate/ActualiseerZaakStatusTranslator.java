@@ -29,6 +29,7 @@ public class ActualiseerZaakStatusTranslator extends Converter {
 	public ResponseEntity<?> execute() throws ResponseStatusException {
 		var zdsZakLk01ActualiseerZaakstatus = (ZdsZakLk01ActualiseerZaakstatus) this.zdsDocument;
 		var zdsWasZaak = zdsZakLk01ActualiseerZaakstatus.objects.get(0);
+		this.context.setKenmerk("zaakidentificatie:" + zdsWasZaak.identificatie);
 		var zdsWordtZaak = zdsZakLk01ActualiseerZaakstatus.objects.get(1);
 		var zgwZaak = this.getZaakService().actualiseerZaakstatus(zdsWasZaak, zdsWordtZaak);
 		var bv03 = new ZdsBv03(zdsZakLk01ActualiseerZaakstatus.stuurgegevens, this.context.getReferentienummer());
