@@ -3,34 +3,17 @@ package nl.haarlem.translations.zdstozgw.converter.impl.replicate;
 import java.lang.invoke.MethodHandles;
 import java.util.List;
 
-import nl.haarlem.translations.zdstozgw.config.SpringContext;
-
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import nl.haarlem.translations.zdstozgw.config.SpringContext;
 import nl.haarlem.translations.zdstozgw.converter.Converter;
-import nl.haarlem.translations.zdstozgw.converter.impl.replicate.model.ZdsReplicateGeefLijstZaakdocumentenLv01;
-import nl.haarlem.translations.zdstozgw.converter.impl.replicate.model.ZdsReplicateGeefZaakdetailsLv01;
-import nl.haarlem.translations.zdstozgw.converter.impl.replicate.model.ZdsReplicateGeefZaakdocumentLezenLv01;
+import nl.haarlem.translations.zdstozgw.converter.impl.replicate.model.*;
 import nl.haarlem.translations.zdstozgw.translation.zds.client.ZDSClient;
-import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsEdcLa01GeefZaakdocumentLezen;
-import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsGerelateerde;
-import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsHeeftRelevant;
-import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsIsRelevantVoor;
-import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsParameters;
-import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsParametersMetSortering;
-import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsScope;
-import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsScopeGerelateerde;
-import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsScopeHeeftRelevant;
-import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsScopeObject;
-import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsZaak;
-import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsZaakDocument;
-import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsZakLa01GeefZaakDetails;
-import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsZakLa01LijstZaakdocumenten;
+import nl.haarlem.translations.zdstozgw.translation.zds.model.*;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwEnkelvoudigInformatieObject;
 import nl.haarlem.translations.zdstozgw.utils.XmlUtils;
 
@@ -41,8 +24,8 @@ public class Replicator {
     private final ZDSClient zdsClient;
 
 	@Autowired
-	private Replicator() {
-        this.zdsClient = SpringContext.getBean(ZDSClient.class);
+	private Replicator(ZDSClient zdsClient) {
+        this.zdsClient = zdsClient;
 	}
 
 	public Replicator(Converter converter) {
@@ -65,7 +48,7 @@ public class Replicator {
         List<ZdsHeeftRelevant> relevanteDocumenten = getLijstZaakdocumenten(zaakidentificatie);
         checkVoegZaakDocumentToe(zaakidentificatie, rsin, relevanteDocumenten);
     }
-	
+
     private void checkCreeerZaak(String zaakidentificatie, String rsin) {
         var zdsUrl = this.converter.getZaakService().configService.getConfiguration().getReplication().getGeefZaakdetails().getUrl();
         var zdsSoapAction = this.converter.getZaakService().configService.getConfiguration().getReplication().getGeefZaakdetails().getSoapaction();
@@ -85,13 +68,13 @@ public class Replicator {
         // fetch the zaak details
         log.debug("GeefZaakDetails response:" + zdsResponse);
         ZdsZakLa01GeefZaakDetails zakLa01 = (ZdsZakLa01GeefZaakDetails) XmlUtils.getStUFObject(zdsResponse.getBody().toString(), ZdsZakLa01GeefZaakDetails.class);
-        
+
         var zdsZaak = zakLa01.antwoord.zaak.get(0);
 
         log.info("received data from zds-zaaksysteem, now storing in zgw-zaaksysteem");
         this.converter.getZaakService().creeerZaak(rsin, zdsZaak);
     }
-	
+
     private List<ZdsHeeftRelevant> getLijstZaakdocumenten(String zaakidentificatie) {
         List<ZdsHeeftRelevant> relevanteDocumenten = null;
         var zdsUrl = this.converter.getZaakService().configService.getConfiguration().getReplication().getGeefLijstZaakdocumenten().getUrl();
@@ -110,11 +93,11 @@ public class Replicator {
         zdsRequest.scope.object.heeftRelevant.entiteittype = "ZAKEDC";
         zdsRequest.scope.object.heeftRelevant.gerelateerde = new ZdsScopeGerelateerde();
         zdsRequest.scope.object.heeftRelevant.gerelateerde.entiteittype = "EDC";
-        
+
         var zdsResponse = this.zdsClient.post(zdsUrl, zdsSoapAction, zdsRequest);
         log.info("GeefLijstZaakdocumenten voor zaak:" + zaakidentificatie);
         var zakZakLa01 = (ZdsZakLa01LijstZaakdocumenten) XmlUtils.getStUFObject(zdsResponse.getBody().toString(),ZdsZakLa01LijstZaakdocumenten.class);
-        
+
         relevanteDocumenten = zakZakLa01.antwoord.object.heeftRelevant;
 
         return relevanteDocumenten;
@@ -125,14 +108,14 @@ public class Replicator {
         for (ZdsHeeftRelevant relevant : relevanteDocumenten) {
             var zaakdocumentidentificatie = relevant.gerelateerde.identificatie;
     		log.warn("replicateZaakDocument for zaakidentificatie:" + zaakidentificatie + " with zaakdocumentidentificatie:" + zaakdocumentidentificatie);
-    		
-            ZgwEnkelvoudigInformatieObject zgwEnkelvoudigInformatieObject = this.converter.getZaakService().zgwClient.getZgwEnkelvoudigInformatieObjectByIdentiticatie(zaakdocumentidentificatie);            
+
+            ZgwEnkelvoudigInformatieObject zgwEnkelvoudigInformatieObject = this.converter.getZaakService().zgwClient.getZgwEnkelvoudigInformatieObjectByIdentiticatie(zaakdocumentidentificatie);
             if (zgwEnkelvoudigInformatieObject == null) {
                 log.info("REPLICATION [replicate] documentidentificatie #" + zaakdocumentidentificatie);
 
                 var zdsUrl = this.converter.getZaakService().configService.getConfiguration().getReplication().getGeefZaakdocumentLezen().getUrl();
                 var zdsSoapAction = this.converter.getZaakService().configService.getConfiguration().getReplication().getGeefZaakdocumentLezen().getSoapaction();
-                var zdsRequest = new ZdsReplicateGeefZaakdocumentLezenLv01();                
+                var zdsRequest = new ZdsReplicateGeefZaakdocumentLezenLv01();
                  zdsRequest.stuurgegevens = this.converter.getZdsDocument().stuurgegevens;
                  zdsRequest.stuurgegevens.entiteittype = "EDC";
                  zdsRequest.parameters = new ZdsParametersMetSortering();
@@ -144,7 +127,7 @@ public class Replicator {
                  zdsRequest.scope.object = new ZdsScopeObject();
                  zdsRequest.scope.object.setEntiteittype("EDC");
                  zdsRequest.scope.object.setScope("alles");
-                 
+
                  var zdsResponse = this.zdsClient.post(zdsUrl, zdsSoapAction, zdsRequest);
                  // fetch the document details
                  log.debug("getGeefZaakdocumentLezen response:" + zdsResponse.getBody().toString());
