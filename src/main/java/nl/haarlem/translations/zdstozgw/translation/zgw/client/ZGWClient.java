@@ -561,7 +561,7 @@ public class ZGWClient {
 				try {
 					if (statustype.volgnummer != Integer.valueOf(verwachteVolgnummer)) {
 						debugWarning("Zaakstatus verschil in zgw-statustype met omschrijving: " + statustype.omschrijving
-								+ " met volgnummer #" + statustype.volgnummer + " en het meegestuurde volgnummer: '"
+								+ " met volgnummer #" + statustype.volgnummer + " en het meegestuurde omschrijving:'" + statusOmschrijving + "' volgnummer: '"
 								+ Integer.valueOf(verwachteVolgnummer) + "'");
 					}
 				} catch (java.lang.NumberFormatException nft) {

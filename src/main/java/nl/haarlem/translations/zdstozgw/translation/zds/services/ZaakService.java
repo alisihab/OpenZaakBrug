@@ -451,7 +451,7 @@ public class ZaakService {
 		// status
 		if (zdsInformatieObject.isRelevantVoor.volgnummer != null
 				&& zdsInformatieObject.isRelevantVoor.omschrijving != null
-				&& zdsInformatieObject.isRelevantVoor.omschrijving.length() > 0
+				&& zdsInformatieObject.isRelevantVoor.omschrijving.trim().length() > 0
 				&& zdsInformatieObject.isRelevantVoor.datumStatusGezet != null) {
 			log.debug("Update of zaakid:" + zgwZaak.identificatie + " has  status changes");
 			var zgwStatusType = this.zgwClient.getStatusTypeByZaakTypeAndOmschrijving(zgwZaak.zaaktype,
