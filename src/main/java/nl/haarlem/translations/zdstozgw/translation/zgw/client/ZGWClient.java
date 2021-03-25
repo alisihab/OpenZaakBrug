@@ -557,12 +557,7 @@ public class ZGWClient {
 
 		for (ZgwStatusType statustype : statustypes) {
 			log.debug("opgehaald:" + statustype.omschrijving + " zoeken naar: " + statusOmschrijving);
-			if (	
-					// TODO: maak mooier, dit is voor lege statusomschrijvingen en mag eigenlijk niet zo moeten 
-					statusOmschrijving.length() > 0 && statustype.omschrijving.startsWith(statusOmschrijving)
-					||
-					statusOmschrijving.length() == 0 && statustype.volgnummer == Integer.valueOf(verwachteVolgnummer)					
-					) {
+			if (statustype.omschrijving.startsWith(statusOmschrijving)) {
 				try {
 					if (statustype.volgnummer != Integer.valueOf(verwachteVolgnummer)) {
 						debugWarning("Zaakstatus verschil in zgw-statustype met omschrijving: " + statustype.omschrijving
