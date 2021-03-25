@@ -104,6 +104,35 @@ Om het berichten verkeer te bekijken zijn er 2 mogelijkheden:
 
 - Via de ladybug omgeving, hiermee een bepaalde sequence van berichten kan worden opgenomen en later worden afgespeeld. Deze is bereikbaar via de url: http://localhost:8080/debug/ .  Meer informatie over ladybug valt te vinden op: https://frank-manual.readthedocs.io/en/latest/testing/ladybug/capture/capture.html
 
+# Installatie met Spring Tool Suite
+Onderstaand stappenplan kan gebruikt worden voor een schone installatie met Spring Tool Suite op Windows. De Spring Tool Suite bevat de juiste versie van Java en heeft ingebouwde support voor Git en Maven. 
+
+1. Download de Spring Tool Suite (Spring Tools 4 for Eclipse) van https://spring.io/tools
+2. Installeer de Spring Tool Suite door te dubbelklikken op de download
+3. Download Lombok van https://projectlombok.org/download
+4. Installeer Lombok door te dubbelklikken op de download
+5. Selecteer de Spring Tool Suite in de Lombok-installer
+6. Start de Spring Tool Suite
+7. Clone en importeer de repo in de Spring Tool Suite
+8. Kopieer/hernoem/bewerk de application.properties_example en config.json_example zoals hierboven beschreven
+9. Doe een clean+build van de workspace
+10. Doe een `Run As` -> `Maven build` met `clean install` als goals
+11. Start de applicatie vanuit het `Boot Dashboard`
+12. Open http://localhost:8080/debug
+13. Indien alles werkt wordt nu de Ladybug getoond
+
+## Troubleshooting Spring Tool Suite installatie
+### Self extracting van de Spring Tool Suite installatie werkt niet
+Als de self extracting installatie van de Spring Tool Suite niet werkt, kan de download ook met [7-Zip](https://www.7-zip.org/) geopend worden en de contents.zip die in de .jar zit kan uitgepakt worden op een locatie naar keuze. Winzip kan de contents.zip NIET uitpakken!p
+## Lombok installer start niet
+Als de Lombok-installer niet lijkt te starten, probeer deze dan te starten met `java.exe -jar <pad/naar/lombok.jar>`
+
+## Lombok-installer kan Spring Tool Suite niet vinden
+Als de Spring Tool Suite niet gevonden kan worden door de Lombok-installer, kan de juiste locatie opgegeven worden via "Specify location…".
+
+## Foutmeldingen dat methodes niet gevonden kunnen worden
+Als er foutmeldingen zijn dat methodes niet gevonden kunnen worden, is Lombok waarschijnlijk niet correct geïnstalleerd. Voer de installatie van Lombok opnieuw uit en herstart daarna de Spring Tool Suite. Voer een clean+build en een nieuwe Maven build uit zodra de Spring Tool Suite weer gestart is.
+
 # rest hieronder moet gecontroleerd worden
 
 
