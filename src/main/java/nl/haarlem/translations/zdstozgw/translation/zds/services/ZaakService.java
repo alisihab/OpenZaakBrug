@@ -349,7 +349,9 @@ public class ZaakService {
 			zgwRol.betrokkeneType = BetrokkeneType.NATUURLIJK_PERSOON.getDescription();
 		}
 		if (zgwRol.betrokkeneIdentificatie == null) {
-			throw new ConverterException("Rol: " + typeRolOmschrijving + " zonder Natuurlijkpersoon or Medewerker");
+			//throw new ConverterException("Rol: " + typeRolOmschrijving + " zonder Natuurlijkpersoon or Medewerker");
+			debugWarning("Rol: " + typeRolOmschrijving + " zonder Natuurlijkpersoon or Medewerker");
+			return;
 		}
 		var roltype = this.zgwClient.getRolTypeByZaaktypeUrlAndOmschrijving(createdZaak.zaaktype, typeRolOmschrijving);
 		if (roltype == null) {
