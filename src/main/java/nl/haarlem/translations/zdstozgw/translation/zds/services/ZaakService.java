@@ -284,14 +284,19 @@ public class ZaakService {
 		else if (zdsZaak.heeft != null && zdsZaak.heeft.size() > 0 && zdsZaak.heeft.get(0).gerelateerde != null) {
 				var zdsHeeft = zdsZaak.heeft.get(0);
 				var zdsStatus = zdsHeeft.gerelateerde;
-				log.debug("Update of zaakid:" + zdsZaak.identificatie + " wants status to be changed to:" + zdsStatus.omschrijving);				
-				var zgwStatusType = this.zgwClient.getStatusTypeByZaakTypeAndOmschrijving(zgwZaak.zaaktype, zdsStatus.omschrijving, zdsStatus.volgnummer);			
-				ZgwStatus zgwStatus = this.modelMapper.map(zdsHeeft, ZgwStatus.class);
-				zgwStatus.zaak = zgwZaak.url;
-				zgwStatus.statustype = zgwStatusType.url;
-				zgwStatus.statustoelichting = zgwStatusType.omschrijving;
-				this.zgwClient.addZaakStatus(zgwStatus);	
-				changed = true;
+				if(zdsStatus.omschrijving != null && zdsStatus.omschrijving.length() > 0) {
+					log.debug("Update of zaakid:" + zdsZaak.identificatie + " wants status to be changed to:" + zdsStatus.omschrijving);				
+					var zgwStatusType = this.zgwClient.getStatusTypeByZaakTypeAndOmschrijving(zgwZaak.zaaktype, zdsStatus.omschrijving, zdsStatus.volgnummer);			
+					ZgwStatus zgwStatus = this.modelMapper.map(zdsHeeft, ZgwStatus.class);
+					zgwStatus.zaak = zgwZaak.url;
+					zgwStatus.statustype = zgwStatusType.url;
+					zgwStatus.statustoelichting = zgwStatusType.omschrijving;
+					this.zgwClient.addZaakStatus(zgwStatus);	
+					changed = true;
+				}
+				else {
+					debugWarning("No status, while heeft and gerelateerde were supplied");	
+				}				
 		}
 		return changed;
 	}
@@ -451,7 +456,7 @@ public class ZaakService {
 		// status
 		if (zdsInformatieObject.isRelevantVoor.volgnummer != null
 				&& zdsInformatieObject.isRelevantVoor.omschrijving != null
-				&& zdsInformatieObject.isRelevantVoor.omschrijving.trim().length() > 0
+				&& zdsInformatieObject.isRelevantVoor.omschrijving.length() > 0
 				&& zdsInformatieObject.isRelevantVoor.datumStatusGezet != null) {
 			log.debug("Update of zaakid:" + zgwZaak.identificatie + " has  status changes");
 			var zgwStatusType = this.zgwClient.getStatusTypeByZaakTypeAndOmschrijving(zgwZaak.zaaktype,
