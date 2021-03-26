@@ -284,14 +284,19 @@ public class ZaakService {
 		else if (zdsZaak.heeft != null && zdsZaak.heeft.size() > 0 && zdsZaak.heeft.get(0).gerelateerde != null) {
 				var zdsHeeft = zdsZaak.heeft.get(0);
 				var zdsStatus = zdsHeeft.gerelateerde;
-				log.debug("Update of zaakid:" + zdsZaak.identificatie + " wants status to be changed to:" + zdsStatus.omschrijving);				
-				var zgwStatusType = this.zgwClient.getStatusTypeByZaakTypeAndOmschrijving(zgwZaak.zaaktype, zdsStatus.omschrijving, zdsStatus.volgnummer);			
-				ZgwStatus zgwStatus = this.modelMapper.map(zdsHeeft, ZgwStatus.class);
-				zgwStatus.zaak = zgwZaak.url;
-				zgwStatus.statustype = zgwStatusType.url;
-				zgwStatus.statustoelichting = zgwStatusType.omschrijving;
-				this.zgwClient.addZaakStatus(zgwStatus);	
-				changed = true;
+				if(zdsStatus.omschrijving != null && zdsStatus.omschrijving.length() > 0) {
+					log.debug("Update of zaakid:" + zdsZaak.identificatie + " wants status to be changed to:" + zdsStatus.omschrijving);				
+					var zgwStatusType = this.zgwClient.getStatusTypeByZaakTypeAndOmschrijving(zgwZaak.zaaktype, zdsStatus.omschrijving, zdsStatus.volgnummer);			
+					ZgwStatus zgwStatus = this.modelMapper.map(zdsHeeft, ZgwStatus.class);
+					zgwStatus.zaak = zgwZaak.url;
+					zgwStatus.statustype = zgwStatusType.url;
+					zgwStatus.statustoelichting = zgwStatusType.omschrijving;
+					this.zgwClient.addZaakStatus(zgwStatus);	
+					changed = true;
+				}
+				else {
+					debugWarning("No status, while heeft and gerelateerde were supplied");	
+				}				
 		}
 		return changed;
 	}
@@ -349,7 +354,9 @@ public class ZaakService {
 			zgwRol.betrokkeneType = BetrokkeneType.NATUURLIJK_PERSOON.getDescription();
 		}
 		if (zgwRol.betrokkeneIdentificatie == null) {
-			throw new ConverterException("Rol: " + typeRolOmschrijving + " zonder Natuurlijkpersoon or Medewerker");
+			//throw new ConverterException("Rol: " + typeRolOmschrijving + " zonder Natuurlijkpersoon or Medewerker");
+			debugWarning("Rol: " + typeRolOmschrijving + " zonder Natuurlijkpersoon or Medewerker");
+			return;
 		}
 		var roltype = this.zgwClient.getRolTypeByZaaktypeUrlAndOmschrijving(createdZaak.zaaktype, typeRolOmschrijving);
 		if (roltype == null) {
@@ -439,13 +446,17 @@ public class ZaakService {
 		zgwEnkelvoudigInformatieObject.indicatieGebruiksrecht = "false";
 		
 		zgwEnkelvoudigInformatieObject = this.zgwClient.addZaakDocument(zgwEnkelvoudigInformatieObject);
-		ZgwZaak zgwZaak = this.zgwClient
-				.getZaakByIdentificatie(zdsInformatieObject.isRelevantVoor.gerelateerde.identificatie);
+		var zaakIdentificatie = zdsInformatieObject.isRelevantVoor.gerelateerde.identificatie;
+		ZgwZaak zgwZaak = this.zgwClient.getZaakByIdentificatie(zaakIdentificatie);
+		if (zgwZaak == null) {
+			throw new RuntimeException("Zaak not found for identificatie: " + zaakIdentificatie);
+		}
 		ZgwZaakInformatieObject zgwZaakInformatieObject = addZaakInformatieObject(zgwEnkelvoudigInformatieObject, zgwZaak.url);
 
 		// status
 		if (zdsInformatieObject.isRelevantVoor.volgnummer != null
 				&& zdsInformatieObject.isRelevantVoor.omschrijving != null
+				&& zdsInformatieObject.isRelevantVoor.omschrijving.length() > 0
 				&& zdsInformatieObject.isRelevantVoor.datumStatusGezet != null) {
 			log.debug("Update of zaakid:" + zgwZaak.identificatie + " has  status changes");
 			var zgwStatusType = this.zgwClient.getStatusTypeByZaakTypeAndOmschrijving(zgwZaak.zaaktype,
