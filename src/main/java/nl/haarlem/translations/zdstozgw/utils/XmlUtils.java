@@ -74,7 +74,11 @@ public class XmlUtils {
 
 	public static String xmlToString(Document xml) {
 		String result = "";
-		TransformerFactory tf = TransformerFactory.newInstance();
+
+		// Explicitly use Xalan and not make it depend on (transitive) dependencies in pom.xml
+		// See also https://github.com/Sudwest-Fryslan/OpenZaakBrug/issues/61
+		TransformerFactory tf = new org.apache.xalan.processor.TransformerFactoryImpl();
+
 		Transformer transformer;
 		try {
 			transformer = tf.newTransformer();
@@ -153,7 +157,11 @@ public class XmlUtils {
 			DocumentBuilder builder = factory.newDocumentBuilder();
 			Document doc = builder.parse(new InputSource(new StringReader(unformattedxml)));
 
-			Transformer transformer = TransformerFactory.newInstance().newTransformer();
+			// Explicitly use Xalan to prevent Saxon-HE being used (depending on (transitive) dependencies in pom.xml).
+			// Saxon-HE is causing some of the SOAP response messages to become invalid by adding xmlns="".
+			// See also https://github.com/Sudwest-Fryslan/OpenZaakBrug/issues/61
+			Transformer transformer = new org.apache.xalan.processor.TransformerFactoryImpl().newTransformer();
+
 			transformer.setOutputProperty(OutputKeys.INDENT, "yes");
 			transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
 			// initialize StreamResult with File object to save to file

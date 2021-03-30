@@ -28,4 +28,7 @@ public class ZgwRol extends ZgwObject {
 	@SerializedName("omschrijvingGeneriek")
 	@Expose
 	public String omschrijvingGeneriek;
+	@SerializedName("omschrijving")
+	@Expose
+	public String omschrijving;	
 }

@@ -45,6 +45,7 @@ public class LoggingRequestInterceptor implements ClientHttpRequestInterceptor {
 		BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(response.getBody(), "UTF-8"));
 		String line = bufferedReader.readLine();
 		while (line != null) {
+			line = line.replaceAll("\u0000", "");
 			inputStringBuilder.append(line);
 			inputStringBuilder.append('\n');
 			line = bufferedReader.readLine();

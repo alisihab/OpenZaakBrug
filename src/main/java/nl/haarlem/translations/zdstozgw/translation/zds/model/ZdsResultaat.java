@@ -12,7 +12,7 @@ import lombok.Data;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ZdsResultaat {
 	@XmlElement(namespace = ZKN)
-	private String omschrijving;
+	public String omschrijving;
 
 	@XmlElement(namespace = ZKN)
 	private String toelichting;

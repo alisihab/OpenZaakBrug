@@ -22,7 +22,7 @@ public class ZgwRequestResponseCycle {
 	@Column(columnDefinition="TEXT")
 	private String zgwRequestBody;
 	private int zgwResponseCode;	
-	//@Column(columnDefinition="TEXT")
-	@Lob
+//	@Lob
+	@Column(columnDefinition="TEXT")
 	private String zgwResponseBody;	
 }
