@@ -8,39 +8,39 @@ import lombok.Data;
 @Data
 public class ZgwResultaatType {
 
-    @SerializedName("url")
-    @Expose
-    public String url;
+	@SerializedName("url")
+	@Expose
+	public String url;
+	
+	@SerializedName("zaaktype")
+	@Expose
+	public String zaaktype;
 
-    @SerializedName("zaaktype")
-    @Expose
-    public String zaaktype;
+	@SerializedName("omschrijving")
+	@Expose
+	public String omschrijving;
 
-    @SerializedName("omschrijving")
-    @Expose
-    public String omschrijving;
+	@SerializedName("resultaattypeomschrijving")
+	@Expose
+	public String resultaattypeomschrijving;
 
-    @SerializedName("resultaattypeomschrijving")
-    @Expose
-    public String resultaattypeomschrijving;
+	@SerializedName("omschrijvingGeneriek")
+	@Expose
+	public String omschrijvingGeneriek;
 
-    @SerializedName("omschrijvingGeneriek")
-    @Expose
-    public String omschrijvingGeneriek;
+	@SerializedName("selectielijstklasse")
+	@Expose
+	public String selectielijstklasse;
+	
+	@SerializedName("toelichting")
+	@Expose
+	public String toelichting;
+	
+	@SerializedName("archiefnominatie")
+	@Expose
+	public String archiefnominatie;
 
-    @SerializedName("selectielijstklasse")
-    @Expose
-    public String selectielijstklasse;
-
-    @SerializedName("toelichting")
-    @Expose
-    public String toelichting;
-
-    @SerializedName("archiefnominatie")
-    @Expose
-    public String archiefnominatie;
-
-    @SerializedName("archiefactietermijn")
-    @Expose
-    public String archiefactietermijn;
+	@SerializedName("archiefactietermijn")
+	@Expose
+	public String archiefactietermijn;
 }

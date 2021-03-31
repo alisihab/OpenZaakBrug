@@ -14,5 +14,5 @@ import lombok.Data;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ZdsZaakDocumentAntwoord {
 	@XmlElement(namespace = ZKN, name = "object")
-	public List<ZdsZaakDocumentInhoud> document;	
+	public List<ZdsZaakDocumentInhoud> document;
 }

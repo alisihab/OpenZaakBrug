@@ -18,8 +18,7 @@ public class ActualiseerZaakStatusReplicator extends ActualiseerZaakStatusTransl
 
 	private static final Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
-	public ActualiseerZaakStatusReplicator(RequestHandlerContext context, Translation translation,
-			ZaakService zaakService) {
+	public ActualiseerZaakStatusReplicator(RequestHandlerContext context, Translation translation, ZaakService zaakService) {
 		super(context, translation, zaakService);
 	}
 

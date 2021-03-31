@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Value;
 
 import com.google.gson.Gson;
 
@@ -25,8 +26,8 @@ public class ConfigService {
 
 	private Configuration configuration;
 
-	public ConfigService() throws Exception {
-		var cpr = new ClassPathResource("config.json");
+	public ConfigService(@Value("${config.json.location:config.json}") String configPath) throws Exception {
+		var cpr = new ClassPathResource(configPath);
 
 		try(InputStream configStream = cpr.getInputStream()){
 			BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(configStream));
