@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import nl.haarlem.translations.zdstozgw.translation.zgw.model.*;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,17 +23,6 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import nl.haarlem.translations.zdstozgw.converter.ConverterException;
-import nl.haarlem.translations.zdstozgw.translation.zgw.model.QueryResult;
-import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwEnkelvoudigInformatieObject;
-import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwInformatieObjectType;
-import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwRol;
-import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwRolType;
-import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwStatus;
-import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwStatusType;
-import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwZaak;
-import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwZaakInformatieObject;
-import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwZaakPut;
-import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwZaakType;
 
 @Service
 public class ZGWClient {
@@ -67,6 +58,12 @@ public class ZGWClient {
 
 	@Value("${zgw.endpoint.informatieobjecttype:/catalogi/api/v1/informatieobjecttypen}")
 	private String endpointInformatieobjecttype;
+
+    @Value("${zgw.endpoint.resultaat:/zaken/api/v1/resultaten}")
+    private String endpointResultaat;
+
+    @Value("${zgw.endpoint.resultaattype:/catalogi/api/v1/resultaattypen}")
+    private String endpointResultaattype;
 
 	@Autowired
 	RestTemplateService restTemplateService;
@@ -505,4 +502,36 @@ public class ZGWClient {
 		ZgwInformatieObjectType result = gson.fromJson(documentType, ZgwInformatieObjectType.class);
 		return result;
 	}
+
+    public ZgwResultaat addZaakResultaat(ZgwResultaat zgwResultaat) {
+        Gson gson = new Gson();
+        String json = gson.toJson(zgwResultaat);
+        String response = this.post(this.baseUrl + this.endpointResultaat, json);
+        return gson.fromJson(response, ZgwResultaat.class);
+    }
+
+    public List<ZgwResultaatType> getResultaatTypes(Map<String, String> parameters) {
+        var restulaatTypeJson = get(this.baseUrl + this.endpointResultaattype, parameters);
+        Type type = new TypeToken<QueryResult<ZgwResultaatType>>() {
+        }.getType();
+        Gson gson = new Gson();
+        QueryResult<ZgwResultaatType> queryResult = gson.fromJson(restulaatTypeJson, type);
+        return queryResult.getResults();
+    }
+
+    public ZgwResultaatType getResultaatTypeByZaakTypeAndOmschrijving(String zaakTypeUrl, String resultaatOmschrijving) {
+        Map<String, String> parameters = new HashMap();
+        parameters.put("zaaktype", zaakTypeUrl);
+        //default behaviour parameters.put("status", "definitief");
+        List<ZgwResultaatType> resultaattypes = this.getResultaatTypes(parameters);
+
+        for (ZgwResultaatType resultaattype : resultaattypes) {
+            log.debug("opgehaald:" + resultaattype.omschrijving + " zoeken naar: " + resultaatOmschrijving);
+            if (resultaattype.omschrijving.startsWith(resultaatOmschrijving)) {
+                log.debug("gevonden:" + resultaattype.omschrijving + " zoeken naar: " + resultaatOmschrijving);
+                return resultaattype;
+            }
+        }
+        throw new ConverterException("zaakresultaat niet gevonden voor omschrijving: '" + resultaatOmschrijving + "'");
+    }
 }
