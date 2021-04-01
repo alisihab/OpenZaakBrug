@@ -190,9 +190,22 @@ public class ZaakService {
 	
 	private boolean setResultaatAndStatus(ZdsZaak zdsZaak, ZgwZaak zgwZaak) {
 		var changed = false;		
+
+		// Gisvg doet alles op <datumStatusGezet>20210401000000000</datumStatusGezet>
+		// pas dit aan naar tijdstip nu als het gebeurd, want zaakid, datetime-status moet uniek zijn
+		var zaakid = zdsZaak.identificatie;
+		if (zdsZaak.heeft != null && zdsZaak.heeft.size() > 0 && zdsZaak.heeft.get(0).datumStatusGezet != null) {
+			var tijdstip = zdsZaak.heeft.get(0).datumStatusGezet;				
+			var formatter = new SimpleDateFormat("yyyyMMdd000000000");
+			var dagstart = formatter.format(new Date());
+			if(tijdstip.equals(dagstart)) {
+				formatter = new SimpleDateFormat("yyyyMMddHHmmssSSS");
+				zdsZaak.heeft.get(0).datumStatusGezet = formatter.format(new Date());					
+				debugWarning("Zaak with identificatie:" + zaakid + " changing the datumStatusGezet from: " + tijdstip + " to: " +  zdsZaak.heeft.get(0).datumStatusGezet);					
+			}
+		}	
 		
 		if (zdsZaak.resultaat != null && zdsZaak.resultaat.omschrijving != null) {
-			// wanneer eindezaak
 
 			// Difference between ZDS --> ZGW the behaviour of ending a zaak has changed.
 			// (more info at: https://vng-realisatie.github.io/gemma-zaken/standaard/zaken/index#zrc-007 ) 
@@ -203,11 +216,10 @@ public class ZaakService {
 			// 
 			// in ZGW:
 			//	- resultaat an reference and status has to be set to the one with the highest volgnummer
-			var zaakid = zdsZaak.identificatie;
 			var resultaatomschrijving = zdsZaak.resultaat.omschrijving;
 			var einddatum = zdsZaak.einddatum;			
 			var today = new SimpleDateFormat("yyyyMMdd").format(new Date()); 
-			
+
 			if(einddatum == null) {
 				debugWarning("Update of zaakid:" + zaakid + " has resultaat but no einddatum, using today");
 				einddatum = today;
@@ -571,20 +583,10 @@ public class ZaakService {
 
 	public ZgwZaak actualiseerZaakstatus(ZdsZaak wasZaak, ZdsZaak wordtZaak) {
 		log.debug("actualiseerZaakstatus:" + wasZaak.identificatie);
-		ZgwZaak zgwZaak = this.zgwClient.getZaakByIdentificatie(wasZaak.identificatie);
-		var zdsHeeft = wordtZaak.heeft.get(0);
-		var zdsStatus = zdsHeeft.gerelateerde;
-		// var zgwStatusType =
-		// zgwClient.getStatusTypeByZaakTypeAndVolgnummer(zgwZaak.zaaktype,
-		// zdsStatus.volgnummer, zdsStatus.omschrijving);
-		var zgwStatusType = this.zgwClient.getStatusTypeByZaakTypeAndOmschrijving(zgwZaak.zaaktype,
-				zdsStatus.omschrijving, zdsStatus.volgnummer);
-
-		ZgwStatus zgwStatus = this.modelMapper.map(zdsHeeft, ZgwStatus.class);
-		zgwStatus.zaak = zgwZaak.url;
-		zgwStatus.statustype = zgwStatusType.url;
-
-		this.zgwClient.addZaakStatus(zgwStatus);
+		var zaakid = wasZaak.identificatie;
+		ZgwZaak zgwZaak = this.zgwClient.getZaakByIdentificatie(zaakid);
+		setResultaatAndStatus(wordtZaak, zgwZaak);		
+		
 		return zgwZaak;
 	}
 
