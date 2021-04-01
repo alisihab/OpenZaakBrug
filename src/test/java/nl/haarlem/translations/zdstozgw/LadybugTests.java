@@ -85,7 +85,7 @@ public class LadybugTests {
 						for (Checkpoint checkpoint : runResultReport.getCheckpoints()) {
 							if (first) {
 								first = false;
-							} else if (checkpoint.getMessageHasBeenStubbed()) {
+							} else if (checkpoint.isStubbed()) {
 								stubbed++;
 							}
 						}
