@@ -205,7 +205,7 @@ public class ZaakService {
 			}
 		}	
 		
-		if (zdsZaak.resultaat != null && zdsZaak.resultaat.omschrijving != null) {
+		if (zdsZaak.resultaat != null && zdsZaak.resultaat.omschrijving != null && zdsZaak.resultaat.omschrijving.length() > 0) {
 
 			// Difference between ZDS --> ZGW the behaviour of ending a zaak has changed.
 			// (more info at: https://vng-realisatie.github.io/gemma-zaken/standaard/zaken/index#zrc-007 ) 
@@ -220,7 +220,7 @@ public class ZaakService {
 			var einddatum = zdsZaak.einddatum;			
 			var today = new SimpleDateFormat("yyyyMMdd").format(new Date()); 
 
-			if(einddatum == null) {
+			if(einddatum == null || einddatum.length() == 0) {
 				debugWarning("Update of zaakid:" + zaakid + " has resultaat but no einddatum, using today");
 				einddatum = today;
 			}
