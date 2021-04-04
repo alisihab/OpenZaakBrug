@@ -77,7 +77,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>Thread-56</string>
+      <string>http-nio-8080-exec-1</string>
      </void>
      <void property="type">
       <int>1</int>
@@ -105,7 +105,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>Thread-56</string>
+      <string>http-nio-8080-exec-1</string>
      </void>
      <void property="type">
       <int>4</int>
@@ -133,7 +133,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>Thread-56</string>
+      <string>http-nio-8080-exec-1</string>
      </void>
      <void property="type">
       <int>4</int>
@@ -161,7 +161,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>Thread-56</string>
+      <string>http-nio-8080-exec-1</string>
      </void>
      <void property="type">
       <int>4</int>
@@ -189,7 +189,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>Thread-56</string>
+      <string>http-nio-8080-exec-1</string>
      </void>
      <void property="type">
       <int>4</int>
@@ -217,7 +217,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>Thread-56</string>
+      <string>http-nio-8080-exec-1</string>
      </void>
      <void property="type">
       <int>4</int>
@@ -233,7 +233,7 @@
       <int>1</int>
      </void>
      <void property="message">
-      <string>Ladybug_Test_Tool-2.0.15-20210115.140317--58542be6:1785a948469:-7fc5</string>
+      <string>Ladybug_Test_Tool-2.0.15-20210115.140317--523d9a90:1789e8942b3:-7fe9</string>
      </void>
      <void property="name">
       <string>referentienummer</string>
@@ -245,7 +245,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>Thread-56</string>
+      <string>http-nio-8080-exec-1</string>
      </void>
      <void property="type">
       <int>6</int>
@@ -273,7 +273,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>Thread-56</string>
+      <string>http-nio-8080-exec-1</string>
      </void>
      <void property="type">
       <int>6</int>
@@ -301,7 +301,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>Thread-56</string>
+      <string>http-nio-8080-exec-1</string>
      </void>
      <void property="type">
       <int>6</int>
@@ -329,7 +329,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>Thread-56</string>
+      <string>http-nio-8080-exec-1</string>
      </void>
      <void property="type">
       <int>6</int>
@@ -351,7 +351,7 @@
       <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
      </void>
      <void property="threadName">
-      <string>Thread-56</string>
+      <string>http-nio-8080-exec-1</string>
      </void>
      <void property="type">
       <int>1</int>
@@ -379,7 +379,7 @@
       <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
      </void>
      <void property="threadName">
-      <string>Thread-56</string>
+      <string>http-nio-8080-exec-1</string>
      </void>
      <void property="type">
       <int>4</int>
@@ -407,7 +407,7 @@
       <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
      </void>
      <void property="threadName">
-      <string>Thread-56</string>
+      <string>http-nio-8080-exec-1</string>
      </void>
      <void property="type">
       <int>4</int>
@@ -438,7 +438,7 @@
       <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
      </void>
      <void property="threadName">
-      <string>Thread-56</string>
+      <string>http-nio-8080-exec-1</string>
      </void>
      <void property="type">
       <int>2</int>
@@ -466,7 +466,91 @@
       <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
      </void>
      <void property="threadName">
-      <string>Thread-56</string>
+      <string>http-nio-8080-exec-1</string>
+     </void>
+     <void property="type">
+      <int>6</int>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="nl.nn.testtool.Checkpoint">
+     <void property="estimatedMemoryUsage">
+      <long>240</long>
+     </void>
+     <void property="level">
+      <int>1</int>
+     </void>
+     <void property="message">
+      <string>The field: kenmerk does not match (DELETED) stored-value:&apos;[ZdsKenmerk(kenmerk=273846, bron=GWS4all)]&apos; , was-value:&apos;null&apos;</string>
+     </void>
+     <void property="name">
+      <string>Warning</string>
+     </void>
+     <void property="report">
+      <object idref="Report0"/>
+     </void>
+     <void property="sourceClassName">
+      <string>nl.haarlem.translations.zdstozgw.translation.zds.services.ZaakService</string>
+     </void>
+     <void property="threadName">
+      <string>http-nio-8080-exec-1</string>
+     </void>
+     <void property="type">
+      <int>6</int>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="nl.nn.testtool.Checkpoint">
+     <void property="estimatedMemoryUsage">
+      <long>176</long>
+     </void>
+     <void property="level">
+      <int>1</int>
+     </void>
+     <void property="message">
+      <string>The field: archiefnominatie does not match (DELETED) stored-value:&apos;N&apos; , was-value:&apos;null&apos;</string>
+     </void>
+     <void property="name">
+      <string>Warning</string>
+     </void>
+     <void property="report">
+      <object idref="Report0"/>
+     </void>
+     <void property="sourceClassName">
+      <string>nl.haarlem.translations.zdstozgw.translation.zds.services.ZaakService</string>
+     </void>
+     <void property="threadName">
+      <string>http-nio-8080-exec-1</string>
+     </void>
+     <void property="type">
+      <int>6</int>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="nl.nn.testtool.Checkpoint">
+     <void property="estimatedMemoryUsage">
+      <long>164</long>
+     </void>
+     <void property="level">
+      <int>1</int>
+     </void>
+     <void property="message">
+      <string>The field: toelichting does not match (DELETED) stored-value:&apos;&apos; , was-value:&apos;null&apos;</string>
+     </void>
+     <void property="name">
+      <string>Warning</string>
+     </void>
+     <void property="report">
+      <object idref="Report0"/>
+     </void>
+     <void property="sourceClassName">
+      <string>nl.haarlem.translations.zdstozgw.translation.zds.services.ZaakService</string>
+     </void>
+     <void property="threadName">
+      <string>http-nio-8080-exec-1</string>
      </void>
      <void property="type">
       <int>6</int>
@@ -494,7 +578,7 @@
       <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
      </void>
      <void property="threadName">
-      <string>Thread-56</string>
+      <string>http-nio-8080-exec-1</string>
      </void>
      <void property="type">
       <int>1</int>
@@ -522,7 +606,7 @@
       <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
      </void>
      <void property="threadName">
-      <string>Thread-56</string>
+      <string>http-nio-8080-exec-1</string>
      </void>
      <void property="type">
       <int>4</int>
@@ -553,7 +637,7 @@
       <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
      </void>
      <void property="threadName">
-      <string>Thread-56</string>
+      <string>http-nio-8080-exec-1</string>
      </void>
      <void property="type">
       <int>2</int>
@@ -581,7 +665,144 @@
       <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
      </void>
      <void property="threadName">
-      <string>Thread-56</string>
+      <string>http-nio-8080-exec-1</string>
+     </void>
+     <void property="type">
+      <int>6</int>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="nl.nn.testtool.Checkpoint">
+     <void property="level">
+      <int>1</int>
+     </void>
+     <void property="name">
+      <string>ZGWClient GET</string>
+     </void>
+     <void property="report">
+      <object idref="Report0"/>
+     </void>
+     <void property="sourceClassName">
+      <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
+     </void>
+     <void property="threadName">
+      <string>http-nio-8080-exec-1</string>
+     </void>
+     <void property="type">
+      <int>1</int>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="nl.nn.testtool.Checkpoint">
+     <void property="estimatedMemoryUsage">
+      <long>386</long>
+     </void>
+     <void property="level">
+      <int>2</int>
+     </void>
+     <void property="message">
+      <string>https://fieldlab.westeurope.cloudapp.azure.com/catalogi/api/v1/statustypen?zaaktype=https://fieldlab.westeurope.cloudapp.azure.com/catalogi/api/v1/zaaktypen/8a0ecb65-c3fd-4110-8599-297f84236ae5</string>
+     </void>
+     <void property="name">
+      <string>url</string>
+     </void>
+     <void property="report">
+      <object idref="Report0"/>
+     </void>
+     <void property="sourceClassName">
+      <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
+     </void>
+     <void property="threadName">
+      <string>http-nio-8080-exec-1</string>
+     </void>
+     <void property="type">
+      <int>4</int>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="nl.nn.testtool.Checkpoint">
+     <void property="estimatedMemoryUsage">
+      <long>218</long>
+     </void>
+     <void property="level">
+      <int>2</int>
+     </void>
+     <void property="message">
+      <string>https://fieldlab.westeurope.cloudapp.azure.com/catalogi/api/v1/zaaktypen/8a0ecb65-c3fd-4110-8599-297f84236ae5</string>
+     </void>
+     <void property="name">
+      <string>Parameter zaaktype</string>
+     </void>
+     <void property="report">
+      <object idref="Report0"/>
+     </void>
+     <void property="sourceClassName">
+      <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
+     </void>
+     <void property="threadName">
+      <string>http-nio-8080-exec-1</string>
+     </void>
+     <void property="type">
+      <int>4</int>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="nl.nn.testtool.Checkpoint">
+     <void property="estimatedMemoryUsage">
+      <long>220</long>
+     </void>
+     <void property="level">
+      <int>2</int>
+     </void>
+     <void property="message">
+      <string>&lt;stub&gt;Could not find stub message for &apos;/Translate updateZaak_Lk01[0]/ZGWClient GET[1]/ZGWClient GET[0]&apos;&lt;/stub&gt;</string>
+     </void>
+     <void property="messageHasBeenStubbed">
+      <boolean>true</boolean>
+     </void>
+     <void property="name">
+      <string>ZGWClient GET</string>
+     </void>
+     <void property="report">
+      <object idref="Report0"/>
+     </void>
+     <void property="sourceClassName">
+      <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
+     </void>
+     <void property="threadName">
+      <string>http-nio-8080-exec-1</string>
+     </void>
+     <void property="type">
+      <int>2</int>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="nl.nn.testtool.Checkpoint">
+     <void property="estimatedMemoryUsage">
+      <long>442</long>
+     </void>
+     <void property="level">
+      <int>1</int>
+     </void>
+     <void property="message">
+      <string>GET to: https://fieldlab.westeurope.cloudapp.azure.com/catalogi/api/v1/statustypen?zaaktype=https://fieldlab.westeurope.cloudapp.azure.com/catalogi/api/v1/zaaktypen/8a0ecb65-c3fd-4110-8599-297f84236ae5 took 0 milliseconds</string>
+     </void>
+     <void property="name">
+      <string>Duration</string>
+     </void>
+     <void property="report">
+      <object idref="Report0"/>
+     </void>
+     <void property="sourceClassName">
+      <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
+     </void>
+     <void property="threadName">
+      <string>http-nio-8080-exec-1</string>
      </void>
      <void property="type">
       <int>6</int>
@@ -602,7 +823,7 @@
      <void property="message">
       <string>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;java version=&quot;13.0.2&quot; class=&quot;java.beans.XMLDecoder&quot;&gt;
- &lt;int&gt;200&lt;/int&gt;
+ &lt;int&gt;500&lt;/int&gt;
 &lt;/java&gt;
 </string>
      </void>
@@ -616,7 +837,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>Thread-56</string>
+      <string>http-nio-8080-exec-1</string>
      </void>
      <void property="type">
       <int>5</int>
@@ -644,7 +865,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>Thread-56</string>
+      <string>http-nio-8080-exec-1</string>
      </void>
      <void property="type">
       <int>5</int>
@@ -660,7 +881,7 @@
       <int>1</int>
      </void>
      <void property="message">
-      <string>Soapaction: &quot;http://www.egem.nl/StUF/sector/zkn/0310/updateZaak_Lk01&quot; took 28 milliseconds</string>
+      <string>Soapaction: &quot;http://www.egem.nl/StUF/sector/zkn/0310/updateZaak_Lk01&quot; took 37 milliseconds</string>
      </void>
      <void property="name">
       <string>Total duration</string>
@@ -672,7 +893,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>Thread-56</string>
+      <string>http-nio-8080-exec-1</string>
      </void>
      <void property="type">
       <int>6</int>
@@ -682,7 +903,7 @@
    <void method="add">
     <object class="nl.nn.testtool.Checkpoint">
      <void property="estimatedMemoryUsage">
-      <long>1936</long>
+      <long>13696</long>
      </void>
      <void property="level">
       <int>1</int>
@@ -691,23 +912,105 @@
       <string>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;SOAP-ENV:Envelope xmlns:SOAP-ENV=&quot;http://schemas.xmlsoap.org/soap/envelope/&quot;&gt;&#13;
   &lt;SOAP-ENV:Header/&gt;&#13;
   &lt;SOAP-ENV:Body&gt;&#13;
-    &lt;Bv03Bericht xmlns=&quot;http://www.egem.nl/StUF/StUF0301&quot; xmlns:ns2=&quot;http://www.egem.nl/StUF/sector/zkn/0310&quot;&gt;&#13;
-      &lt;stuurgegevens&gt;&#13;
-        &lt;berichtcode&gt;Bv03&lt;/berichtcode&gt;&#13;
-        &lt;zender&gt;&#13;
-          &lt;organisatie&gt;1900&lt;/organisatie&gt;&#13;
-          &lt;applicatie&gt;CDR&lt;/applicatie&gt;&#13;
-        &lt;/zender&gt;&#13;
-        &lt;ontvanger&gt;&#13;
-          &lt;organisatie&gt;1900&lt;/organisatie&gt;&#13;
-          &lt;applicatie&gt;GWS4all&lt;/applicatie&gt;&#13;
-          &lt;gebruiker&gt;Gebruiker&lt;/gebruiker&gt;&#13;
-        &lt;/ontvanger&gt;&#13;
-        &lt;referentienummer&gt;Ladybug_Test_Tool-2.0.15-20210115.140317--58542be6:1785a948469:-7fc5&lt;/referentienummer&gt;&#13;
-        &lt;tijdstipBericht&gt;20210322205138&lt;/tijdstipBericht&gt;&#13;
-        &lt;crossRefnummer&gt;9764f8ad-80a2-438c-a41e-c270cd767485&lt;/crossRefnummer&gt;&#13;
-      &lt;/stuurgegevens&gt;&#13;
-    &lt;/Bv03Bericht&gt;&#13;
+    &lt;SOAP-ENV:Fault&gt;&#13;
+      &lt;faultcode xmlns:env=&quot;http://www.w3.org/2003/05/soap-envelope&quot;&gt;env:Receiver&lt;/faultcode&gt;&#13;
+      &lt;faultstring&gt;com.google.gson.JsonSyntaxException: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $&lt;/faultstring&gt;&#13;
+      &lt;detail&gt;&#13;
+        &lt;Fo03Bericht xmlns=&quot;http://www.egem.nl/StUF/StUF0301&quot; xmlns:ns2=&quot;http://www.egem.nl/StUF/sector/zkn/0310&quot;&gt;&#13;
+          &lt;stuurgegevens&gt;&#13;
+            &lt;berichtcode&gt;Fo03&lt;/berichtcode&gt;&#13;
+            &lt;zender&gt;&#13;
+              &lt;organisatie&gt;1900&lt;/organisatie&gt;&#13;
+              &lt;applicatie&gt;CDR&lt;/applicatie&gt;&#13;
+            &lt;/zender&gt;&#13;
+            &lt;ontvanger&gt;&#13;
+              &lt;organisatie&gt;1900&lt;/organisatie&gt;&#13;
+              &lt;applicatie&gt;GWS4all&lt;/applicatie&gt;&#13;
+              &lt;gebruiker&gt;Gebruiker&lt;/gebruiker&gt;&#13;
+            &lt;/ontvanger&gt;&#13;
+            &lt;referentienummer&gt;Ladybug_Test_Tool-2.0.15-20210115.140317--523d9a90:1789e8942b3:-7fe9&lt;/referentienummer&gt;&#13;
+            &lt;tijdstipBericht&gt;20210404222711&lt;/tijdstipBericht&gt;&#13;
+            &lt;crossRefnummer&gt;9764f8ad-80a2-438c-a41e-c270cd767485&lt;/crossRefnummer&gt;&#13;
+          &lt;/stuurgegevens&gt;&#13;
+          &lt;body&gt;&#13;
+            &lt;code&gt;StUF058&lt;/code&gt;&#13;
+            &lt;plek&gt;server&lt;/plek&gt;&#13;
+            &lt;omschrijving&gt;com.google.gson.JsonSyntaxException: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $&lt;/omschrijving&gt;&#13;
+            &lt;details&gt;com.google.gson.JsonSyntaxException: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $&amp;#13;&#13;
+	at com.google.gson.internal.bind.ReflectiveTypeAdapterFactory$Adapter.read(ReflectiveTypeAdapterFactory.java:226)&amp;#13;&#13;
+	at com.google.gson.Gson.fromJson(Gson.java:932)&amp;#13;&#13;
+	at com.google.gson.Gson.fromJson(Gson.java:897)&amp;#13;&#13;
+	at com.google.gson.Gson.fromJson(Gson.java:846)&amp;#13;&#13;
+	at nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient.getStatusTypes(ZGWClient.java:376)&amp;#13;&#13;
+	at nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient.getStatusTypesByZaakType(ZGWClient.java:546)&amp;#13;&#13;
+	at nl.haarlem.translations.zdstozgw.translation.zds.services.ZaakService.setResultaatAndStatus(ZaakService.java:225)&amp;#13;&#13;
+	at nl.haarlem.translations.zdstozgw.translation.zds.services.ZaakService.updateZaak(ZaakService.java:199)&amp;#13;&#13;
+	at nl.haarlem.translations.zdstozgw.converter.impl.translate.UpdateZaakTranslator.execute(UpdateZaakTranslator.java:30)&amp;#13;&#13;
+	at nl.haarlem.translations.z&lt;/details&gt;&#13;
+            &lt;detailsXML&gt;&#13;
+              &lt;todo&gt;&amp;lt;SOAP-ENV:Envelope xsi:schemaLocation=&quot;http://www.egem.nl/StUF/sector/zkn/0310 zkn0310-p28\mutatie\zkn0310_msg_mutatie_resolved.xsd&quot; xmlns:SOAP-ENV=&quot;http://schemas.xmlsoap.org/soap/envelope/&quot; xmlns:BG=&quot;http://www.egem.nl/StUF/sector/bg/0310&quot; xmlns:StUF=&quot;http://www.egem.nl/StUF/StUF0301&quot; xmlns:ZKN=&quot;http://www.egem.nl/StUF/sector/zkn/0310&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;&amp;gt;\r&#13;
+   &amp;lt;SOAP-ENV:Header/&amp;gt;\r&#13;
+   &amp;lt;SOAP-ENV:Body&amp;gt;\r&#13;
+      &amp;lt;ZKN:zakLk01&amp;gt;\r&#13;
+         &amp;lt;ZKN:stuurgegevens&amp;gt;\r&#13;
+            &amp;lt;StUF:berichtcode&amp;gt;Lk01&amp;lt;/StUF:berichtcode&amp;gt;\r&#13;
+            &amp;lt;StUF:zender&amp;gt;\r&#13;
+               &amp;lt;StUF:organisatie&amp;gt;1900&amp;lt;/StUF:organisatie&amp;gt;\r&#13;
+               &amp;lt;StUF:applicatie&amp;gt;GWS4all&amp;lt;/StUF:applicatie&amp;gt;\r&#13;
+               &amp;lt;StUF:gebruiker&amp;gt;Gebruiker&amp;lt;/StUF:gebruiker&amp;gt;\r&#13;
+            &amp;lt;/StUF:zender&amp;gt;\r&#13;
+            &amp;lt;StUF:ontvanger&amp;gt;\r&#13;
+               &amp;lt;StUF:organisatie&amp;gt;1900&amp;lt;/StUF:organisatie&amp;gt;\r&#13;
+               &amp;lt;StUF:applicatie&amp;gt;CDR&amp;lt;/StUF:applicatie&amp;gt;\r&#13;
+            &amp;lt;/StUF:ontvanger&amp;gt;\r&#13;
+            &amp;lt;StUF:referentienummer&amp;gt;9764f8ad-80a2-438c-a41e-c270cd767485&amp;lt;/StUF:referentienummer&amp;gt;\r&#13;
+            &amp;lt;StUF:tijdstipBericht&amp;gt;20201207224239913&amp;lt;/StUF:tijdstipBericht&amp;gt;\r&#13;
+            &amp;lt;StUF:entiteittype&amp;gt;ZAK&amp;lt;/StUF:entiteittype&amp;gt;\r&#13;
+         &amp;lt;/ZKN:stuurgegevens&amp;gt;\r&#13;
+         &amp;lt;ZKN:parameters&amp;gt;\r&#13;
+            &amp;lt;StUF:mutatiesoort&amp;gt;W&amp;lt;/StUF:mutatiesoort&amp;gt;\r&#13;
+            &amp;lt;StUF:indicatorOvername&amp;gt;V&amp;lt;/StUF:indicatorOvername&amp;gt;\r&#13;
+         &amp;lt;/ZKN:parameters&amp;gt;\r&#13;
+         &amp;lt;ZKN:object StUF:sleutelVerzendend=&quot;8000371&quot; StUF:entiteittype=&quot;ZAK&quot; StUF:verwerkingssoort=&quot;W&quot;&amp;gt;\r&#13;
+            &amp;lt;ZKN:identificatie&amp;gt;8000371&amp;lt;/ZKN:identificatie&amp;gt;\r&#13;
+            &amp;lt;ZKN:omschrijving&amp;gt;Aanvraag minimaregelingen (Z)&amp;lt;/ZKN:omschrijving&amp;gt;\r&#13;
+            &amp;lt;ZKN:startdatum&amp;gt;20201207&amp;lt;/ZKN:startdatum&amp;gt;\r&#13;
+            &amp;lt;ZKN:registratiedatum&amp;gt;20201207&amp;lt;/ZKN:registratiedatum&amp;gt;\r&#13;
+            &amp;lt;ZKN:einddatumGepland&amp;gt;20210101&amp;lt;/ZKN:einddatumGepland&amp;gt;\r&#13;
+            &amp;lt;ZKN:isVan StUF:entiteittype=&quot;ZAKZKT&quot; StUF:verwerkingssoort=&quot;I&quot;&amp;gt;\r&#13;
+               &amp;lt;ZKN:gerelateerde StUF:entiteittype=&quot;ZKT&quot; StUF:verwerkingssoort=&quot;I&quot;&amp;gt;\r&#13;
+                  &amp;lt;ZKN:omschrijving&amp;gt;Aanvraag minima&amp;lt;/ZKN:omschrijving&amp;gt;\r&#13;
+                  &amp;lt;ZKN:code&amp;gt;B1026&amp;lt;/ZKN:code&amp;gt;\r&#13;
+                  &amp;lt;ZKN:ingangsdatumObject xsi:nil=&quot;true&quot; StUF:noValue=&quot;geenWaarde&quot;/&amp;gt;\r&#13;
+               &amp;lt;/ZKN:gerelateerde&amp;gt;\r&#13;
+            &amp;lt;/ZKN:isVan&amp;gt;\r&#13;
+         &amp;lt;/ZKN:object&amp;gt;\r&#13;
+         &amp;lt;ZKN:object StUF:sleutelVerzendend=&quot;8000371&quot; StUF:entiteittype=&quot;ZAK&quot; StUF:verwerkingssoort=&quot;W&quot;&amp;gt;\r&#13;
+            &amp;lt;ZKN:identificatie&amp;gt;8000371&amp;lt;/ZKN:identificatie&amp;gt;\r&#13;
+            &amp;lt;ZKN:omschrijving&amp;gt;Aanvraag minimaregelingen (Z)&amp;lt;/ZKN:omschrijving&amp;gt;\r&#13;
+            &amp;lt;ZKN:startdatum&amp;gt;20201207&amp;lt;/ZKN:startdatum&amp;gt;\r&#13;
+            &amp;lt;ZKN:registratiedatum&amp;gt;20201207&amp;lt;/ZKN:registratiedatum&amp;gt;\r&#13;
+            &amp;lt;ZKN:einddatumGepland&amp;gt;20210101&amp;lt;/ZKN:einddatumGepland&amp;gt;\r&#13;
+            &amp;lt;ZKN:opschorting&amp;gt;\r&#13;
+               &amp;lt;ZKN:indicatie&amp;gt;J&amp;lt;/ZKN:indicatie&amp;gt;\r&#13;
+               &amp;lt;ZKN:reden&amp;gt;niet tijdig verstrekken inform&amp;lt;/ZKN:reden&amp;gt;\r&#13;
+            &amp;lt;/ZKN:opschorting&amp;gt;\r&#13;
+            &amp;lt;ZKN:isVan StUF:entiteittype=&quot;ZAKZKT&quot; StUF:verwerkingssoort=&quot;I&quot;&amp;gt;\r&#13;
+               &amp;lt;ZKN:gerelateerde StUF:entiteittype=&quot;ZKT&quot; StUF:verwerkingssoort=&quot;I&quot;&amp;gt;\r&#13;
+                  &amp;lt;ZKN:omschrijving&amp;gt;Aanvraag minima&amp;lt;/ZKN:omschrijving&amp;gt;\r&#13;
+                  &amp;lt;ZKN:code&amp;gt;B1026&amp;lt;/ZKN:code&amp;gt;\r&#13;
+                  &amp;lt;ZKN:ingangsdatumObject xsi:nil=&quot;true&quot; StUF:noValue=&quot;geenWaarde&quot;/&amp;gt;\r&#13;
+               &amp;lt;/ZKN:gerelateerde&amp;gt;\r&#13;
+            &amp;lt;/ZKN:isVan&amp;gt;\r&#13;
+         &amp;lt;/ZKN:object&amp;gt;\r&#13;
+      &amp;lt;/ZKN:zakLk01&amp;gt;\r&#13;
+   &amp;lt;/SOAP-ENV:Body&amp;gt;\r&#13;
+&amp;lt;/SOAP-ENV:Envelope&amp;gt;&lt;/todo&gt;&#13;
+            &lt;/detailsXML&gt;&#13;
+          &lt;/body&gt;&#13;
+        &lt;/Fo03Bericht&gt;&#13;
+      &lt;/detail&gt;&#13;
+    &lt;/SOAP-ENV:Fault&gt;&#13;
   &lt;/SOAP-ENV:Body&gt;&#13;
 &lt;/SOAP-ENV:Envelope&gt;&#13;
 </string>
@@ -722,7 +1025,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>Thread-56</string>
+      <string>http-nio-8080-exec-1</string>
      </void>
      <void property="type">
       <int>2</int>
@@ -731,16 +1034,16 @@
    </void>
   </void>
   <void property="correlationId">
-   <string>Ladybug_Test_Tool-2.0.15-20210115.140317--58542be6:1785a948469:-7fc5</string>
+   <string>Ladybug_Test_Tool-2.0.15-20210115.140317--523d9a90:1789e8942b3:-7fe9</string>
   </void>
   <void property="description">
    <string></string>
   </void>
   <void property="endTime">
-   <long>1616442698228</long>
+   <long>1617568031879</long>
   </void>
   <void property="estimatedMemoryUsage">
-   <long>17556</long>
+   <long>31162</long>
   </void>
   <void property="name">
    <string>06 Translate updateZaak_Lk01 (B)</string>
@@ -749,10 +1052,10 @@
    <string>/</string>
   </void>
   <void property="startTime">
-   <long>1616442698200</long>
+   <long>1617568031842</long>
   </void>
   <void property="storageId">
-   <int>232</int>
+   <int>245</int>
   </void>
   <void property="stubStrategy">
    <string>Stub all external connection code</string>
