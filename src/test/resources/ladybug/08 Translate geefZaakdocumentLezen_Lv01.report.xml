@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<java version="15" class="java.beans.XMLDecoder">
+<java version="13.0.2" class="java.beans.XMLDecoder">
  <object class="nl.nn.testtool.Report" id="Report0">
   <void property="checkpoints">
    <void method="add">
@@ -71,7 +71,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-8</string>
+      <string>main</string>
      </void>
      <void property="type">
       <int>1</int>
@@ -96,7 +96,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-8</string>
+      <string>main</string>
      </void>
      <void property="type">
       <int>4</int>
@@ -121,7 +121,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-8</string>
+      <string>main</string>
      </void>
      <void property="type">
       <int>4</int>
@@ -146,7 +146,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-8</string>
+      <string>main</string>
      </void>
      <void property="type">
       <int>4</int>
@@ -171,7 +171,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-8</string>
+      <string>main</string>
      </void>
      <void property="type">
       <int>4</int>
@@ -196,7 +196,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-8</string>
+      <string>main</string>
      </void>
      <void property="type">
       <int>4</int>
@@ -209,7 +209,7 @@
       <int>1</int>
      </void>
      <void property="message">
-      <string>Ladybug_Test_Tool-2.2-20210330.112250-73d0544c:1788d6b3632:-7f81</string>
+      <string>Ladybug_Test_Tool-2.2-20210330.112250-31ddb633:178a7be0bcd:-7ff8</string>
      </void>
      <void property="name">
       <string>referentienummer</string>
@@ -221,7 +221,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-8</string>
+      <string>main</string>
      </void>
      <void property="type">
       <int>6</int>
@@ -246,7 +246,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-8</string>
+      <string>main</string>
      </void>
      <void property="type">
       <int>6</int>
@@ -271,7 +271,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-8</string>
+      <string>main</string>
      </void>
      <void property="type">
       <int>6</int>
@@ -296,7 +296,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-8</string>
+      <string>main</string>
      </void>
      <void property="type">
       <int>6</int>
@@ -318,7 +318,7 @@
       <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-8</string>
+      <string>main</string>
      </void>
      <void property="type">
       <int>1</int>
@@ -343,7 +343,7 @@
       <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-8</string>
+      <string>main</string>
      </void>
      <void property="type">
       <int>4</int>
@@ -371,7 +371,7 @@
       <boolean>true</boolean>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-8</string>
+      <string>main</string>
      </void>
      <void property="type">
       <int>2</int>
@@ -396,7 +396,7 @@
       <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-8</string>
+      <string>main</string>
      </void>
      <void property="type">
       <int>6</int>
@@ -418,7 +418,7 @@
       <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-8</string>
+      <string>main</string>
      </void>
      <void property="type">
       <int>1</int>
@@ -443,7 +443,7 @@
       <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-8</string>
+      <string>main</string>
      </void>
      <void property="type">
       <int>4</int>
@@ -471,7 +471,7 @@
       <boolean>true</boolean>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-8</string>
+      <string>main</string>
      </void>
      <void property="type">
       <int>2</int>
@@ -496,7 +496,7 @@
       <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-8</string>
+      <string>main</string>
      </void>
      <void property="type">
       <int>6</int>
@@ -518,7 +518,7 @@
       <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-8</string>
+      <string>main</string>
      </void>
      <void property="type">
       <int>1</int>
@@ -543,7 +543,7 @@
       <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-8</string>
+      <string>main</string>
      </void>
      <void property="type">
       <int>4</int>
@@ -568,7 +568,7 @@
       <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-8</string>
+      <string>main</string>
      </void>
      <void property="type">
       <int>4</int>
@@ -596,7 +596,7 @@
       <boolean>true</boolean>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-8</string>
+      <string>main</string>
      </void>
      <void property="type">
       <int>2</int>
@@ -609,7 +609,7 @@
       <int>1</int>
      </void>
      <void property="message">
-      <string>GET to: https://test.openzaak.nl/zaken/api/v1/zaakinformatieobjecten?informatieobject=https://fieldlab.westeurope.cloudapp.azure.com/documenten/api/v1/enkelvoudiginformatieobjecten/c4888782-feaa-4dc2-b50f-21fedc816422 took 0 milliseconds</string>
+      <string>GET to: https://test.openzaak.nl/zaken/api/v1/zaakinformatieobjecten?informatieobject=https://fieldlab.westeurope.cloudapp.azure.com/documenten/api/v1/enkelvoudiginformatieobjecten/c4888782-feaa-4dc2-b50f-21fedc816422 took 1 milliseconds</string>
      </void>
      <void property="name">
       <string>Duration</string>
@@ -621,7 +621,7 @@
       <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-8</string>
+      <string>main</string>
      </void>
      <void property="type">
       <int>6</int>
@@ -643,7 +643,7 @@
       <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-8</string>
+      <string>main</string>
      </void>
      <void property="type">
       <int>1</int>
@@ -668,7 +668,7 @@
       <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-8</string>
+      <string>main</string>
      </void>
      <void property="type">
       <int>4</int>
@@ -696,7 +696,7 @@
       <boolean>true</boolean>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-8</string>
+      <string>main</string>
      </void>
      <void property="type">
       <int>2</int>
@@ -721,7 +721,7 @@
       <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-8</string>
+      <string>main</string>
      </void>
      <void property="type">
       <int>6</int>
@@ -743,7 +743,7 @@
       <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-8</string>
+      <string>main</string>
      </void>
      <void property="type">
       <int>1</int>
@@ -768,7 +768,7 @@
       <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-8</string>
+      <string>main</string>
      </void>
      <void property="type">
       <int>4</int>
@@ -802,7 +802,7 @@
       <boolean>true</boolean>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-8</string>
+      <string>main</string>
      </void>
      <void property="type">
       <int>2</int>
@@ -819,7 +819,7 @@
      </void>
      <void property="message">
       <string>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
-&lt;java version=&quot;15&quot; class=&quot;java.beans.XMLDecoder&quot;&gt;
+&lt;java version=&quot;13.0.2&quot; class=&quot;java.beans.XMLDecoder&quot;&gt;
  &lt;int&gt;200&lt;/int&gt;
 &lt;/java&gt;
 </string>
@@ -837,7 +837,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-8</string>
+      <string>main</string>
      </void>
      <void property="type">
       <int>5</int>
@@ -862,7 +862,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-8</string>
+      <string>main</string>
      </void>
      <void property="type">
       <int>5</int>
@@ -875,7 +875,7 @@
       <int>1</int>
      </void>
      <void property="message">
-      <string>Soapaction: &quot;http://www.egem.nl/StUF/sector/zkn/0310/geefZaakdocumentLezen_Lv01&quot; took 47 milliseconds</string>
+      <string>Soapaction: &quot;http://www.egem.nl/StUF/sector/zkn/0310/geefZaakdocumentLezen_Lv01&quot; took 147 milliseconds</string>
      </void>
      <void property="name">
       <string>Total duration</string>
@@ -887,7 +887,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-8</string>
+      <string>main</string>
      </void>
      <void property="type">
       <int>6</int>
@@ -915,8 +915,8 @@
           &lt;ns1:applicatie&gt;GWS4all&lt;/ns1:applicatie&gt;&#13;
           &lt;ns1:gebruiker&gt;Gebruiker&lt;/ns1:gebruiker&gt;&#13;
         &lt;/ns1:ontvanger&gt;&#13;
-        &lt;ns1:referentienummer&gt;Ladybug_Test_Tool-2.2-20210330.112250-73d0544c:1788d6b3632:-7f81&lt;/ns1:referentienummer&gt;&#13;
-        &lt;ns1:tijdstipBericht&gt;20210401151208&lt;/ns1:tijdstipBericht&gt;&#13;
+        &lt;ns1:referentienummer&gt;Ladybug_Test_Tool-2.2-20210330.112250-31ddb633:178a7be0bcd:-7ff8&lt;/ns1:referentienummer&gt;&#13;
+        &lt;ns1:tijdstipBericht&gt;20210406171236&lt;/ns1:tijdstipBericht&gt;&#13;
         &lt;ns1:crossRefnummer&gt;5f5f8485-5bca-4e13-856a-e8d347d7fdd5&lt;/ns1:crossRefnummer&gt;&#13;
         &lt;ns1:entiteittype&gt;EDC&lt;/ns1:entiteittype&gt;&#13;
       &lt;/ns2:stuurgegevens&gt;&#13;
@@ -959,7 +959,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-8</string>
+      <string>main</string>
      </void>
      <void property="type">
       <int>2</int>
@@ -968,16 +968,16 @@
    </void>
   </void>
   <void property="correlationId">
-   <string>Ladybug_Test_Tool-2.2-20210330.112250-73d0544c:1788d6b3632:-7f81</string>
+   <string>Ladybug_Test_Tool-2.2-20210330.112250-31ddb633:178a7be0bcd:-7ff8</string>
   </void>
   <void property="description">
    <string></string>
   </void>
   <void property="endTime">
-   <long>1617282728640</long>
+   <long>1617721956284</long>
   </void>
   <void property="estimatedMemoryUsage">
-   <long>610906</long>
+   <long>610740</long>
   </void>
   <void property="name">
    <string>08 Translate geefZaakdocumentLezen_Lv01</string>
@@ -986,10 +986,10 @@
    <string>/</string>
   </void>
   <void property="startTime">
-   <long>1617282728593</long>
+   <long>1617721956138</long>
   </void>
   <void property="storageId">
-   <int>252</int>
+   <int>264</int>
   </void>
   <void property="stubStrategy">
    <string>Stub all external connection code</string>
