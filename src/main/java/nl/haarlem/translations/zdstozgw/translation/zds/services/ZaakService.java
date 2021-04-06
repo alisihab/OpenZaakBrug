@@ -221,18 +221,6 @@ public class ZaakService {
 			}
 		}	
 		
-		// Bekijken wat de laatste status is, deze moet gezet worden bij het afsltuiden van de zaak
-		var statustypes = this.zgwClient.getStatusTypesByZaakType(zgwZaak.zaaktype);
-		ZgwStatusType laststatustype = null;
-		for (ZgwStatusType statustype : statustypes) {
-			if(laststatustype == null || laststatustype.volgnummer < statustype.volgnummer) {
-				laststatustype = statustype;
-			}
-		}					
-		if(laststatustype == null) {
-			throw new ConverterException("no statuses found for zaaktype:" + zgwZaak.zaaktype);
-		}		
-		
 		if (zdsZaak.resultaat != null && zdsZaak.resultaat.omschrijving != null && zdsZaak.resultaat.omschrijving.length() > 0) {
 
 			// Difference between ZDS --> ZGW the behaviour of ending a zaak has changed.
@@ -281,6 +269,15 @@ public class ZaakService {
 			if(foundstatustype == null) {
 				debugWarning("einddatum and resultaat without a status");
 				if(this.autoLastStatus) {
+					// Bekijken wat de laatste status is, deze moet gezet worden bij het afsltuiden van de zaak
+					var statustypes = this.zgwClient.getStatusTypesByZaakType(zgwZaak.zaaktype);
+					ZgwStatusType laststatustype = null;
+					for (ZgwStatusType statustype : statustypes) {
+						if("true".equals(statustype.getIsEindstatus())) {
+							laststatustype = statustype;
+						}
+					}
+
 					debugWarning("autoLastStatus = enabled: setting status to:" + laststatustype.omschrijving);
 					foundstatustype = laststatustype;
 					// de status heeft straks info nodig
@@ -288,9 +285,19 @@ public class ZaakService {
 					zdsHeeft.datumStatusGezet = einddatum;
 				}
 			}
-			else if(!laststatustype.url.equals(foundstatustype.url)) {
-				debugWarning("einddatum and resultaat but found status:" + foundstatustype.omschrijving + " is not the last status:" + laststatustype.omschrijving);
+			else if(!"true".equals(foundstatustype.getIsEindstatus())) {
+				debugWarning("einddatum and resultaat but found status:" + foundstatustype.omschrijving + " is not the last status.");
 				if(this.autoLastStatus) {
+					
+					// Bekijken wat de laatste status is, deze moet gezet worden bij het afsltuiden van de zaak
+					var statustypes = this.zgwClient.getStatusTypesByZaakType(zgwZaak.zaaktype);
+					ZgwStatusType laststatustype = null;
+					for (ZgwStatusType statustype : statustypes) {
+						if("true".equals(statustype.getIsEindstatus())) {
+							laststatustype = statustype;
+						}
+					}
+
 					debugWarning("autoLastStatus = enabled: overriding status to:" + laststatustype.omschrijving);
 					foundstatustype = laststatustype;
 				}
@@ -318,7 +325,7 @@ public class ZaakService {
 					zgwStatus.statustype = zgwStatusType.url;
 					zgwStatus.statustoelichting = zgwStatusType.omschrijving;
 					
-					if(laststatustype.url.equals(zgwStatus.url)) {
+					if("true".equals(zgwStatusType.getIsEindstatus())) {
 						// als laatste status, dan moet einddatum de status datum zijn
 						// dit bepaald de einddatum van de status dan weer
 						var einddatum = zdsZaak.einddatum;
