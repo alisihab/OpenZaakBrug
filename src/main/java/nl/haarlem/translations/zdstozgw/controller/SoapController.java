@@ -101,18 +101,18 @@ public class SoapController {
 				}
 			}
 		}
-		debug.startpoint(reportName, body);
-		debug.inputpoint("modus", modus);
-		debug.inputpoint("version", version);
-		debug.inputpoint("protocol", protocol);
-		debug.inputpoint("endpoint", endpoint);
-		debug.inputpoint("soapAction", soapAction);
-		debug.infopoint("referentienummer", referentienummer);
-		debug.infopoint("converter", converter.getClass().getCanonicalName());
-		debug.infopoint("handler", handler.getClass().getCanonicalName());
-		debug.infopoint("path", path);
 		ResponseEntity<?> response;
 		try {
+			debug.startpoint(reportName, body);
+			debug.inputpoint("modus", modus);
+			debug.inputpoint("version", version);
+			debug.inputpoint("protocol", protocol);
+			debug.inputpoint("endpoint", endpoint);
+			debug.inputpoint("soapAction", soapAction);
+			debug.infopoint("referentienummer", referentienummer);
+			debug.infopoint("converter", converter.getClass().getCanonicalName());
+			debug.infopoint("handler", handler.getClass().getCanonicalName());
+			debug.infopoint("path", path);
 			response = handler.execute();
 			debug.outputpoint("statusCode", response.getStatusCodeValue());
 			debug.outputpoint("kenmerk", context.getKenmerk());
@@ -126,6 +126,8 @@ public class SoapController {
 		} catch(Throwable t) {
 			debug.abortpoint(reportName, t.toString());
 			throw t;
+		} finally {
+			debug.close();
 		}
 		return response;
 	}

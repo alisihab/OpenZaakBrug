@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<java version="13.0.2" class="java.beans.XMLDecoder">
+<java version="15" class="java.beans.XMLDecoder">
  <object class="nl.nn.testtool.Report" id="Report0">
   <void property="checkpoints">
    <void method="add">
     <object class="nl.nn.testtool.Checkpoint">
-     <void property="estimatedMemoryUsage">
-      <long>6234</long>
-     </void>
      <void property="message">
       <string>&lt;SOAP-ENV:Envelope xsi:schemaLocation=&quot;http://www.egem.nl/StUF/sector/zkn/0310 zkn0310-p28\vraagAntwoord\zkn0310_msg_vraagAntwoord_resolved.xsd&quot; xmlns:SOAP-ENV=&quot;http://schemas.xmlsoap.org/soap/envelope/&quot; xmlns:StUF=&quot;http://www.egem.nl/StUF/StUF0301&quot; xmlns:ZKN=&quot;http://www.egem.nl/StUF/sector/zkn/0310&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;&gt;\r
    &lt;SOAP-ENV:Header/&gt;\r
@@ -77,7 +74,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>Thread-21</string>
+      <string>Thread-10</string>
      </void>
      <void property="type">
       <int>1</int>
@@ -86,9 +83,6 @@
    </void>
    <void method="add">
     <object class="nl.nn.testtool.Checkpoint">
-     <void property="estimatedMemoryUsage">
-      <long>18</long>
-     </void>
      <void property="level">
       <int>1</int>
      </void>
@@ -105,7 +99,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>Thread-21</string>
+      <string>Thread-10</string>
      </void>
      <void property="type">
       <int>4</int>
@@ -114,9 +108,6 @@
    </void>
    <void method="add">
     <object class="nl.nn.testtool.Checkpoint">
-     <void property="estimatedMemoryUsage">
-      <long>14</long>
-     </void>
      <void property="level">
       <int>1</int>
      </void>
@@ -133,7 +124,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>Thread-21</string>
+      <string>Thread-10</string>
      </void>
      <void property="type">
       <int>4</int>
@@ -142,9 +133,6 @@
    </void>
    <void method="add">
     <object class="nl.nn.testtool.Checkpoint">
-     <void property="estimatedMemoryUsage">
-      <long>6</long>
-     </void>
      <void property="level">
       <int>1</int>
      </void>
@@ -161,7 +149,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>Thread-21</string>
+      <string>Thread-10</string>
      </void>
      <void property="type">
       <int>4</int>
@@ -170,9 +158,6 @@
    </void>
    <void method="add">
     <object class="nl.nn.testtool.Checkpoint">
-     <void property="estimatedMemoryUsage">
-      <long>30</long>
-     </void>
      <void property="level">
       <int>1</int>
      </void>
@@ -189,7 +174,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>Thread-21</string>
+      <string>Thread-10</string>
      </void>
      <void property="type">
       <int>4</int>
@@ -198,9 +183,6 @@
    </void>
    <void method="add">
     <object class="nl.nn.testtool.Checkpoint">
-     <void property="estimatedMemoryUsage">
-      <long>140</long>
-     </void>
      <void property="level">
       <int>1</int>
      </void>
@@ -217,7 +199,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>Thread-21</string>
+      <string>Thread-10</string>
      </void>
      <void property="type">
       <int>4</int>
@@ -226,14 +208,11 @@
    </void>
    <void method="add">
     <object class="nl.nn.testtool.Checkpoint">
-     <void property="estimatedMemoryUsage">
-      <long>134</long>
-     </void>
      <void property="level">
       <int>1</int>
      </void>
      <void property="message">
-      <string>Ladybug_Test_Tool-2.0.15-20210115.140317-53b206b7:178a6f4217c:-7ff9</string>
+      <string>Ladybug_Test_Tool-2.2-20210330.112250-2aa64fa3:1788d493344:-7faf</string>
      </void>
      <void property="name">
       <string>referentienummer</string>
@@ -245,7 +224,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>Thread-21</string>
+      <string>Thread-10</string>
      </void>
      <void property="type">
       <int>6</int>
@@ -254,9 +233,6 @@
    </void>
    <void method="add">
     <object class="nl.nn.testtool.Checkpoint">
-     <void property="estimatedMemoryUsage">
-      <long>182</long>
-     </void>
      <void property="level">
       <int>1</int>
      </void>
@@ -273,7 +249,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>Thread-21</string>
+      <string>Thread-10</string>
      </void>
      <void property="type">
       <int>6</int>
@@ -282,9 +258,6 @@
    </void>
    <void method="add">
     <object class="nl.nn.testtool.Checkpoint">
-     <void property="estimatedMemoryUsage">
-      <long>148</long>
-     </void>
      <void property="level">
       <int>1</int>
      </void>
@@ -301,7 +274,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>Thread-21</string>
+      <string>Thread-10</string>
      </void>
      <void property="type">
       <int>6</int>
@@ -310,9 +283,6 @@
    </void>
    <void method="add">
     <object class="nl.nn.testtool.Checkpoint">
-     <void property="estimatedMemoryUsage">
-      <long>74</long>
-     </void>
      <void property="level">
       <int>1</int>
      </void>
@@ -329,7 +299,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>Thread-21</string>
+      <string>Thread-10</string>
      </void>
      <void property="type">
       <int>6</int>
@@ -351,7 +321,7 @@
       <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
      </void>
      <void property="threadName">
-      <string>Thread-21</string>
+      <string>Thread-10</string>
      </void>
      <void property="type">
       <int>1</int>
@@ -360,9 +330,6 @@
    </void>
    <void method="add">
     <object class="nl.nn.testtool.Checkpoint">
-     <void property="estimatedMemoryUsage">
-      <long>130</long>
-     </void>
      <void property="level">
       <int>2</int>
      </void>
@@ -379,7 +346,7 @@
       <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
      </void>
      <void property="threadName">
-      <string>Thread-21</string>
+      <string>Thread-10</string>
      </void>
      <void property="type">
       <int>4</int>
@@ -388,9 +355,6 @@
    </void>
    <void method="add">
     <object class="nl.nn.testtool.Checkpoint">
-     <void property="estimatedMemoryUsage">
-      <long>14</long>
-     </void>
      <void property="level">
       <int>2</int>
      </void>
@@ -407,7 +371,7 @@
       <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
      </void>
      <void property="threadName">
-      <string>Thread-21</string>
+      <string>Thread-10</string>
      </void>
      <void property="type">
       <int>4</int>
@@ -416,17 +380,11 @@
    </void>
    <void method="add">
     <object class="nl.nn.testtool.Checkpoint">
-     <void property="estimatedMemoryUsage">
-      <long>2710</long>
-     </void>
      <void property="level">
       <int>2</int>
      </void>
      <void property="message">
       <string>{&quot;count&quot;:1,&quot;next&quot;:null,&quot;previous&quot;:null,&quot;results&quot;:[{&quot;url&quot;:&quot;https://fieldlab.westeurope.cloudapp.azure.com/zaken/api/v1/zaken/15aafcbe-6508-49a3-951e-a8496b7fb22d&quot;,&quot;uuid&quot;:&quot;15aafcbe-6508-49a3-951e-a8496b7fb22d&quot;,&quot;identificatie&quot;:&quot;8000371&quot;,&quot;bronorganisatie&quot;:&quot;823288444&quot;,&quot;omschrijving&quot;:&quot;Aanvraag minimaregelingen (Z)&quot;,&quot;toelichting&quot;:&quot;&quot;,&quot;zaaktype&quot;:&quot;https://fieldlab.westeurope.cloudapp.azure.com/catalogi/api/v1/zaaktypen/8a0ecb65-c3fd-4110-8599-297f84236ae5&quot;,&quot;registratiedatum&quot;:&quot;2020-12-07&quot;,&quot;verantwoordelijkeOrganisatie&quot;:&quot;823288444&quot;,&quot;startdatum&quot;:&quot;2020-12-07&quot;,&quot;einddatum&quot;:null,&quot;einddatumGepland&quot;:&quot;2021-01-01&quot;,&quot;uiterlijkeEinddatumAfdoening&quot;:null,&quot;publicatiedatum&quot;:null,&quot;communicatiekanaal&quot;:&quot;&quot;,&quot;productenOfDiensten&quot;:[],&quot;vertrouwelijkheidaanduiding&quot;:&quot;vertrouwelijk&quot;,&quot;betalingsindicatie&quot;:&quot;&quot;,&quot;betalingsindicatieWeergave&quot;:&quot;&quot;,&quot;laatsteBetaaldatum&quot;:null,&quot;zaakgeometrie&quot;:null,&quot;verlenging&quot;:{&quot;reden&quot;:&quot;&quot;,&quot;duur&quot;:null},&quot;opschorting&quot;:{&quot;indicatie&quot;:true,&quot;reden&quot;:&quot;niet tijdig verstrekken inform&quot;},&quot;selectielijstklasse&quot;:&quot;&quot;,&quot;hoofdzaak&quot;:null,&quot;deelzaken&quot;:[],&quot;relevanteAndereZaken&quot;:[],&quot;eigenschappen&quot;:[],&quot;status&quot;:&quot;https://fieldlab.westeurope.cloudapp.azure.com/zaken/api/v1/statussen/da6cb48b-8cdf-46ca-ac1e-b6db2e1aa719&quot;,&quot;kenmerken&quot;:[{&quot;kenmerk&quot;:&quot;273846&quot;,&quot;bron&quot;:&quot;GWS4all&quot;}],&quot;archiefnominatie&quot;:&quot;vernietigen&quot;,&quot;archiefstatus&quot;:&quot;nog_te_archiveren&quot;,&quot;archiefactiedatum&quot;:null,&quot;resultaat&quot;:null}]}</string>
-     </void>
-     <void property="messageHasBeenStubbed">
-      <boolean>true</boolean>
      </void>
      <void property="name">
       <string>ZGWClient GET</string>
@@ -437,8 +395,11 @@
      <void property="sourceClassName">
       <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
      </void>
+     <void property="stubbed">
+      <boolean>true</boolean>
+     </void>
      <void property="threadName">
-      <string>Thread-21</string>
+      <string>Thread-10</string>
      </void>
      <void property="type">
       <int>2</int>
@@ -447,9 +408,6 @@
    </void>
    <void method="add">
     <object class="nl.nn.testtool.Checkpoint">
-     <void property="estimatedMemoryUsage">
-      <long>186</long>
-     </void>
      <void property="level">
       <int>1</int>
      </void>
@@ -466,7 +424,7 @@
       <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
      </void>
      <void property="threadName">
-      <string>Thread-21</string>
+      <string>Thread-10</string>
      </void>
      <void property="type">
       <int>6</int>
@@ -488,7 +446,7 @@
       <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
      </void>
      <void property="threadName">
-      <string>Thread-21</string>
+      <string>Thread-10</string>
      </void>
      <void property="type">
       <int>1</int>
@@ -497,9 +455,6 @@
    </void>
    <void method="add">
     <object class="nl.nn.testtool.Checkpoint">
-     <void property="estimatedMemoryUsage">
-      <long>336</long>
-     </void>
      <void property="level">
       <int>2</int>
      </void>
@@ -516,7 +471,7 @@
       <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
      </void>
      <void property="threadName">
-      <string>Thread-21</string>
+      <string>Thread-10</string>
      </void>
      <void property="type">
       <int>4</int>
@@ -525,9 +480,6 @@
    </void>
    <void method="add">
     <object class="nl.nn.testtool.Checkpoint">
-     <void property="estimatedMemoryUsage">
-      <long>204</long>
-     </void>
      <void property="level">
       <int>2</int>
      </void>
@@ -544,7 +496,7 @@
       <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
      </void>
      <void property="threadName">
-      <string>Thread-21</string>
+      <string>Thread-10</string>
      </void>
      <void property="type">
       <int>4</int>
@@ -553,17 +505,11 @@
    </void>
    <void method="add">
     <object class="nl.nn.testtool.Checkpoint">
-     <void property="estimatedMemoryUsage">
-      <long>1272</long>
-     </void>
      <void property="level">
       <int>2</int>
      </void>
      <void property="message">
       <string>[{&quot;url&quot;:&quot;https://fieldlab.westeurope.cloudapp.azure.com/zaken/api/v1/zaakinformatieobjecten/2c407734-306d-4729-9d44-66d13e77dae8&quot;,&quot;uuid&quot;:&quot;2c407734-306d-4729-9d44-66d13e77dae8&quot;,&quot;informatieobject&quot;:&quot;https://fieldlab.westeurope.cloudapp.azure.com/documenten/api/v1/enkelvoudiginformatieobjecten/c4888782-feaa-4dc2-b50f-21fedc816422&quot;,&quot;zaak&quot;:&quot;https://fieldlab.westeurope.cloudapp.azure.com/zaken/api/v1/zaken/15aafcbe-6508-49a3-951e-a8496b7fb22d&quot;,&quot;aardRelatieWeergave&quot;:&quot;Hoort bij, omgekeerd: kent&quot;,&quot;titel&quot;:&quot;Brief bijdrageregeling minima  -  Verzoek om aanvullende gegevens&quot;,&quot;beschrijving&quot;:&quot;&quot;,&quot;registratiedatum&quot;:&quot;2020-12-07T21:42:38.878618Z&quot;}]</string>
-     </void>
-     <void property="messageHasBeenStubbed">
-      <boolean>true</boolean>
      </void>
      <void property="name">
       <string>ZGWClient GET</string>
@@ -574,8 +520,11 @@
      <void property="sourceClassName">
       <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
      </void>
+     <void property="stubbed">
+      <boolean>true</boolean>
+     </void>
      <void property="threadName">
-      <string>Thread-21</string>
+      <string>Thread-10</string>
      </void>
      <void property="type">
       <int>2</int>
@@ -584,9 +533,6 @@
    </void>
    <void method="add">
     <object class="nl.nn.testtool.Checkpoint">
-     <void property="estimatedMemoryUsage">
-      <long>392</long>
-     </void>
      <void property="level">
       <int>1</int>
      </void>
@@ -603,7 +549,7 @@
       <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
      </void>
      <void property="threadName">
-      <string>Thread-21</string>
+      <string>Thread-10</string>
      </void>
      <void property="type">
       <int>6</int>
@@ -625,7 +571,7 @@
       <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
      </void>
      <void property="threadName">
-      <string>Thread-21</string>
+      <string>Thread-10</string>
      </void>
      <void property="type">
       <int>1</int>
@@ -634,9 +580,6 @@
    </void>
    <void method="add">
     <object class="nl.nn.testtool.Checkpoint">
-     <void property="estimatedMemoryUsage">
-      <long>262</long>
-     </void>
      <void property="level">
       <int>2</int>
      </void>
@@ -653,7 +596,7 @@
       <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
      </void>
      <void property="threadName">
-      <string>Thread-21</string>
+      <string>Thread-10</string>
      </void>
      <void property="type">
       <int>4</int>
@@ -662,17 +605,11 @@
    </void>
    <void method="add">
     <object class="nl.nn.testtool.Checkpoint">
-     <void property="estimatedMemoryUsage">
-      <long>2092</long>
-     </void>
      <void property="level">
       <int>2</int>
      </void>
      <void property="message">
       <string>{&quot;url&quot;:&quot;https://fieldlab.westeurope.cloudapp.azure.com/documenten/api/v1/enkelvoudiginformatieobjecten/c4888782-feaa-4dc2-b50f-21fedc816422&quot;,&quot;identificatie&quot;:&quot;8000325&quot;,&quot;bronorganisatie&quot;:&quot;823288444&quot;,&quot;creatiedatum&quot;:&quot;2020-12-07&quot;,&quot;titel&quot;:&quot;Brief bijdrageregeling minima  -  Verzoek om aanvullende gegevens&quot;,&quot;vertrouwelijkheidaanduiding&quot;:&quot;vertrouwelijk&quot;,&quot;auteur&quot;:&quot;Be Handelaar&quot;,&quot;status&quot;:&quot;&quot;,&quot;formaat&quot;:&quot;pdf&quot;,&quot;taal&quot;:&quot;nld&quot;,&quot;versie&quot;:1,&quot;beginRegistratie&quot;:&quot;2020-12-07T21:42:38.505663Z&quot;,&quot;bestandsnaam&quot;:&quot;795880.pdf&quot;,&quot;inhoud&quot;:&quot;https://fieldlab.westeurope.cloudapp.azure.com/documenten/api/v1/enkelvoudiginformatieobjecten/c4888782-feaa-4dc2-b50f-21fedc816422/download?versie=1&quot;,&quot;bestandsomvang&quot;:110459,&quot;link&quot;:&quot;&quot;,&quot;beschrijving&quot;:&quot;&quot;,&quot;ontvangstdatum&quot;:null,&quot;verzenddatum&quot;:null,&quot;indicatieGebruiksrecht&quot;:false,&quot;ondertekening&quot;:{&quot;soort&quot;:&quot;&quot;,&quot;datum&quot;:null},&quot;integriteit&quot;:{&quot;algoritme&quot;:&quot;&quot;,&quot;waarde&quot;:&quot;&quot;,&quot;datum&quot;:null},&quot;informatieobjecttype&quot;:&quot;https://fieldlab.westeurope.cloudapp.azure.com/catalogi/api/v1/informatieobjecttypen/e208d29e-8a19-4e40-b8a9-78a57b334c80&quot;,&quot;locked&quot;:false}</string>
-     </void>
-     <void property="messageHasBeenStubbed">
-      <boolean>true</boolean>
      </void>
      <void property="name">
       <string>ZGWClient GET</string>
@@ -683,8 +620,11 @@
      <void property="sourceClassName">
       <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
      </void>
+     <void property="stubbed">
+      <boolean>true</boolean>
+     </void>
      <void property="threadName">
-      <string>Thread-21</string>
+      <string>Thread-10</string>
      </void>
      <void property="type">
       <int>2</int>
@@ -693,9 +633,6 @@
    </void>
    <void method="add">
     <object class="nl.nn.testtool.Checkpoint">
-     <void property="estimatedMemoryUsage">
-      <long>318</long>
-     </void>
      <void property="level">
       <int>1</int>
      </void>
@@ -712,7 +649,7 @@
       <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
      </void>
      <void property="threadName">
-      <string>Thread-21</string>
+      <string>Thread-10</string>
      </void>
      <void property="type">
       <int>6</int>
@@ -734,7 +671,7 @@
       <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
      </void>
      <void property="threadName">
-      <string>Thread-21</string>
+      <string>Thread-10</string>
      </void>
      <void property="type">
       <int>1</int>
@@ -743,9 +680,6 @@
    </void>
    <void method="add">
     <object class="nl.nn.testtool.Checkpoint">
-     <void property="estimatedMemoryUsage">
-      <long>242</long>
-     </void>
      <void property="level">
       <int>2</int>
      </void>
@@ -762,7 +696,7 @@
       <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
      </void>
      <void property="threadName">
-      <string>Thread-21</string>
+      <string>Thread-10</string>
      </void>
      <void property="type">
       <int>4</int>
@@ -771,17 +705,11 @@
    </void>
    <void method="add">
     <object class="nl.nn.testtool.Checkpoint">
-     <void property="estimatedMemoryUsage">
-      <long>794</long>
-     </void>
      <void property="level">
       <int>2</int>
      </void>
      <void property="message">
       <string>{&quot;url&quot;:&quot;https://fieldlab.westeurope.cloudapp.azure.com/catalogi/api/v1/informatieobjecttypen/e208d29e-8a19-4e40-b8a9-78a57b334c80&quot;,&quot;catalogus&quot;:&quot;https://fieldlab.westeurope.cloudapp.azure.com/catalogi/api/v1/catalogussen/782ae7eb-503f-4235-aac0-015d28381934&quot;,&quot;omschrijving&quot;:&quot;Brief&quot;,&quot;vertrouwelijkheidaanduiding&quot;:&quot;vertrouwelijk&quot;,&quot;beginGeldigheid&quot;:&quot;2020-03-17&quot;,&quot;eindeGeldigheid&quot;:null,&quot;concept&quot;:false}</string>
-     </void>
-     <void property="messageHasBeenStubbed">
-      <boolean>true</boolean>
      </void>
      <void property="name">
       <string>ZGWClient GET</string>
@@ -792,8 +720,11 @@
      <void property="sourceClassName">
       <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
      </void>
+     <void property="stubbed">
+      <boolean>true</boolean>
+     </void>
      <void property="threadName">
-      <string>Thread-21</string>
+      <string>Thread-10</string>
      </void>
      <void property="type">
       <int>2</int>
@@ -802,9 +733,6 @@
    </void>
    <void method="add">
     <object class="nl.nn.testtool.Checkpoint">
-     <void property="estimatedMemoryUsage">
-      <long>298</long>
-     </void>
      <void property="level">
       <int>1</int>
      </void>
@@ -821,7 +749,7 @@
       <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
      </void>
      <void property="threadName">
-      <string>Thread-21</string>
+      <string>Thread-10</string>
      </void>
      <void property="type">
       <int>6</int>
@@ -831,20 +759,20 @@
    <void method="add">
     <object class="nl.nn.testtool.Checkpoint">
      <void property="encoding">
-      <int>1</int>
-     </void>
-     <void property="estimatedMemoryUsage">
-      <long>234</long>
+      <string>XMLEncoder</string>
      </void>
      <void property="level">
       <int>1</int>
      </void>
      <void property="message">
       <string>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
-&lt;java version=&quot;13.0.2&quot; class=&quot;java.beans.XMLDecoder&quot;&gt;
+&lt;java version=&quot;15&quot; class=&quot;java.beans.XMLDecoder&quot;&gt;
  &lt;int&gt;200&lt;/int&gt;
 &lt;/java&gt;
 </string>
+     </void>
+     <void property="messageClassName">
+      <string>java.lang.Integer</string>
      </void>
      <void property="name">
       <string>statusCode</string>
@@ -856,7 +784,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>Thread-21</string>
+      <string>Thread-10</string>
      </void>
      <void property="type">
       <int>5</int>
@@ -865,9 +793,6 @@
    </void>
    <void method="add">
     <object class="nl.nn.testtool.Checkpoint">
-     <void property="estimatedMemoryUsage">
-      <long>50</long>
-     </void>
      <void property="level">
       <int>1</int>
      </void>
@@ -884,7 +809,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>Thread-21</string>
+      <string>Thread-10</string>
      </void>
      <void property="type">
       <int>5</int>
@@ -893,14 +818,11 @@
    </void>
    <void method="add">
     <object class="nl.nn.testtool.Checkpoint">
-     <void property="estimatedMemoryUsage">
-      <long>206</long>
-     </void>
      <void property="level">
       <int>1</int>
      </void>
      <void property="message">
-      <string>Soapaction: &quot;http://www.egem.nl/StUF/sector/zkn/0310/geefLijstZaakdocumenten_Lv01&quot; took 41 milliseconds</string>
+      <string>Soapaction: &quot;http://www.egem.nl/StUF/sector/zkn/0310/geefLijstZaakdocumenten_Lv01&quot; took 56 milliseconds</string>
      </void>
      <void property="name">
       <string>Total duration</string>
@@ -912,7 +834,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>Thread-21</string>
+      <string>Thread-10</string>
      </void>
      <void property="type">
       <int>6</int>
@@ -921,9 +843,6 @@
    </void>
    <void method="add">
     <object class="nl.nn.testtool.Checkpoint">
-     <void property="estimatedMemoryUsage">
-      <long>5044</long>
-     </void>
      <void property="level">
       <int>1</int>
      </void>
@@ -943,8 +862,8 @@
           &lt;ns1:applicatie&gt;GWS4all&lt;/ns1:applicatie&gt;&#13;
           &lt;ns1:gebruiker&gt;Gebruiker&lt;/ns1:gebruiker&gt;&#13;
         &lt;/ns1:ontvanger&gt;&#13;
-        &lt;ns1:referentienummer&gt;Ladybug_Test_Tool-2.0.15-20210115.140317-53b206b7:178a6f4217c:-7ff9&lt;/ns1:referentienummer&gt;&#13;
-        &lt;ns1:tijdstipBericht&gt;20210406133200&lt;/ns1:tijdstipBericht&gt;&#13;
+        &lt;ns1:referentienummer&gt;Ladybug_Test_Tool-2.2-20210330.112250-2aa64fa3:1788d493344:-7faf&lt;/ns1:referentienummer&gt;&#13;
+        &lt;ns1:tijdstipBericht&gt;20210401135510&lt;/ns1:tijdstipBericht&gt;&#13;
         &lt;ns1:crossRefnummer&gt;c28ce97f-bbcb-404c-b161-59daf6bbd175&lt;/ns1:crossRefnummer&gt;&#13;
         &lt;ns1:entiteittype&gt;ZAK&lt;/ns1:entiteittype&gt;&#13;
       &lt;/ns2:stuurgegevens&gt;&#13;
@@ -989,7 +908,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>Thread-21</string>
+      <string>Thread-10</string>
      </void>
      <void property="type">
       <int>2</int>
@@ -998,16 +917,16 @@
    </void>
   </void>
   <void property="correlationId">
-   <string>Ladybug_Test_Tool-2.0.15-20210115.140317-53b206b7:178a6f4217c:-7ff9</string>
+   <string>Ladybug_Test_Tool-2.2-20210330.112250-2aa64fa3:1788d493344:-7faf</string>
   </void>
   <void property="description">
    <string></string>
   </void>
   <void property="endTime">
-   <long>1617708720957</long>
+   <long>1617278110438</long>
   </void>
   <void property="estimatedMemoryUsage">
-   <long>21764</long>
+   <long>21920</long>
   </void>
   <void property="name">
    <string>07 Translate geefLijstZaakdocumenten_Lv01</string>
@@ -1016,10 +935,10 @@
    <string>/</string>
   </void>
   <void property="startTime">
-   <long>1617708720916</long>
+   <long>1617278110385</long>
   </void>
   <void property="storageId">
-   <int>246</int>
+   <int>248</int>
   </void>
   <void property="stubStrategy">
    <string>Stub all external connection code</string>

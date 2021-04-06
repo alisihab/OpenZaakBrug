@@ -73,7 +73,7 @@
         <dependency>
             <groupId>org.ibissource</groupId>
             <artifactId>ibis-ladybug</artifactId>
-            <version>2.0.15-20210115.140317</version>
+            <version>2.2-20210330.112250</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/javax.xml.bind/jaxb-api -->
@@ -154,7 +154,7 @@
             <!-- Can be removed when Ladybug 2.0.16 is released and available on Maven central -->
             <id>ibissource</id>
             <name>Ibissource</name>
-            <url>https://nexus.ibissource.org/content/repositories/public</url>
+            <url>https://nexus.frankframework.org/content/repositories/public</url>
         </repository>
     </repositories>
 
