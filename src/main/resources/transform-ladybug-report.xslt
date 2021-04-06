@@ -78,7 +78,7 @@
 	<xsl:template match="*[local-name()='Checkpoint' and @Name='url' and @Type='Inputpoint' and @Level='2']">
 		<xsl:copy>
 			<xsl:apply-templates select="@*"/>
-			<xsl:value-of select="replace(replace(replace(., 'fieldlab.westeurope.cloudapp.azure.com', 'IGNORED'), 'fieldlab.westeurope.cloudapp.azure.com', 'IGNORED'), 'openzaak.local', 'IGNORED')"/>
+			<xsl:value-of select="replace(replace(replace(replace(replace(replace(., 'fieldlab.westeurope.cloudapp.azure.com', 'IGNORED'), 'fieldlab.westeurope.cloudapp.azure.com', 'IGNORED'), 'openzaak.local', 'IGNORED'), 'test.openzaak.nl', 'IGNORED'), 'localhost:8000', 'IGNORED'), 'localhost', 'IGNORED')"/>
 		</xsl:copy>
 	</xsl:template>
 	

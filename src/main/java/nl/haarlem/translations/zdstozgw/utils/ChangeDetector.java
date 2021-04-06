@@ -17,15 +17,62 @@ import nl.haarlem.translations.zdstozgw.converter.ConverterException;
 public class ChangeDetector {
 
 	private static final Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+
+	@Data
+	public static class Change {
+		private Field field;
+		private ChangeType changeType;
+		private Object currentValue;
+		private Object newValue;
+		
+		public Change(Field field, ChangeType changeType, Object currentValue, Object newValue) {
+			this.field = field;
+			this.changeType = changeType;
+			this.currentValue = currentValue;
+			this.newValue = newValue;
+		}
+	}
+
+	public enum ChangeType {
+		DELETED, CHANGED, NEW
+	}	
 	
-	private Map<Change, ChangeType> changes = new HashMap<>();
+	public class Changes extends HashMap<Change, ChangeType>  {
+		public Changes() {
+			super();
+		}
+
+		public Changes(Map<Change, ChangeType> list) {
+			super(list);
+		}
+
+		public ChangeDetector.Changes getAllChangesByFieldType(Class classType) {
+
+			Map<Change, ChangeType> result =  this.entrySet().stream()
+					.filter(changeTypeChangeEntry -> changeTypeChangeEntry.getKey().getField().getType().equals(classType))
+					.collect(Collectors.toMap(changeTypeChangeEntry -> changeTypeChangeEntry.getKey(),
+							changeTypeChangeEntry -> changeTypeChangeEntry.getValue()));
+			return new Changes(result);
+		}
+		
+		public ChangeDetector.Changes getAllChangesByDeclaringClassAndFilter(Class classType, Class filterFieldType) {
+			Map<Change, ChangeType> result =  this.entrySet().stream()
+					.filter(changeTypeChangeEntry -> changeTypeChangeEntry.getKey().getField().getDeclaringClass()
+							.equals(classType))
+					.filter(changeChangeTypeEntry -> !changeChangeTypeEntry.getKey().getField().getType()
+							.equals(filterFieldType))
+					.collect(Collectors.toMap(changeTypeChangeEntry -> changeTypeChangeEntry.getKey(),
+							changeTypeChangeEntry -> changeTypeChangeEntry.getValue()));
+			return new Changes(result);
+		}		
+	}
 
 	public ChangeDetector() {
 	}
 
-	public void detect(Object currentState, Object newState) throws ConverterException {
-
+	public Changes detect(Object currentState, Object newState) throws ConverterException {
 		try {
+			var changes = new Changes();
 			for (Field field : List.of(currentState.getClass().getDeclaredFields())) {
 				Object currentValue = field.get(currentState);
 				Object newValue = field.get(newState);
@@ -44,20 +91,13 @@ public class ChangeDetector {
 				}
 
 				if (changeType != null) {
-					this.changes.put(new Change(field, field.get(newState)), changeType);
+					changes.put(new Change(field, changeType, field.get(currentState), field.get(newState)), changeType);
 				}
 			}
+			return changes;
 		} catch (IllegalAccessException iae) {
 			throw new ConverterException("fout bij het detecteren van de verschillende tussen de objecten", iae);
 		}
-	}
-
-	public Map<Change, ChangeType> getAllChangesByFieldType(Class classType) {
-
-		return this.changes.entrySet().stream()
-				.filter(changeTypeChangeEntry -> changeTypeChangeEntry.getKey().getField().getType().equals(classType))
-				.collect(Collectors.toMap(changeTypeChangeEntry -> changeTypeChangeEntry.getKey(),
-						changeTypeChangeEntry -> changeTypeChangeEntry.getValue()));
 	}
 
 	public Map<Change, ChangeType> filterChangesByType(Map<Change, ChangeType> changes, ChangeType changeType) {
@@ -68,31 +108,4 @@ public class ChangeDetector {
 						changeTypeChangeEntry -> changeTypeChangeEntry.getValue()));
 
 	}
-
-	public Map<Change, ChangeType> getAllChangesByDeclaringClassAndFilter(Class classType, Class filterFieldType) {
-
-		return this.changes.entrySet().stream()
-				.filter(changeTypeChangeEntry -> changeTypeChangeEntry.getKey().getField().getDeclaringClass()
-						.equals(classType))
-				.filter(changeChangeTypeEntry -> !changeChangeTypeEntry.getKey().getField().getType()
-						.equals(filterFieldType))
-				.collect(Collectors.toMap(changeTypeChangeEntry -> changeTypeChangeEntry.getKey(),
-						changeTypeChangeEntry -> changeTypeChangeEntry.getValue()));
-	}
-
-	@Data
-	public static class Change {
-		private Field field;
-		private Object value;
-
-		public Change(Field field, Object value) {
-			this.field = field;
-			this.value = value;
-		}
-	}
-
-	public enum ChangeType {
-		DELETED, CHANGED, NEW
-	}
-
 }

@@ -133,15 +133,30 @@ public class ZaakService {
 		if (zgwZaak == null) {
 			throw new RuntimeException("Zaak with identification " + zdsWasZaak.identificatie + " not found in ZGW");
 		}
-
-		// attributen
-		ChangeDetector changeDetector = new ChangeDetector();
-		changeDetector.detect(zdsWasZaak, zdsWordtZaak);
 		var changed = false;
-		var fieldChanges = changeDetector.getAllChangesByDeclaringClassAndFilter(ZdsZaak.class, ZdsRol.class);
-		if (fieldChanges.size() > 0) {
-			log.debug("Update of zaakid:" + zdsWasZaak.identificatie + " has # " + fieldChanges.size() + " field changes");
-			for (Change change : fieldChanges.keySet()) {
+		ChangeDetector changeDetector = new ChangeDetector();
+
+		// check if the zdsWasZaak is equal to the one stored inside OpenZaak
+		ZdsZaak zdsStored = this.modelMapper.map(zgwZaak, ZdsZaak.class);
+		var storedVsWasChanges = changeDetector.detect(zdsStored, zdsWasZaak);
+		var storedVsWasFieldsChanges = storedVsWasChanges.getAllChangesByDeclaringClassAndFilter(ZdsZaak.class, ZdsRol.class);		
+		if (storedVsWasFieldsChanges.size() > 0) {
+			log.debug("Update of zaakid:" + zdsWasZaak.identificatie + " has # " + storedVsWasFieldsChanges.size() + " field changes between stored and was");
+			for (Change change : storedVsWasFieldsChanges.keySet()) {				 
+				debugWarning("The field: " + change.getField().getName() + " does not match (" + change.getChangeType() + ") stored-value:'" + change.getCurrentValue()  + "' , was-value:'" + change.getNewValue() + "'");
+			}			
+			// ZgwZaakPut zgwWordtZaak = this.modelMapper.map(zdsWordtZaak, ZgwZaakPut.class);
+			// ZgwZaakPut updatedZaak = ZgwZaakPut.merge(zgwZaak, zgwWordtZaak);
+			// this.zgwClient.updateZaak(zgwZaak.uuid, updatedZaak);
+			// changed = true;
+		}
+				
+		// attributen
+		var wasVsWordtChanges = changeDetector.detect(zdsWasZaak, zdsWordtZaak);
+		var wasVsWordtFieldChanges = wasVsWordtChanges.getAllChangesByDeclaringClassAndFilter(ZdsZaak.class, ZdsRol.class);
+		if (wasVsWordtFieldChanges.size() > 0) {
+			log.debug("Update of zaakid:" + zdsWasZaak.identificatie + " has # " + wasVsWordtFieldChanges.size() + " field changes");
+			for (Change change : wasVsWordtFieldChanges.keySet()) {
 				log.debug("\tchange:" + change.getField().getName());
 			}
 			ZgwZaakPut zgwWordtZaak = this.modelMapper.map(zdsWordtZaak, ZgwZaakPut.class);
@@ -150,20 +165,20 @@ public class ZaakService {
 
 			changed = true;
 		}
-
+		
 		// rollen
-		Map<ChangeDetector.Change, ChangeDetector.ChangeType> rolChanges = changeDetector.getAllChangesByFieldType(ZdsRol.class);
-		if (rolChanges.size() > 0) {
-			log.debug("Update of zaakid:" + zdsWasZaak.identificatie + " has # " + rolChanges.size() + " rol changes:");
+		var wasVsWordtRolChanges = wasVsWordtChanges.getAllChangesByFieldType(ZdsRol.class);
+		if (wasVsWordtRolChanges.size() > 0) {
+			log.debug("Update of zaakid:" + zdsWasZaak.identificatie + " has # " + wasVsWordtRolChanges.size() + " rol changes:");
 
-			changeDetector.filterChangesByType(rolChanges, ChangeDetector.ChangeType.NEW)
+			changeDetector.filterChangesByType(wasVsWordtRolChanges, ChangeDetector.ChangeType.NEW)
 					.forEach((change, changeType) -> {
 						var rolnaam = getRolOmschrijvingGeneriekByRolName(change.getField().getName());
 						log.debug("[CHANGE ROL] New Rol:" + rolnaam);
-						addRolToZgw((ZdsRol) change.getValue(), rolnaam, zgwZaak);
+						addRolToZgw((ZdsRol) change.getNewValue(), rolnaam, zgwZaak);
 					});
 
-			changeDetector.filterChangesByType(rolChanges, ChangeDetector.ChangeType.DELETED)
+			changeDetector.filterChangesByType(wasVsWordtRolChanges, ChangeDetector.ChangeType.DELETED)
 					.forEach((change, changeType) -> {
 						var rolnaam = getRolOmschrijvingGeneriekByRolName(change.getField().getName());
 						if(rolnaam != null) {						
@@ -172,27 +187,41 @@ public class ZaakService {
 						}
 					});
 
-			changeDetector.filterChangesByType(rolChanges, ChangeDetector.ChangeType.CHANGED)
+			changeDetector.filterChangesByType(wasVsWordtRolChanges, ChangeDetector.ChangeType.CHANGED)
 					.forEach((change, changeType) -> {
 						var rolnaam = getRolOmschrijvingGeneriekByRolName(change.getField().getName());
 						log.debug("[CHANGE ROL] Update Rol:" + rolnaam);
-						updateRolInZgw(rolnaam, zgwZaak, (ZdsRol) change.getValue());
+						updateRolInZgw(rolnaam, zgwZaak, (ZdsRol) change.getNewValue());
 					});
 			changed = true;
 		}
 
-		boolean rasChanged = setResultaatAndStatus(zdsWordtZaak, zgwZaak);
+		boolean hasChanged = setResultaatAndStatus(zdsWordtZaak, zgwZaak);
 				
-		if (!changed && ! rasChanged) {
+		if (!changed && ! hasChanged) {
 			debugWarning("Update of zaakid:" + zdsWasZaak.identificatie + " without any changes");
 		}
 	}
 	
 	private boolean setResultaatAndStatus(ZdsZaak zdsZaak, ZgwZaak zgwZaak) {
 		var changed = false;		
+
+		// Gisvg doet alles op <datumStatusGezet>20210401000000000</datumStatusGezet>
+		// pas dit aan naar tijdstip nu als het gebeurd, want zaakid, datetime-status moet uniek zijn
+		var today = new SimpleDateFormat("yyyyMMdd").format(new Date()); 		
+		var zaakid = zdsZaak.identificatie;
+		if (zdsZaak.heeft != null && zdsZaak.heeft.size() > 0 && zdsZaak.heeft.get(0).datumStatusGezet != null) {
+			var tijdstip = zdsZaak.heeft.get(0).datumStatusGezet;				
+			var formatter = new SimpleDateFormat("yyyyMMdd000000000");
+			var dagstart = formatter.format(new Date());
+			if(tijdstip.equals(dagstart)) {
+				formatter = new SimpleDateFormat("yyyyMMddHHmmssSSS");
+				zdsZaak.heeft.get(0).datumStatusGezet = formatter.format(new Date());					
+				debugWarning("Zaak with identificatie:" + zaakid + " changing the datumStatusGezet from: " + tijdstip + " to: " +  zdsZaak.heeft.get(0).datumStatusGezet);					
+			}
+		}	
 		
-		if (zdsZaak.resultaat != null && zdsZaak.resultaat.omschrijving != null) {
-			// wanneer eindezaak
+		if (zdsZaak.resultaat != null && zdsZaak.resultaat.omschrijving != null && zdsZaak.resultaat.omschrijving.length() > 0) {
 
 			// Difference between ZDS --> ZGW the behaviour of ending a zaak has changed.
 			// (more info at: https://vng-realisatie.github.io/gemma-zaken/standaard/zaken/index#zrc-007 ) 
@@ -203,12 +232,9 @@ public class ZaakService {
 			// 
 			// in ZGW:
 			//	- resultaat an reference and status has to be set to the one with the highest volgnummer
-			var zaakid = zdsZaak.identificatie;
 			var resultaatomschrijving = zdsZaak.resultaat.omschrijving;
-			var einddatum = zdsZaak.einddatum;			
-			var today = new SimpleDateFormat("yyyyMMdd").format(new Date()); 
-			
-			if(einddatum == null) {
+			var einddatum = zdsZaak.einddatum;
+			if(einddatum == null || einddatum.length() == 0) {
 				debugWarning("Update of zaakid:" + zaakid + " has resultaat but no einddatum, using today");
 				einddatum = today;
 			}
@@ -230,19 +256,7 @@ public class ZaakService {
 			zgwResultaat.resultaattype = zgwResultaatType.url;
 			zgwResultaat.toelichting = zdsZaak.resultaat.omschrijving;
 			this.zgwClient.addZaakResultaat(zgwResultaat);
-					
-			// Bekijken wat de laatste status is, deze moet gezet worden bij het afsltuiden van de zaak
-			var statustypes = this.zgwClient.getStatusTypesByZaakType(zgwZaak.zaaktype);
-			ZgwStatusType laststatustype = null;
-			for (ZgwStatusType statustype : statustypes) {
-				if(laststatustype == null || laststatustype.volgnummer < statustype.volgnummer) {
-					laststatustype = statustype;
-				}
-			}					
-			if(laststatustype == null) {
-				throw new ConverterException("no statuses found for zaaktype:" + zgwZaak.zaaktype);
-			}
-			
+								
 			// nu kijken of we een status hebben die gelijk is aan wat de laatste status zou moeten zijn,...
 			ZgwStatusType foundstatustype = null;
 			ZdsHeeft zdsHeeft = null;
@@ -255,6 +269,15 @@ public class ZaakService {
 			if(foundstatustype == null) {
 				debugWarning("einddatum and resultaat without a status");
 				if(this.autoLastStatus) {
+					// Bekijken wat de laatste status is, deze moet gezet worden bij het afsltuiden van de zaak
+					var statustypes = this.zgwClient.getStatusTypesByZaakType(zgwZaak.zaaktype);
+					ZgwStatusType laststatustype = null;
+					for (ZgwStatusType statustype : statustypes) {
+						if("true".equals(statustype.getIsEindstatus())) {
+							laststatustype = statustype;
+						}
+					}
+
 					debugWarning("autoLastStatus = enabled: setting status to:" + laststatustype.omschrijving);
 					foundstatustype = laststatustype;
 					// de status heeft straks info nodig
@@ -262,9 +285,19 @@ public class ZaakService {
 					zdsHeeft.datumStatusGezet = einddatum;
 				}
 			}
-			else if(!laststatustype.url.equals(foundstatustype.url)) {
-				debugWarning("einddatum and resultaat but found status:" + foundstatustype.omschrijving + " is not the last status:" + laststatustype.omschrijving);
+			else if(!"true".equals(foundstatustype.getIsEindstatus())) {
+				debugWarning("einddatum and resultaat but found status:" + foundstatustype.omschrijving + " is not the last status.");
 				if(this.autoLastStatus) {
+					
+					// Bekijken wat de laatste status is, deze moet gezet worden bij het afsltuiden van de zaak
+					var statustypes = this.zgwClient.getStatusTypesByZaakType(zgwZaak.zaaktype);
+					ZgwStatusType laststatustype = null;
+					for (ZgwStatusType statustype : statustypes) {
+						if("true".equals(statustype.getIsEindstatus())) {
+							laststatustype = statustype;
+						}
+					}
+
 					debugWarning("autoLastStatus = enabled: overriding status to:" + laststatustype.omschrijving);
 					foundstatustype = laststatustype;
 				}
@@ -291,6 +324,17 @@ public class ZaakService {
 					zgwStatus.zaak = zgwZaak.url;
 					zgwStatus.statustype = zgwStatusType.url;
 					zgwStatus.statustoelichting = zgwStatusType.omschrijving;
+					
+					if("true".equals(zgwStatusType.getIsEindstatus())) {
+						// als laatste status, dan moet einddatum de status datum zijn
+						// dit bepaald de einddatum van de status dan weer
+						var einddatum = zdsZaak.einddatum;
+						if(einddatum == null || einddatum.length() == 0) {
+							debugWarning("Update of zaakid:" + zaakid + " has resultaat but no einddatum, using today");
+							einddatum = today;
+						}
+						zgwStatus.setDatumStatusGezet(einddatum);
+					}					
 					this.zgwClient.addZaakStatus(zgwStatus);	
 					changed = true;
 				}
@@ -571,20 +615,10 @@ public class ZaakService {
 
 	public ZgwZaak actualiseerZaakstatus(ZdsZaak wasZaak, ZdsZaak wordtZaak) {
 		log.debug("actualiseerZaakstatus:" + wasZaak.identificatie);
-		ZgwZaak zgwZaak = this.zgwClient.getZaakByIdentificatie(wasZaak.identificatie);
-		var zdsHeeft = wordtZaak.heeft.get(0);
-		var zdsStatus = zdsHeeft.gerelateerde;
-		// var zgwStatusType =
-		// zgwClient.getStatusTypeByZaakTypeAndVolgnummer(zgwZaak.zaaktype,
-		// zdsStatus.volgnummer, zdsStatus.omschrijving);
-		var zgwStatusType = this.zgwClient.getStatusTypeByZaakTypeAndOmschrijving(zgwZaak.zaaktype,
-				zdsStatus.omschrijving, zdsStatus.volgnummer);
-
-		ZgwStatus zgwStatus = this.modelMapper.map(zdsHeeft, ZgwStatus.class);
-		zgwStatus.zaak = zgwZaak.url;
-		zgwStatus.statustype = zgwStatusType.url;
-
-		this.zgwClient.addZaakStatus(zgwStatus);
+		var zaakid = wasZaak.identificatie;
+		ZgwZaak zgwZaak = this.zgwClient.getZaakByIdentificatie(zaakid);
+		setResultaatAndStatus(wordtZaak, zgwZaak);		
+		
 		return zgwZaak;
 	}
 
@@ -616,8 +650,8 @@ public class ZaakService {
 		if (zgwZaak == null) {
 			throw new ConverterException("Zaak not found for identification: '" + zaakidentificatie + "'");
 		}
-		ZdsZaak zaak = new ZdsZaak();
-		zaak = this.modelMapper.map(zgwZaak, ZdsZaak.class);
+		//ZdsZaak zaak = new ZdsZaak();
+		ZdsZaak zaak = this.modelMapper.map(zgwZaak, ZdsZaak.class);
 
 		ZgwRolOmschrijving zgwRolOmschrijving = this.configService.getConfiguration().getZgwRolOmschrijving();
 
@@ -786,11 +820,7 @@ public class ZaakService {
 		log.debug("checkOutZaakDocument:" + documentIdentificatie);
 		ZgwEnkelvoudigInformatieObject zgwEnkelvoudigInformatieObject = this.zgwClient.getZgwEnkelvoudigInformatieObjectByIdentiticatie(documentIdentificatie);
 		if (zgwEnkelvoudigInformatieObject == null) {
-			throw new ConverterException(
-					"ZgwEnkelvoudigInformatieObject #" + documentIdentificatie + " could not be found");
-		}
-		if (zgwEnkelvoudigInformatieObject == null) {
-			throw new ConverterException("ZgwEnkelvoudigInformatieObjectByIdentiticatie not found for identificatie: " + zgwEnkelvoudigInformatieObject.identificatie);
+			throw new ConverterException("ZgwEnkelvoudigInformatieObjectByIdentiticatie not found for identificatie: " + documentIdentificatie);
 		}
 		if(zgwEnkelvoudigInformatieObject.locked) {
 			throw new ConverterException("ZgwEnkelvoudigInformatieObjectByIdentiticatie with identificatie: " + zgwEnkelvoudigInformatieObject.identificatie + " cannot be locked and then changed");
