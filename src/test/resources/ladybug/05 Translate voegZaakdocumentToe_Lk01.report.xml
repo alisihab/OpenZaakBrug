@@ -72,7 +72,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>Thread-56</string>
+      <string>Thread-21</string>
      </void>
      <void property="type">
       <int>1</int>
@@ -100,7 +100,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>Thread-56</string>
+      <string>Thread-21</string>
      </void>
      <void property="type">
       <int>4</int>
@@ -128,7 +128,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>Thread-56</string>
+      <string>Thread-21</string>
      </void>
      <void property="type">
       <int>4</int>
@@ -156,7 +156,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>Thread-56</string>
+      <string>Thread-21</string>
      </void>
      <void property="type">
       <int>4</int>
@@ -184,7 +184,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>Thread-56</string>
+      <string>Thread-21</string>
      </void>
      <void property="type">
       <int>4</int>
@@ -212,7 +212,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>Thread-56</string>
+      <string>Thread-21</string>
      </void>
      <void property="type">
       <int>4</int>
@@ -222,13 +222,13 @@
    <void method="add">
     <object class="nl.nn.testtool.Checkpoint">
      <void property="estimatedMemoryUsage">
-      <long>136</long>
+      <long>134</long>
      </void>
      <void property="level">
       <int>1</int>
      </void>
      <void property="message">
-      <string>Ladybug_Test_Tool-2.0.15-20210115.140317--58542be6:1785a948469:-7fc7</string>
+      <string>Ladybug_Test_Tool-2.0.15-20210115.140317-53b206b7:178a6f4217c:-7ffc</string>
      </void>
      <void property="name">
       <string>referentienummer</string>
@@ -240,7 +240,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>Thread-56</string>
+      <string>Thread-21</string>
      </void>
      <void property="type">
       <int>6</int>
@@ -268,7 +268,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>Thread-56</string>
+      <string>Thread-21</string>
      </void>
      <void property="type">
       <int>6</int>
@@ -296,7 +296,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>Thread-56</string>
+      <string>Thread-21</string>
      </void>
      <void property="type">
       <int>6</int>
@@ -324,7 +324,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>Thread-56</string>
+      <string>Thread-21</string>
      </void>
      <void property="type">
       <int>6</int>
@@ -346,7 +346,7 @@
       <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
      </void>
      <void property="threadName">
-      <string>Thread-56</string>
+      <string>Thread-21</string>
      </void>
      <void property="type">
       <int>1</int>
@@ -356,13 +356,13 @@
    <void method="add">
     <object class="nl.nn.testtool.Checkpoint">
      <void property="estimatedMemoryUsage">
-      <long>204</long>
+      <long>160</long>
      </void>
      <void property="level">
       <int>2</int>
      </void>
      <void property="message">
-      <string>https://fieldlab.westeurope.cloudapp.azure.com/catalogi/api/v1/informatieobjecttypen?status=definitief</string>
+      <string>https://test.openzaak.nl/catalogi/api/v1/informatieobjecttypen?status=definitief</string>
      </void>
      <void property="name">
       <string>url</string>
@@ -374,7 +374,7 @@
       <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
      </void>
      <void property="threadName">
-      <string>Thread-56</string>
+      <string>Thread-21</string>
      </void>
      <void property="type">
       <int>4</int>
@@ -402,7 +402,7 @@
       <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
      </void>
      <void property="threadName">
-      <string>Thread-56</string>
+      <string>Thread-21</string>
      </void>
      <void property="type">
       <int>4</int>
@@ -433,7 +433,7 @@
       <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
      </void>
      <void property="threadName">
-      <string>Thread-56</string>
+      <string>Thread-21</string>
      </void>
      <void property="type">
       <int>2</int>
@@ -443,13 +443,13 @@
    <void method="add">
     <object class="nl.nn.testtool.Checkpoint">
      <void property="estimatedMemoryUsage">
-      <long>260</long>
+      <long>216</long>
      </void>
      <void property="level">
       <int>1</int>
      </void>
      <void property="message">
-      <string>GET to: https://fieldlab.westeurope.cloudapp.azure.com/catalogi/api/v1/informatieobjecttypen?status=definitief took 0 milliseconds</string>
+      <string>GET to: https://test.openzaak.nl/catalogi/api/v1/informatieobjecttypen?status=definitief took 0 milliseconds</string>
      </void>
      <void property="name">
       <string>Duration</string>
@@ -461,7 +461,7 @@
       <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
      </void>
      <void property="threadName">
-      <string>Thread-56</string>
+      <string>Thread-21</string>
      </void>
      <void property="type">
       <int>6</int>
@@ -489,7 +489,7 @@
       <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
      </void>
      <void property="threadName">
-      <string>Thread-56</string>
+      <string>Thread-21</string>
      </void>
      <void property="type">
       <int>1</int>
@@ -499,13 +499,13 @@
    <void method="add">
     <object class="nl.nn.testtool.Checkpoint">
      <void property="estimatedMemoryUsage">
-      <long>188</long>
+      <long>144</long>
      </void>
      <void property="level">
       <int>2</int>
      </void>
      <void property="message">
-      <string>https://fieldlab.westeurope.cloudapp.azure.com/documenten/api/v1/enkelvoudiginformatieobjecten</string>
+      <string>https://test.openzaak.nl/documenten/api/v1/enkelvoudiginformatieobjecten</string>
      </void>
      <void property="name">
       <string>url</string>
@@ -517,7 +517,7 @@
       <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
      </void>
      <void property="threadName">
-      <string>Thread-56</string>
+      <string>Thread-21</string>
      </void>
      <void property="type">
       <int>4</int>
@@ -548,7 +548,7 @@
       <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
      </void>
      <void property="threadName">
-      <string>Thread-56</string>
+      <string>Thread-21</string>
      </void>
      <void property="type">
       <int>2</int>
@@ -558,13 +558,13 @@
    <void method="add">
     <object class="nl.nn.testtool.Checkpoint">
      <void property="estimatedMemoryUsage">
-      <long>246</long>
+      <long>202</long>
      </void>
      <void property="level">
       <int>1</int>
      </void>
      <void property="message">
-      <string>POST to: https://fieldlab.westeurope.cloudapp.azure.com/documenten/api/v1/enkelvoudiginformatieobjecten took 0 milliseconds</string>
+      <string>POST to: https://test.openzaak.nl/documenten/api/v1/enkelvoudiginformatieobjecten took 0 milliseconds</string>
      </void>
      <void property="name">
       <string>Duration</string>
@@ -576,7 +576,7 @@
       <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
      </void>
      <void property="threadName">
-      <string>Thread-56</string>
+      <string>Thread-21</string>
      </void>
      <void property="type">
       <int>6</int>
@@ -598,7 +598,7 @@
       <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
      </void>
      <void property="threadName">
-      <string>Thread-56</string>
+      <string>Thread-21</string>
      </void>
      <void property="type">
       <int>1</int>
@@ -608,13 +608,13 @@
    <void method="add">
     <object class="nl.nn.testtool.Checkpoint">
      <void property="estimatedMemoryUsage">
-      <long>174</long>
+      <long>130</long>
      </void>
      <void property="level">
       <int>2</int>
      </void>
      <void property="message">
-      <string>https://fieldlab.westeurope.cloudapp.azure.com/zaken/api/v1/zaken?identificatie=8000371</string>
+      <string>https://test.openzaak.nl/zaken/api/v1/zaken?identificatie=8000371</string>
      </void>
      <void property="name">
       <string>url</string>
@@ -626,7 +626,7 @@
       <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
      </void>
      <void property="threadName">
-      <string>Thread-56</string>
+      <string>Thread-21</string>
      </void>
      <void property="type">
       <int>4</int>
@@ -654,7 +654,7 @@
       <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
      </void>
      <void property="threadName">
-      <string>Thread-56</string>
+      <string>Thread-21</string>
      </void>
      <void property="type">
       <int>4</int>
@@ -685,7 +685,7 @@
       <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
      </void>
      <void property="threadName">
-      <string>Thread-56</string>
+      <string>Thread-21</string>
      </void>
      <void property="type">
       <int>2</int>
@@ -695,13 +695,13 @@
    <void method="add">
     <object class="nl.nn.testtool.Checkpoint">
      <void property="estimatedMemoryUsage">
-      <long>230</long>
+      <long>186</long>
      </void>
      <void property="level">
       <int>1</int>
      </void>
      <void property="message">
-      <string>GET to: https://fieldlab.westeurope.cloudapp.azure.com/zaken/api/v1/zaken?identificatie=8000371 took 0 milliseconds</string>
+      <string>GET to: https://test.openzaak.nl/zaken/api/v1/zaken?identificatie=8000371 took 0 milliseconds</string>
      </void>
      <void property="name">
       <string>Duration</string>
@@ -713,7 +713,7 @@
       <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
      </void>
      <void property="threadName">
-      <string>Thread-56</string>
+      <string>Thread-21</string>
      </void>
      <void property="type">
       <int>6</int>
@@ -741,7 +741,7 @@
       <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
      </void>
      <void property="threadName">
-      <string>Thread-56</string>
+      <string>Thread-21</string>
      </void>
      <void property="type">
       <int>1</int>
@@ -751,13 +751,13 @@
    <void method="add">
     <object class="nl.nn.testtool.Checkpoint">
      <void property="estimatedMemoryUsage">
-      <long>164</long>
+      <long>120</long>
      </void>
      <void property="level">
       <int>2</int>
      </void>
      <void property="message">
-      <string>https://fieldlab.westeurope.cloudapp.azure.com/zaken/api/v1/zaakinformatieobjecten</string>
+      <string>https://test.openzaak.nl/zaken/api/v1/zaakinformatieobjecten</string>
      </void>
      <void property="name">
       <string>url</string>
@@ -769,7 +769,7 @@
       <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
      </void>
      <void property="threadName">
-      <string>Thread-56</string>
+      <string>Thread-21</string>
      </void>
      <void property="type">
       <int>4</int>
@@ -800,7 +800,7 @@
       <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
      </void>
      <void property="threadName">
-      <string>Thread-56</string>
+      <string>Thread-21</string>
      </void>
      <void property="type">
       <int>2</int>
@@ -810,13 +810,13 @@
    <void method="add">
     <object class="nl.nn.testtool.Checkpoint">
      <void property="estimatedMemoryUsage">
-      <long>222</long>
+      <long>178</long>
      </void>
      <void property="level">
       <int>1</int>
      </void>
      <void property="message">
-      <string>POST to: https://fieldlab.westeurope.cloudapp.azure.com/zaken/api/v1/zaakinformatieobjecten took 0 milliseconds</string>
+      <string>POST to: https://test.openzaak.nl/zaken/api/v1/zaakinformatieobjecten took 0 milliseconds</string>
      </void>
      <void property="name">
       <string>Duration</string>
@@ -828,7 +828,7 @@
       <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
      </void>
      <void property="threadName">
-      <string>Thread-56</string>
+      <string>Thread-21</string>
      </void>
      <void property="type">
       <int>6</int>
@@ -863,7 +863,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>Thread-56</string>
+      <string>Thread-21</string>
      </void>
      <void property="type">
       <int>5</int>
@@ -891,7 +891,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>Thread-56</string>
+      <string>Thread-21</string>
      </void>
      <void property="type">
       <int>5</int>
@@ -907,7 +907,7 @@
       <int>1</int>
      </void>
      <void property="message">
-      <string>Soapaction: &quot;http://www.egem.nl/StUF/sector/zkn/0310/voegZaakdocumentToe_Lk01&quot; took 31 milliseconds</string>
+      <string>Soapaction: &quot;http://www.egem.nl/StUF/sector/zkn/0310/voegZaakdocumentToe_Lk01&quot; took 52 milliseconds</string>
      </void>
      <void property="name">
       <string>Total duration</string>
@@ -919,7 +919,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>Thread-56</string>
+      <string>Thread-21</string>
      </void>
      <void property="type">
       <int>6</int>
@@ -929,7 +929,7 @@
    <void method="add">
     <object class="nl.nn.testtool.Checkpoint">
      <void property="estimatedMemoryUsage">
-      <long>1936</long>
+      <long>1934</long>
      </void>
      <void property="level">
       <int>1</int>
@@ -950,8 +950,8 @@
           &lt;applicatie&gt;GWS4all&lt;/applicatie&gt;&#13;
           &lt;gebruiker&gt;Gebruiker&lt;/gebruiker&gt;&#13;
         &lt;/ontvanger&gt;&#13;
-        &lt;referentienummer&gt;Ladybug_Test_Tool-2.0.15-20210115.140317--58542be6:1785a948469:-7fc7&lt;/referentienummer&gt;&#13;
-        &lt;tijdstipBericht&gt;20210322205138&lt;/tijdstipBericht&gt;&#13;
+        &lt;referentienummer&gt;Ladybug_Test_Tool-2.0.15-20210115.140317-53b206b7:178a6f4217c:-7ffc&lt;/referentienummer&gt;&#13;
+        &lt;tijdstipBericht&gt;20210406133200&lt;/tijdstipBericht&gt;&#13;
         &lt;crossRefnummer&gt;2e7b185a-c364-4761-85ba-8b5aa250ef15&lt;/crossRefnummer&gt;&#13;
       &lt;/stuurgegevens&gt;&#13;
     &lt;/Bv03Bericht&gt;&#13;
@@ -969,7 +969,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>Thread-56</string>
+      <string>Thread-21</string>
      </void>
      <void property="type">
       <int>2</int>
@@ -978,16 +978,16 @@
    </void>
   </void>
   <void property="correlationId">
-   <string>Ladybug_Test_Tool-2.0.15-20210115.140317--58542be6:1785a948469:-7fc7</string>
+   <string>Ladybug_Test_Tool-2.0.15-20210115.140317-53b206b7:178a6f4217c:-7ffc</string>
   </void>
   <void property="description">
    <string></string>
   </void>
   <void property="endTime">
-   <long>1616442698146</long>
+   <long>1617708720779</long>
   </void>
   <void property="estimatedMemoryUsage">
-   <long>628236</long>
+   <long>627880</long>
   </void>
   <void property="name">
    <string>05 Translate voegZaakdocumentToe_Lk01</string>
@@ -996,10 +996,10 @@
    <string>/</string>
   </void>
   <void property="startTime">
-   <long>1616442698116</long>
+   <long>1617708720729</long>
   </void>
   <void property="storageId">
-   <int>234</int>
+   <int>243</int>
   </void>
   <void property="stubStrategy">
    <string>Stub all external connection code</string>
