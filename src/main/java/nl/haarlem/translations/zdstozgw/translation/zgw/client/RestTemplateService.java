@@ -3,6 +3,7 @@ package nl.haarlem.translations.zdstozgw.translation.zgw.client;
 import java.lang.invoke.MethodHandles;
 import java.security.cert.X509Certificate;
 
+import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
@@ -37,6 +38,9 @@ public class RestTemplateService {
 	@Autowired
 	public RestTemplateService(@Value("${nl.haarlem.translations.zdstozgw.trustAllCerts:false}") boolean trustAllCerts,
 			RestTemplateBuilder restTemplateBuilder) {
+	    if(trustAllCerts){
+            HttpsURLConnection.setDefaultHostnameVerifier((hostname, session) -> true);
+        }
 		this.restTemplate = restTemplateBuilder.build();
 	}
 
