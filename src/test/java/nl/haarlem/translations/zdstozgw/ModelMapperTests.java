@@ -20,7 +20,6 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.ui.Model;
 
-import javax.validation.constraints.AssertTrue;
 import java.time.ZoneId;
 
 @RunWith(SpringRunner.class)
