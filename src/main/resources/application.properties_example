@@ -25,9 +25,9 @@ zgw.endpoint.zaakinformatieobject = /zaken/api/v1/zaakinformatieobjecten
 zgw.endpoint.enkelvoudiginformatieobject = /documenten/api/v1/enkelvoudiginformatieobjecten
 zgw.endpoint.zaak = /zaken/api/v1/zaken
 
-#spring.datasource.initialize=true
-#spring.jpa.generate-ddl=true
-#spring.jpa.show-sql=true
+spring.datasource.initialize=true
+spring.jpa.generate-ddl=true
+spring.jpa.show-sql=true
 #spring.jpa.hibernate.ddl-auto=create
 spring.jpa.hibernate.ddl-auto=update
 
