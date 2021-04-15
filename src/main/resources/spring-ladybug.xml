@@ -228,4 +228,6 @@
 		</constructor-arg>
 	</bean>
 
+	<import resource="spring-modelmapper-advice.xml"/>
+
 </beans>
