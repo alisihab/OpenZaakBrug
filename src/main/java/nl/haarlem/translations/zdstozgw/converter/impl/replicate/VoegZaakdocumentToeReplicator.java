@@ -34,15 +34,13 @@ public class VoegZaakdocumentToeReplicator extends VoegZaakdocumentToeTranslator
 		var zdsEdcLk01 = (ZdsEdcLk01) this.getZdsDocument();
 
 		var replicator = new Replicator(this);
-		replicator.replicateZaak(zdsEdcLk01.objects.get(0).identificatie);
-
 		var legacyresponse = replicator.proxy();
 		if (legacyresponse.getStatusCode() != HttpStatus.OK) {
 			log.warn("Service:" + this.getTranslation().getLegacyservice() + " SoapAction: "
 					+ this.getContext().getSoapAction());
 			return legacyresponse;
 		}
-
+		replicator.replicateZaak(zdsEdcLk01.objects.get(0).identificatie);
 		return super.execute();
 	}
 }
