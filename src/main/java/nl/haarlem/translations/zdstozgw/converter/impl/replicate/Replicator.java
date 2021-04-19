@@ -7,6 +7,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -192,6 +193,11 @@ public class Replicator {
 		var soapaction = this.converter.getTranslation().getSoapAction();
 		var request = this.converter.getContext().getRequestBody();
 		debug.infopoint("proxy", "relaying request to url: " + url + " with soapaction: " + soapaction + " request-size:" + request.length());
-		return this.zdsClient.post(url, soapaction, request);
+		
+		var legacyresponse = this.zdsClient.post(url, soapaction, request);
+		if (legacyresponse.getStatusCode() != HttpStatus.OK) {
+			debug.infopoint("Warning", "HttpStatus:" + legacyresponse.getStatusCode().toString() + " Url:" + url + " SoapAction: " + soapaction +  " Service:" + this.converter.getTranslation().getLegacyservice());
+		}	
+		return legacyresponse;
 	}
 }
