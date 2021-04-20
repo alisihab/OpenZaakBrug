@@ -171,7 +171,7 @@ public class Replicator {
 		var zdsEdcLa01 = (ZdsEdcLa01GeefZaakdocumentLezen) XmlUtils.getStUFObject(zdsResponse.getBody().toString(),
 				ZdsEdcLa01GeefZaakdocumentLezen.class);
 		
-		if (zdsEdcLa01.antwoord.document == null || zdsEdcLa01.antwoord.document.get(0) == null) {
+		if (zdsEdcLa01.antwoord == null || zdsEdcLa01.antwoord.document == null || zdsEdcLa01.antwoord.document.get(0) == null) {
 			//throw new RuntimeException("Document not found for identificatie: " + zaakdocumentidentificatie);
 			debug.infopoint("Warning", "zaakdocumentidentificatie #" + zaakdocumentidentificatie + " not found, this document will not be replicated");
 			return;
