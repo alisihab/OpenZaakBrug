@@ -33,15 +33,13 @@ public class GeefLijstZaakdocumentenReplicator extends GeefLijstZaakdocumentenTr
 		var zdsZakLv01 = (ZdsZakLv01) this.getZdsDocument();
 
 		var replicator = new Replicator(this);
-		replicator.replicateZaak(zdsZakLv01.gelijk.identificatie);
-
 		var legacyresponse = replicator.proxy();
 		if (legacyresponse.getStatusCode() != HttpStatus.OK) {
 			log.warn("Service:" + this.getTranslation().getLegacyservice() + " SoapAction: "
 					+ this.getContext().getSoapAction());
 			return legacyresponse;
 		}
-
+		replicator.replicateZaak(zdsZakLv01.gelijk.identificatie);
 		return super.execute();
 	}
 }

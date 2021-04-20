@@ -6,7 +6,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
@@ -16,6 +15,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import nl.haarlem.translations.zdstozgw.config.ConfigService;
+import nl.haarlem.translations.zdstozgw.config.ModelMapperConfig;
 import nl.haarlem.translations.zdstozgw.config.model.Organisatie;
 import nl.haarlem.translations.zdstozgw.config.model.ZgwRolOmschrijving;
 import nl.haarlem.translations.zdstozgw.converter.ConverterException;
@@ -144,7 +144,7 @@ public class ZaakService {
 			log.debug("Update of zaakid:" + zdsWasZaak.identificatie + " has # " + storedVsWasFieldsChanges.size() + " field changes between stored and was");
 			for (Change change : storedVsWasFieldsChanges.keySet()) {				 
 				debugWarning("The field: " + change.getField().getName() + " does not match (" + change.getChangeType() + ") stored-value:'" + change.getCurrentValue()  + "' , was-value:'" + change.getNewValue() + "'");
-			}			
+			}
 			// ZgwZaakPut zgwWordtZaak = this.modelMapper.map(zdsWordtZaak, ZgwZaakPut.class);
 			// ZgwZaakPut updatedZaak = ZgwZaakPut.merge(zgwZaak, zgwWordtZaak);
 			// this.zgwClient.updateZaak(zgwZaak.uuid, updatedZaak);
@@ -208,7 +208,7 @@ public class ZaakService {
 
 		// Gisvg doet alles op <datumStatusGezet>20210401000000000</datumStatusGezet>
 		// pas dit aan naar tijdstip nu als het gebeurd, want zaakid, datetime-status moet uniek zijn
-		var today = new SimpleDateFormat("yyyyMMdd").format(new Date()); 		
+		var zdsToday = new SimpleDateFormat("yyyyMMdd").format(new Date()); 		
 		var zaakid = zdsZaak.identificatie;
 		if (zdsZaak.heeft != null && zdsZaak.heeft.size() > 0 && zdsZaak.heeft.get(0).datumStatusGezet != null) {
 			var tijdstip = zdsZaak.heeft.get(0).datumStatusGezet;				
@@ -233,10 +233,10 @@ public class ZaakService {
 			// in ZGW:
 			//	- resultaat an reference and status has to be set to the one with the highest volgnummer
 			var resultaatomschrijving = zdsZaak.resultaat.omschrijving;
-			var einddatum = zdsZaak.einddatum;
-			if(einddatum == null || einddatum.length() == 0) {
+			var zdsEinddatum = zdsZaak.einddatum;
+			if(zdsEinddatum == null || zdsEinddatum.length() == 0) {
 				debugWarning("Update of zaakid:" + zaakid + " has resultaat but no einddatum, using today");
-				einddatum = today;
+				zdsEinddatum = zdsToday;
 			}
 			//else if(!einddatum.equals(today)) {
 			//	log.warn("Update of zaakid:" + zaakid + " has resultaat and einddatum, einddatum:" + zdsZaak.einddatum + " is not today (" + today + ")");				
@@ -282,7 +282,7 @@ public class ZaakService {
 					foundstatustype = laststatustype;
 					// de status heeft straks info nodig
 					zdsHeeft = new ZdsHeeft();
-					zdsHeeft.datumStatusGezet = einddatum;
+					zdsHeeft.datumStatusGezet = zdsEinddatum;
 				}
 			}
 			else if(!"true".equals(foundstatustype.getIsEindstatus())) {
@@ -307,6 +307,16 @@ public class ZaakService {
 				zgwStatus.zaak = zgwZaak.url;
 				zgwStatus.statustype = foundstatustype.url;
 				zgwStatus.statustoelichting = foundstatustype.omschrijving;
+				
+				if("true".equals(foundstatustype.getIsEindstatus())) {
+					// als laatste status, dan moet einddatum de status datum zijn
+					// dit bepaald de einddatum van de status dan weer
+					if(zdsEinddatum == null || zdsEinddatum.length() == 0) {
+						debugWarning("Update of zaakid:" + zaakid + " has resultaat but no einddatum, using today");
+						zdsEinddatum = zdsToday;
+					}
+					zgwStatus.setDatumStatusGezet(ModelMapperConfig.convertStufDateTimeToZgwDateTime(zdsEinddatum));
+				}				
 				this.zgwClient.addZaakStatus(zgwStatus);
 			}
 			else {
@@ -328,12 +338,12 @@ public class ZaakService {
 					if("true".equals(zgwStatusType.getIsEindstatus())) {
 						// als laatste status, dan moet einddatum de status datum zijn
 						// dit bepaald de einddatum van de status dan weer
-						var einddatum = zdsZaak.einddatum;
-						if(einddatum == null || einddatum.length() == 0) {
+						var zdsEinddatum = zdsZaak.einddatum;
+						if(zdsEinddatum == null || zdsEinddatum.length() == 0) {
 							debugWarning("Update of zaakid:" + zaakid + " has resultaat but no einddatum, using today");
-							einddatum = today;
+							zdsEinddatum = zdsToday;
 						}
-						zgwStatus.setDatumStatusGezet(einddatum);
+						zgwStatus.setDatumStatusGezet(ModelMapperConfig.convertStufDateTimeToZgwDateTime(zdsEinddatum));
 					}					
 					this.zgwClient.addZaakStatus(zgwStatus);	
 					changed = true;

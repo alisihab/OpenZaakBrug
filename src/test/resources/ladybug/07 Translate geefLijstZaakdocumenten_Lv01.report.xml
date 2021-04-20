@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<java version="13.0.2" class="java.beans.XMLDecoder">
+<java version="15.0.2" class="java.beans.XMLDecoder">
  <object class="nl.nn.testtool.Report" id="Report0">
   <void property="checkpoints">
    <void method="add">
@@ -74,7 +74,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>main</string>
+      <string>Thread-11</string>
      </void>
      <void property="type">
       <int>1</int>
@@ -99,7 +99,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>main</string>
+      <string>Thread-11</string>
      </void>
      <void property="type">
       <int>4</int>
@@ -124,7 +124,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>main</string>
+      <string>Thread-11</string>
      </void>
      <void property="type">
       <int>4</int>
@@ -149,7 +149,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>main</string>
+      <string>Thread-11</string>
      </void>
      <void property="type">
       <int>4</int>
@@ -174,7 +174,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>main</string>
+      <string>Thread-11</string>
      </void>
      <void property="type">
       <int>4</int>
@@ -199,7 +199,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>main</string>
+      <string>Thread-11</string>
      </void>
      <void property="type">
       <int>4</int>
@@ -212,7 +212,7 @@
       <int>1</int>
      </void>
      <void property="message">
-      <string>Ladybug_Test_Tool-2.2-20210330.112250-31ddb633:178a7be0bcd:-7ff9</string>
+      <string>Ladybug_Test_Tool-2.2-20210330.112250--4273595:178ca835913:-7f7c</string>
      </void>
      <void property="name">
       <string>referentienummer</string>
@@ -224,7 +224,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>main</string>
+      <string>Thread-11</string>
      </void>
      <void property="type">
       <int>6</int>
@@ -249,7 +249,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>main</string>
+      <string>Thread-11</string>
      </void>
      <void property="type">
       <int>6</int>
@@ -274,7 +274,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>main</string>
+      <string>Thread-11</string>
      </void>
      <void property="type">
       <int>6</int>
@@ -299,7 +299,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>main</string>
+      <string>Thread-11</string>
      </void>
      <void property="type">
       <int>6</int>
@@ -321,7 +321,7 @@
       <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
      </void>
      <void property="threadName">
-      <string>main</string>
+      <string>Thread-11</string>
      </void>
      <void property="type">
       <int>1</int>
@@ -334,7 +334,7 @@
       <int>2</int>
      </void>
      <void property="message">
-      <string>https://test.openzaak.nl/zaken/api/v1/zaken?identificatie=8000371</string>
+      <string>https://fieldlab.westeurope.cloudapp.azure.com/zaken/api/v1/zaken?identificatie=8000371</string>
      </void>
      <void property="name">
       <string>url</string>
@@ -346,7 +346,7 @@
       <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
      </void>
      <void property="threadName">
-      <string>main</string>
+      <string>Thread-11</string>
      </void>
      <void property="type">
       <int>4</int>
@@ -371,7 +371,7 @@
       <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
      </void>
      <void property="threadName">
-      <string>main</string>
+      <string>Thread-11</string>
      </void>
      <void property="type">
       <int>4</int>
@@ -399,7 +399,7 @@
       <boolean>true</boolean>
      </void>
      <void property="threadName">
-      <string>main</string>
+      <string>Thread-11</string>
      </void>
      <void property="type">
       <int>2</int>
@@ -412,7 +412,7 @@
       <int>1</int>
      </void>
      <void property="message">
-      <string>GET to: https://test.openzaak.nl/zaken/api/v1/zaken?identificatie=8000371 took 0 milliseconds</string>
+      <string>GET to: https://fieldlab.westeurope.cloudapp.azure.com/zaken/api/v1/zaken?identificatie=8000371 took 0 milliseconds</string>
      </void>
      <void property="name">
       <string>Duration</string>
@@ -424,7 +424,7 @@
       <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
      </void>
      <void property="threadName">
-      <string>main</string>
+      <string>Thread-11</string>
      </void>
      <void property="type">
       <int>6</int>
@@ -446,7 +446,7 @@
       <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
      </void>
      <void property="threadName">
-      <string>main</string>
+      <string>Thread-11</string>
      </void>
      <void property="type">
       <int>1</int>
@@ -459,7 +459,7 @@
       <int>2</int>
      </void>
      <void property="message">
-      <string>https://test.openzaak.nl/zaken/api/v1/zaakinformatieobjecten?zaak=https://fieldlab.westeurope.cloudapp.azure.com/zaken/api/v1/zaken/15aafcbe-6508-49a3-951e-a8496b7fb22d</string>
+      <string>https://fieldlab.westeurope.cloudapp.azure.com/zaken/api/v1/zaakinformatieobjecten?zaak=https://fieldlab.westeurope.cloudapp.azure.com/zaken/api/v1/zaken/15aafcbe-6508-49a3-951e-a8496b7fb22d</string>
      </void>
      <void property="name">
       <string>url</string>
@@ -471,7 +471,7 @@
       <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
      </void>
      <void property="threadName">
-      <string>main</string>
+      <string>Thread-11</string>
      </void>
      <void property="type">
       <int>4</int>
@@ -496,7 +496,7 @@
       <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
      </void>
      <void property="threadName">
-      <string>main</string>
+      <string>Thread-11</string>
      </void>
      <void property="type">
       <int>4</int>
@@ -524,7 +524,7 @@
       <boolean>true</boolean>
      </void>
      <void property="threadName">
-      <string>main</string>
+      <string>Thread-11</string>
      </void>
      <void property="type">
       <int>2</int>
@@ -537,7 +537,7 @@
       <int>1</int>
      </void>
      <void property="message">
-      <string>GET to: https://test.openzaak.nl/zaken/api/v1/zaakinformatieobjecten?zaak=https://fieldlab.westeurope.cloudapp.azure.com/zaken/api/v1/zaken/15aafcbe-6508-49a3-951e-a8496b7fb22d took 0 milliseconds</string>
+      <string>GET to: https://fieldlab.westeurope.cloudapp.azure.com/zaken/api/v1/zaakinformatieobjecten?zaak=https://fieldlab.westeurope.cloudapp.azure.com/zaken/api/v1/zaken/15aafcbe-6508-49a3-951e-a8496b7fb22d took 0 milliseconds</string>
      </void>
      <void property="name">
       <string>Duration</string>
@@ -549,7 +549,7 @@
       <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
      </void>
      <void property="threadName">
-      <string>main</string>
+      <string>Thread-11</string>
      </void>
      <void property="type">
       <int>6</int>
@@ -571,7 +571,7 @@
       <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
      </void>
      <void property="threadName">
-      <string>main</string>
+      <string>Thread-11</string>
      </void>
      <void property="type">
       <int>1</int>
@@ -596,7 +596,7 @@
       <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
      </void>
      <void property="threadName">
-      <string>main</string>
+      <string>Thread-11</string>
      </void>
      <void property="type">
       <int>4</int>
@@ -624,7 +624,7 @@
       <boolean>true</boolean>
      </void>
      <void property="threadName">
-      <string>main</string>
+      <string>Thread-11</string>
      </void>
      <void property="type">
       <int>2</int>
@@ -649,7 +649,7 @@
       <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
      </void>
      <void property="threadName">
-      <string>main</string>
+      <string>Thread-11</string>
      </void>
      <void property="type">
       <int>6</int>
@@ -671,7 +671,7 @@
       <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
      </void>
      <void property="threadName">
-      <string>main</string>
+      <string>Thread-11</string>
      </void>
      <void property="type">
       <int>1</int>
@@ -696,7 +696,7 @@
       <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
      </void>
      <void property="threadName">
-      <string>main</string>
+      <string>Thread-11</string>
      </void>
      <void property="type">
       <int>4</int>
@@ -724,7 +724,7 @@
       <boolean>true</boolean>
      </void>
      <void property="threadName">
-      <string>main</string>
+      <string>Thread-11</string>
      </void>
      <void property="type">
       <int>2</int>
@@ -749,10 +749,155 @@
       <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
      </void>
      <void property="threadName">
-      <string>main</string>
+      <string>Thread-11</string>
      </void>
      <void property="type">
       <int>6</int>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="nl.nn.testtool.Checkpoint">
+     <void property="level">
+      <int>1</int>
+     </void>
+     <void property="message">
+      <string>{
+  &quot;url&quot;: &quot;https://fieldlab.westeurope.cloudapp.azure.com/documenten/api/v1/enkelvoudiginformatieobjecten/c4888782-feaa-4dc2-b50f-21fedc816422&quot;,
+  &quot;identificatie&quot;: &quot;8000325&quot;,
+  &quot;bronorganisatie&quot;: &quot;823288444&quot;,
+  &quot;creatiedatum&quot;: &quot;2020-12-07&quot;,
+  &quot;titel&quot;: &quot;Brief bijdrageregeling minima  -  Verzoek om aanvullende gegevens&quot;,
+  &quot;vertrouwelijkheidaanduiding&quot;: &quot;vertrouwelijk&quot;,
+  &quot;auteur&quot;: &quot;Be Handelaar&quot;,
+  &quot;formaat&quot;: &quot;pdf&quot;,
+  &quot;taal&quot;: &quot;nld&quot;,
+  &quot;bestandsnaam&quot;: &quot;795880.pdf&quot;,
+  &quot;informatieobjecttype&quot;: &quot;https://fieldlab.westeurope.cloudapp.azure.com/catalogi/api/v1/informatieobjecttypen/e208d29e-8a19-4e40-b8a9-78a57b334c80&quot;,
+  &quot;status&quot;: &quot;&quot;,
+  &quot;versie&quot;: &quot;1&quot;,
+  &quot;indicatieGebruiksrecht&quot;: &quot;false&quot;,
+  &quot;beschrijving&quot;: &quot;&quot;,
+  &quot;inhoud&quot;: &quot;https://fieldlab.westeurope.cloudapp.azure.com/documenten/api/v1/enkelvoudiginformatieobjecten/c4888782-feaa-4dc2-b50f-21fedc816422/download?versie\u003d1&quot;,
+  &quot;locked&quot;: false
+}</string>
+     </void>
+     <void property="name">
+      <string>ModelMapper ZgwEnkelvoudigInformatieObject-&gt;ZdsZaakDocument</string>
+     </void>
+     <void property="report">
+      <object idref="Report0"/>
+     </void>
+     <void property="sourceClassName">
+      <string>nl.haarlem.translations.zdstozgw.debug.ModelMapperAdvice</string>
+     </void>
+     <void property="threadName">
+      <string>Thread-11</string>
+     </void>
+     <void property="type">
+      <int>1</int>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="nl.nn.testtool.Checkpoint">
+     <void property="level">
+      <int>2</int>
+     </void>
+     <void property="message">
+      <string>{
+  &quot;creatiedatum&quot;: &quot;20201207&quot;,
+  &quot;titel&quot;: &quot;Brief bijdrageregeling minima  -  Verzoek om aanvullende gegevens&quot;,
+  &quot;beschrijving&quot;: &quot;&quot;,
+  &quot;formaat&quot;: &quot;pdf&quot;,
+  &quot;taal&quot;: &quot;nld&quot;,
+  &quot;versie&quot;: &quot;1&quot;,
+  &quot;status&quot;: &quot;&quot;,
+  &quot;vertrouwelijkAanduiding&quot;: &quot;VERTROUWELIJK&quot;,
+  &quot;auteur&quot;: &quot;Be Handelaar&quot;,
+  &quot;link&quot;: &quot;https://fieldlab.westeurope.cloudapp.azure.com/documenten/api/v1/enkelvoudiginformatieobjecten/c4888782-feaa-4dc2-b50f-21fedc816422&quot;,
+  &quot;entiteittype&quot;: &quot;EDC&quot;,
+  &quot;identificatie&quot;: &quot;8000325&quot;
+}</string>
+     </void>
+     <void property="name">
+      <string>ModelMapper ZgwEnkelvoudigInformatieObject-&gt;ZdsZaakDocument</string>
+     </void>
+     <void property="report">
+      <object idref="Report0"/>
+     </void>
+     <void property="sourceClassName">
+      <string>nl.haarlem.translations.zdstozgw.debug.ModelMapperAdvice</string>
+     </void>
+     <void property="threadName">
+      <string>Thread-11</string>
+     </void>
+     <void property="type">
+      <int>2</int>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="nl.nn.testtool.Checkpoint">
+     <void property="level">
+      <int>1</int>
+     </void>
+     <void property="message">
+      <string>{
+  &quot;url&quot;: &quot;https://fieldlab.westeurope.cloudapp.azure.com/zaken/api/v1/zaakinformatieobjecten/2c407734-306d-4729-9d44-66d13e77dae8&quot;,
+  &quot;uuid&quot;: &quot;2c407734-306d-4729-9d44-66d13e77dae8&quot;,
+  &quot;informatieobject&quot;: &quot;https://fieldlab.westeurope.cloudapp.azure.com/documenten/api/v1/enkelvoudiginformatieobjecten/c4888782-feaa-4dc2-b50f-21fedc816422&quot;,
+  &quot;zaak&quot;: &quot;https://fieldlab.westeurope.cloudapp.azure.com/zaken/api/v1/zaken/15aafcbe-6508-49a3-951e-a8496b7fb22d&quot;,
+  &quot;aardRelatieWeergave&quot;: &quot;Hoort bij, omgekeerd: kent&quot;,
+  &quot;titel&quot;: &quot;Brief bijdrageregeling minima  -  Verzoek om aanvullende gegevens&quot;,
+  &quot;beschrijving&quot;: &quot;&quot;,
+  &quot;registratiedatum&quot;: &quot;2020-12-07T21:42:38.878618Z&quot;
+}</string>
+     </void>
+     <void property="name">
+      <string>ModelMapper ZgwZaakInformatieObject-&gt;ZdsHeeftRelevant</string>
+     </void>
+     <void property="report">
+      <object idref="Report0"/>
+     </void>
+     <void property="sourceClassName">
+      <string>nl.haarlem.translations.zdstozgw.debug.ModelMapperAdvice</string>
+     </void>
+     <void property="threadName">
+      <string>Thread-11</string>
+     </void>
+     <void property="type">
+      <int>1</int>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="nl.nn.testtool.Checkpoint">
+     <void property="level">
+      <int>2</int>
+     </void>
+     <void property="message">
+      <string>{
+  &quot;entiteittype&quot;: &quot;ZAKEDC&quot;,
+  &quot;titel&quot;: &quot;Brief bijdrageregeling minima  -  Verzoek om aanvullende gegevens&quot;,
+  &quot;beschrijving&quot;: &quot;&quot;,
+  &quot;registratiedatum&quot;: &quot;20201207&quot;
+}</string>
+     </void>
+     <void property="name">
+      <string>ModelMapper ZgwZaakInformatieObject-&gt;ZdsHeeftRelevant</string>
+     </void>
+     <void property="report">
+      <object idref="Report0"/>
+     </void>
+     <void property="sourceClassName">
+      <string>nl.haarlem.translations.zdstozgw.debug.ModelMapperAdvice</string>
+     </void>
+     <void property="threadName">
+      <string>Thread-11</string>
+     </void>
+     <void property="type">
+      <int>2</int>
      </void>
     </object>
    </void>
@@ -766,7 +911,7 @@
      </void>
      <void property="message">
       <string>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
-&lt;java version=&quot;13.0.2&quot; class=&quot;java.beans.XMLDecoder&quot;&gt;
+&lt;java version=&quot;15.0.2&quot; class=&quot;java.beans.XMLDecoder&quot;&gt;
  &lt;int&gt;200&lt;/int&gt;
 &lt;/java&gt;
 </string>
@@ -784,7 +929,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>main</string>
+      <string>Thread-11</string>
      </void>
      <void property="type">
       <int>5</int>
@@ -809,7 +954,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>main</string>
+      <string>Thread-11</string>
      </void>
      <void property="type">
       <int>5</int>
@@ -822,7 +967,7 @@
       <int>1</int>
      </void>
      <void property="message">
-      <string>Soapaction: &quot;http://www.egem.nl/StUF/sector/zkn/0310/geefLijstZaakdocumenten_Lv01&quot; took 122 milliseconds</string>
+      <string>Soapaction: &quot;http://www.egem.nl/StUF/sector/zkn/0310/geefLijstZaakdocumenten_Lv01&quot; took 126 milliseconds</string>
      </void>
      <void property="name">
       <string>Total duration</string>
@@ -834,7 +979,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>main</string>
+      <string>Thread-11</string>
      </void>
      <void property="type">
       <int>6</int>
@@ -862,8 +1007,8 @@
           &lt;ns1:applicatie&gt;GWS4all&lt;/ns1:applicatie&gt;&#13;
           &lt;ns1:gebruiker&gt;Gebruiker&lt;/ns1:gebruiker&gt;&#13;
         &lt;/ns1:ontvanger&gt;&#13;
-        &lt;ns1:referentienummer&gt;Ladybug_Test_Tool-2.2-20210330.112250-31ddb633:178a7be0bcd:-7ff9&lt;/ns1:referentienummer&gt;&#13;
-        &lt;ns1:tijdstipBericht&gt;20210406171236&lt;/ns1:tijdstipBericht&gt;&#13;
+        &lt;ns1:referentienummer&gt;Ladybug_Test_Tool-2.2-20210330.112250--4273595:178ca835913:-7f7c&lt;/ns1:referentienummer&gt;&#13;
+        &lt;ns1:tijdstipBericht&gt;20210413112331&lt;/ns1:tijdstipBericht&gt;&#13;
         &lt;ns1:crossRefnummer&gt;c28ce97f-bbcb-404c-b161-59daf6bbd175&lt;/ns1:crossRefnummer&gt;&#13;
         &lt;ns1:entiteittype&gt;ZAK&lt;/ns1:entiteittype&gt;&#13;
       &lt;/ns2:stuurgegevens&gt;&#13;
@@ -908,7 +1053,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>main</string>
+      <string>Thread-11</string>
      </void>
      <void property="type">
       <int>2</int>
@@ -917,16 +1062,16 @@
    </void>
   </void>
   <void property="correlationId">
-   <string>Ladybug_Test_Tool-2.2-20210330.112250-31ddb633:178a7be0bcd:-7ff9</string>
+   <string>Ladybug_Test_Tool-2.2-20210330.112250--4273595:178ca835913:-7f7c</string>
   </void>
   <void property="description">
    <string></string>
   </void>
   <void property="endTime">
-   <long>1617721956130</long>
+   <long>1618305811453</long>
   </void>
   <void property="estimatedMemoryUsage">
-   <long>21754</long>
+   <long>26354</long>
   </void>
   <void property="name">
    <string>07 Translate geefLijstZaakdocumenten_Lv01</string>
@@ -935,10 +1080,10 @@
    <string>/</string>
   </void>
   <void property="startTime">
-   <long>1617721956011</long>
+   <long>1618305811327</long>
   </void>
   <void property="storageId">
-   <int>263</int>
+   <int>283</int>
   </void>
   <void property="stubStrategy">
    <string>Stub all external connection code</string>

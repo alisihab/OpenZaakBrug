@@ -32,6 +32,10 @@ public class Debugger {
 		}
 		return debugger;
 	}
+	
+	public Boolean isReportGeneratorEnabled() {
+		return testTool.isReportGeneratorEnabled();
+	}
 
 	public void startpoint(String name) {
 		startpoint(name, null);

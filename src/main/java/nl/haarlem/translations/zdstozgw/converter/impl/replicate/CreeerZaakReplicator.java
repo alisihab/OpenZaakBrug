@@ -33,14 +33,12 @@ public class CreeerZaakReplicator extends CreeerZaakTranslator {
 		var zdsZakLk01 = (ZdsZakLk01) this.getZdsDocument();
 
 		var replicator = new Replicator(this);
-
 		var legacyresponse = replicator.proxy();
 		if (legacyresponse.getStatusCode() != HttpStatus.OK) {
 			log.warn("Service:" + this.getTranslation().getLegacyservice() + " SoapAction: "
 					+ this.getContext().getSoapAction());
 			return legacyresponse;
 		}
-
 		return super.execute();
 	}
 }
