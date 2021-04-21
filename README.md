@@ -1,9 +1,9 @@
 # Open Zaakbrug (zds-to-zgw) #
 
 De nieuwe standaard voor het zaakgewijs werken is de [zgw standaard](https://www.vngrealisatie.nl/producten/api-standaarden-zaakgericht-werken), dit is de opvolger van de Zaak- en Documentservices (ZDS) standaard.
-Om de overstap te maken naar deze nieuwe standaard vinden wij het belangrijk om niet meer te investeren in de oude-zds-koppelingen, maar  zo snel mogelijk de nieuwe zgw-standaard te gebruiken. Om deze reden heeft het team Open Zaakbrug een oplossing om de bestaande zaakgewijswerken applicaties, die de oude zds-standaard praten, toch met een zgw-zaaksysteem.
+Om de overstap te maken naar deze nieuwe standaard vinden wij het belangrijk om niet meer te investeren in de oude-zds-koppelingen, maar  zo snel mogelijk de nieuwe zgw-standaard te gebruiken. Om deze reden heeft het team Open Zaakbrug een oplossing om de bestaande applicaties, die de oude zds-standaard praten, toch met een zgw-zaaksysteem te laten praten.
 
-Hiermee kan de gemeente de bestaande zaaksgewijswerken applicaties blijven gebruiken en toch overstappen op bijvoorbeeld openzaak. Dit zodat alles blijft draaien en ondertussen de overstap kan worden gemaakt naar de nieuwe commonground wereld.
+Hiermee kan de gemeente de bestaande zaaksgewijswerken applicaties blijven gebruiken en toch overstappen op bijvoorbeeld [openzaak](https://openzaak.org/). Dit zodat alles blijft draaien en ondertussen de overstap kan worden gemaakt naar de nieuwe commonground wereld.
 
 Door te beginnen met een zgw-zaaksysteem kunnen alle nieuwe domein-specifieke-applicaties via deze nieuwe standaard aansluiten en krijgen de leveranciers van de bestaande applicaties de tijd om de ZGW koppeling in te bouwen.
 
@@ -32,15 +32,45 @@ Hierbij hebben we de volgende uitgangspunten:
 - 2021-02-05 [Fieldlab DOiT video](https://vimeo.com/512518040/2284537066)
 - 2021-02-05 [Powerpoint Fieldlab DOiT](/docs/powerpoint/20210205-FieldLab2021-Eduard-Open%20Zaakbrug%2C%20commonground%20in%20de%20praktijk.pptx)
 
+## Continue implementatie / continue  levering
+
+Om de kwaliteit te borgen en reproduceerbaar de programmatuur uit te leveren wordt er gebruik gemaakt van ci/cd
+
+Aanpassen code en geautomatiseerd testen:
+
+- Eén of meerdere issue's wordt aangemaakt waarin beschreven staat welke werkzaamheden worden uitgevoerd
+- Voor deze werkzaamheden wordt een branche aangemaakt
+- De werkzaamheden worden via commit's op de betreffende branche gedaan
+- Na het doen van een commit worden er [testen](https://travis-ci.com/github/Sudwest-Fryslan/OpenZaakBrug/builds/) uitgevoerd op github om te kijken of alles werkt. 
+  - Hierin wordt controle gedaan door voorbeeldberichten te verwerken, te controleren of Open Zaakbrug zich hetzelfde blijft gedragen.
+  - Te kijken of er een docker image kan worden gemaakt en worden opgestart
+
+Goedkeuren aanpassingen en klaarzetten:
+
+- Een andere partij, dan degene die het pullrequest heeft gedaan, reviewed de code en controleert of de testen goed zijn doorlopen
+- Wanneer dit akkoord is, wordt deze geaccepteerd en gemerged in de master branche
+- De eerder aangemaakte branche wordt verwijderd
+- Er wordt automatisch een nieuwe docker image geplaatst op [dockerhub](https://hub.docker.com/r/openzaakbrug/openzaakbrug/tags?)
+
+Updaten in de eigen omgeving:
+
+- Via docker pull openzaakbrug/openzaakbrug kan een versie van openzaakbrug worden geinstalleerd
+- Daarbij moet éénmalig de configuratie worden aangemaakt, daarna kan met soort gelijke commando's snel en reproduceerbaar de omgeving worden geupdate.
+
+Vinden van fouten/verbeteringen:
+
+- Fouten en verbeteringen kunnen worden gemeld via een [issue](https://github.com/Sudwest-Fryslan/OpenZaakBrug/issues) op github
+- Voor verder communicatie gebruiken we ook [slack](https://samenorganiseren.slack.com/archives/C01FDA71Y4V)
+
 ## Technische informatie
 
 - Informatie over de installatie kijk in : [Installing Open Zaakbrug.md](docs/Installing%20Open%20Zaakbrug.md)  
-- Informatie over het aanroepen van der service en het vertalen en repliceren kijk : [Workings of Replication.md](docs/Workings%20of%20Replication.md)
+- Informatie over het aanroepen van de service en het vertalen en repliceren kijk : [Workings of Replication.md](docs/Workings%20of%20Replication.md)
 - Overzichtsplaat van de berichtenstroom door de applicatie in [Flow](docs/media/flow.png)
 
 ## Huidige ondersteuning applicaties
 
-Op dit moment wordt er druk gewerkt om de Open Zaakbrug live te krijgen. Hiervoor testen de functioneelbeheerders van de verschillende backoffice applicaties het gedrag van de vertaler.  Hierbij wordt getest of de applicatie zich gedraagt zoals het voorheen werkte met het legacy (ZDS) zaaksysteem voor de nieuwe processen. Daarnaast wordt getest of of de bestaande zaken uit het oude zaaksysteem goed gerepliceerd worden naar het nieuwe systeem, zodat er geen conversies hoeven te worden gedaan. (het is wel zaak dat de gegevenskwaliteit hiervoor goed in orde is!) 
+Op dit moment wordt er druk gewerkt om de Open Zaakbrug live te krijgen. Hiervoor testen de functioneelbeheerders van de verschillende backoffice applicaties het gedrag van de vertaler.  Hierbij wordt getest of de applicatie zich gedraagt zoals het voorheen werkte met het legacy (ZDS) zaaksysteem voor de nieuwe processen. Daarnaast wordt getest of de bestaande zaken uit het oude zaaksysteem goed gerepliceerd worden naar het nieuwe systeem, zodat er geen conversies hoeven te worden gedaan. (het is wel zaak dat de gegevenskwaliteit hiervoor goed in orde is!) 
 
 | Applicatie                                                   | Proxy functionaliteit     | Translate functionaliteit | Replicatie functionaliteit | Status        |
 | ------------------------------------------------------------ | ------------------------- | ------------------------- | -------------------------- | ------------- |
@@ -84,8 +114,10 @@ Omdat het een standaard is die wordt vertaald, zullen vervolg applicaties steeds
 
 ## Partijen
 
-- Gemeente Súdwest-Fryslân, Eduard Witteveen (productowner)
-- Gemeente Haarlem,  David van Hussel
-- Gemeente Utrecht, Lazo Bozarov
-- WeAreFrank, Jaco de Groot 
+- [Gemeente Súdwest-Fryslân](https://sudwestfryslan.nl/), Jacco Hovinga,  Santoshi Bouma en Eduard Witteveen (productowner)
+- [Gemeente Haarlem](https://www.haarlem.nl/),  David van Hussel
+- [Gemeente Utrecht](https://www.utrecht.nl/), Lazo Bozarov
+- [WeAreFrank!](https://wearefrank.nl/), Jaco de Groot 
+
+Om ons te bereiken kunt u een email versturen naar e.witteveen@sudwestfryslan.nl of stel gewoon een vraag in onze [slack](https://samenorganiseren.slack.com/archives/C01FDA71Y4V)
 
