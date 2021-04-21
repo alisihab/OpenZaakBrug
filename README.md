@@ -1,4 +1,4 @@
-# Open Zaakbrug (zds-to-zgw) #
+# [Open Zaakbrug (zds-to-zgw)](https://sudwest-fryslan.github.io/OpenZaakBrug/) #
 
 De nieuwe standaard voor het zaakgewijs werken is de [zgw standaard](https://www.vngrealisatie.nl/producten/api-standaarden-zaakgericht-werken), dit is de opvolger van de Zaak- en Documentservices (ZDS) standaard.
 Om de overstap te maken naar deze nieuwe standaard vinden wij het belangrijk om niet meer te investeren in de oude-zds-koppelingen, maar  zo snel mogelijk de nieuwe zgw-standaard te gebruiken. Om deze reden heeft het team Open Zaakbrug een oplossing om de bestaande applicaties, die de oude zds-standaard praten, toch met een zgw-zaaksysteem te laten praten.
