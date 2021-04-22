@@ -50,8 +50,10 @@ public class LoggingRequestInterceptor implements ClientHttpRequestInterceptor {
 			inputStringBuilder.append('\n');
 			line = bufferedReader.readLine();
 		}
+		ZgwRequestResponseCycle existingRecordRef = this.requestResponseCycleService.getInterimRequestResponseCycleRepository()
+				.getOne(this.currentInterimRequestResponseCycle.getId());
 		this.requestResponseCycleService
-				.add(this.currentInterimRequestResponseCycle.setZgwResponseBody(inputStringBuilder.toString())
+				.add(existingRecordRef.setZgwResponseBody(inputStringBuilder.toString())
 						.setZgwResponseCode(response.getStatusCode().value()));
 	}
 }
