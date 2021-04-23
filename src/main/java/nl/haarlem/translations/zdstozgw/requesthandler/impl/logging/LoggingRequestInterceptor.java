@@ -4,8 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
-
-import javax.persistence.EntityNotFoundException;
+import java.util.NoSuchElementException;
 
 import org.springframework.http.HttpRequest;
 import org.springframework.http.client.ClientHttpRequestExecution;
@@ -52,19 +51,12 @@ public class LoggingRequestInterceptor implements ClientHttpRequestInterceptor {
 			inputStringBuilder.append('\n');
 			line = bufferedReader.readLine();
 		}
-		try {
-			// Try to fetch the reference of the entity
-			ZgwRequestResponseCycle existingRecordRef = this.requestResponseCycleService
-					.getInterimRequestResponseCycleRepository()
-					.getOne(this.currentInterimRequestResponseCycle.getId());
-			this.requestResponseCycleService
-					.add(existingRecordRef.setZgwResponseBody(inputStringBuilder.toString())
-							.setZgwResponseCode(response.getStatusCode().value()));
-		} catch(EntityNotFoundException e) {
-			this.requestResponseCycleService
-			.add(this.currentInterimRequestResponseCycle
-					.setZgwResponseBody(inputStringBuilder.toString())
-					.setZgwResponseCode(response.getStatusCode().value()));
-		}
+		ZgwRequestResponseCycle existingRecordRef = this.requestResponseCycleService
+				.getInterimRequestResponseCycleRepository()
+				.findById(this.currentInterimRequestResponseCycle.getId())
+				.orElse(this.currentInterimRequestResponseCycle);
+		this.requestResponseCycleService
+				.add(existingRecordRef.setZgwResponseBody(inputStringBuilder.toString())
+						.setZgwResponseCode(response.getStatusCode().value()));
 	}
 }
