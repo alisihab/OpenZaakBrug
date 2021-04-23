@@ -581,15 +581,22 @@ public class ZGWClient {
 		parameters.put("zaaktype", zaakTypeUrl);
 		//default behaviour parameters.put("status", "definitief");
 		List<ZgwResultaatType> resultaattypes = this.getResultaatTypes(parameters);
-
-		for (ZgwResultaatType resultaattype : resultaattypes) {
-			log.debug("opgehaald:" + resultaattype.omschrijving + " zoeken naar: " + resultaatOmschrijving);
-			if (resultaattype.omschrijving.startsWith(resultaatOmschrijving)) {
-				log.debug("gevonden:" + resultaattype.omschrijving + " zoeken naar: " + resultaatOmschrijving);
+		
+		var omschrijving = resultaatOmschrijving;
+		if(omschrijving.length() > 20) {
+			// maximum length of openzaak is 20 characters
+			omschrijving = omschrijving.substring(0, 20);		
+		}
+		for (ZgwResultaatType resultaattype : resultaattypes) {			
+			log.debug("opgehaald:" + resultaattype.omschrijving + " zoeken naar: " + omschrijving + "' (ingekort van: " + resultaatOmschrijving + ")");
+			
+			// in some applications, the omschrijving can not be as long as we want.....
+			if (resultaattype.omschrijving.startsWith(omschrijving)) {
+				log.debug("gevonden:" + resultaattype.omschrijving + " zoeken naar: " + omschrijving);
 				return resultaattype;
 			}
 		}
-		throw new ConverterException("zaakresultaat niet gevonden voor omschrijving: '" + resultaatOmschrijving + "'");
+		throw new ConverterException("zaakresultaat niet gevonden voor omschrijving: '" + omschrijving + "' (ingekort van: " + resultaatOmschrijving + " )");
 	}		
 	
 	public List<ZgwResultaat> getResultatenByZaakUrl(String zaakUrl) {
