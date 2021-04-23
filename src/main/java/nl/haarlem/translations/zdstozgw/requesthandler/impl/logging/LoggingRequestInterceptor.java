@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.util.NoSuchElementException;
 
 import org.springframework.http.HttpRequest;
 import org.springframework.http.client.ClientHttpRequestExecution;
@@ -50,8 +51,12 @@ public class LoggingRequestInterceptor implements ClientHttpRequestInterceptor {
 			inputStringBuilder.append('\n');
 			line = bufferedReader.readLine();
 		}
+		ZgwRequestResponseCycle existingRecordRef = this.requestResponseCycleService
+				.getInterimRequestResponseCycleRepository()
+				.findById(this.currentInterimRequestResponseCycle.getId())
+				.orElse(this.currentInterimRequestResponseCycle);
 		this.requestResponseCycleService
-				.add(this.currentInterimRequestResponseCycle.setZgwResponseBody(inputStringBuilder.toString())
+				.add(existingRecordRef.setZgwResponseBody(inputStringBuilder.toString())
 						.setZgwResponseCode(response.getStatusCode().value()));
 	}
 }

@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import nl.haarlem.translations.zdstozgw.config.SpringContext;
 import nl.haarlem.translations.zdstozgw.converter.Converter;
+import nl.haarlem.translations.zdstozgw.converter.ConverterException;
 import nl.haarlem.translations.zdstozgw.converter.impl.replicate.model.*;
 import nl.haarlem.translations.zdstozgw.debug.Debugger;
 import nl.haarlem.translations.zdstozgw.translation.zds.client.ZDSClient;
@@ -137,7 +138,13 @@ public class Replicator {
             ZgwEnkelvoudigInformatieObject zgwEnkelvoudigInformatieObject = this.converter.getZaakService().zgwClient.getZgwEnkelvoudigInformatieObjectByIdentiticatie(zaakdocumentidentificatie);
             if (zgwEnkelvoudigInformatieObject == null) {
             	debug.infopoint("replicatie", "document not found, copying document with identificatie #" + zaakdocumentidentificatie);
-            	copyDocument(zaakdocumentidentificatie, rsin);
+            	try {
+            		copyDocument(zaakdocumentidentificatie, rsin);
+            	}
+            	catch(ConverterException ce) {
+            		// ignore the error, since everything else works, big change that there are inconsistent things 
+            		debug.infopoint("Warning", "zaakdocumentidentificatie #" + zaakdocumentidentificatie + " error:" + ce.toString());
+            	}
             }
             else {
             	debug.infopoint("replicatie", "document already found, no need to copy document with identificatie #" + zaakdocumentidentificatie);

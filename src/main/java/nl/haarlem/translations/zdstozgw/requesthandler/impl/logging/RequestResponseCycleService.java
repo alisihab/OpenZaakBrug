@@ -25,7 +25,7 @@ public class RequestResponseCycleService {
 	}
 
 	public ZgwRequestResponseCycle add(ZgwRequestResponseCycle interimRequestResponseCycle) {
-		return this.interimRequestResponseCycleRepository.save(interimRequestResponseCycle);
+		return this.interimRequestResponseCycleRepository.saveAndFlush(interimRequestResponseCycle);
 	}
 
 }
