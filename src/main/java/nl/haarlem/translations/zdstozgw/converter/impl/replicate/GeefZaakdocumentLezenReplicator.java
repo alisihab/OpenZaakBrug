@@ -42,6 +42,7 @@ public class GeefZaakdocumentLezenReplicator extends GeefZaakdocumentLezenTransl
 			return legacyresponse;
 		}
 		replicator.replicateDocument(zdsEdcLv01.gelijk.identificatie);
-		return super.execute();
+		//return super.execute();
+		return legacyresponse;
 	}
 }

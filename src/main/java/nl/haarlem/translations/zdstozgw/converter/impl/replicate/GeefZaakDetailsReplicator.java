@@ -40,6 +40,7 @@ public class GeefZaakDetailsReplicator extends GeefZaakDetailsTranslator {
 			return legacyresponse;
 		}
 		replicator.replicateZaak(zdsZakLv01.gelijk.identificatie);
-		return super.execute();
+		//return super.execute();
+		return legacyresponse;
 	}
 }
