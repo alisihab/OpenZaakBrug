@@ -73,18 +73,13 @@ public abstract class RequestHandler {
 		return fo03;
 	}
 
-	// public abstract ResponseEntity<?> execute();
 	public ResponseEntity<?> execute() {
 		log.debug("Executing request with handler: " + this.getClass().getCanonicalName() + " and converter: " + this.converter.getClass().getCanonicalName());
 		Configuration configuration = this.configService.getConfiguration();
-//		var session = this.getConverter().getSession();
-//		save(session);
 
 		try {
 			this.converter.load();			
 			var response = this.converter.execute();
-//			session.setResonse(response.getBody().toString(), response.getStatusCodeValue());
-//			save(session);
 
 			return response;
 		} catch (Exception ex) {
@@ -94,11 +89,7 @@ public abstract class RequestHandler {
 			var responseBody = XmlUtils.getSOAPFaultMessageFromObject(SOAPConstants.SOAP_RECEIVER_FAULT, ex.toString(),
 					fo03);
 			var response = new ResponseEntity<>(responseBody, HttpStatus.INTERNAL_SERVER_ERROR);
-			// log this error response
-//			session.setClientResponseBody(response.getBody().toString());
-//			session.setClientResponseCode(response.getStatusCodeValue());
-//			session.setStackTrace(getStacktrace(ex));
-//			save(session);
+			this.getConverter().getSession().setStackTrace(getStacktrace(ex));
 			return response;
 		}
 	}

@@ -41,8 +41,6 @@ public class RequestResponseCycle {
 	private String kenmerk;		
 	private String converterImplementation;
 	private String converterTemplate;
-
-	
 	
 	@Column(columnDefinition="TEXT")
 	private String clientResponseBody;
@@ -52,7 +50,7 @@ public class RequestResponseCycle {
 	private Boolean zaakGerepliceerd = false;
 	private Boolean documentenGerepliceerd = false;
 		
-	@Lob
+	@Column(columnDefinition="TEXT")
 	private String stackTrace;
 
 	public RequestResponseCycle() {

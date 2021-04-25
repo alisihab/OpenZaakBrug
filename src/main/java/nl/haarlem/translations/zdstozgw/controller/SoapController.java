@@ -119,7 +119,7 @@ public class SoapController {
 			var message = "Soapaction: " + soapAction + " took " + session.getDurationInMilliseconds() + " milliseconds";			
 			debug.infopoint("Total duration", message);			
 			debug.endpoint(reportName, response.getBody().toString());
-		} catch(Throwable t) {
+		} catch(Throwable t) {			
 			debug.abortpoint(reportName, t.toString());
 			throw t;
 		} finally {
