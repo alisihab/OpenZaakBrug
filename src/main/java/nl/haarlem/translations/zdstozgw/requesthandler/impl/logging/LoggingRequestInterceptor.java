@@ -52,7 +52,7 @@ public class LoggingRequestInterceptor implements ClientHttpRequestInterceptor {
 			line = bufferedReader.readLine();
 		}
 		ZgwRequestResponseCycle existingRecordRef = this.requestResponseCycleService
-				.getInterimRequestResponseCycleRepository()
+				.getZgwRequestResponseCycleRepository()
 				.findById(this.currentInterimRequestResponseCycle.getId())
 				.orElse(this.currentInterimRequestResponseCycle);
 		this.requestResponseCycleService

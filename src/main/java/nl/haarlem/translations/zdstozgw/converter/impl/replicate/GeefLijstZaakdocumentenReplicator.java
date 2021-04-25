@@ -10,7 +10,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import nl.haarlem.translations.zdstozgw.config.model.Translation;
 import nl.haarlem.translations.zdstozgw.converter.impl.translate.GeefLijstZaakdocumentenTranslator;
-import nl.haarlem.translations.zdstozgw.requesthandler.RequestHandlerContext;
+import nl.haarlem.translations.zdstozgw.requesthandler.RequestResponseCycle;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsZakLv01;
 import nl.haarlem.translations.zdstozgw.translation.zds.services.ZaakService;
 
@@ -18,7 +18,7 @@ public class GeefLijstZaakdocumentenReplicator extends GeefLijstZaakdocumentenTr
 
 	private static final Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
-	public GeefLijstZaakdocumentenReplicator(RequestHandlerContext context, Translation translation, ZaakService zaakService) {
+	public GeefLijstZaakdocumentenReplicator(RequestResponseCycle context, Translation translation, ZaakService zaakService) {
 		super(context, translation, zaakService);
 	}
 
@@ -36,7 +36,7 @@ public class GeefLijstZaakdocumentenReplicator extends GeefLijstZaakdocumentenTr
 		var legacyresponse = replicator.proxy();
 		if (legacyresponse.getStatusCode() != HttpStatus.OK) {
 			log.warn("Service:" + this.getTranslation().getLegacyservice() + " SoapAction: "
-					+ this.getContext().getSoapAction());
+					+ this.getSession().getClientSoapAction());
 			return legacyresponse;
 		}
 		replicator.replicateZaak(zdsZakLv01.gelijk.identificatie);

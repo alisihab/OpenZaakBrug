@@ -11,7 +11,7 @@ import nl.haarlem.translations.zdstozgw.config.SpringContext;
 import nl.haarlem.translations.zdstozgw.config.model.Translation;
 import nl.haarlem.translations.zdstozgw.converter.Converter;
 import nl.haarlem.translations.zdstozgw.converter.ConverterException;
-import nl.haarlem.translations.zdstozgw.requesthandler.RequestHandlerContext;
+import nl.haarlem.translations.zdstozgw.requesthandler.RequestResponseCycle;
 import nl.haarlem.translations.zdstozgw.translation.zds.client.ZDSClient;
 import nl.haarlem.translations.zdstozgw.translation.zds.services.ZaakService;
 
@@ -19,7 +19,7 @@ public class Proxy extends Converter {
 
 	private static final Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
-	public Proxy(RequestHandlerContext context, Translation translation, ZaakService zaakService) {
+	public Proxy(RequestResponseCycle context, Translation translation, ZaakService zaakService) {
 		super(context, translation, zaakService);
 	}
 
@@ -33,7 +33,11 @@ public class Proxy extends Converter {
 	public ResponseEntity<?> execute() throws ConverterException {
 		var url = this.getTranslation().getLegacyservice();
 		var soapaction = this.getTranslation().getSoapAction();
-		var request = this.context.getRequestBody();
+		var request = this.getSession().getClientRequestBody();
+		
+		this.getSession().setFunctie("Proxy");
+		this.getSession().setKenmerk(url);
+		
 		log.info("relaying request to url: " + url + " with soapaction: " + soapaction + " request-size:"
 				+ request.length());
 

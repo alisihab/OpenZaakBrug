@@ -11,7 +11,7 @@ import org.springframework.web.server.ResponseStatusException;
 import nl.haarlem.translations.zdstozgw.config.model.Translation;
 import nl.haarlem.translations.zdstozgw.converter.impl.translate.CreeerZaakTranslator;
 import nl.haarlem.translations.zdstozgw.converter.impl.translate.GeefZaakdocumentBewerkenTranslator;
-import nl.haarlem.translations.zdstozgw.requesthandler.RequestHandlerContext;
+import nl.haarlem.translations.zdstozgw.requesthandler.RequestResponseCycle;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsZakLk01;
 import nl.haarlem.translations.zdstozgw.translation.zds.services.ZaakService;
 
@@ -19,7 +19,7 @@ public class GeefZaakdocumentBewerkenReplicator extends GeefZaakdocumentBewerken
 
 	private static final Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
-	public GeefZaakdocumentBewerkenReplicator(RequestHandlerContext context, Translation translation, ZaakService zaakService) {
+	public GeefZaakdocumentBewerkenReplicator(RequestResponseCycle context, Translation translation, ZaakService zaakService) {
 		super(context, translation, zaakService);
 	}
 

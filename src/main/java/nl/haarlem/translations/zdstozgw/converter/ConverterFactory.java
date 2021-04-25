@@ -11,7 +11,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import nl.haarlem.translations.zdstozgw.config.ConfigService;
 import nl.haarlem.translations.zdstozgw.config.model.Translation;
-import nl.haarlem.translations.zdstozgw.requesthandler.RequestHandlerContext;
+import nl.haarlem.translations.zdstozgw.requesthandler.RequestResponseCycle;
 import nl.haarlem.translations.zdstozgw.translation.zds.services.ZaakService;
 
 @Component
@@ -30,26 +30,27 @@ public class ConverterFactory {
 		this.zaakService = zaakService;
 	}
 
-	public Converter getConverter(RequestHandlerContext context) throws ResponseStatusException {
-		Translation translation = this.configService.getTranslationByPathAndSoapAction(context.getUrl(),
-				context.getSoapAction());
+	public Converter getConverter(RequestResponseCycle session) throws ResponseStatusException {
+		Translation translation = this.configService.getTranslationByPathAndSoapAction(session.getClientUrl(),
+				session.getClientSoapAction());
 
 		if (translation == null) {
 			String combinations = "";
 			for (Translation t : this.configService.getConfiguration().getTranslations()) {
 				combinations += "\n\tpath: '" + t.getPath() + "' soapaction: '" + t.getSoapAction() + "'";
 			}
-			log.error("Could not load a convertor for path: '" + context.getUrl() + "' with soapaction: '"
-					+ context.getSoapAction() + "'");
+			log.error("Could not load a convertor for path: '" + session.getClientUrl() + "' with soapaction: '"
+					+ session.getClientSoapAction() + "'");
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND,
-					"Could not load a convertor for path: '" + context.getUrl() + "' with soapaction: '"
-							+ context.getSoapAction() + "'\navailable services:" + combinations);
+					"Could not load a convertor for path: '" + session.getClientUrl() + "' with soapaction: '"
+							+ session.getClientSoapAction() + "'\navailable services:" + combinations);
 		}
 		String classname = translation.implementation;
+		session.setConverterImplementation(classname);
 		try {
 			Class<?> c = Class.forName(classname);				
-			java.lang.reflect.Constructor<?> ctor = c.getConstructor(RequestHandlerContext.class, Translation.class, ZaakService.class);			
-			Object object = ctor.newInstance(new Object[] { context, translation, this.zaakService });
+			java.lang.reflect.Constructor<?> ctor = c.getConstructor(RequestResponseCycle.class, Translation.class, ZaakService.class);			
+			Object object = ctor.newInstance(new Object[] { session, translation, this.zaakService });
 
 			var converter = (Converter) object;
 			return converter;
