@@ -7,14 +7,20 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.Lob;
+import javax.persistence.Index;
+import javax.persistence.Table;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Indexed;
 
 import lombok.Data;
 
-@Entity
 @Data
+@Entity
+@Table(indexes= {
+		@Index(columnList = "referentienummer"), 
+		@Index(columnList = "kenmerk")}
+)
 public class RequestResponseCycle {
 	
 	@Id
