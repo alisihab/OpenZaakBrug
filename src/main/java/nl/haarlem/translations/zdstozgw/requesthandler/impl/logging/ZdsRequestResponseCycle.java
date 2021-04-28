@@ -55,7 +55,7 @@ public class ZdsRequestResponseCycle {
 		return milliseconds;
 	}
 
-	public void setResonse(ResponseEntity<?> response) {
+	public void setResponse(ResponseEntity<?> response) {
 		this.zdsResponseBody = response.getBody().toString();
 		this.zdsResponseSize = this.zdsResponseBody.length();
 		this.zdsResponseCode = response.getStatusCodeValue();

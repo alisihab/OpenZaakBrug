@@ -61,7 +61,7 @@ public class ZgwRequestResponseCycle {
 		return milliseconds;
 	}
 
-	public void setResonse(ClientHttpResponse response) throws UnsupportedEncodingException, IOException {
+	public void setResponse(ClientHttpResponse response) throws UnsupportedEncodingException, IOException {
 		StringBuilder inputStringBuilder = new StringBuilder();
 		BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(response.getBody(), "UTF-8"));
 		String line = bufferedReader.readLine();
