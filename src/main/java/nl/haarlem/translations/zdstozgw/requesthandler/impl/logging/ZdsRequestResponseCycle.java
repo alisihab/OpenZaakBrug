@@ -38,6 +38,10 @@ public class ZdsRequestResponseCycle {
 	@Column(columnDefinition="TEXT")
 	private String zdsResponseBody;
 	private Integer zdsResponseSize;
+	
+	public ZdsRequestResponseCycle() {
+		startdatetime = LocalDateTime.now();
+	};
 
 	public ZdsRequestResponseCycle(String zdsUrl, String zdsSoapAction, String zdsRequestBody, String referentienummer) {		
 		this.zdsUrl = zdsUrl;
