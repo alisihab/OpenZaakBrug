@@ -1,10 +1,7 @@
 package nl.haarlem.translations.zdstozgw.requesthandler.impl.logging;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
-import java.util.NoSuchElementException;
 
 import org.springframework.http.HttpRequest;
 import org.springframework.http.client.ClientHttpRequestExecution;
@@ -19,7 +16,7 @@ public class LoggingRequestInterceptor implements ClientHttpRequestInterceptor {
 
 	private RequestResponseCycleService requestResponseCycleService;
 	private ZgwRequestResponseCycle currentInterimRequestResponseCycle;
-	private String referentienummer;
+//	private String referentienummer;
 
 	@Override
 	public ClientHttpResponse intercept(HttpRequest request, byte[] body, ClientHttpRequestExecution execution)
@@ -34,29 +31,22 @@ public class LoggingRequestInterceptor implements ClientHttpRequestInterceptor {
 	private void addRequestToDatabase(HttpRequest request, byte[] body) throws UnsupportedEncodingException {
 		String referentienummer = (String) RequestContextHolder.getRequestAttributes().getAttribute("referentienummer",
 				RequestAttributes.SCOPE_REQUEST);
-		this.currentInterimRequestResponseCycle = new ZgwRequestResponseCycle().setReferentienummer(referentienummer)
-				.setZgwRequestBody(new String(body, "UTF-8")).setZgwUrl(request.getURI().toString())
-				.setZgwMethod(request.getMethodValue());
-
+		this.currentInterimRequestResponseCycle = new ZgwRequestResponseCycle(referentienummer, request, body);
 		this.requestResponseCycleService.add(this.currentInterimRequestResponseCycle);
 	}
 
 	private void addResponseToDatabase(ClientHttpResponse response) throws IOException {
-		StringBuilder inputStringBuilder = new StringBuilder();
-		BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(response.getBody(), "UTF-8"));
-		String line = bufferedReader.readLine();
-		while (line != null) {
-			line = line.replaceAll("\u0000", "");
-			inputStringBuilder.append(line);
-			inputStringBuilder.append('\n');
-			line = bufferedReader.readLine();
-		}
+		// Added to prevent us from:
+		//		org.springframework.orm.jpa.JpaSystemException: identifier of an instance of 
+		//		nl.haarlem.translations.zdstozgw.requesthandler.impl.logging.ZgwRequestResponseCycle 
+		//		was altered from 133274 to 133275; nested exception is org.hibernate.HibernateException: 
+		//		identifier of an instance of nl.haarlem.translations.zdstozgw.requesthandler.impl.logging.ZgwRequestResponseCycle 
+		//		was altered from 133274 to 133275
 		ZgwRequestResponseCycle existingRecordRef = this.requestResponseCycleService
-				.getInterimRequestResponseCycleRepository()
+				.getZgwRequestResponseCycleRepository()
 				.findById(this.currentInterimRequestResponseCycle.getId())
 				.orElse(this.currentInterimRequestResponseCycle);
-		this.requestResponseCycleService
-				.add(existingRecordRef.setZgwResponseBody(inputStringBuilder.toString())
-						.setZgwResponseCode(response.getStatusCode().value()));
+		existingRecordRef.setResponse(response);
+		this.requestResponseCycleService.add(existingRecordRef);
 	}
 }

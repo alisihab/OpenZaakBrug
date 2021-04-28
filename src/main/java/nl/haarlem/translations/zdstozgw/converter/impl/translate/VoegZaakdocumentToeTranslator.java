@@ -6,7 +6,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import nl.haarlem.translations.zdstozgw.config.model.Translation;
 import nl.haarlem.translations.zdstozgw.converter.Converter;
-import nl.haarlem.translations.zdstozgw.requesthandler.RequestHandlerContext;
+import nl.haarlem.translations.zdstozgw.requesthandler.RequestResponseCycle;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsBv03;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsEdcLk01;
 import nl.haarlem.translations.zdstozgw.translation.zds.services.ZaakService;
@@ -14,14 +14,14 @@ import nl.haarlem.translations.zdstozgw.utils.XmlUtils;
 
 public class VoegZaakdocumentToeTranslator extends Converter {
 
-	public VoegZaakdocumentToeTranslator(RequestHandlerContext context, Translation translation,
+	public VoegZaakdocumentToeTranslator(RequestResponseCycle context, Translation translation,
 			ZaakService zaakService) {
 		super(context, translation, zaakService);
 	}
 
 	@Override
 	public void load() throws ResponseStatusException {
-		this.zdsDocument = (ZdsEdcLk01) XmlUtils.getStUFObject(this.getContext().getRequestBody(), ZdsEdcLk01.class);
+		this.zdsDocument = (ZdsEdcLk01) XmlUtils.getStUFObject(this.getSession().getClientRequestBody(), ZdsEdcLk01.class);
 	}
 
 	@Override
@@ -29,11 +29,12 @@ public class VoegZaakdocumentToeTranslator extends Converter {
 		var zdsEdcLk01 = (ZdsEdcLk01) this.getZdsDocument();
 		var zdsInformatieObject = zdsEdcLk01.objects.get(0);
 		
-		this.context.setKenmerk("zaakidentificatie:" + zdsInformatieObject.isRelevantVoor.gerelateerde.identificatie + 
-				" documentidentificatie:" + zdsInformatieObject.identificatie);		
+		this.getSession().setFunctie("VoegZaakdocumentToe");		
+		this.getSession().setKenmerk("zaakidentificatie:" + zdsInformatieObject.identificatie + " in zaak:" + zdsInformatieObject.identificatie);			
+		
 		this.getZaakService().voegZaakDocumentToe(
 				this.getZaakService().getRSIN(zdsEdcLk01.stuurgegevens.zender.organisatie), zdsInformatieObject);
-		var bv03 = new ZdsBv03(zdsEdcLk01.stuurgegevens, this.context.getReferentienummer());
+		var bv03 = new ZdsBv03(zdsEdcLk01.stuurgegevens, this.getSession().getReferentienummer());
 		var response = XmlUtils.getSOAPMessageFromObject(bv03);
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}

@@ -6,7 +6,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import nl.haarlem.translations.zdstozgw.config.model.Translation;
 import nl.haarlem.translations.zdstozgw.converter.Converter;
-import nl.haarlem.translations.zdstozgw.requesthandler.RequestHandlerContext;
+import nl.haarlem.translations.zdstozgw.requesthandler.RequestResponseCycle;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsBv03;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsZakLk01ActualiseerZaakstatus;
 import nl.haarlem.translations.zdstozgw.translation.zds.services.ZaakService;
@@ -14,14 +14,14 @@ import nl.haarlem.translations.zdstozgw.utils.XmlUtils;
 
 public class ActualiseerZaakStatusTranslator extends Converter {
 
-	public ActualiseerZaakStatusTranslator(RequestHandlerContext context, Translation translation,
+	public ActualiseerZaakStatusTranslator(RequestResponseCycle context, Translation translation,
 			ZaakService zaakService) {
 		super(context, translation, zaakService);
 	}
 
 	@Override
 	public void load() throws ResponseStatusException {
-		this.zdsDocument = (ZdsZakLk01ActualiseerZaakstatus) XmlUtils.getStUFObject(this.getContext().getRequestBody(),
+		this.zdsDocument = (ZdsZakLk01ActualiseerZaakstatus) XmlUtils.getStUFObject(this.getSession().getClientRequestBody(),
 				ZdsZakLk01ActualiseerZaakstatus.class);
 	}
 
@@ -29,10 +29,11 @@ public class ActualiseerZaakStatusTranslator extends Converter {
 	public ResponseEntity<?> execute() throws ResponseStatusException {
 		var zdsZakLk01ActualiseerZaakstatus = (ZdsZakLk01ActualiseerZaakstatus) this.zdsDocument;
 		var zdsWasZaak = zdsZakLk01ActualiseerZaakstatus.objects.get(0);
-		this.context.setKenmerk("zaakidentificatie:" + zdsWasZaak.identificatie);
+		this.getSession().setFunctie("ActualiseerZaakStatus");		
+		this.getSession().setKenmerk("zaakidentificatie:" + zdsWasZaak.identificatie);
 		var zdsWordtZaak = zdsZakLk01ActualiseerZaakstatus.objects.get(1);
 		var zgwZaak = this.getZaakService().actualiseerZaakstatus(zdsWasZaak, zdsWordtZaak);
-		var bv03 = new ZdsBv03(zdsZakLk01ActualiseerZaakstatus.stuurgegevens, this.context.getReferentienummer());
+		var bv03 = new ZdsBv03(zdsZakLk01ActualiseerZaakstatus.stuurgegevens, this.getSession().getReferentienummer());
 		var response = XmlUtils.getSOAPMessageFromObject(bv03);
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
