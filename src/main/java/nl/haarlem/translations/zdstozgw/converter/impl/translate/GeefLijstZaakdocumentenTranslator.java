@@ -37,7 +37,7 @@ public class GeefLijstZaakdocumentenTranslator extends Converter {
 		var zaakidentificatie = zdsZakLv01.gelijk.identificatie;
 		
 		this.getSession().setFunctie("GeefLijstZaakdocumenten");		
-		this.getSession().setKenmerk(zaakidentificatie);
+		this.getSession().setKenmerk("zaakidentificatie:" + zaakidentificatie);
 		
 		List<ZdsHeeftRelevant> gerelateerdeDocumenten = this.getZaakService()
 				.geefLijstZaakdocumenten(zaakidentificatie);

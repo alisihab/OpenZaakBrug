@@ -36,7 +36,7 @@ public class UpdateZaakdocumentTranslator extends Converter {
 		var zdsWordtInformatieObject = zdsUpdateZaakdocumentDi02.edcLk02.documenten.get(1);
 		
 		this.getSession().setFunctie("UpdateZaakdocument");		
-		this.getSession().setKenmerk(zdsWasInformatieObject.identificatie + " with lock:" + lock);
+		this.getSession().setKenmerk("documentidentificatie:" + zdsWasInformatieObject.identificatie + " with lock:" + lock);
 		
 		this.getZaakService().updateZaakDocument(lock, zdsWasInformatieObject, zdsWordtInformatieObject);
 

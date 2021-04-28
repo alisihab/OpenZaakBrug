@@ -82,7 +82,10 @@ public class Replicator {
         debug.infopoint("replicatie", "received zaak-data from zds-zaaksysteem for zaak:" + zaakidentificatie + ", now storing in zgw-zaaksysteem");
         this.converter.getZaakService().creeerZaak(rsin, zdsZaak);
         
-		this.converter.getSession().setZaakGerepliceerd(true);
+		//this.converter.getSession().setZaakGerepliceerd(true);
+		var azg = this.converter.getSession().getAantalZakenGerepliceerd();
+		this.converter.getSession().setAantalZakenGerepliceerd(azg + 1);
+        
     }
 
     private List<ZdsHeeftRelevant> getLijstZaakdocumenten(String zaakidentificatie) {
@@ -142,7 +145,8 @@ public class Replicator {
             	debug.infopoint("replicatie", "document not found, copying document with identificatie #" + zaakdocumentidentificatie);
             	try {
             		copyDocument(zaakdocumentidentificatie, rsin);
-            		this.converter.getSession().setDocumentenGerepliceerd(true);
+            		var adg = this.converter.getSession().getAantalDocumentenGerepliceerd();
+            		this.converter.getSession().setAantalDocumentenGerepliceerd(adg + 1);
             	}
             	catch(ConverterException ce) {
             		// ignore the error, since everything else works, big change that there are inconsistent things 

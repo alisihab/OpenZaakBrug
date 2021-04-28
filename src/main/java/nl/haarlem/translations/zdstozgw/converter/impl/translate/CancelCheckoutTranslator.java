@@ -33,7 +33,7 @@ public class CancelCheckoutTranslator extends Converter {
 		var lock = zdsCancelCheckoutDi02.parameters.checkedOutId;
 		var documentIdentificatie = zdsCancelCheckoutDi02.document.identificatie;
 		this.getSession().setFunctie("CancelCheckout");		
-		this.getSession().setKenmerk(documentIdentificatie + " with lock:" + lock);
+		this.getSession().setKenmerk("documentidentificatie:" + documentIdentificatie + " with lock:" + lock);
 		var result = this.getZaakService().cancelCheckOutZaakDocument(documentIdentificatie, lock);
 				
 		var bv02 = new ZdsBv02();

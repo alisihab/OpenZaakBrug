@@ -53,8 +53,8 @@ public class RequestResponseCycle {
 	private int clientResponseCode;
 	private Integer clientResponseSize;
 	
-	private Boolean zaakGerepliceerd = false;
-	private Boolean documentenGerepliceerd = false;
+	private Integer AantalZakenGerepliceerd = 0;
+	private Integer AantalDocumentenGerepliceerd = 0;
 		
 	@Column(columnDefinition="TEXT")
 	private String stackTrace;

@@ -36,7 +36,7 @@ public class GeefZaakdocumentLezenTranslator extends Converter {
 		var documentIdentificatie = zdsEdcLv01.gelijk.identificatie;
 
 		this.getSession().setFunctie("GeefZaakdocumentLezen");		
-		this.getSession().setKenmerk(documentIdentificatie);
+		this.getSession().setKenmerk("documentidentificatie:" + documentIdentificatie);
 				
 		ZdsZaakDocumentInhoud document = this.getZaakService().getZaakDocumentLezen(documentIdentificatie);
 		var edcLa01 = new ZdsEdcLa01GeefZaakdocumentLezen(zdsEdcLv01.stuurgegevens, this.getSession().getReferentienummer());

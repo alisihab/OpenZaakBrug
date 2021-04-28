@@ -28,7 +28,7 @@ public class UpdateZaakTranslator extends Converter {
 		var zdsZakLk01 = (ZdsZakLk01) this.getZdsDocument();
 		
 		this.getSession().setFunctie("UpdateZaak");		
-		this.getSession().setKenmerk(zdsZakLk01.objects.get(0).identificatie);		
+		this.getSession().setKenmerk("zaakidentificatie:" + zdsZakLk01.objects.get(0).identificatie);		
 		
 		this.getZaakService().updateZaak(zdsZakLk01.objects.get(0), zdsZakLk01.objects.get(1));
 		var bv03 = new ZdsBv03(zdsZakLk01.stuurgegevens, this.getSession().getReferentienummer());

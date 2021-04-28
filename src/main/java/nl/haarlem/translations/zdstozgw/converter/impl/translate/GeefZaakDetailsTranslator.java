@@ -45,7 +45,7 @@ public class GeefZaakDetailsTranslator extends Converter {
 			zdsResponse.antwoord.zaak = new ArrayList<ZdsZaak>();
 			
 			this.getSession().setFunctie("GeefZaakDetails-ZaakId");		
-			this.getSession().setKenmerk(zdsZakLv01.gelijk.identificatie);
+			this.getSession().setKenmerk("zaakidentificatie:" + zdsZakLv01.gelijk.identificatie);
 			
 			zdsResponse.antwoord.zaak
 					.add(this.getZaakService().getZaakDetailsByIdentificatie(zdsZakLv01.gelijk.identificatie));

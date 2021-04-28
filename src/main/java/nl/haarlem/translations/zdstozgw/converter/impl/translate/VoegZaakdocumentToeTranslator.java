@@ -30,7 +30,7 @@ public class VoegZaakdocumentToeTranslator extends Converter {
 		var zdsInformatieObject = zdsEdcLk01.objects.get(0);
 		
 		this.getSession().setFunctie("VoegZaakdocumentToe");		
-		this.getSession().setKenmerk(zdsInformatieObject.identificatie + " in zaak:" + zdsInformatieObject.identificatie);			
+		this.getSession().setKenmerk("zaakidentificatie:" + zdsInformatieObject.identificatie + " in zaak:" + zdsInformatieObject.identificatie);			
 		
 		this.getZaakService().voegZaakDocumentToe(
 				this.getZaakService().getRSIN(zdsEdcLk01.stuurgegevens.zender.organisatie), zdsInformatieObject);

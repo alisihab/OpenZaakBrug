@@ -44,7 +44,7 @@ public class GeefZaakdocumentBewerkenTranslator extends Converter {
 		var documentIdentificatie = zdsGeefZaakdocumentbewerkenDi02.edcLv01.gelijk.identificatie;
 		
 		this.getSession().setFunctie("GeefZaakdocumentBewerken");		
-		this.getSession().setKenmerk(documentIdentificatie);		
+		this.getSession().setKenmerk("zaakidentificatie:" + documentIdentificatie);		
 
 		// het document ophalen
 		ZdsZaakDocumentInhoud document = this.getZaakService().getZaakDocumentLezen(documentIdentificatie);
