@@ -18,9 +18,9 @@ import nl.haarlem.translations.zdstozgw.utils.XmlUtils;
 
 public class GenereerZaakIdentificatieEmulator extends Converter {
 
-	public GenereerZaakIdentificatieEmulator(RequestResponseCycle context, Translation translation,
+	public GenereerZaakIdentificatieEmulator(RequestResponseCycle session, Translation translation,
 			ZaakService zaakService) {
-		super(context, translation, zaakService);
+		super(session, translation, zaakService);
 	}
 
 	@Override

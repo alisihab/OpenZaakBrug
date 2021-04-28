@@ -18,8 +18,8 @@ public class GeefLijstZaakdocumentenReplicator extends GeefLijstZaakdocumentenTr
 
 	private static final Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
-	public GeefLijstZaakdocumentenReplicator(RequestResponseCycle context, Translation translation, ZaakService zaakService) {
-		super(context, translation, zaakService);
+	public GeefLijstZaakdocumentenReplicator(RequestResponseCycle session, Translation translation, ZaakService zaakService) {
+		super(session, translation, zaakService);
 	}
 
     /**

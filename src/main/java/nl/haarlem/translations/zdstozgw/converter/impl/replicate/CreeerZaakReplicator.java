@@ -18,8 +18,8 @@ public class CreeerZaakReplicator extends CreeerZaakTranslator {
 
 	private static final Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
-	public CreeerZaakReplicator(RequestResponseCycle context, Translation translation, ZaakService zaakService) {
-		super(context, translation, zaakService);
+	public CreeerZaakReplicator(RequestResponseCycle session, Translation translation, ZaakService zaakService) {
+		super(session, translation, zaakService);
 	}
 
     /**

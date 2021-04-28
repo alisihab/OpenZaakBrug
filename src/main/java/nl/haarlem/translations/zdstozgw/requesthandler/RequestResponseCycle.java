@@ -82,7 +82,7 @@ public class RequestResponseCycle {
 		return milliseconds;
 	}
 
-	public void setResonse(ResponseEntity<?> response) {
+	public void setResponse(ResponseEntity<?> response) {
 		this.clientResponseBody = response.getBody().toString();
 		this.clientResponseSize = this.clientResponseBody.length();
 		this.clientResponseCode = response.getStatusCodeValue();

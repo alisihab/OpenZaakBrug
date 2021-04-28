@@ -18,8 +18,8 @@ public class UpdateZaakReplicator extends UpdateZaakTranslator {
 
 	private static final Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
-	public UpdateZaakReplicator(RequestResponseCycle context, Translation translation, ZaakService zaakService) {
-		super(context, translation, zaakService);
+	public UpdateZaakReplicator(RequestResponseCycle session, Translation translation, ZaakService zaakService) {
+		super(session, translation, zaakService);
 	}
 
     /**

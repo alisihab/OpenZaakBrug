@@ -19,8 +19,8 @@ public class Proxy extends Converter {
 
 	private static final Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
-	public Proxy(RequestResponseCycle context, Translation translation, ZaakService zaakService) {
-		super(context, translation, zaakService);
+	public Proxy(RequestResponseCycle session, Translation translation, ZaakService zaakService) {
+		super(session, translation, zaakService);
 	}
 
 	@Override

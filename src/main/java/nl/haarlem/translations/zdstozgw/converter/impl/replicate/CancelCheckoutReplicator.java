@@ -19,8 +19,8 @@ public class CancelCheckoutReplicator extends CancelCheckoutTranslator {
 
 	private static final Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
-	public CancelCheckoutReplicator(RequestResponseCycle context, Translation translation, ZaakService zaakService) {
-		super(context, translation, zaakService);
+	public CancelCheckoutReplicator(RequestResponseCycle session, Translation translation, ZaakService zaakService) {
+		super(session, translation, zaakService);
 	}
 
 

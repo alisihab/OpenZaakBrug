@@ -43,7 +43,7 @@ public class SoapController {
 
 
     /**
-     * Does not handle any requests, returns a list of avaialble endpoints
+     * Does not handle any requests, returns a list of available endpoints
      *
      * @return List of available endpoints
      */
@@ -125,7 +125,7 @@ public class SoapController {
 		} finally {
 			debug.close();
 		}
-		session.setResonse(response);
+		session.setResponse(response);
 		handler.save(session);
 		return response;
 	}

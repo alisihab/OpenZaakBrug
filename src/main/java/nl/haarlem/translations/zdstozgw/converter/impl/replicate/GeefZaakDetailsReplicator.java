@@ -18,8 +18,8 @@ public class GeefZaakDetailsReplicator extends GeefZaakDetailsTranslator {
 
 	private static final Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
-	public GeefZaakDetailsReplicator(RequestResponseCycle context, Translation translation, ZaakService zaakService) {
-		super(context, translation, zaakService);
+	public GeefZaakDetailsReplicator(RequestResponseCycle session, Translation translation, ZaakService zaakService) {
+		super(session, translation, zaakService);
 	}
 
     /**

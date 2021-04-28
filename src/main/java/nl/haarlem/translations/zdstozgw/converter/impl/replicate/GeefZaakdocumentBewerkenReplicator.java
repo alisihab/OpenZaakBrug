@@ -19,8 +19,8 @@ public class GeefZaakdocumentBewerkenReplicator extends GeefZaakdocumentBewerken
 
 	private static final Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
-	public GeefZaakdocumentBewerkenReplicator(RequestResponseCycle context, Translation translation, ZaakService zaakService) {
-		super(context, translation, zaakService);
+	public GeefZaakdocumentBewerkenReplicator(RequestResponseCycle session, Translation translation, ZaakService zaakService) {
+		super(session, translation, zaakService);
 	}
 
 
