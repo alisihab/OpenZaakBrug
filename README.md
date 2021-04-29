@@ -62,6 +62,12 @@ Vinden van fouten/verbeteringen:
 - Fouten en verbeteringen kunnen worden gemeld via een [issue](https://github.com/Sudwest-Fryslan/OpenZaakBrug/issues) op github
 - Voor verder communicatie gebruiken we ook [slack](https://samenorganiseren.slack.com/archives/C01FDA71Y4V)
 
+## Common Ground
+Met Common Ground willen gemeenten de informatievoorziening eenvoudiger, sneller en slimmer inrichten. In de kern gaat het bij Common Ground om een hervorming van de gemeentelijke informatievoorziening, door op een andere manier om te gaan met gegevens. Zo koppelen we data los van werkprocessen en applicaties
+Wij van Open Zaakbrug ondersteunen de visie van common ground en ontwikkelen het product in mijn met deze visie.
+Bekijk in onze [checklist](commonground/checklist.md) hoe common ground wij zijn
+
+
 ## Technische informatie
 
 - Informatie over de installatie kijk in : [Installing Open Zaakbrug.md](docs/Installing%20Open%20Zaakbrug.md)  
