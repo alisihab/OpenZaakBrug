@@ -8,7 +8,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import nl.haarlem.translations.zdstozgw.config.model.Translation;
 import nl.haarlem.translations.zdstozgw.converter.Converter;
-import nl.haarlem.translations.zdstozgw.requesthandler.RequestHandlerContext;
+import nl.haarlem.translations.zdstozgw.requesthandler.RequestResponseCycle;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsAntwoordLijstZaakdocument;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsHeeftRelevant;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsObjectLijstZaakDocument;
@@ -21,29 +21,32 @@ import nl.haarlem.translations.zdstozgw.utils.XmlUtils;
 
 public class GeefLijstZaakdocumentenTranslator extends Converter {
 
-	public GeefLijstZaakdocumentenTranslator(RequestHandlerContext context, Translation translation,
+	public GeefLijstZaakdocumentenTranslator(RequestResponseCycle context, Translation translation,
 			ZaakService zaakService) {
 		super(context, translation, zaakService);
 	}
 
 	@Override
 	public void load() throws ResponseStatusException {
-		this.zdsDocument = (ZdsZakLv01) XmlUtils.getStUFObject(this.getContext().getRequestBody(), ZdsZakLv01.class);
+		this.zdsDocument = (ZdsZakLv01) XmlUtils.getStUFObject(this.getSession().getClientRequestBody(), ZdsZakLv01.class);
 	}
 
 	@Override
 	public ResponseEntity<?> execute() throws ResponseStatusException {
 		ZdsZakLv01 zdsZakLv01 = (ZdsZakLv01) this.getZdsDocument();
 		var zaakidentificatie = zdsZakLv01.gelijk.identificatie;
-		this.context.setKenmerk("zaakidentificatie:" + zaakidentificatie);
+		
+		this.getSession().setFunctie("GeefLijstZaakdocumenten");		
+		this.getSession().setKenmerk("zaakidentificatie:" + zaakidentificatie);
+		
 		List<ZdsHeeftRelevant> gerelateerdeDocumenten = this.getZaakService()
 				.geefLijstZaakdocumenten(zaakidentificatie);
 
 		ZdsZakLa01LijstZaakdocumenten zdsZakLa01LijstZaakdocumenten = new ZdsZakLa01LijstZaakdocumenten(
-				zdsZakLv01.stuurgegevens, this.context.getReferentienummer());
+				zdsZakLv01.stuurgegevens, this.getSession().getReferentienummer());
 		zdsZakLa01LijstZaakdocumenten.antwoord = new ZdsAntwoordLijstZaakdocument();
 		zdsZakLa01LijstZaakdocumenten.stuurgegevens = new ZdsStuurgegevens(zdsZakLv01.stuurgegevens,
-				this.context.getReferentienummer());
+				this.getSession().getReferentienummer());
 		zdsZakLa01LijstZaakdocumenten.stuurgegevens.berichtcode = "La01";
 		zdsZakLa01LijstZaakdocumenten.stuurgegevens.entiteittype = "ZAK";
 		zdsZakLa01LijstZaakdocumenten.parameters = new ZdsParameters(zdsZakLv01.parameters);

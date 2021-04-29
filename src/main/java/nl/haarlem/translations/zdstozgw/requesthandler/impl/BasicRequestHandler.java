@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import nl.haarlem.translations.zdstozgw.config.ConfigService;
 import nl.haarlem.translations.zdstozgw.converter.Converter;
 import nl.haarlem.translations.zdstozgw.requesthandler.RequestHandler;
+import nl.haarlem.translations.zdstozgw.requesthandler.RequestResponseCycle;
 import nl.haarlem.translations.zdstozgw.utils.XmlUtils;
 
 public class BasicRequestHandler extends RequestHandler {
@@ -25,22 +26,6 @@ public class BasicRequestHandler extends RequestHandler {
 	}
 
 	@Override
-	public ResponseEntity<?> execute() {
-		log.info("Executing request with handler: " + this.getClass().getCanonicalName() + " and converter: "
-				+ this.converter.getClass().getCanonicalName());
-
-		this.converter.load();
-		try {
-			var zdsResponse = this.converter.execute();
-			var response = XmlUtils.getSOAPMessageFromObject(zdsResponse);
-			return new ResponseEntity<>(response, HttpStatus.OK);
-		} catch (Exception ex) {
-			log.warn("Executing request with handler: " + this.getClass().getCanonicalName() + " and converter: "
-					+ this.converter.getClass().getCanonicalName(), ex);
-			var fo03 = getErrorZdsDocument(ex, this.converter);
-			var response = XmlUtils.getSOAPFaultMessageFromObject(SOAPConstants.SOAP_RECEIVER_FAULT, ex.toString(),
-					fo03);
-			return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-		}
+	public void save(RequestResponseCycle session) {
 	}
 }

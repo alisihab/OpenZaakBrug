@@ -19,7 +19,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import nl.haarlem.translations.zdstozgw.config.ConfigService;
 import nl.haarlem.translations.zdstozgw.converter.ConverterFactory;
 import nl.haarlem.translations.zdstozgw.debug.Debugger;
-import nl.haarlem.translations.zdstozgw.requesthandler.RequestHandlerContext;
+import nl.haarlem.translations.zdstozgw.requesthandler.RequestResponseCycle;
 import nl.haarlem.translations.zdstozgw.requesthandler.RequestHandlerFactory;
 
 @RestController
@@ -43,14 +43,15 @@ public class SoapController {
 
 
     /**
-     * Does not handle any reqyests, returns a list of avaialble endpoints
+     * Does not handle any requests, returns a list of available endpoints
      *
      * @return List of available endpoints
      */
 	@GetMapping(path = { "/" }, produces = MediaType.TEXT_HTML_VALUE)
 	public ResponseEntity<?> HandleRequest() {
-		var context = new RequestHandlerContext("", "", "", "", "/", "", "", null);
-		this.requestHandlerFactory.getRequestHandler(this.converterFactory.getConverter(context));
+		var session = new RequestResponseCycle();
+		
+		this.requestHandlerFactory.getRequestHandler(this.converterFactory.getConverter(session));
 		return null;
 	}
 
@@ -72,24 +73,22 @@ public class SoapController {
 			@PathVariable String endpoint, @RequestHeader(name = "SOAPAction", required = true) String soapAction,
 			@RequestBody String body, String referentienummer) {
 
-		long startTime = System.currentTimeMillis();
-
 		var path = modus + "/" + version + "/" + protocol + "/" + endpoint;
 		if (referentienummer == null) {
 			referentienummer = "ozb-" + java.util.UUID.randomUUID().toString();
 		}
-		var context = new RequestHandlerContext(modus, version, protocol, endpoint, path, soapAction.replace("\"", ""),
-				body, referentienummer);
+		var session = new RequestResponseCycle(modus, version, protocol, endpoint, path, soapAction.replace("\"", ""), body, referentienummer);
 		log.info("Processing request for path: /" + path + "/ with soapaction: " + soapAction
 				+ " with referentienummer:" + referentienummer);
 
 		RequestContextHolder.getRequestAttributes().setAttribute("referentienummer", referentienummer,
 				RequestAttributes.SCOPE_REQUEST);
 
-		var converter = this.converterFactory.getConverter(context);
-		var handler = this.requestHandlerFactory.getRequestHandler(converter);
+		var converter = this.converterFactory.getConverter(session);		
+		var handler = this.requestHandlerFactory.getRequestHandler(converter);		
+		handler.save(session);
 
-		String reportName = context.getModus();
+		String reportName = session.getModus();
 		if (reportName == null || reportName.length() < 1) {
 			reportName = "Execute";
 		} else {
@@ -115,20 +114,19 @@ public class SoapController {
 			debug.infopoint("path", path);
 			response = handler.execute();
 			debug.outputpoint("statusCode", response.getStatusCodeValue());
-			debug.outputpoint("kenmerk", context.getKenmerk());
+			debug.outputpoint("kenmerk", session.getKenmerk());
 
-			long endTime = System.currentTimeMillis();
-			var duration = endTime - startTime;
-			var message = "Soapaction: " + soapAction + " took " + duration + " milliseconds";			
-			debug.infopoint("Total duration", message);
-			
+			var message = "Soapaction: " + soapAction + " took " + session.getDurationInMilliseconds() + " milliseconds";			
+			debug.infopoint("Total duration", message);			
 			debug.endpoint(reportName, response.getBody().toString());
-		} catch(Throwable t) {
+		} catch(Throwable t) {			
 			debug.abortpoint(reportName, t.toString());
 			throw t;
 		} finally {
 			debug.close();
 		}
+		session.setResponse(response);
+		handler.save(session);
 		return response;
 	}
 }

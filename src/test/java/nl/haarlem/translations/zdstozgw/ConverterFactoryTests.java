@@ -4,7 +4,7 @@ import nl.haarlem.translations.zdstozgw.config.ConfigService;
 import nl.haarlem.translations.zdstozgw.config.model.Translation;
 import nl.haarlem.translations.zdstozgw.converter.Converter;
 import nl.haarlem.translations.zdstozgw.converter.ConverterFactory;
-import nl.haarlem.translations.zdstozgw.requesthandler.RequestHandlerContext;
+import nl.haarlem.translations.zdstozgw.requesthandler.RequestResponseCycle;
 
 import org.apache.commons.io.IOUtils;
 import org.junit.Assert;
@@ -47,7 +47,7 @@ public class ConverterFactoryTests {
         doReturn(translation).when(configService).getTranslationByPathAndSoapAction(any(), any());
 
         //act
-        var context = new RequestHandlerContext("", "", "", "", "", soapAction, content, null);
+        var context = new RequestResponseCycle("", "", "", "", "", soapAction, content, null);
         Converter converter = converterFactory.getConverter(context);
 
         //assert
