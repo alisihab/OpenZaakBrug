@@ -260,10 +260,19 @@ public class ZaakService {
 			// nu kijken of we een status hebben die gelijk is aan wat de laatste status zou moeten zijn,...
 			ZgwStatusType foundstatustype = null;
 			ZdsHeeft zdsHeeft = null;
-			if (zdsZaak.heeft != null && zdsZaak.heeft.size() > 0 && zdsZaak.heeft.get(0).gerelateerde != null) {
-				zdsHeeft = zdsZaak.heeft.get(0);
-				var zdsStatus = zdsHeeft.gerelateerde;
-				foundstatustype = this.zgwClient.getStatusTypeByZaakTypeAndOmschrijving(zgwZaak.zaaktype, zdsStatus.omschrijving, zdsStatus.volgnummer);				
+			if (zdsZaak.heeft != null && zdsZaak.heeft.size() > 0 ) {
+				for (ZdsHeeft zdsHeeftIterator : zdsZaak.heeft) {
+					if(zdsHeeftIterator.gerelateerde != null) {
+						zdsHeeft = zdsHeeftIterator;
+						if("J".equals(zdsHeeft.getIndicatieLaatsteStatus())) {
+							break;
+						}
+					}
+				}
+				if(zdsHeeft != null) {
+					var zdsStatus = zdsHeeft.gerelateerde;
+					foundstatustype = this.zgwClient.getStatusTypeByZaakTypeAndOmschrijving(zgwZaak.zaaktype, zdsStatus.omschrijving, zdsStatus.volgnummer);				
+				}
 			}
 			
 			if(foundstatustype == null) {
@@ -324,8 +333,17 @@ public class ZaakService {
 			}
 			changed = true;
 		}
-		else if (zdsZaak.heeft != null && zdsZaak.heeft.size() > 0 && zdsZaak.heeft.get(0).gerelateerde != null) {
-				var zdsHeeft = zdsZaak.heeft.get(0);
+		else if (zdsZaak.heeft != null && zdsZaak.heeft.size() > 0) {
+			ZdsHeeft zdsHeeft = null;	
+			for (ZdsHeeft zdsHeeftIterator : zdsZaak.heeft) {
+				if(zdsHeeftIterator.gerelateerde != null) {
+					zdsHeeft = zdsHeeftIterator;
+					if("J".equals(zdsHeeft.getIndicatieLaatsteStatus())) {
+						break;
+					}
+				}
+			}
+			if(zdsHeeft != null) {
 				var zdsStatus = zdsHeeft.gerelateerde;
 				if(zdsStatus.omschrijving != null && zdsStatus.omschrijving.length() > 0) {
 					log.debug("Update of zaakid:" + zdsZaak.identificatie + " wants status to be changed to:" + zdsStatus.omschrijving);				
@@ -350,7 +368,8 @@ public class ZaakService {
 				}
 				else {
 					debugWarning("No status, while heeft and gerelateerde were supplied");	
-				}				
+				}
+			}
 		}
 		return changed;
 	}
