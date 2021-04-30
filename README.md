@@ -108,7 +108,7 @@ Omdat het een standaard is die wordt vertaald, zullen vervolg applicaties steeds
 | ZDS 1.1 genereerDocumentIdentificatie_Di02 | ondersteund | ondersteund          |
 | ZDS 1.1 maakZaakdocument_Lk01              | ondersteund | ondersteund          |
 | ZDS 1.1 voegZaakdocumentToe_Lk01           | ondersteund | ondersteund          |
-| ZDS 1.1 geefZaakdocumentLezen_Lv01         | in test     | niet geïmplementeerd |
+| ZDS 1.1 geefZaakdocumentLezen_Lv01         | ondersteund | ondersteund          |
 | ZDS 1.1 geefZaakdocumentbewerken_Di02      | in test     | niet geïmplementeerd |
 | ZDS 1.1 updateZaakdocument_Di02            | in test     | niet geïmplementeerd |
 | ZDS 1.1 cancelCheckout_Di02                | in test     | niet geïmplementeerd |
