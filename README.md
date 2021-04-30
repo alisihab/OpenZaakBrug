@@ -124,6 +124,6 @@ Omdat het een standaard is die wordt vertaald, zullen vervolg applicaties steeds
 - [Gemeente Súdwest-Fryslân](https://sudwestfryslan.nl/), Jacco Hovinga,  Santoshi Bouma en Eduard Witteveen (productowner)
 - [Gemeente Haarlem](https://www.haarlem.nl/),  David van Hussel
 - [Gemeente Utrecht](https://www.utrecht.nl/), Lazo Bozarov
-- [WeAreFrank!](https://wearefrank.nl/), Jaco de Groot 
+- [WeAreFrank!](https://blog.wearefrank.nl/borging-openzaakbrug-integratie-vng), Jaco de Groot 
 
 Om ons te bereiken kunt u een email versturen naar e.witteveen@sudwestfryslan.nl of stel gewoon een vraag in onze [slack](https://samenorganiseren.slack.com/archives/C01FDA71Y4V)
