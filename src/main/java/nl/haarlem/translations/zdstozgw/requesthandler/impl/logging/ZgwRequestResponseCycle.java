@@ -13,11 +13,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Index;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.springframework.http.HttpRequest;
 import org.springframework.http.client.ClientHttpResponse;
 
 import lombok.Data;
+import nl.haarlem.translations.zdstozgw.requesthandler.RequestResponseCycle;
 
 @Data
 @Entity
@@ -35,14 +37,13 @@ public class ZgwRequestResponseCycle {
 	private String zgwMethod;
 	@Column(columnDefinition="TEXT")
 	private String zgwUrl;
-	@Column(columnDefinition="TEXT")
-	private String zgwRequestBody;
+	@Column(columnDefinition="TEXT", name = "zgw_request_body")
+	private String zgwShortenedRequestBody;
 	private Integer zgwRequestSize;
-
 	
 	private int zgwResponseCode;	
-	@Column(columnDefinition="TEXT")
-	private String zgwResponseBody;	
+	@Column(columnDefinition="TEXT", name = "zgw_response_body")
+	private String zgwShortenedResponseBody;	
 	private Integer zgwResponseSize;
 
 	public ZgwRequestResponseCycle() {
@@ -51,13 +52,14 @@ public class ZgwRequestResponseCycle {
 	
 	public ZgwRequestResponseCycle(String referentienummer, HttpRequest request, byte[] body) throws UnsupportedEncodingException {
 		this.referentienummer = referentienummer;
-
 		this.zgwMethod = request.getMethodValue();
 		this.zgwUrl = request.getURI().toString();
-		this.zgwRequestBody = new String(body, "UTF-8");
 
+		var message = new String(body, "UTF-8");
+		this.zgwRequestSize = message.length();
+		this.zgwShortenedRequestBody = RequestResponseCycle.shortenLongMessages(message);	
+		
 		startdatetime = LocalDateTime.now();
-		this.zgwRequestSize = this.zgwRequestBody.length();
 	}
 
 	public long getDurationInMilliseconds() {
@@ -66,6 +68,8 @@ public class ZgwRequestResponseCycle {
 	}
 
 	public void setResponse(ClientHttpResponse response) throws UnsupportedEncodingException, IOException {
+		this.zgwResponseCode = response.getStatusCode().value();
+
 		StringBuilder inputStringBuilder = new StringBuilder();
 		BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(response.getBody(), "UTF-8"));
 		String line = bufferedReader.readLine();
@@ -74,11 +78,10 @@ public class ZgwRequestResponseCycle {
 			inputStringBuilder.append(line);
 			inputStringBuilder.append('\n');
 			line = bufferedReader.readLine();
-		}
-		
-		this.zgwResponseBody = inputStringBuilder.toString();
-		this.zgwResponseSize = this.zgwResponseBody.length();
-		this.zgwResponseCode = response.getStatusCode().value();
+		}		
+		var message = inputStringBuilder.toString();
+		this.zgwResponseSize = message.length();
+		this.zgwShortenedResponseBody = RequestResponseCycle.shortenLongMessages(message);	
 
 		this.stopdatetime = LocalDateTime.now();
 		this.durationInMilliseconds = Duration.between(startdatetime, stopdatetime).toMillis();	

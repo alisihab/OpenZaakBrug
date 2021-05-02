@@ -24,7 +24,7 @@ public class CancelCheckoutTranslator extends Converter {
 
 	@Override
 	public void load() throws ResponseStatusException {
-		this.zdsDocument = (ZdsCancelCheckoutDi02) XmlUtils.getStUFObject(this.getSession().getClientRequestBody(), ZdsCancelCheckoutDi02.class);
+		this.zdsDocument = (ZdsCancelCheckoutDi02) XmlUtils.getStUFObject(this.getSession().getClientOriginalRequestBody(), ZdsCancelCheckoutDi02.class);
 	}
 
 	@Override

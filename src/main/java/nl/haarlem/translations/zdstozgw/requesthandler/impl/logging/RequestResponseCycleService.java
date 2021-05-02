@@ -24,14 +24,14 @@ public class RequestResponseCycleService {
 	}
 
 	public RequestResponseCycle save(RequestResponseCycle requestResponseCycle) {
-		return this.requestResponseCycleRepository.saveAndFlush(requestResponseCycle);
+		return this.requestResponseCycleRepository.save(requestResponseCycle);
 	}
 
 	public ZgwRequestResponseCycle add(ZgwRequestResponseCycle interimRequestResponseCycle) {
-		return this.zgwRequestResponseCycleRepository.saveAndFlush(interimRequestResponseCycle);
+		return this.zgwRequestResponseCycleRepository.save(interimRequestResponseCycle);
 	}
 
 	public ZdsRequestResponseCycle add(ZdsRequestResponseCycle interimRequestResponseCycle) {
-		return this.zdsRequestResponseCycleRepository.saveAndFlush(interimRequestResponseCycle);
+		return this.zdsRequestResponseCycleRepository.save(interimRequestResponseCycle);
 	}	
 }

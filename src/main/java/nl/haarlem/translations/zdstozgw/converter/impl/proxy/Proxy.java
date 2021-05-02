@@ -33,7 +33,7 @@ public class Proxy extends Converter {
 	public ResponseEntity<?> execute() throws ConverterException {
 		var url = this.getTranslation().getLegacyservice();
 		var soapaction = this.getTranslation().getSoapAction();
-		var request = this.getSession().getClientRequestBody();
+		var request = this.getSession().getClientOriginalRequestBody();
 		
 		this.getSession().setFunctie("Proxy");
 		this.getSession().setKenmerk(url);
