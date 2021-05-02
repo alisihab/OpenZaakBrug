@@ -20,7 +20,7 @@ public class UpdateZaakTranslator extends Converter {
 
 	@Override
 	public void load() throws ResponseStatusException {
-		this.zdsDocument = (ZdsZakLk01) XmlUtils.getStUFObject(this.getSession().getClientRequestBody(), ZdsZakLk01.class);
+		this.zdsDocument = (ZdsZakLk01) XmlUtils.getStUFObject(this.getSession().getClientOriginalRequestBody(), ZdsZakLk01.class);
 	}
 
 	@Override

@@ -14,6 +14,7 @@ import javax.persistence.Table;
 import org.springframework.http.ResponseEntity;
 
 import lombok.Data;
+import nl.haarlem.translations.zdstozgw.requesthandler.RequestResponseCycle;
 
 @Data
 @Entity
@@ -30,13 +31,15 @@ public class ZdsRequestResponseCycle {
 	
 	private String zdsUrl;
 	private String zdsSoapAction;
-	@Column(columnDefinition="TEXT")
-	private String zdsRequestBody;
+	
+	@Column(columnDefinition="TEXT", name = "zds_request_body")
+	private String zdsShortenedRequestBody;
 	private Integer zdsRequestSize;
 	
 	private int zdsResponseCode;
-	@Column(columnDefinition="TEXT")
-	private String zdsResponseBody;
+
+	@Column(columnDefinition="TEXT", name = "zds_response_body")
+	private String zdsShortenedResponseBody;
 	private Integer zdsResponseSize;
 	
 	public ZdsRequestResponseCycle() {
@@ -46,12 +49,12 @@ public class ZdsRequestResponseCycle {
 	public ZdsRequestResponseCycle(String zdsUrl, String zdsSoapAction, String zdsRequestBody, String referentienummer) {		
 		this.zdsUrl = zdsUrl;
 		this.zdsSoapAction = zdsSoapAction;
-		this.zdsRequestBody = zdsRequestBody;
 
-		this.referentienummer = referentienummer;
+		this.zdsRequestSize = zdsRequestBody.length();
+		this.zdsShortenedRequestBody = RequestResponseCycle.shortenLongMessages(zdsRequestBody);		
 		
+		this.referentienummer = referentienummer;		
 		startdatetime = LocalDateTime.now();
-		this.zdsRequestSize = this.zdsRequestBody.length();
 	}
 
 	public long getDurationInMilliseconds() {
@@ -60,10 +63,12 @@ public class ZdsRequestResponseCycle {
 	}
 
 	public void setResponse(ResponseEntity<?> response) {
-		this.zdsResponseBody = response.getBody().toString();
-		this.zdsResponseSize = this.zdsResponseBody.length();
 		this.zdsResponseCode = response.getStatusCodeValue();
 
+		var message = response.getBody().toString();
+		this.zdsResponseSize = message.length();
+		this.zdsShortenedResponseBody = RequestResponseCycle.shortenLongMessages(message);	
+				
 		this.stopdatetime = LocalDateTime.now();
 		this.durationInMilliseconds = Duration.between(startdatetime, stopdatetime).toMillis();
 	}

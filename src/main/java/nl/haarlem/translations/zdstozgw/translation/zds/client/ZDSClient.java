@@ -65,8 +65,9 @@ public class ZDSClient {
 			String zdsResponseBody = (String) debug.endpoint(debugName, () -> {
 					return method.getResponseBodyAsString();
 			}, (IOException)null);
-			zdsRequestResponseCycle.setZdsResponseCode(responsecode);
-			zdsRequestResponseCycle.setZdsResponseBody(zdsResponseBody);
+			
+			ResponseEntity<?> result = new ResponseEntity<>(zdsResponseBody, HttpStatus.valueOf(responsecode));	
+			zdsRequestResponseCycle.setResponse(result);
 			this.repository.save(zdsRequestResponseCycle);
 
 			if(responsecode != 200) {
@@ -81,7 +82,7 @@ public class ZDSClient {
 			var message = "Soapaction: " + zdsSoapAction + " took " + duration + " milliseconds";
 			log.info(message);
 			debug.infopoint("Duration", message);
-			return new ResponseEntity<>(zdsResponseBody, HttpStatus.valueOf(responsecode));
+			return result;
 		} catch (IOException ce) {
 			throw new ConverterException(
 					"Error: " + ce.toString() + " requesting url:" + zdsUrl + " with soapaction: " + zdsSoapAction, ce);

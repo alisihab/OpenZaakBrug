@@ -21,7 +21,7 @@ public class VoegZaakdocumentToeTranslator extends Converter {
 
 	@Override
 	public void load() throws ResponseStatusException {
-		this.zdsDocument = (ZdsEdcLk01) XmlUtils.getStUFObject(this.getSession().getClientRequestBody(), ZdsEdcLk01.class);
+		this.zdsDocument = (ZdsEdcLk01) XmlUtils.getStUFObject(this.getSession().getClientOriginalRequestBody(), ZdsEdcLk01.class);
 	}
 
 	@Override

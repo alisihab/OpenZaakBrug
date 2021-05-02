@@ -205,7 +205,7 @@ public class Replicator {
     public ResponseEntity<?> proxy() {
 		var url = this.converter.getTranslation().getLegacyservice();
 		var soapaction = this.converter.getTranslation().getSoapAction();
-		var request = this.converter.getSession().getClientRequestBody();
+		var request = this.converter.getSession().getClientOriginalRequestBody();
 		debug.infopoint("proxy", "relaying request to url: " + url + " with soapaction: " + soapaction + " request-size:" + request.length());
 		
 		var legacyresponse = this.zdsClient.post(url, soapaction, request);

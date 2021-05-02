@@ -21,7 +21,7 @@ public class ActualiseerZaakStatusTranslator extends Converter {
 
 	@Override
 	public void load() throws ResponseStatusException {
-		this.zdsDocument = (ZdsZakLk01ActualiseerZaakstatus) XmlUtils.getStUFObject(this.getSession().getClientRequestBody(),
+		this.zdsDocument = (ZdsZakLk01ActualiseerZaakstatus) XmlUtils.getStUFObject(this.getSession().getClientOriginalRequestBody(),
 				ZdsZakLk01ActualiseerZaakstatus.class);
 	}
 

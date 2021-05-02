@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Index;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Indexed;
@@ -22,6 +23,8 @@ import lombok.Data;
 		@Index(columnList = "kenmerk")}
 )
 public class RequestResponseCycle {
+	// static int MAX_MESSAGE_SIZE = 32768;
+	static int MAX_MESSAGE_SIZE = 256;
 	
 	@Id
 	@GeneratedValue
@@ -38,8 +41,10 @@ public class RequestResponseCycle {
 	
 	private String clientUrl;
 	private String clientSoapAction;
-	@Column(columnDefinition="TEXT")
-	private String clientRequestBody;
+	@Transient	
+	private String clientOriginalRequestBody;	
+	@Column(columnDefinition="TEXT", name = "client_request_body")
+	private String clientShortenedRequestBody;
 	private Integer clientRequestSize;	
 	private String referentienummer;
 	
@@ -47,9 +52,9 @@ public class RequestResponseCycle {
 	private String kenmerk;		
 	private String converterImplementation;
 	private String converterTemplate;
-	
-	@Column(columnDefinition="TEXT")
-	private String clientResponseBody;
+
+	@Column(columnDefinition="TEXT", name = "client_response_body")
+	private String clientShortenedResponseBody;
 	private int clientResponseCode;
 	private Integer clientResponseSize;
 	
@@ -70,11 +75,13 @@ public class RequestResponseCycle {
 		this.endpoint = endpoint;
 		this.clientUrl = url;
 		this.clientSoapAction = soapAction;
-		this.clientRequestBody = requestBody;
-		this.referentienummer = referentienummer;
+		this.referentienummer = referentienummer;		
+		
+		this.clientOriginalRequestBody = requestBody;
+		this.clientRequestSize = this.clientOriginalRequestBody.length();
+		this.clientShortenedResponseBody = RequestResponseCycle.shortenLongMessages(this.clientOriginalRequestBody);
 		
 		startdatetime = LocalDateTime.now();
-		this.clientRequestSize = this.clientRequestBody.length();
 	}
 
 	public long getDurationInMilliseconds() {
@@ -82,10 +89,23 @@ public class RequestResponseCycle {
 		return milliseconds;
 	}
 
+	public static String shortenLongMessages(String message) {
+		if(message.length() > RequestResponseCycle.MAX_MESSAGE_SIZE) {
+			var niceEnding = "...(" + (message.length() - RequestResponseCycle.MAX_MESSAGE_SIZE) + " characters have been trimmed)..";
+			return message.substring(0, RequestResponseCycle.MAX_MESSAGE_SIZE) + niceEnding;
+		}
+		else {
+			// do nothing
+			return message;
+		}
+	}
+	
 	public void setResponse(ResponseEntity<?> response) {
-		this.clientResponseBody = response.getBody().toString();
-		this.clientResponseSize = this.clientResponseBody.length();
 		this.clientResponseCode = response.getStatusCodeValue();
+
+		var message  = response.getBody().toString();
+		this.clientResponseSize = message.length();
+		this.clientShortenedResponseBody = RequestResponseCycle.shortenLongMessages(message);	
 
 		this.stopdatetime = LocalDateTime.now();
 		this.durationInMilliseconds = Duration.between(startdatetime, stopdatetime).toMillis();

@@ -25,7 +25,7 @@ public class GenereerDocumentIdentificatieEmulator extends Converter {
 
 	@Override
 	public void load() throws ResponseStatusException {
-		this.zdsDocument = (ZdsGenereerDocumentIdentificatieDi02) XmlUtils.getStUFObject(this.getSession().getClientRequestBody(),
+		this.zdsDocument = (ZdsGenereerDocumentIdentificatieDi02) XmlUtils.getStUFObject(this.getSession().getClientOriginalRequestBody(),
 				ZdsGenereerDocumentIdentificatieDi02.class);
 	}
 

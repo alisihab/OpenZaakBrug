@@ -28,7 +28,7 @@ public class GeefLijstZaakdocumentenTranslator extends Converter {
 
 	@Override
 	public void load() throws ResponseStatusException {
-		this.zdsDocument = (ZdsZakLv01) XmlUtils.getStUFObject(this.getSession().getClientRequestBody(), ZdsZakLv01.class);
+		this.zdsDocument = (ZdsZakLv01) XmlUtils.getStUFObject(this.getSession().getClientOriginalRequestBody(), ZdsZakLv01.class);
 	}
 
 	@Override
