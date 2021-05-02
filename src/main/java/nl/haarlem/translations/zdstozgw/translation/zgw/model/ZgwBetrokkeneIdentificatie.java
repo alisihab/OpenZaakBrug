@@ -7,6 +7,7 @@ import lombok.Data;
 
 @Data
 public class ZgwBetrokkeneIdentificatie {
+	// Natuurlijk persoon
 	@SerializedName("inpBsn")
 	@Expose
 	public String inpBsn;
@@ -62,4 +63,20 @@ public class ZgwBetrokkeneIdentificatie {
 	@SerializedName("naam")
 	@Expose
 	public String naam;
+	
+	// Niet natuurlijk persoon	
+	@Expose
+	public String innNnpId;
+	
+	@Expose
+	public String annIdentificatie;
+
+	@Expose
+	public String statutaireNaam;
+	
+	@Expose
+	public String innRechtsvorm;
+
+	@Expose
+	public String bezoekadres;
 }
