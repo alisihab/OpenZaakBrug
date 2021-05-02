@@ -23,8 +23,7 @@ import lombok.Data;
 		@Index(columnList = "kenmerk")}
 )
 public class RequestResponseCycle {
-	// static int MAX_MESSAGE_SIZE = 32768;
-	static int MAX_MESSAGE_SIZE = 256;
+	static int MAX_MESSAGE_SIZE = 32768;
 	
 	@Id
 	@GeneratedValue
