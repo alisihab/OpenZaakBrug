@@ -33,12 +33,12 @@ public class ZDSClient {
 		this.repository = zdsRequestResponseCycleRepository;
 	}
 
-	public ResponseEntity<?> post(String zdsUrl, String zdsSoapAction, ZdsObject zdsRequest) {
+	public ResponseEntity<?> post(String referentienummer, String zdsUrl, String zdsSoapAction, ZdsObject zdsRequest) {
 		var request = XmlUtils.getSOAPMessageFromObject(zdsRequest);
-		return post(zdsUrl, zdsSoapAction, request);
+		return post(referentienummer, zdsUrl, zdsSoapAction, request);
 	}
 
-	public ResponseEntity<?> post(String zdsUrl, String zdsSoapAction, String zdsRequestBody) {
+	public ResponseEntity<?> post(String referentienummer, String zdsUrl, String zdsSoapAction, String zdsRequestBody) {
 		log.info("Performing ZDS request to: '" + zdsUrl + "' for soapaction:" + zdsSoapAction);
 		log.debug("Requestbody:\n" + zdsRequestBody);
 		var method = new PostMethod(zdsUrl);
@@ -51,8 +51,7 @@ public class ZDSClient {
 			method.setRequestEntity(requestEntity);
 			var httpclient = new org.apache.commons.httpclient.HttpClient();
 
-			String referentienummer = (String) RequestContextHolder.getRequestAttributes()
-					.getAttribute("referentienummer", RequestAttributes.SCOPE_REQUEST);
+			//String referentienummer = (String) RequestContextHolder.getRequestAttributes().getAttribute("referentienummer", RequestAttributes.SCOPE_REQUEST);
 			
             ZdsRequestResponseCycle zdsRequestResponseCycle = new ZdsRequestResponseCycle(zdsUrl, zdsSoapAction, zdsRequestBody, referentienummer);
             this.repository.save(zdsRequestResponseCycle);

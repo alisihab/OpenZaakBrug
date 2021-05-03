@@ -42,6 +42,6 @@ public class Proxy extends Converter {
 				+ request.length());
 
 		ZDSClient zdsClient = SpringContext.getBean(ZDSClient.class);		
-		return zdsClient.post(url, soapaction, request);
+		return zdsClient.post(this.getSession().getKenmerk(), url, soapaction, request);
 	}
 }

@@ -11,24 +11,17 @@ import nl.haarlem.translations.zdstozgw.requesthandler.RequestResponseCycle;
 public class RequestResponseCycleService {
 
 	private final RequestResponseCycleRepository requestResponseCycleRepository;
-	private final ZgwRequestResponseCycleRepository zgwRequestResponseCycleRepository;
 	private final ZdsRequestResponseCycleRepository zdsRequestResponseCycleRepository;
 
 	@Autowired
 	public RequestResponseCycleService(RequestResponseCycleRepository requestResponseCycleRepository,
-			ZgwRequestResponseCycleRepository zgwRequestResponseCycleRepository, 
 			ZdsRequestResponseCycleRepository zdsRequestResponseCycleRepository) {
 		this.requestResponseCycleRepository = requestResponseCycleRepository;
-		this.zgwRequestResponseCycleRepository = zgwRequestResponseCycleRepository;
 		this.zdsRequestResponseCycleRepository = zdsRequestResponseCycleRepository;
 	}
 
 	public RequestResponseCycle save(RequestResponseCycle requestResponseCycle) {
 		return this.requestResponseCycleRepository.save(requestResponseCycle);
-	}
-
-	public ZgwRequestResponseCycle add(ZgwRequestResponseCycle interimRequestResponseCycle) {
-		return this.zgwRequestResponseCycleRepository.save(interimRequestResponseCycle);
 	}
 
 	public ZdsRequestResponseCycle add(ZdsRequestResponseCycle interimRequestResponseCycle) {
