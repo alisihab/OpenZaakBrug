@@ -30,6 +30,8 @@
 		<property name="name" value="Logging"/>
 		<property name="reportsFilename" value="data/OpenZaakBrug.tts"/>
 		<property name="metadataFilename" value="data/OpenZaakBrug.ttm"/>
+		<property name="maximumFileSize" value="${ladybug.maximumFileSize:10485760}"/><!-- 10 MB -->
+		<property name="maximumBackupIndex" value="${ladybug.maximumBackupIndex:9}"/>
 		<property name="persistentMetadata">
 			<list>
 				<value>storageId</value>

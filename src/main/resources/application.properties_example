@@ -54,5 +54,7 @@ version=@version@
 ladybug.maxCheckpoints=2500
 ladybug.maxMemoryUsage=100000000
 ladybug.maxMessageLength=1000000
+ladybug.maximumFileSize=10485760
+ladybug.maximumBackupIndex=9
 ladybug.regexFilter=.*
 ladybug.reportTransformation=transform-ladybug-report.xslt
