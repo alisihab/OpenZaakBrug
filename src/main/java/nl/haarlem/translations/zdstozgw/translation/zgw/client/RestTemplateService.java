@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.http.client.BufferingClientHttpRequestFactory;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -42,6 +43,7 @@ public class RestTemplateService {
             HttpsURLConnection.setDefaultHostnameVerifier((hostname, session) -> true);
         }
 		this.restTemplate = restTemplateBuilder.build();
+		this.restTemplate.setRequestFactory(new BufferingClientHttpRequestFactory(getAllCertsTrustingRequestFactory()));
 	}
 
 	private HttpComponentsClientHttpRequestFactory getAllCertsTrustingRequestFactory() {
