@@ -71,7 +71,7 @@ public class Replicator {
         zdsRequest.scope.object.setEntiteittype("ZAK");
         zdsRequest.scope.object.setScope("alles");
         
-        var zdsResponse = this.zdsClient.post(this.converter.getSession().getKenmerk(), zdsUrl, zdsSoapAction, zdsRequest);
+        var zdsResponse = this.zdsClient.post(this.converter.getSession().getReferentienummer(), zdsUrl, zdsSoapAction, zdsRequest);
 
         // fetch the zaak details
         log.debug("GeefZaakDetails response:" + zdsResponse);
@@ -108,7 +108,7 @@ public class Replicator {
         zdsRequest.scope.object.heeftRelevant.gerelateerde = new ZdsScopeGerelateerde();
         zdsRequest.scope.object.heeftRelevant.gerelateerde.entiteittype = "EDC";
 
-        var zdsResponse = this.zdsClient.post(this.converter.getSession().getKenmerk(), zdsUrl, zdsSoapAction, zdsRequest);
+        var zdsResponse = this.zdsClient.post(this.converter.getSession().getReferentienummer(), zdsUrl, zdsSoapAction, zdsRequest);
         //debug.infopoint("replicatie", "GeefLijstZaakdocumenten voor zaak:" + zaakidentificatie);
         var zakZakLa01 = (ZdsZakLa01LijstZaakdocumenten) XmlUtils.getStUFObject(zdsResponse.getBody().toString(),ZdsZakLa01LijstZaakdocumenten.class);
         if(zakZakLa01.antwoord != null && zakZakLa01.antwoord.object != null && zakZakLa01.antwoord.object.heeftRelevant != null) {
@@ -179,7 +179,7 @@ public class Replicator {
 		zdsRequest.scope.object.setEntiteittype("EDC");
 		zdsRequest.scope.object.setScope("alles");
 
-		var zdsResponse = this.zdsClient.post(this.converter.getSession().getKenmerk(), zdsUrl, zdsSoapAction, zdsRequest);
+		var zdsResponse = this.zdsClient.post(this.converter.getSession().getReferentienummer(), zdsUrl, zdsSoapAction, zdsRequest);
 		// fetch the document details
 		log.debug("getGeefZaakdocumentLezen response:" + zdsResponse.getBody().toString());
 		var zdsEdcLa01 = (ZdsEdcLa01GeefZaakdocumentLezen) XmlUtils.getStUFObject(zdsResponse.getBody().toString(),
@@ -208,7 +208,7 @@ public class Replicator {
 		var request = this.converter.getSession().getClientOriginalRequestBody();
 		debug.infopoint("proxy", "relaying request to url: " + url + " with soapaction: " + soapaction + " request-size:" + request.length());
 		
-		var legacyresponse = this.zdsClient.post(this.converter.getSession().getKenmerk(), url, soapaction, request);
+		var legacyresponse = this.zdsClient.post(this.converter.getSession().getReferentienummer(), url, soapaction, request);
 		if (legacyresponse.getStatusCode() != HttpStatus.OK) {
 			debug.infopoint("Warning", "HttpStatus:" + legacyresponse.getStatusCode().toString() + " Url:" + url + " SoapAction: " + soapaction +  " Service:" + this.converter.getTranslation().getLegacyservice());
 		}	
