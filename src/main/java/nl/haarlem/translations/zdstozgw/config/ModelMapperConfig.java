@@ -34,6 +34,7 @@ import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsHeeft;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsHeeftRelevant;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsMedewerker;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsNatuurlijkPersoon;
+import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsNietNatuurlijkPersoon;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsOpschorting;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsRol;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsZaak;
@@ -102,6 +103,7 @@ public class ModelMapperConfig {
 		addZdsZaakDocumentInhoudToZgwEnkelvoudigInformatieObjectTypeMapping(modelMapper);
 		
 		addZdsNatuurlijkPersoonToZgwBetrokkeneIdentificatieTypeMapping(modelMapper);
+		addZdsNietNatuurlijkPersoonToZgwBetrokkeneIdentificatieTypeMapping(modelMapper);	
 		addZdsAdresToZgwAdresTypeMapping(modelMapper);		
 		addZdsZaakDocumentToZgwEnkelvoudigInformatieObjectTypeMapping(modelMapper);
 		addZdsZaakDocumentRelevantToZgwEnkelvoudigInformatieObjectTypeMapping(modelMapper);
@@ -260,6 +262,18 @@ public class ModelMapperConfig {
 								ZgwBetrokkeneIdentificatie::setGeslachtsaanduiding));
 	}
 
+	public void addZdsNietNatuurlijkPersoonToZgwBetrokkeneIdentificatieTypeMapping(ModelMapper modelMapper) {
+		modelMapper.typeMap(ZdsNietNatuurlijkPersoon.class, ZgwBetrokkeneIdentificatie.class);
+		/*
+				.addMappings(mapper -> mapper.using(convertStufDateToZgwDate())
+						.map(ZdsNatuurlijkPersoon::getGeboortedatum, ZgwBetrokkeneIdentificatie::setGeboortedatum))
+				.addMappings(mapper -> mapper.map(ZdsNatuurlijkPersoon::getBsn, ZgwBetrokkeneIdentificatie::setInpBsn))
+				.addMappings(
+						mapper -> mapper.using(convertToLowerCase()).map(ZdsNatuurlijkPersoon::getGeslachtsaanduiding,
+								ZgwBetrokkeneIdentificatie::setGeslachtsaanduiding));
+		*/
+	}
+	
 	public void addZdsZaakDocumentToZgwEnkelvoudigInformatieObjectTypeMapping(ModelMapper modelMapper) {
 		modelMapper.typeMap(ZdsZaakDocument.class, ZgwEnkelvoudigInformatieObject.class)
 				.addMappings(mapper -> mapper.using(convertStufDateToZgwDate()).map(ZdsZaakDocument::getCreatiedatum, ZgwEnkelvoudigInformatieObject::setCreatiedatum))
