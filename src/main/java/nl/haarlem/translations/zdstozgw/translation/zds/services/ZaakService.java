@@ -57,12 +57,8 @@ import nl.haarlem.translations.zdstozgw.utils.ChangeDetector.Change;
 public class ZaakService {
 
 	private static final Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
-
 	private static final Debugger debug = Debugger.getDebugger(MethodHandles.lookup().lookupClass());
 
-	@Value("${nl.haarlem.translations.zdstozgw.auto.laststatus}")
-	public Boolean autoLastStatus;	
-	
 	public final ZGWClient zgwClient;
 
 	private final ModelMapper modelMapper;
@@ -205,171 +201,70 @@ public class ZaakService {
 		}
 	}
 	
+	
 	private boolean setResultaatAndStatus(ZdsZaak zdsZaak, ZgwZaak zgwZaak) {
 		var changed = false;		
 
-		// Gisvg doet alles op <datumStatusGezet>20210401000000000</datumStatusGezet>
-		// pas dit aan naar tijdstip nu als het gebeurd, want zaakid, datetime-status moet uniek zijn
-		var zdsToday = new SimpleDateFormat("yyyyMMdd").format(new Date()); 		
-		var zaakid = zdsZaak.identificatie;
-		if (zdsZaak.heeft != null && zdsZaak.heeft.size() > 0 && zdsZaak.heeft.get(0).datumStatusGezet != null) {
-			var tijdstip = zdsZaak.heeft.get(0).datumStatusGezet;				
-			var formatter = new SimpleDateFormat("yyyyMMdd000000000");
-			var dagstart = formatter.format(new Date());
-			if(tijdstip.equals(dagstart)) {
-				formatter = new SimpleDateFormat("yyyyMMddHHmmssSSS");
-				zdsZaak.heeft.get(0).datumStatusGezet = formatter.format(new Date());					
-				debugWarning("Zaak with identificatie:" + zaakid + " changing the datumStatusGezet from: " + tijdstip + " to: " +  zdsZaak.heeft.get(0).datumStatusGezet);					
-			}
-		}	
-		
 		if (zdsZaak.resultaat != null && zdsZaak.resultaat.omschrijving != null && zdsZaak.resultaat.omschrijving.length() > 0) {
-
-			// Difference between ZDS --> ZGW the behaviour of ending a zaak has changed.
-			// (more info at: https://vng-realisatie.github.io/gemma-zaken/standaard/zaken/index#zrc-007 ) 
-			//
-			// in ZDS:
-			//	- object/einddatum contained the einddatum
-			//	- object/resultaat/omgeschrijving contained the resultaat-omschrijving
-			// 
-			// in ZGW:
-			//	- resultaat an reference and status has to be set to the one with the highest volgnummer
 			var resultaatomschrijving = zdsZaak.resultaat.omschrijving;
-			var zdsEinddatum = zdsZaak.einddatum;
-			if(zdsEinddatum == null || zdsEinddatum.length() == 0) {
-				debugWarning("Update of zaakid:" + zaakid + " has resultaat but no einddatum, using today");
-				zdsEinddatum = zdsToday;
-			}
-			//else if(!einddatum.equals(today)) {
-			//	log.warn("Update of zaakid:" + zaakid + " has resultaat and einddatum, einddatum:" + zdsZaak.einddatum + " is not today (" + today + ")");				
-			//}
-			log.debug("Update of zaakid:" + zaakid + " with resultaatomschrijving:" + resultaatomschrijving );
+			log.debug("Update of zaakid:" + zdsZaak.identificatie + " wants resultaat to be changed to:" + resultaatomschrijving );
 			var zgwResultaatType = this.zgwClient.getResultaatTypeByZaakTypeAndOmschrijving(zgwZaak.zaaktype, resultaatomschrijving);			
-			log.debug("Gevonden restulaattype:" + zgwResultaatType.omschrijving);						
 			var resultaten = this.zgwClient.getResultatenByZaakUrl(zgwZaak.url);			
 			
+			// remove any existing resultaten (we only want to have 1)
 			for (ZgwResultaat resultaat : resultaten) {
-				debugWarning("Zaak with identificatie:" + zaakid + " already has resultaat #" + resultaten.indexOf(resultaat) + " met toelichting:" +  resultaat.toelichting + ", will be deleted");
+				debugWarning("Zaak with identificatie:" + zdsZaak.identificatie + " already has resultaat #" + resultaten.indexOf(resultaat) + " met toelichting:" +  resultaat.toelichting + "(" + resultaat.uuid  + "), will be deleted");
 				this.zgwClient.deleteZaakResultaat(resultaat.uuid);
-				debugWarning("Old resultaat: " + resultaat.toelichting + " (" + resultaat.uuid + ") has been deleted");
 			}			
 			ZgwResultaat zgwResultaat = new ZgwResultaat();
 			zgwResultaat.zaak = zgwZaak.url;
 			zgwResultaat.resultaattype = zgwResultaatType.url;
 			zgwResultaat.toelichting = zdsZaak.resultaat.omschrijving;
 			this.zgwClient.addZaakResultaat(zgwResultaat);
-								
-			// nu kijken of we een status hebben die gelijk is aan wat de laatste status zou moeten zijn,...
-			ZgwStatusType foundstatustype = null;
-			ZdsHeeft zdsHeeft = null;
-			if (zdsZaak.heeft != null && zdsZaak.heeft.size() > 0 ) {
-				for (ZdsHeeft zdsHeeftIterator : zdsZaak.heeft) {
-					if(zdsHeeftIterator.gerelateerde != null) {
-						zdsHeeft = zdsHeeftIterator;
-						if("J".equals(zdsHeeft.getIndicatieLaatsteStatus())) {
-							break;
-						}
-					}
-				}
-				if(zdsHeeft != null) {
-					var zdsStatus = zdsHeeft.gerelateerde;
-					foundstatustype = this.zgwClient.getStatusTypeByZaakTypeAndOmschrijving(zgwZaak.zaaktype, zdsStatus.omschrijving, zdsStatus.volgnummer);				
-				}
-			}
-			
-			if(foundstatustype == null) {
-				debugWarning("einddatum and resultaat without a status");
-				if(this.autoLastStatus) {
-					// Bekijken wat de laatste status is, deze moet gezet worden bij het afsltuiden van de zaak
-					var statustypes = this.zgwClient.getStatusTypesByZaakType(zgwZaak.zaaktype);
-					ZgwStatusType laststatustype = null;
-					for (ZgwStatusType statustype : statustypes) {
-						if("true".equals(statustype.getIsEindstatus())) {
-							laststatustype = statustype;
-						}
-					}
-
-					debugWarning("autoLastStatus = enabled: setting status to:" + laststatustype.omschrijving);
-					foundstatustype = laststatustype;
-					// de status heeft straks info nodig
-					zdsHeeft = new ZdsHeeft();
-					zdsHeeft.datumStatusGezet = zdsEinddatum;
-				}
-			}
-			else if(!"true".equals(foundstatustype.getIsEindstatus())) {
-				debugWarning("einddatum and resultaat but found status:" + foundstatustype.omschrijving + " is not the last status.");
-				if(this.autoLastStatus) {
-					
-					// Bekijken wat de laatste status is, deze moet gezet worden bij het afsltuiden van de zaak
-					var statustypes = this.zgwClient.getStatusTypesByZaakType(zgwZaak.zaaktype);
-					ZgwStatusType laststatustype = null;
-					for (ZgwStatusType statustype : statustypes) {
-						if("true".equals(statustype.getIsEindstatus())) {
-							laststatustype = statustype;
-						}
-					}
-
-					debugWarning("autoLastStatus = enabled: overriding status to:" + laststatustype.omschrijving);
-					foundstatustype = laststatustype;
-				}
-			}
-			if(foundstatustype != null) {			
-				ZgwStatus zgwStatus = this.modelMapper.map(zdsHeeft, ZgwStatus.class);
-				zgwStatus.zaak = zgwZaak.url;
-				zgwStatus.statustype = foundstatustype.url;
-				zgwStatus.statustoelichting = foundstatustype.omschrijving;
-				
-				if("true".equals(foundstatustype.getIsEindstatus())) {
-					// als laatste status, dan moet einddatum de status datum zijn
-					// dit bepaald de einddatum van de status dan weer
-					if(zdsEinddatum == null || zdsEinddatum.length() == 0) {
-						debugWarning("Update of zaakid:" + zaakid + " has resultaat but no einddatum, using today");
-						zdsEinddatum = zdsToday;
-					}
-					zgwStatus.setDatumStatusGezet(ModelMapperConfig.convertStufDateTimeToZgwDateTime(zdsEinddatum));
-				}				
-				this.zgwClient.addZaakStatus(zgwStatus);
-			}
-			else {
-				debugWarning("No status, while einddatum and resultaat were supplied");	
-			}
-			changed = true;
 		}
-		else if (zdsZaak.heeft != null && zdsZaak.heeft.size() > 0) {
-			ZdsHeeft zdsHeeft = null;	
+				
+		// if there is a status
+		if (zdsZaak.heeft != null) {
 			for (ZdsHeeft zdsHeeftIterator : zdsZaak.heeft) {
-				if(zdsHeeftIterator.gerelateerde != null) {
-					zdsHeeft = zdsHeeftIterator;
-					if("J".equals(zdsHeeft.getIndicatieLaatsteStatus())) {
-						break;
-					}
-				}
-			}
-			if(zdsHeeft != null) {
-				var zdsStatus = zdsHeeft.gerelateerde;
-				if(zdsStatus.omschrijving != null && zdsStatus.omschrijving.length() > 0) {
-					log.debug("Update of zaakid:" + zdsZaak.identificatie + " wants status to be changed to:" + zdsStatus.omschrijving);				
-					var zgwStatusType = this.zgwClient.getStatusTypeByZaakTypeAndOmschrijving(zgwZaak.zaaktype, zdsStatus.omschrijving, zdsStatus.volgnummer);			
-					ZgwStatus zgwStatus = this.modelMapper.map(zdsHeeft, ZgwStatus.class);
+				ZdsGerelateerde zdsStatus = zdsHeeftIterator.gerelateerde;
+				if(zdsStatus != null && zdsStatus.omschrijving != null && zdsStatus.omschrijving.length() > 0) {										
+					log.debug("Update of zaakid:" + zdsZaak.identificatie + " wants status to be changed to:" + zdsStatus.omschrijving);
+					ZgwStatusType zgwStatusType = this.zgwClient.getStatusTypeByZaakTypeAndOmschrijving(zgwZaak.zaaktype, zdsStatus.omschrijving, zdsStatus.volgnummer);
+					ZgwStatus zgwStatus = this.modelMapper.map(zdsHeeftIterator, ZgwStatus.class);
 					zgwStatus.zaak = zgwZaak.url;
 					zgwStatus.statustype = zgwStatusType.url;
 					zgwStatus.statustoelichting = zgwStatusType.omschrijving;
-					
+
+					String zdsStatusDatum = zdsHeeftIterator.getDatumStatusGezet();
 					if("true".equals(zgwStatusType.getIsEindstatus())) {
-						// als laatste status, dan moet einddatum de status datum zijn
-						// dit bepaald de einddatum van de status dan weer
-						var zdsEinddatum = zdsZaak.einddatum;
-						if(zdsEinddatum == null || zdsEinddatum.length() == 0) {
-							debugWarning("Update of zaakid:" + zaakid + " has resultaat but no einddatum, using today");
-							zdsEinddatum = zdsToday;
-						}
-						zgwStatus.setDatumStatusGezet(ModelMapperConfig.convertStufDateTimeToZgwDateTime(zdsEinddatum));
-					}					
-					this.zgwClient.addZaakStatus(zgwStatus);	
+						// Difference between ZDS --> ZGW the behaviour of ending a zaak has changed.
+						// (more info at: https://vng-realisatie.github.io/gemma-zaken/standaard/zaken/index#zrc-007 ) 
+						//
+						// in ZDS:
+						//	- object/einddatum contained the einddatum
+						//	- object/resultaat/omgeschrijving contained the resultaat-omschrijving
+						// 
+						// in ZGW:
+						//	- resultaat an reference and status has to be set to the one with the highest volgnummer
+						zdsStatusDatum = zdsZaak.einddatum;
+					}
+					var formatter = new SimpleDateFormat("yyyyMMdd000000000");		
+					var dagstart = formatter.format(new Date());
+					formatter = new SimpleDateFormat("yyyyMMddHHmmssSSS");					
+					if(zdsStatusDatum == null || zdsStatusDatum.length() == 0) {
+						debugWarning("no statusdatetime provided, using now()");
+						zdsStatusDatum = formatter.format(new Date());
+					}
+					else if(dagstart.startsWith(zdsStatusDatum)) {
+						debugWarning("statusdatetime contains no time, using now() (DatumGezet, has to be unique)");			
+						zdsStatusDatum = formatter.format(new Date());
+					}
+					zgwStatus.setDatumStatusGezet((ModelMapperConfig.convertStufDateTimeToZgwDateTime(zdsStatusDatum)));
+					this.zgwClient.addZaakStatus(zgwStatus);
 					changed = true;
 				}
 				else {
-					debugWarning("No status, while heeft and gerelateerde were supplied");	
+					debugWarning("status has 'heeft' without 'gerelateerde' or  omschrijving");	
 				}
 			}
 		}

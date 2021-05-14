@@ -11,7 +11,6 @@ openzaak.baseUrl = https://openzaak.local
 nl.haarlem.translations.zdstozgw.trustAllCerts = false
 nl.haarlem.translations.zdstozgw.enableJWTEntpoint = false
 nl.haarlem.translations.zdstozgw.timeoffset.minutes = -5
-nl.haarlem.translations.zdstozgw.auto.laststatus = false
 
 #openzaak endpoints
 zgw.endpoint.roltype = /catalogi/api/v1/roltypen
