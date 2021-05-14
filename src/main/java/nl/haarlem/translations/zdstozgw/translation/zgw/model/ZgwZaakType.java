@@ -1,6 +1,7 @@
 package nl.haarlem.translations.zdstozgw.translation.zgw.model;
 
 import java.util.Date;
+import java.util.List;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -25,4 +26,17 @@ public class ZgwZaakType {
 	@SerializedName("eindeGeldigheid")
 	@Expose
 	public Date eindeGeldigheid;	
+		
+	@SerializedName("statustypen")
+	@Expose
+	public List<String> statustypen = null;
+	@SerializedName("resultaattypen")
+	@Expose
+	public List<String> resultaattypen = null;	
+	@SerializedName("informatieobjecttypen")
+	@Expose
+	public List<String> informatieobjecttypen = null;
+	@SerializedName("roltypen")
+	@Expose
+	public List<String> roltypen = null;
 }

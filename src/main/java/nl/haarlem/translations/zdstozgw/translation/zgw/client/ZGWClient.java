@@ -440,6 +440,11 @@ public class ZGWClient {
 		ZgwZaakType result = gson.fromJson(zaakTypeJson, ZgwZaakType.class);
 		return result;
 	}
+	
+
+	public ZgwZaakType getZaakTypeByZaak(ZgwZaak zgwZaak) {
+		return getZaakTypeByUrl(zgwZaak.getZaaktype());
+	}	
 
 	public List<ZgwRol> getRollen(Map<String, String> parameters) {
 		var zaakTypeJson = get(this.baseUrl + this.endpointRol, parameters);
@@ -459,21 +464,14 @@ public class ZGWClient {
 		return queryResult.getResults();
 	}
 
-	public ZgwRolType getRolTypeByZaaktypeUrlAndOmschrijving(String zaaktype, String omschrijving) {
-		Map<String, String> parameters = new HashMap();
-
-		var rolTypeJson = get(this.baseUrl + "/catalogi/api/v1/roltypen", parameters);
-		ZgwRolType result = null;
-		Type type = new TypeToken<QueryResult<ZgwRolType>>() {
-		}.getType();
-		Gson gson = new Gson();
-		QueryResult<ZgwRolType> queryResult = gson.fromJson(rolTypeJson, type);
-		for (ZgwRolType found : queryResult.getResults()) {
-			if (found.zaaktype.equals(zaaktype) && found.omschrijving.equals(omschrijving)) {
-				result = found;
-			}
+	public ZgwRolType getRolTypeByZaaktypeAndOmschrijving(ZgwZaakType zgwZaakType, String omschrijving) {
+		for (String found : zgwZaakType.roltypen) {		
+			ZgwRolType roltype = getRolTypeByUrl(found);
+			if (roltype.omschrijving.equals(omschrijving)) {
+				return roltype;
+			}			
 		}
-		return result;
+		return null;
 	}
 
 	public void updateZaak(String zaakUuid, ZgwZaakPut zaak) {
@@ -540,21 +538,18 @@ public class ZGWClient {
 		return zaakinformatieobjecten.get(0);
 	}
 
-	public List<ZgwStatusType> getStatusTypesByZaakType(String zaakTypeUrl) {
+	public List<ZgwStatusType> getStatusTypesByZaakType(ZgwZaakType zgwZaakType) {
 		Map<String, String> parameters = new HashMap();
-		parameters.put("zaaktype", zaakTypeUrl);
+		parameters.put("zaaktype", zgwZaakType.url);
 		List<ZgwStatusType> statustypes = this.getStatusTypes(parameters);
 		return statustypes;
 	}
 	
-	
-	// TODO: we really need a zaakstatus-type-identificatie in openzaak
-	public ZgwStatusType getStatusTypeByZaakTypeAndOmschrijving(String zaakTypeUrl, String statusOmschrijving,
-			String verwachteVolgnummer) {
+	public ZgwStatusType getStatusTypeByZaakTypeAndOmschrijving(ZgwZaakType zaakType, String statusOmschrijving, String verwachteVolgnummer) {	
 		Map<String, String> parameters = new HashMap();
-		parameters.put("zaaktype", zaakTypeUrl);
-		List<ZgwStatusType> statustypes = this.getStatusTypes(parameters);
-
+		parameters.put("zaaktype", zaakType.url);
+		List<ZgwStatusType> statustypes = this.getStatusTypes(parameters);	
+		
 		for (ZgwStatusType statustype : statustypes) {
 			log.debug("opgehaald:" + statustype.omschrijving + " zoeken naar: " + statusOmschrijving);
 			if (statustype.omschrijving.startsWith(statusOmschrijving)) {
@@ -576,29 +571,36 @@ public class ZGWClient {
 	}
 
 
-	public ZgwResultaatType getResultaatTypeByZaakTypeAndOmschrijving(String zaakTypeUrl, String resultaatOmschrijving) {
-		Map<String, String> parameters = new HashMap();
-		parameters.put("zaaktype", zaakTypeUrl);
-		//default behaviour parameters.put("status", "definitief");
-		List<ZgwResultaatType> resultaattypes = this.getResultaatTypes(parameters);
-		
+	public ZgwResultaatType getResultaatTypeByZaakTypeAndOmschrijving(ZgwZaakType zaakType, String resultaatOmschrijving) {
 		var omschrijving = resultaatOmschrijving;
 		if(omschrijving.length() > 20) {
 			// maximum length of openzaak is 20 characters
 			omschrijving = omschrijving.substring(0, 20);		
-		}
-		for (ZgwResultaatType resultaattype : resultaattypes) {			
-			log.debug("opgehaald:" + resultaattype.omschrijving + " zoeken naar: " + omschrijving + "' (ingekort van: " + resultaatOmschrijving + ")");
+		}			
+		for (String found: zaakType.resultaattypen) {
+			ZgwResultaatType resultaatType = getResultaatTypeByUrl(found);
+			log.debug("opgehaald:" + resultaatType.omschrijving + " zoeken naar: " + omschrijving + "' (ingekort van: " + resultaatOmschrijving + ")");
 			
 			// in some applications, the omschrijving can not be as long as we want.....
-			if (resultaattype.omschrijving.startsWith(omschrijving)) {
-				log.debug("gevonden:" + resultaattype.omschrijving + " zoeken naar: " + omschrijving);
-				return resultaattype;
+			if (resultaatType.omschrijving.startsWith(omschrijving)) {
+				log.debug("gevonden:" + resultaatType.omschrijving + " zoeken naar: " + omschrijving);
+				return resultaatType;
 			}
 		}
-		throw new ConverterException("zaakresultaat niet gevonden voor omschrijving: '" + omschrijving + "' (ingekort van: " + resultaatOmschrijving + " )");
+		return null;
 	}		
 	
+	private ZgwResultaatType getResultaatTypeByUrl(String url) {
+		var resultaatTypeJson = get(url, null);
+		Gson gson = new Gson();
+		ZgwResultaatType result = gson.fromJson(resultaatTypeJson, ZgwResultaatType.class);
+		if(result == null) {
+			throw new ConverterException("ZgwResultaatType met url:" + url + " niet gevonden!");
+		}
+		return result;
+		
+	}
+
 	public List<ZgwResultaat> getResultatenByZaakUrl(String zaakUrl) {
 		Map<String, String> parameters = new HashMap();
 		parameters.put("zaak", zaakUrl);
@@ -669,21 +671,13 @@ public class ZGWClient {
 		}
 	}
 
-	// TODO: filter by zaaktype
-	public ZgwInformatieObjectType getZgwInformatieObjectTypeByOmschrijving(String omschrijving) {
-		Map<String, String> parameters = new HashMap();
-		parameters.put("status", "definitief");
-
-		var zaakTypeJson = get(this.baseUrl + this.endpointInformatieobjecttype, parameters);
-		Type type = new TypeToken<QueryResult<ZgwInformatieObjectType>>() {
-		}.getType();
-		Gson gson = new Gson();
-		QueryResult<ZgwInformatieObjectType> queryResult = gson.fromJson(zaakTypeJson, type);
-		for (ZgwInformatieObjectType current : queryResult.results) {
-			log.debug("gevonden ZgwInformatieObjectType met omschrijving: '" + current.omschrijving + "'");
-			if (omschrijving.equals(current.omschrijving)) {
-				return current;
-			}
+	public ZgwInformatieObjectType getZgwInformatieObjectTypeByOmschrijving(ZgwZaakType zaaktype, String omschrijving) {		
+		for (String found : zaaktype.informatieobjecttypen ) {
+			ZgwInformatieObjectType ziot = getZgwInformatieObjectTypeByUrl(found);
+			log.debug("gevonden ZgwInformatieObjectType met omschrijving: '" + ziot.omschrijving + "'");
+			if (omschrijving.equals(ziot.omschrijving)) {
+				return ziot;
+			}			
 		}
 		return null;
 	}
@@ -721,4 +715,5 @@ public class ZGWClient {
 		log.info("[processing warning] " + message);
 		debug.infopoint("Warning", message);
 	}
+
 }
