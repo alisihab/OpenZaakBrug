@@ -46,7 +46,7 @@ To speed things up replace debugStorage in spring-ladybug.xml with:
     @TestMappings({
             @TestMapping(testClass = LadybugTests.class, testMethod = "runGenereerZaakIdentificatieTestReport"),
             @TestMapping(testClass = LadybugTests.class, testMethod = "runCreeerZaakTestReport"),
-            @TestMapping(testClass = LadybugTests.class, testMethod = "runUpdateZaakTestReport"),
+            @TestMapping(testClass = LadybugTests.class, testMethod = "runVoegZaakdocumentToeTestReport"),
             @TestMapping(testClass = LadybugTests.class, testMethod = "runGeefZaakdetailsTestReport"),
     })
     public void genereerZaakIdentificatie() {

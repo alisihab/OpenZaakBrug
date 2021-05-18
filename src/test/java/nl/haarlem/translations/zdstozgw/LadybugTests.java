@@ -11,10 +11,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.function.Predicate;
 
-import org.jsmart.zerocode.core.domain.LoadWith;
-import org.jsmart.zerocode.core.runner.parallel.ZeroCodeLoadRunner;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,7 +51,7 @@ public class LadybugTests {
 
 	@Test
 	public void runGenereerZaakIdentificatieTestReport() {
-		runTestReports((Report report) -> {return !report.getName().contains("01 Translate genereerZaakIdentificatie_Di02");});
+		runTestReports((Report report) -> {return !report.getName().contains("genereerZaakIdentificatie");});
 	}
 
 	@Test
@@ -63,13 +60,13 @@ public class LadybugTests {
 	}
 
 	@Test
-	public void runUpdateZaakTestReport() {
-		runTestReports((Report report) -> {return !report.getName().contains("03 Translate updateZaak");});
+	public void runVoegZaakdocumentToeTestReport() {
+		runTestReports((Report report) -> {return !report.getName().contains("voegZaakdocumentToe");});
 	}
 
 	@Test
 	public void runGeefZaakdetailsTestReport() {
-		runTestReports((Report report) -> {return !report.getName().contains("11 Translate geefZaakdetails_Lv01");});
+		runTestReports((Report report) -> {return !report.getName().contains("geefZaakdetails");});
 	}
 
 	private void runTestReports(Predicate<? super Report> filter) {
@@ -87,7 +84,7 @@ public class LadybugTests {
 		Collections.sort(reports, new ReportNameComparator());
 		if (filter != null) {
 			reports.removeIf(filter);
-			assertEquals(reports.size(), 1);
+			assertEquals(1, reports.size());
 		}
 		long totalTime = 0;
 		ReportRunner reportRunner = new ReportRunner();
