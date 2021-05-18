@@ -3857,9 +3857,6 @@
   <void property="endTime">
    <long>1621002479006</long>
   </void>
-  <void property="estimatedMemoryUsage">
-   <long>88400</long>
-  </void>
   <void property="name">
    <string>Suites4SociaalDomein 02 Translate creeerZaak_Lk01</string>
   </void>
