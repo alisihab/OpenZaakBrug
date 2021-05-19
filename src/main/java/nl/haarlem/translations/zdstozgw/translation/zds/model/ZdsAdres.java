@@ -10,9 +10,15 @@ import javax.xml.bind.annotation.XmlElement;
 public class ZdsAdres extends ZdsObject {
 	@XmlElement(namespace = BG, name = "aoa.identificatie")
 	public String identificatie;
+	
+	@XmlElement(namespace = BG)
+	public String authentiek;		
 
 	@XmlElement(namespace = BG, name = "wpl.woonplaatsNaam")
 	public String woonplaatsnaam;
+
+	@XmlElement(namespace = BG, name = "gor.openbareRuimteNaam")
+	public String openbareRuimteNaam;
 
 	@XmlElement(namespace = BG, name = "gor.straatnaam")
 	public String straatnaam;
