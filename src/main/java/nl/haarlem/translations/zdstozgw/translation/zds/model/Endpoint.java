@@ -25,8 +25,10 @@ public class Endpoint extends ZdsObject {
 	}
 
 	public Endpoint(Endpoint zender) {
-		this.applicatie = zender.applicatie;
-		this.organisatie = zender.organisatie;
-		this.gebruiker = zender.gebruiker;
+		if(zender != null) {
+			this.applicatie = zender.applicatie;
+			this.organisatie = zender.organisatie;
+			this.gebruiker = zender.gebruiker;
+		}
 	}
 }
