@@ -338,7 +338,7 @@ public class ZaakService {
 			zgwRol.betrokkeneIdentificatie.statutaireNaam = zdsRol.gerelateerde.nietNatuurlijkPersoon.statutaireNaam;
 		
 			var rechtsvorm = zdsRol.gerelateerde.nietNatuurlijkPersoon.innRechtsvorm.toLowerCase();
-			if(rechtsvorm == null) {
+			if(rechtsvorm == null || rechtsvorm.length() == 0 ) {
 				// do nothing
 			} else if(rechtsvorm.contains("vennootschap")) {
 				zgwRol.betrokkeneIdentificatie.innRechtsvorm = "besloten_vennootschap";
@@ -379,7 +379,9 @@ public class ZaakService {
 			} else if(rechtsvorm.contains("buiten")) {
 				zgwRol.betrokkeneIdentificatie.innRechtsvorm = "kapitaalvennootschap_buiten_eer";
 			} else {
-				zgwRol.betrokkeneIdentificatie.innRechtsvorm = zdsRol.gerelateerde.nietNatuurlijkPersoon.innRechtsvorm;				
+				// maybe a good default?
+				debugWarning("Rechtsvorm:" + zdsRol.gerelateerde.nietNatuurlijkPersoon.innRechtsvorm + " kon niet worden geconverteerd, using default value: overig_privaatrechtelijke_rechtspersoon");
+				zgwRol.betrokkeneIdentificatie.innRechtsvorm = "overig_privaatrechtelijke_rechtspersoon";				
 			}
 			//zgwRol.betrokkeneIdentificatie.bezoekadres;			
 			zgwRol.roltoelichting  += zdsRol.gerelateerde.nietNatuurlijkPersoon.statutaireNaam;
@@ -388,7 +390,7 @@ public class ZaakService {
 		}
 		if (zgwRol.betrokkeneIdentificatie == null) {
 			//throw new ConverterException("Rol: " + typeRolOmschrijving + " zonder Natuurlijkpersoon or Medewerker");
-			debugWarning("Rol: " + typeRolOmschrijving + " zonder Natuurlijkpersoon or Medewerker");
+			debugWarning("Rol: " + typeRolOmschrijving + " zonder (NIET) Natuurlijkpersoon or Medewerker");
 			return;
 		}
 		var roltype = this.zgwClient.getRolTypeByZaaktypeAndOmschrijving(zgwZaakType, typeRolOmschrijving);

@@ -39,8 +39,8 @@ Om de kwaliteit te borgen en reproduceerbaar de programmatuur uit te leveren wor
 Aanpassen code en geautomatiseerd testen:
 
 - Eén of meerdere issue's wordt aangemaakt waarin beschreven staat welke werkzaamheden worden uitgevoerd
-- Voor deze werkzaamheden wordt een branche aangemaakt
-- De werkzaamheden worden via commit's op de betreffende branche gedaan
+- Voor deze werkzaamheden wordt een branch aangemaakt
+- De werkzaamheden worden via commit's op de betreffende branch gedaan
 - Na het doen van een commit worden er [testen](https://travis-ci.com/github/Sudwest-Fryslan/OpenZaakBrug/builds/) uitgevoerd op github om te kijken of alles werkt. 
   - Hierin wordt controle gedaan door voorbeeldberichten te verwerken, te controleren of Open Zaakbrug zich hetzelfde blijft gedragen.
   - Te kijken of er een docker image kan worden gemaakt en worden opgestart
@@ -48,8 +48,8 @@ Aanpassen code en geautomatiseerd testen:
 Goedkeuren aanpassingen en klaarzetten:
 
 - Een andere partij, dan degene die het pullrequest heeft gedaan, reviewed de code en controleert of de testen goed zijn doorlopen
-- Wanneer dit akkoord is, wordt deze geaccepteerd en gemerged in de master branche
-- De eerder aangemaakte branche wordt verwijderd
+- Wanneer dit akkoord is, wordt deze geaccepteerd en gemerged in de master branch
+- De eerder aangemaakte branch wordt verwijderd
 - Er wordt automatisch een nieuwe docker image geplaatst op [dockerhub](https://hub.docker.com/r/openzaakbrug/openzaakbrug/tags?)
 
 Updaten in de eigen omgeving:
