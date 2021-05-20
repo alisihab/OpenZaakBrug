@@ -1,15 +1,16 @@
 package nl.haarlem.translations.zdstozgw;
 
-import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsZakLk01ActualiseerZaakstatus;
-import nl.haarlem.translations.zdstozgw.utils.XmlUtils;
-import org.apache.commons.io.IOUtils;
-import org.junit.Assert;
-import org.junit.Test;
-import org.springframework.boot.test.context.SpringBootTest;
+import static org.junit.Assume.assumeTrue;
 
 import java.io.IOException;
 
-import static org.junit.Assume.assumeTrue;
+import org.apache.commons.io.IOUtils;
+import org.junit.Ignore;
+import org.junit.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+
+import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsZakLk01ActualiseerZaakstatus;
+import nl.haarlem.translations.zdstozgw.utils.XmlUtils;
 
 @SpringBootTest
 public class XmlUnitTests {
@@ -18,6 +19,7 @@ public class XmlUnitTests {
     public void contextLoads() {
     }
 
+    @Ignore
     @Test
     public void getStUFObject_whenParsingActualiseerZaakstatus_convertsRequiredNodes() {
         try {
