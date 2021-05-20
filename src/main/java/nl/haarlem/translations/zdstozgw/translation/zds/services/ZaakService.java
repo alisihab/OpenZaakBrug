@@ -530,7 +530,7 @@ public class ZaakService {
 		return zgwEnkelvoudigInformatieObject;
 	}
 
-	private ZgwZaakInformatieObject addZaakInformatieObject(ZgwEnkelvoudigInformatieObject doc, String zaakUrl) {
+	public ZgwZaakInformatieObject addZaakInformatieObject(ZgwEnkelvoudigInformatieObject doc, String zaakUrl) {
 		var zgwZaakInformatieObject = new ZgwZaakInformatieObject();
 		zgwZaakInformatieObject.setZaak(zaakUrl);
 		zgwZaakInformatieObject.setInformatieobject(doc.getUrl());
