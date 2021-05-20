@@ -1070,9 +1070,6 @@
   <void property="endTime">
    <long>1621002479038</long>
   </void>
-  <void property="estimatedMemoryUsage">
-   <long>24754</long>
-  </void>
   <void property="name">
    <string>Suites4SociaalDomein 10 Translate geefLijstZaakdocumenten_Lv01</string>
   </void>
