@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.function.Predicate;
 
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -44,7 +45,31 @@ public class LadybugTests {
 	private ReportXmlTransformer reportXmlTransformer;
 
 	@Test
-	public void runTestReports() {
+	public void runAllTestReports() {
+		runTestReports(null);
+	}
+
+	@Test
+	public void runGenereerZaakIdentificatieTestReport() {
+		runTestReports((Report report) -> {return !report.getName().contains("genereerZaakIdentificatie");});
+	}
+
+	@Test
+	public void runCreeerZaakTestReport() {
+		runTestReports((Report report) -> {return !report.getName().contains("creeerZaak");});
+	}
+
+	@Test
+	public void runVoegZaakdocumentToeTestReport() {
+		runTestReports((Report report) -> {return !report.getName().contains("voegZaakdocumentToe");});
+	}
+
+	@Test
+	public void runGeefZaakdetailsTestReport() {
+		runTestReports((Report report) -> {return !report.getName().contains("geefZaakdetails");});
+	}
+
+	private void runTestReports(Predicate<? super Report> filter) {
 		List<Report> reports = new ArrayList<Report>();
 		try {
 			List<Integer> storageIds = testStorage.getStorageIds();
@@ -57,6 +82,11 @@ public class LadybugTests {
 		}
 		assertTrue("No reports found", reports.size() > 0);
 		Collections.sort(reports, new ReportNameComparator());
+		if (filter != null) {
+			reports.removeIf(filter);
+			assertEquals(1, reports.size());
+		}
+		long totalTime = 0;
 		ReportRunner reportRunner = new ReportRunner();
 		reportRunner.setTestTool(testTool);
 		reportRunner.setDebugStorage(debugStorage);
@@ -79,6 +109,8 @@ public class LadybugTests {
 					runResultReport.setGlobalReportXmlTransformer(reportXmlTransformer);
 					runResultReport.setTransformation(report.getTransformation());
 					runResultReport.setReportXmlTransformer(report.getReportXmlTransformer());
+					long runResultTime = runResultReport.getEndTime() - runResultReport.getStartTime();
+					totalTime += runResultTime;
 					if (log.isInfoEnabled()) {
 						int stubbed = 0;
 						boolean first = true;
@@ -91,12 +123,15 @@ public class LadybugTests {
 						}
 						int total = runResultReport.getCheckpoints().size() - 1;
 						String stubInfo = " (" + stubbed + "/" + total + " stubbed)";
-						log.info("Assert " + report.getName() + " (" + (report.getEndTime() - report.getStartTime()) + " >> "
-								+ (runResultReport.getEndTime() - runResultReport.getStartTime()) + " ms)" + stubInfo);
+						log.info("Assert " + report.getName() + " (" + (report.getEndTime() - report.getStartTime())
+								+ " >> " + runResultTime + " ms)" + stubInfo);
 					}
 					assertEquals(report.toXml(reportRunner), runResultReport.toXml(reportRunner));
 				}
 			}
+		}
+		if (log.isInfoEnabled()) {
+			log.info("Total time: " + totalTime);
 		}
 	}
 }
