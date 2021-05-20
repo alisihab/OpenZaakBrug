@@ -1062,9 +1062,6 @@ Einde bestand</string>
   <void property="endTime">
    <long>1621002479166</long>
   </void>
-  <void property="estimatedMemoryUsage">
-   <long>23492</long>
-  </void>
   <void property="name">
    <string>Suites4SociaalDomein 11 Translate geefZaakdocumentLezen_Lv01</string>
   </void>
