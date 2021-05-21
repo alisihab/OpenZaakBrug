@@ -413,9 +413,6 @@
   <void property="endTime">
    <long>1621540241229</long>
   </void>
-  <void property="estimatedMemoryUsage">
-   <long>5788</long>
-  </void>
   <void property="name">
    <string>ErrorHandling 01 Valid SoapMessage</string>
   </void>

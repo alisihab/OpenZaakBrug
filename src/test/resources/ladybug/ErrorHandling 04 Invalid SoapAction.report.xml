@@ -271,9 +271,6 @@ available services:
   <void property="endTime">
    <long>1621539788812</long>
   </void>
-  <void property="estimatedMemoryUsage">
-   <long>12954</long>
-  </void>
   <void property="name">
    <string>ErrorHandling 04 Invalid SoapAction</string>
   </void>

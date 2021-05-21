@@ -271,9 +271,6 @@ available services:
   <void property="endTime">
    <long>1621539726736</long>
   </void>
-  <void property="estimatedMemoryUsage">
-   <long>13166</long>
-  </void>
   <void property="name">
    <string>ErrorHandling 02 Invalid path</string>
   </void>
