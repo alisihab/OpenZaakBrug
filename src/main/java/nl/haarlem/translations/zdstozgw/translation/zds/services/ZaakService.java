@@ -227,7 +227,17 @@ public class ZaakService {
 				
 		// if there is a status
 		if (zdsZaak.heeft != null) {
-			for (ZdsHeeft zdsHeeftIterator : zdsZaak.heeft) {
+			// due to data quality we only want to have the last status
+			// this can be changed if we know the calidation rules of the status...
+			// till that time, this is the approach			
+			//
+			// OLD:
+			//		for (ZdsHeeft zdsHeeftIterator : zdsZaak.heeft) {
+			// NEW:
+			if(zdsZaak.heeft.size() > 0) {			
+				ZdsHeeft zdsHeeftIterator = zdsZaak.heeft.get(zdsZaak.heeft.size() -1);
+			// END
+			
 				ZdsGerelateerde zdsStatus = zdsHeeftIterator.gerelateerde;
 				if(zdsStatus != null && zdsStatus.omschrijving != null && zdsStatus.omschrijving.length() > 0) {										
 					log.debug("Update of zaakid:" + zdsZaak.identificatie + " wants status to be changed to:" + zdsStatus.omschrijving);
