@@ -27,7 +27,7 @@
 &lt;/s:Envelope&gt;</string>
      </void>
      <void property="name">
-      <string>Translate genereerZaakIdentificatie_Di0</string>
+      <string>Translate genereerZaakIdentificatie_Di02</string>
      </void>
      <void property="report">
       <object idref="Report0"/>
@@ -245,7 +245,7 @@ available services:
 	path: &apos;translate/generic/zds/VrijBericht&apos; soapaction: &apos;http://www.egem.nl/StUF/sector/zkn/0310/cancelCheckout_Di02&apos;&quot;</string>
      </void>
      <void property="name">
-      <string>Translate genereerZaakIdentificatie_Di0</string>
+      <string>Translate genereerZaakIdentificatie_Di02</string>
      </void>
      <void property="report">
       <object idref="Report0"/>
@@ -270,9 +270,6 @@ available services:
   </void>
   <void property="endTime">
    <long>1621539726736</long>
-  </void>
-  <void property="estimatedMemoryUsage">
-   <long>13166</long>
   </void>
   <void property="name">
    <string>ErrorHandling 02 Invalid path</string>

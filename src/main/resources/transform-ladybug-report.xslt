@@ -128,6 +128,13 @@
 		</xsl:copy>
 	</xsl:template>
 
+	<!-- Ignore line numbers in stacktrace -->
+	<xsl:template match="*[local-name()='details']">
+		<xsl:copy>
+			<xsl:value-of select="replace(., '.java:.*\)', '.java:IGNORED)')"/>
+		</xsl:copy>
+	</xsl:template>
+
 	<!-- General template -->
 	<xsl:template match="node()|@*">
 		<xsl:copy>

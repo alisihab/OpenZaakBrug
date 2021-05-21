@@ -56,8 +56,8 @@ public class Rerunner implements nl.nn.testtool.Rerunner {
 									soapController.HandleRequest(modus, version, protocol, endpoint, soapAction, body,
 											correlationId);
 								} catch(Throwable t) {
-									errorMessage = "Caught exception on rerun: " + t.getMessage();
-									log.error(errorMessage, t);
+									// Exceptions can be legitimate when testing error handling with Ladybug
+									log.debug(errorMessage, t);
 								}
 							} else {
 								errorMessage = "Checkpoint soapAction not found in original report at position 5";
