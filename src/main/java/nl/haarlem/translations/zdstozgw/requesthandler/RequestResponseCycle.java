@@ -119,7 +119,7 @@ public class RequestResponseCycle {
 			if (this.clientSoapAction != null) {
 				int i = this.clientSoapAction.lastIndexOf('/');
 				if (i != -1 ) {
-					reportName = reportName + " " + this.clientSoapAction.substring(i + 1, this.clientSoapAction.length() - 1);
+					reportName = reportName + " " + this.clientSoapAction.substring(i + 1, this.clientSoapAction.length());
 				}
 			}
 		}
