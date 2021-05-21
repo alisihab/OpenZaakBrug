@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<java version="13.0.2" class="java.beans.XMLDecoder">
+<java version="15" class="java.beans.XMLDecoder">
  <object class="nl.nn.testtool.Report" id="Report0">
   <void property="checkpoints">
    <void method="add">
@@ -37,7 +37,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>Thread-67</string>
+      <string>http-nio-8080-exec-7</string>
      </void>
      <void property="type">
       <int>1</int>
@@ -62,7 +62,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>Thread-67</string>
+      <string>http-nio-8080-exec-7</string>
      </void>
      <void property="type">
       <int>4</int>
@@ -87,7 +87,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>Thread-67</string>
+      <string>http-nio-8080-exec-7</string>
      </void>
      <void property="type">
       <int>4</int>
@@ -112,7 +112,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>Thread-67</string>
+      <string>http-nio-8080-exec-7</string>
      </void>
      <void property="type">
       <int>4</int>
@@ -137,7 +137,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>Thread-67</string>
+      <string>http-nio-8080-exec-7</string>
      </void>
      <void property="type">
       <int>4</int>
@@ -162,7 +162,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>Thread-67</string>
+      <string>http-nio-8080-exec-7</string>
      </void>
      <void property="type">
       <int>4</int>
@@ -175,7 +175,7 @@
       <int>1</int>
      </void>
      <void property="message">
-      <string>Ladybug_Test_Tool-2.2-20210330.112250--6f01adb2:1798b53346d:-7fdf</string>
+      <string>Ladybug_Test_Tool-2.2-20210518.202847-7f0e82e0:1798e50b706:-7f88</string>
      </void>
      <void property="name">
       <string>referentienummer</string>
@@ -187,7 +187,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>Thread-67</string>
+      <string>http-nio-8080-exec-7</string>
      </void>
      <void property="type">
       <int>6</int>
@@ -212,7 +212,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>Thread-67</string>
+      <string>http-nio-8080-exec-7</string>
      </void>
      <void property="type">
       <int>6</int>
@@ -237,7 +237,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>Thread-67</string>
+      <string>http-nio-8080-exec-7</string>
      </void>
      <void property="type">
       <int>6</int>
@@ -262,7 +262,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>Thread-67</string>
+      <string>http-nio-8080-exec-7</string>
      </void>
      <void property="type">
       <int>6</int>
@@ -279,7 +279,7 @@
      </void>
      <void property="message">
       <string>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
-&lt;java version=&quot;13.0.2&quot; class=&quot;java.beans.XMLDecoder&quot;&gt;
+&lt;java version=&quot;15&quot; class=&quot;java.beans.XMLDecoder&quot;&gt;
  &lt;int&gt;500&lt;/int&gt;
 &lt;/java&gt;
 </string>
@@ -297,7 +297,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>Thread-67</string>
+      <string>http-nio-8080-exec-7</string>
      </void>
      <void property="type">
       <int>5</int>
@@ -310,7 +310,7 @@
       <int>1</int>
      </void>
      <void property="message">
-      <string>zaakidentificatie:19009577</string>
+      <string>zaakidentificatie:80009625</string>
      </void>
      <void property="name">
       <string>kenmerk</string>
@@ -322,7 +322,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>Thread-67</string>
+      <string>http-nio-8080-exec-7</string>
      </void>
      <void property="type">
       <int>5</int>
@@ -335,7 +335,7 @@
       <int>1</int>
      </void>
      <void property="message">
-      <string>Soapaction: http://www.egem.nl/StUF/sector/zkn/0310/genereerZaakIdentificatie_Di02 took 69 milliseconds</string>
+      <string>Soapaction: http://www.egem.nl/StUF/sector/zkn/0310/genereerZaakIdentificatie_Di02 took 38 milliseconds</string>
      </void>
      <void property="name">
       <string>Total duration</string>
@@ -347,7 +347,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>Thread-67</string>
+      <string>http-nio-8080-exec-7</string>
      </void>
      <void property="type">
       <int>6</int>
@@ -365,14 +365,14 @@
   &lt;SOAP-ENV:Body&gt;&#13;
     &lt;SOAP-ENV:Fault&gt;&#13;
       &lt;faultcode xmlns:env=&quot;http://www.w3.org/2003/05/soap-envelope&quot;&gt;env:Receiver&lt;/faultcode&gt;&#13;
-      &lt;faultstring&gt;java.lang.NullPointerException&lt;/faultstring&gt;&#13;
+      &lt;faultstring&gt;java.lang.NullPointerException: Cannot read field &quot;stuurgegevens&quot; because &quot;di02&quot; is null&lt;/faultstring&gt;&#13;
       &lt;detail&gt;&#13;
         &lt;Fo03Bericht xmlns=&quot;http://www.egem.nl/StUF/StUF0301&quot; xmlns:ns2=&quot;http://www.egem.nl/StUF/sector/zkn/0310&quot;&gt;&#13;
           &lt;body&gt;&#13;
             &lt;code&gt;StUF058&lt;/code&gt;&#13;
             &lt;plek&gt;server&lt;/plek&gt;&#13;
-            &lt;omschrijving&gt;java.lang.NullPointerException&lt;/omschrijving&gt;&#13;
-            &lt;details&gt;java.lang.NullPointerException&amp;#13;&#13;
+            &lt;omschrijving&gt;java.lang.NullPointerException: Cannot read field &quot;stuurgegevens&quot; because &quot;di02&quot; is null&lt;/omschrijving&gt;&#13;
+            &lt;details&gt;java.lang.NullPointerException: Cannot read field &quot;stuurgegevens&quot; because &quot;di02&quot; is null&amp;#13;&#13;
 	at nl.haarlem.translations.zdstozgw.converter.impl.emulate.GenereerZaakIdentificatieEmulator.execute(GenereerZaakIdentificatieEmulator.java:44)&amp;#13;&#13;
 	at nl.haarlem.translations.zdstozgw.requesthandler.RequestHandler.execute(RequestHandler.java:82)&amp;#13;&#13;
 	at nl.haarlem.translations.zdstozgw.controller.SoapController.HandleRequest(SoapController.java:101)&amp;#13;&#13;
@@ -381,8 +381,7 @@
 	at org.springframework.cglib.proxy.MethodProxy.invoke(MethodProxy.java:218)&amp;#13;&#13;
 	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.invokeJoinpoint(CglibAopProxy.java:779)&amp;#13;&#13;
 	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163)&amp;#13;&#13;
-	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:750)&amp;#13;&#13;
-	at org.springframework.&lt;/details&gt;&#13;
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation&lt;/details&gt;&#13;
             &lt;detailsXML&gt;&#13;
               &lt;todo&gt;&amp;lt;s:Envelope xmlns:s=&quot;http://schemas.xmlsoap.org/soap/envelope/&quot;&amp;gt;&amp;#13;&#13;
    &amp;lt;s:Body&amp;gt;&amp;#13;&#13;
@@ -424,7 +423,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>Thread-67</string>
+      <string>http-nio-8080-exec-7</string>
      </void>
      <void property="type">
       <int>2</int>
@@ -433,16 +432,13 @@
    </void>
   </void>
   <void property="correlationId">
-   <string>Ladybug_Test_Tool-2.2-20210330.112250--6f01adb2:1798b53346d:-7fdf</string>
+   <string>Ladybug_Test_Tool-2.2-20210518.202847-7f0e82e0:1798e50b706:-7f88</string>
   </void>
   <void property="description">
    <string></string>
   </void>
   <void property="endTime">
-   <long>1621540241311</long>
-  </void>
-  <void property="estimatedMemoryUsage">
-   <long>10006</long>
+   <long>1621592115517</long>
   </void>
   <void property="name">
    <string>ErrorHandling 03 Invalid xml</string>
@@ -451,10 +447,10 @@
    <string></string>
   </void>
   <void property="startTime">
-   <long>1621540241242</long>
+   <long>1621592115479</long>
   </void>
   <void property="storageId">
-   <int>412</int>
+   <int>389</int>
   </void>
   <void property="stubStrategy">
    <string>Stub all external connection code</string>
