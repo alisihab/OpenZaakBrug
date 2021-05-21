@@ -1,5 +1,7 @@
 package nl.haarlem.translations.zdstozgw.requesthandler;
 
+import java.io.PrintWriter;
+import java.io.Writer;
 import java.lang.invoke.MethodHandles;
 
 import javax.xml.soap.SOAPConstants;
@@ -33,7 +35,7 @@ public abstract class RequestHandler {
 
 	protected String getStacktrace(Exception ex) {
 		var swriter = new java.io.StringWriter();
-		var pwriter = new java.io.PrintWriter(swriter);
+		var pwriter = new UnixNewlinePrintWriter(swriter);
 		ex.printStackTrace(pwriter);
 		var stacktrace = swriter.toString();
 
@@ -95,4 +97,17 @@ public abstract class RequestHandler {
 	}
 	
 	public abstract void save(RequestResponseCycle session);
+}
+
+class UnixNewlinePrintWriter extends PrintWriter {
+
+	public UnixNewlinePrintWriter(Writer out) {
+		super(out);
+	}
+
+	@Override
+	public void println(Object x) {
+		super.print(x);
+		super.print('\n');
+	}
 }

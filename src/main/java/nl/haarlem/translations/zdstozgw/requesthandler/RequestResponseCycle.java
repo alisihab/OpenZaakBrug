@@ -109,4 +109,20 @@ public class RequestResponseCycle {
 		this.stopdatetime = LocalDateTime.now();
 		this.durationInMilliseconds = Duration.between(startdatetime, stopdatetime).toMillis();
 	}
+
+	public String getReportName() {
+		String reportName = this.getModus();
+		if (reportName == null || reportName.length() < 1) {
+			reportName = "Execute";
+		} else {
+			reportName = reportName.substring(0, 1).toUpperCase() + reportName.substring(1);
+			if (this.clientSoapAction != null) {
+				int i = this.clientSoapAction.lastIndexOf('/');
+				if (i != -1 ) {
+					reportName = reportName + " " + this.clientSoapAction.substring(i + 1, this.clientSoapAction.length());
+				}
+			}
+		}
+		return reportName;
+	}
 }

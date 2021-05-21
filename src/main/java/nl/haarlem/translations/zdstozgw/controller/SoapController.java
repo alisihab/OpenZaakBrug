@@ -73,42 +73,28 @@ public class SoapController {
 			@PathVariable String endpoint, @RequestHeader(name = "SOAPAction", required = true) String soapAction,
 			@RequestBody String body, String referentienummer) {
 
-		var path = modus + "/" + version + "/" + protocol + "/" + endpoint;
-		if (referentienummer == null) {
-			referentienummer = "ozb-" + java.util.UUID.randomUUID().toString();
-		}
-		var session = new RequestResponseCycle(modus, version, protocol, endpoint, path, soapAction.replace("\"", ""), body, referentienummer);
-		log.info("Processing request for path: /" + path + "/ with soapaction: " + soapAction
-				+ " with referentienummer:" + referentienummer);
-
-		RequestContextHolder.getRequestAttributes().setAttribute("referentienummer", referentienummer,
-				RequestAttributes.SCOPE_REQUEST);
-
-		var converter = this.converterFactory.getConverter(session);		
-		var handler = this.requestHandlerFactory.getRequestHandler(converter);		
-		handler.save(session);
-
-		String reportName = session.getModus();
-		if (reportName == null || reportName.length() < 1) {
-			reportName = "Execute";
-		} else {
-			reportName = reportName.substring(0, 1).toUpperCase() + reportName.substring(1);
-			if (soapAction != null) {
-				int i = soapAction.lastIndexOf('/');
-				if (i != -1 ) {
-					reportName = reportName + " " + soapAction.substring(i + 1, soapAction.length() - 1);
-				}
-			}
-		}
+		// used by the ladybug-tests
+		if (referentienummer == null)  referentienummer = "ozb-" + java.util.UUID.randomUUID().toString();
+		var path = modus + "/" + version + "/" + protocol + "/" + endpoint;		
+		log.info("Processing request for path: /" + path + "/ with soapaction: " + soapAction + " with referentienummer:" + referentienummer);
+		
+		
+		var session = new RequestResponseCycle(modus, version, protocol, endpoint, path, soapAction.replace("\"", ""), body, referentienummer);		
+		RequestContextHolder.getRequestAttributes().setAttribute("referentienummer", referentienummer, RequestAttributes.SCOPE_REQUEST);
+		debug.startpoint(session.getReportName(), body);
+		debug.inputpoint("modus", modus);
+		debug.inputpoint("version", version);
+		debug.inputpoint("protocol", protocol);
+		debug.inputpoint("endpoint", endpoint);
+		debug.inputpoint("soapAction", soapAction);
+		debug.infopoint("referentienummer", referentienummer);
+		
 		ResponseEntity<?> response;
 		try {
-			debug.startpoint(reportName, body);
-			debug.inputpoint("modus", modus);
-			debug.inputpoint("version", version);
-			debug.inputpoint("protocol", protocol);
-			debug.inputpoint("endpoint", endpoint);
-			debug.inputpoint("soapAction", soapAction);
-			debug.infopoint("referentienummer", referentienummer);
+			var converter = this.converterFactory.getConverter(session);
+			var handler = this.requestHandlerFactory.getRequestHandler(converter);		
+			handler.save(session);
+			
 			debug.infopoint("converter", converter.getClass().getCanonicalName());
 			debug.infopoint("handler", handler.getClass().getCanonicalName());
 			debug.infopoint("path", path);
@@ -118,15 +104,16 @@ public class SoapController {
 
 			var message = "Soapaction: " + soapAction + " took " + session.getDurationInMilliseconds() + " milliseconds";			
 			debug.infopoint("Total duration", message);			
-			debug.endpoint(reportName, response.getBody().toString());
+			debug.endpoint(session.getReportName(), response.getBody().toString());
+
+			session.setResponse(response);
+			handler.save(session);			
 		} catch(Throwable t) {			
-			debug.abortpoint(reportName, t.toString());
+			debug.abortpoint(session.getReportName(), t.toString());
 			throw t;
 		} finally {
 			debug.close();
-		}
-		session.setResponse(response);
-		handler.save(session);
+		}		
 		return response;
 	}
 }
