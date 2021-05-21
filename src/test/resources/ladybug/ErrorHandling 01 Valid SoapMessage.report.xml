@@ -27,7 +27,7 @@
 &lt;/s:Envelope&gt;</string>
      </void>
      <void property="name">
-      <string>Translate genereerZaakIdentificatie_Di0</string>
+      <string>Translate genereerZaakIdentificatie_Di02</string>
      </void>
      <void property="report">
       <object idref="Report0"/>
@@ -387,7 +387,7 @@
 </string>
      </void>
      <void property="name">
-      <string>Translate genereerZaakIdentificatie_Di0</string>
+      <string>Translate genereerZaakIdentificatie_Di02</string>
      </void>
      <void property="report">
       <object idref="Report0"/>
