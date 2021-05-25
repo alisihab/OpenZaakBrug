@@ -138,6 +138,7 @@ public class Replicator {
     private void checkVoegZaakDocumentToe(String zaakidentificatie, String rsin, List<ZdsHeeftRelevant> relevanteDocumenten) {
     	debug.infopoint("replicatie", "Aantal gekoppelde zaakdocumenten is: " + relevanteDocumenten.size() + "(zaakid: " + zaakidentificatie + ")");
     	var zgwZaak = this.converter.getZaakService().zgwClient.getZaakByIdentificatie(zaakidentificatie);
+    	var zgwZaakDocumenten = this.converter.getZaakService().zgwClient.getZaakInformatieObjectenByZaak(zgwZaak.url);
         for (ZdsHeeftRelevant relevant : relevanteDocumenten) {
             var zaakdocumentidentificatie = relevant.gerelateerde.identificatie;
             debug.infopoint("replicatie", "Start repliceren van zaakdocument met  identificatie:" + zaakdocumentidentificatie + "(zaakid: " + zaakidentificatie + ")");
@@ -156,8 +157,21 @@ public class Replicator {
             	}
             }
             else {
-            	debug.infopoint("replicatie", "document already found, no need to copy document with identificatie #" + zaakdocumentidentificatie);
-        		ZgwZaakInformatieObject zgwZaakInformatieObject = this.converter.getZaakService().addZaakInformatieObject(zgwEnkelvoudigInformatieObject, zgwZaak.url);                
+            	// maybe it needs to be attached to the zaak
+            	var found = false;            	
+            	for(ZgwZaakInformatieObject zio : zgwZaakDocumenten) {
+            		if(zio.informatieobject.equals(zgwEnkelvoudigInformatieObject.url)) {
+            			found = true;
+            			break;
+            		}
+            	}            	
+            	if(!found) {
+                	debug.infopoint("replicatie", "document already but not attached to the zaak, document with identificatie #" + zaakdocumentidentificatie + " has to be punt in zaak with identificatie #" + zaakidentificatie);            		
+            		ZgwZaakInformatieObject zgwZaakInformatieObject = this.converter.getZaakService().addZaakInformatieObject(zgwEnkelvoudigInformatieObject, zgwZaak.url);
+            	}
+            	else {
+                	debug.infopoint("replicatie", "document already found and attached to the zaak, no action needed for document with identificatie #" + zaakdocumentidentificatie);            		
+            	}
             }
         }
     }
