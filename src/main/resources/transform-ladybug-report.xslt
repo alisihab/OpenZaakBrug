@@ -1,4 +1,4 @@
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="2.0">
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="2.0" xmlns:cf="custom-functions">
 	<xsl:output method="xml" indent="yes" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 	
@@ -128,12 +128,24 @@
 		</xsl:copy>
 	</xsl:template>
 
-	<!-- Ignore line numbers in stacktrace -->
+	<!-- Ignore line numbers and Windows newlines in stacktrace -->
 	<xsl:template match="*[local-name()='details']">
 		<xsl:copy>
-			<xsl:value-of select="replace(., '.java:.*\)', '.java:IGNORED)')"/>
+			<!-- Shorten to 900 because RequestHandler shortens to 1000 which will give different last chars on Windows as Windows uses two chars for newlines -->
+			<xsl:value-of select="substring(cf:ignoreHelpfulNpeMessage(replace(replace(., '\r', ''), '.java:.*\)', '.java:IGNORED)')), 0, 900)"/>
 		</xsl:copy>
 	</xsl:template>
+
+	<!--  Ignore difference in NPE message between java versions before version 14 and version 14 and onwards -->
+	<xsl:template match="*[local-name()='faultstring' or local-name()='omschrijving']">
+		<xsl:copy>
+			<xsl:value-of select="cf:ignoreHelpfulNpeMessage(.)"/>
+		</xsl:copy>
+	</xsl:template>
+	<xsl:function name="cf:ignoreHelpfulNpeMessage">
+			<xsl:param name="message"/>
+			<xsl:value-of select="replace($message, 'java.lang.NullPointerException.*', 'java.lang.NullPointerExceptionIGNORED')"/>
+	</xsl:function>
 
 	<!-- General template -->
 	<xsl:template match="node()|@*">
