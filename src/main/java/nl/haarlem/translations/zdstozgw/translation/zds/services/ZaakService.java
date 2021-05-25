@@ -227,17 +227,7 @@ public class ZaakService {
 				
 		// if there is a status
 		if (zdsZaak.heeft != null) {
-			// due to data quality we only want to have the last status
-			// this can be changed if we know the calidation rules of the status...
-			// till that time, this is the approach			
-			//
-			// OLD:
-			//		for (ZdsHeeft zdsHeeftIterator : zdsZaak.heeft) {
-			// NEW:
-			if(zdsZaak.heeft.size() > 0) {			
-				ZdsHeeft zdsHeeftIterator = zdsZaak.heeft.get(zdsZaak.heeft.size() -1);
-			// END
-			
+			for (ZdsHeeft zdsHeeftIterator : zdsZaak.heeft) {
 				ZdsGerelateerde zdsStatus = zdsHeeftIterator.gerelateerde;
 				if(zdsStatus != null && zdsStatus.omschrijving != null && zdsStatus.omschrijving.length() > 0) {										
 					log.debug("Update of zaakid:" + zdsZaak.identificatie + " wants status to be changed to:" + zdsStatus.omschrijving);
@@ -271,7 +261,19 @@ public class ZaakService {
 						debugWarning("statusdatetime contains no time, using now() (DatumGezet, has to be unique)");			
 						zdsStatusDatum = formatter.format(new Date());
 					}
-					zgwStatus.setDatumStatusGezet((ModelMapperConfig.convertStufDateTimeToZgwDateTime(zdsStatusDatum)));
+					else if(zdsStatusDatum.endsWith("00000")) {
+						// TODO: 
+						//		research if de dont want to make the zaaktype/datetime combination always unique 
+						//		and maybe we want to have the client call on a higher lexical level
+						// 
+						// The combination of zaak-uuid with datetime should be unique...
+						// when we still have a datetime						
+						int index = this.zgwClient.getStatussenByZaakUrl(zgwZaak.url).size();
+						String ending = Integer.toString(index) + "000";
+						zdsStatusDatum = zdsStatusDatum.substring(0, zdsStatusDatum.length() - ending.length()) + ending;
+					}					
+					var zgwStatusDatumTijd = (ModelMapperConfig.convertStufDateTimeToZgwDateTime(zdsStatusDatum));					
+					zgwStatus.setDatumStatusGezet(zgwStatusDatumTijd);
 					this.zgwClient.addZaakStatus(zgwStatus);
 					changed = true;
 				}
