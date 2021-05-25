@@ -587,7 +587,7 @@ public class ZGWClient {
 				return resultaatType;
 			}
 		}
-		return null;
+		throw new ConverterException("zaakresultaat niet gevonden voor omschrijving: '" + resultaatOmschrijving + "'");
 	}		
 	
 	private ZgwResultaatType getResultaatTypeByUrl(String url) {

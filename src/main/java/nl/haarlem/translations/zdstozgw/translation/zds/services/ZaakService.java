@@ -126,10 +126,10 @@ public class ZaakService {
 	}
 	
 	public void updateZaak(ZdsZaak zdsWasZaak, ZdsZaak zdsWordtZaak) {
-		log.debug("updateZaak:" + zdsWasZaak.identificatie);
-		ZgwZaak zgwZaak = this.zgwClient.getZaakByIdentificatie(zdsWasZaak.identificatie);
+		log.debug("updateZaak:" + zdsWordtZaak.identificatie);
+		ZgwZaak zgwZaak = this.zgwClient.getZaakByIdentificatie(zdsWordtZaak.identificatie);
 		if (zgwZaak == null) {
-			throw new RuntimeException("Zaak with identification " + zdsWasZaak.identificatie + " not found in ZGW");
+			throw new RuntimeException("Zaak with identification " + zdsWordtZaak.identificatie + " not found in ZGW");
 		}
 		ZgwZaakType zgwZaakType = this.zgwClient.getZaakTypeByZaak(zgwZaak);
 		
@@ -137,20 +137,28 @@ public class ZaakService {
 		ChangeDetector changeDetector = new ChangeDetector();
 
 		// check if the zdsWasZaak is equal to the one stored inside OpenZaak
+		// this should be the case
 		ZdsZaak zdsStored = this.modelMapper.map(zgwZaak, ZdsZaak.class);
-		var storedVsWasChanges = changeDetector.detect(zdsStored, zdsWasZaak);
-		var storedVsWasFieldsChanges = storedVsWasChanges.getAllChangesByDeclaringClassAndFilter(ZdsZaak.class, ZdsRol.class);		
-		if (storedVsWasFieldsChanges.size() > 0) {
-			log.debug("Update of zaakid:" + zdsWasZaak.identificatie + " has # " + storedVsWasFieldsChanges.size() + " field changes between stored and was");
-			for (Change change : storedVsWasFieldsChanges.keySet()) {				 
-				debugWarning("The field: " + change.getField().getName() + " does not match (" + change.getChangeType() + ") stored-value:'" + change.getCurrentValue()  + "' , was-value:'" + change.getNewValue() + "'");
+		if(zdsWasZaak != null) {
+			var storedVsWasChanges = changeDetector.detect(zdsStored, zdsWasZaak);
+			var storedVsWasFieldsChanges = storedVsWasChanges.getAllChangesByDeclaringClassAndFilter(ZdsZaak.class, ZdsRol.class);		
+			if (storedVsWasFieldsChanges.size() > 0) {
+				log.debug("Update of zaakid:" + zdsWasZaak.identificatie + " has # " + storedVsWasFieldsChanges.size() + " field changes between stored and was");
+				for (Change change : storedVsWasFieldsChanges.keySet()) {				 
+					debugWarning("The field: " + change.getField().getName() + " does not match (" + change.getChangeType() + ") stored-value:'" + change.getCurrentValue()  + "' , was-value:'" + change.getNewValue() + "'");
+				}
+				// ZgwZaakPut zgwWordtZaak = this.modelMapper.map(zdsWordtZaak, ZgwZaakPut.class);
+				// ZgwZaakPut updatedZaak = ZgwZaakPut.merge(zgwZaak, zgwWordtZaak);
+				// this.zgwClient.updateZaak(zgwZaak.uuid, updatedZaak);
+				// changed = true;
 			}
-			// ZgwZaakPut zgwWordtZaak = this.modelMapper.map(zdsWordtZaak, ZgwZaakPut.class);
-			// ZgwZaakPut updatedZaak = ZgwZaakPut.merge(zgwZaak, zgwWordtZaak);
-			// this.zgwClient.updateZaak(zgwZaak.uuid, updatedZaak);
-			// changed = true;
-		}
 				
+		}
+		else {
+			// when there was no "was" provided
+			zdsWasZaak = zdsStored;
+		}
+		
 		// attributen
 		var wasVsWordtChanges = changeDetector.detect(zdsWasZaak, zdsWordtZaak);
 		var wasVsWordtFieldChanges = wasVsWordtChanges.getAllChangesByDeclaringClassAndFilter(ZdsZaak.class, ZdsRol.class);
