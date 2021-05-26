@@ -260,10 +260,10 @@ public class ZaakService {
 						zdsStatusDatum = zdsZaak.einddatum;
 					}
 					
-					// zdsStatusDatum has to be of length: 17! 
-					if(zdsStatusDatum.length() < 17) {
-						// maken it length of 17
-						zdsStatusDatum = zdsStatusDatum + StringUtils.repeat("0", 17 - zdsStatusDatum.length());;
+					// zdsStatusDatum has to be of length: 16! 
+					if(zdsStatusDatum.length() < 16) {
+						// maken it length of 16
+						zdsStatusDatum = zdsStatusDatum + StringUtils.repeat("0", 16 - zdsStatusDatum.length());;
 					}
 					
 					var formatter = new SimpleDateFormat("yyyyMMdd000000000");		

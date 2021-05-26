@@ -327,30 +327,14 @@ public class ModelMapperConfig {
 			return null;
 		}
 		if (stufDateTime.length() == 8) {
-			// TODO: is this part still needed, or can we use:
-			// 		stufDateTime = stufDateTime + StringUtils.repeat("0", 17 - stufDateTime.length());
-			
-			// input a date
-			log.debug("convertStufDateTimeToZgwDateTime input is a date:" + stufDateTime);
-			try {
-				DateTimeFormatter stufFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");
-				LocalDate cetDate = LocalDate.parse(stufDateTime, stufFormatter);
-				log.debug("convertStufDateTimeToZgwDateTime parsed\t: " + cetDate.toString());
-				DateTimeFormatter zdsFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-				var result = cetDate.format(zdsFormatter) + "T00:00:00.000000Z";
-				log.debug("convertStufDateTimeToZgwDateTime result\t: " + result);
-				return result;
-
-			} catch (Exception e) {
-				log.warn("error parsing the string:\t" + stufDateTime, e);
-				return e.toString();
-			}
-		} else if (stufDateTime.length() == 16 || stufDateTime.length() == 17) {
-			if (stufDateTime.length() == 17) {
-				log.debug("convertStufDateTimeToZgwDateTime input is a datetime of 17 characters:"
+			stufDateTime = stufDateTime + StringUtils.repeat("0", 16 - stufDateTime.length());
+		}
+		if (stufDateTime.length() == 17) {
+			log.debug("convertStufDateTimeToZgwDateTime input is a datetime of 17 characters:"
 						+ stufDateTime + " will be trimmed to 16");
-				stufDateTime = stufDateTime.substring(0, 16);
-			}
+			stufDateTime = stufDateTime.substring(0, 16);
+		}
+		if (stufDateTime.length() == 16 ) {
 			// input a datetime
 			log.debug("convertStufDateTimeToZgwDateTime input is a datetime:\t" + stufDateTime);
 			try {
