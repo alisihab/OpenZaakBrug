@@ -17,6 +17,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
 
+import org.apache.commons.lang.StringUtils;
 import org.modelmapper.AbstractConverter;
 import org.modelmapper.Conditions;
 import org.modelmapper.ModelMapper;
@@ -326,43 +327,42 @@ public class ModelMapperConfig {
 			return null;
 		}
 		if (stufDateTime.length() == 8) {
-			// input a date
-			log.debug("convertStufDateTimeToZgwDateTime input is a date:" + stufDateTime);
-			try {
-				DateTimeFormatter stufFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");
-				LocalDate cetDate = LocalDate.parse(stufDateTime, stufFormatter);
-				log.debug("convertStufDateTimeToZgwDateTime parsed\t: " + cetDate.toString());
-				DateTimeFormatter zdsFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-				var result = cetDate.format(zdsFormatter) + "T00:00:00.000000Z";
-				log.debug("convertStufDateTimeToZgwDateTime result\t: " + result);
-				return result;
-
-			} catch (Exception e) {
-				log.warn("error parsing the string:\t" + stufDateTime, e);
-				return e.toString();
-			}
-		} else if (stufDateTime.length() == 16 || stufDateTime.length() == 17) {
-			if (stufDateTime.length() == 17) {
-				log.debug("convertStufDateTimeToZgwDateTime input is a datetime of 17 characters:"
+			stufDateTime = stufDateTime + StringUtils.repeat("0", 16 - stufDateTime.length());
+		}
+		if (stufDateTime.length() == 17) {
+			log.debug("convertStufDateTimeToZgwDateTime input is a datetime of 17 characters:"
 						+ stufDateTime + " will be trimmed to 16");
-				stufDateTime = stufDateTime.substring(0, 16);
-			}
+			stufDateTime = stufDateTime.substring(0, 16);
+		}
+		if (stufDateTime.length() == 16 ) {
 			// input a datetime
 			log.debug("convertStufDateTimeToZgwDateTime input is a datetime:\t" + stufDateTime);
 			try {
+				
 				DateTimeFormatter stufFormatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmssSS");
-				ZonedDateTime cetDate = LocalDateTime.parse(stufDateTime, stufFormatter)
-						.atZone(ZoneId.systemDefault());
-				log.debug("convertStufDateTimeToZgwDateTime parsed:\t\t\t" + cetDate.toString());
-				// OffsetDateTime gmtDate = cetDate.toOffsetDateTime();
-				var gmtDate = cetDate.withZoneSameInstant(ZoneOffset.UTC).toLocalDateTime();
-				log.debug("convertStufDateTimeToZgwDateTime to GMT tomezone:\t\t" + gmtDate.toString());
-				gmtDate = gmtDate.plusMinutes(Integer.parseInt(ModelMapperConfig.singleton.timeoffset));
-				log.debug("convertStufDateTimeToZgwDateTime aded offset:\t\t" + gmtDate.toString() + " (offset in minutes:" + ModelMapperConfig.singleton.timeoffset  + ")");
-				DateTimeFormatter zdsFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'");
-				var result = gmtDate.format(zdsFormatter);
-				log.debug("convertStufDateTimeToZgwDateTime result:\t\t\t" + result);
-				return result;
+				ZonedDateTime cetDate = LocalDateTime.parse(stufDateTime, stufFormatter).atZone(ZoneId.systemDefault());
+				
+				// check if it is a date or a datetime (ignore the seconds, this is used for the status)
+				if(cetDate.getHour() == 0 && cetDate.getMinute() == 0 && cetDate.getNano() == 0) { 
+					// a date 
+					log.debug("convertStufDateTimeToZgwDateTime [date] parsed:\t\t\t" + cetDate.toString());					
+					DateTimeFormatter zdsFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'");
+					var result = cetDate.format(zdsFormatter);
+					log.debug("convertStufDateTimeToZgwDateTime [date] result:\t\t\t" + result);
+					return result;					
+				}
+				else {
+					// a datetime, apply timezone and offset
+					log.debug("convertStufDateTimeToZgwDateTime [datetime] parsed:\t\t\t" + cetDate.toString());
+					var gmtDate = cetDate.withZoneSameInstant(ZoneOffset.UTC).toLocalDateTime();
+					log.debug("convertStufDateTimeToZgwDateTime [datetime] to GMT tomezone:\t\t" + gmtDate.toString());
+					gmtDate = gmtDate.plusMinutes(Integer.parseInt(ModelMapperConfig.singleton.timeoffset));
+					log.debug("convertStufDateTimeToZgwDateTime [datetime] added offset:\t\t" + gmtDate.toString() + " (offset in minutes:" + ModelMapperConfig.singleton.timeoffset  + ")");
+					DateTimeFormatter zdsFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'");
+					var result = gmtDate.format(zdsFormatter);
+					log.debug("convertStufDateTimeToZgwDateTime [datetime] result:\t\t\t" + result);
+					return result;
+				}
 			} catch (Exception e) {
 				log.warn("error parsing the string:" + stufDateTime, e);
 				return e.toString();
