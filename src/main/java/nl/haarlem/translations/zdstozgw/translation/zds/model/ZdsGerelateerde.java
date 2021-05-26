@@ -51,5 +51,5 @@ public class ZdsGerelateerde extends ZdsObject {
 	public ZdsNietNatuurlijkPersoon nietNatuurlijkPersoon;
 	
 	@XmlElement(namespace = ZKN)
-	public ZdsVestiging zdsVestiging;
+	public ZdsVestiging vestiging;
 }

@@ -48,6 +48,7 @@ public class ZgwBetrokkeneIdentificatie {
 	@Expose
 	public String geboortedatum;
 
+	// ook gebruikt door vestiging
 	@SerializedName("verblijfsadres")
 	@Expose
 	public ZgwAdres verblijfsadres;
@@ -79,4 +80,16 @@ public class ZgwBetrokkeneIdentificatie {
 
 	@Expose
 	public String bezoekadres;
+	
+	// Vestiging 
+	@Expose
+	public String vestigingsNummer;
+	
+	@Expose
+	public String[] handelsnaam;	
+	
+	// verblijfsobject was al gedefinieerd
+	
+	@Expose
+	public String subVerblijfBuitenland;	
 }

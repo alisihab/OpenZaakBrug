@@ -416,6 +416,21 @@ public class ZaakService {
 			zgwRol.betrokkeneType = BetrokkeneType.NIET_NATUURLIJK_PERSOON.getDescription();			
 		
 		}
+		if (zdsRol.gerelateerde.vestiging != null) {
+			if (zgwRol.betrokkeneIdentificatie == null) {
+				if (zgwRol.betrokkeneIdentificatie != null) {
+					throw new ConverterException("Rol: " + typeRolOmschrijving + " wordt al gebruikt voor medewerker, natuurlijk persoon of niet natuurlijk persoon");
+				}
+			}
+			zgwRol.betrokkeneIdentificatie = this.modelMapper.map(zdsRol.gerelateerde.vestiging, ZgwBetrokkeneIdentificatie.class);
+			zgwRol.betrokkeneIdentificatie.vestigingsNummer = zdsRol.gerelateerde.vestiging.vestigingsNummer;
+			zgwRol.betrokkeneIdentificatie.handelsnaam = new String[]{zdsRol.gerelateerde.vestiging.handelsnaam};
+		
+			//zgwRol.betrokkeneIdentificatie.bezoekadres;			
+			zgwRol.roltoelichting  += zdsRol.gerelateerde.vestiging.handelsnaam;
+			zgwRol.betrokkeneType = BetrokkeneType.VESTIGING.getDescription();			
+		
+		}		
 		if (zgwRol.betrokkeneIdentificatie == null) {
 			//throw new ConverterException("Rol: " + typeRolOmschrijving + " zonder Natuurlijkpersoon or Medewerker");
 			debugWarning("Rol: " + typeRolOmschrijving + " zonder (NIET) Natuurlijkpersoon or Medewerker");
