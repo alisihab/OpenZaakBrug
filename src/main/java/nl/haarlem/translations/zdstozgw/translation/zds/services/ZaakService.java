@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -258,6 +259,13 @@ public class ZaakService {
 						//	- resultaat an reference and status has to be set to the one with the highest volgnummer
 						zdsStatusDatum = zdsZaak.einddatum;
 					}
+					
+					// zdsStatusDatum has to be of length: 17! 
+					if(zdsStatusDatum.length() < 17) {
+						// maken it length of 17
+						zdsStatusDatum = zdsStatusDatum + StringUtils.repeat("0", 17 - zdsStatusDatum.length());;
+					}
+					
 					var formatter = new SimpleDateFormat("yyyyMMdd000000000");		
 					var dagstart = formatter.format(new Date());
 					formatter = new SimpleDateFormat("yyyyMMddHHmmssSSS");					
