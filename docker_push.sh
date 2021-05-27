@@ -7,7 +7,7 @@ set +x
 rm -f ./src/main/resources/application.properties
 rm -f ./src/main/resources/config.json
 
-mvn clean install -Dmaven.javadoc.skip=true -B -V -DskipTests
+mvn install -Dmaven.javadoc.skip=true -B -V -DskipTests
 
 # Echo script commands
 set -x

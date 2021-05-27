@@ -1,16 +1,12 @@
 #!/bin/sh
-set -x
-echo "print MAX_APP_START_TIME :: ".$MAX_APP_START_TIME
+
 mv ./src/main/resources/application.properties_example ./src/main/resources/application.properties
 mv ./src/main/resources/config.json_example ./src/main/resources/config.json
 
-echo "build jar"
-mvn clean install -Dmaven.javadoc.skip=true -B -V -DskipTests
+mvn install -Dmaven.javadoc.skip=true -B -V -DskipTests
 
-echo "build image"
 sudo docker-compose -f docker-compose.yml up --build -d
 
-echo "starting the docker image ..."
 # start the counter from 5 seconds
 timeCounter=5
 
