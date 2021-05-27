@@ -1,5 +1,7 @@
 #!/bin/sh
 
+mvn clean install -Dmaven.javadoc.skip=true -B -V -DskipTests
+
 sudo docker-compose -f docker-compose.yml up --build -d
 
 # start the counter from 5 seconds
