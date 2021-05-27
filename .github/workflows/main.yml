@@ -49,10 +49,10 @@ jobs:
       with:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_PASSWORD }}
-    - name: start container
-      run: |
-        chmod +x docker_start.sh 
-        ./docker_start.sh
+    # - name: start container
+    #   run: |
+    #     chmod +x docker_start.sh 
+    #     ./docker_start.sh
     - name: publish image
       if: ${{ github.event_name == 'push'}}
       run: | 
