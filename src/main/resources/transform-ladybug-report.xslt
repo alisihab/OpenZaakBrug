@@ -120,6 +120,21 @@
 		</xsl:copy>
 	</xsl:template>
 
+	<!-- IGNORE datumStatusGezet-->
+	<xsl:template match="*[local-name()='Checkpoint' and @Name='ZGWClient POST' and @Type='Startpoint']">
+		<xsl:copy>
+			<xsl:apply-templates select="@*"/>
+			<xsl:choose>
+				<xsl:when test="contains(.,'datumStatusGezet') and contains(., 'statustoelichting')">
+					<xsl:value-of select="concat(substring-before(., 'datumStatusGezet'), 'datumStatusGezet&quot;: &quot;IGNORED&quot;,', '&quot;statustoelichting&quot;', substring-after(., 'statustoelichting'))"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="."/>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:copy>
+	</xsl:template>
+
 	<!-- Ignore java version like 11.0.2 and 15 -->
 	<xsl:template match="*[local-name()='java' and @class='java.beans.XMLDecoder']">
 		<xsl:copy>
