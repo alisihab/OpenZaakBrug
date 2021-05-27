@@ -40,7 +40,7 @@ jobs:
 
     env:
       MAX_APP_START_TIME: 30
-      WAIT_INTERVAL: 30
+      WAIT_INTERVAL: 3
 
     steps:
     - uses: actions/checkout@v2
