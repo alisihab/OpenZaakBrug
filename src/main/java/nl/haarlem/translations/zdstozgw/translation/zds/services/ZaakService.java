@@ -260,20 +260,20 @@ public class ZaakService {
 						zdsStatusDatum = zdsZaak.einddatum;
 					}
 					
-					// zdsStatusDatum has to be of length: 16! 
-					if(zdsStatusDatum.length() < 16) {
-						// maken it length of 16
-						zdsStatusDatum = zdsStatusDatum + StringUtils.repeat("0", 16 - zdsStatusDatum.length());;
-					}
 					
-					var formatter = new SimpleDateFormat("yyyyMMdd000000000");		
+					var formatter = new SimpleDateFormat("yyyyMMdd00000000");		
 					var dagstart = formatter.format(new Date());
-					formatter = new SimpleDateFormat("yyyyMMddHHmmssSSS");					
+					formatter = new SimpleDateFormat("yyyyMMddHHmmssSS");					
 					if(zdsStatusDatum == null || zdsStatusDatum.length() == 0) {
 						debugWarning("no statusdatetime provided, using now()");
 						zdsStatusDatum = formatter.format(new Date());
 					}
-					else if(dagstart.startsWith(zdsStatusDatum)) {
+					else if(zdsStatusDatum.length() < 16) {
+						// maken it length of 16
+						zdsStatusDatum = zdsStatusDatum + StringUtils.repeat("0", 16 - zdsStatusDatum.length());
+					}
+					
+					if(dagstart.startsWith(zdsStatusDatum)) {
 						debugWarning("statusdatetime contains no time, using now() (DatumGezet, has to be unique)");			
 						zdsStatusDatum = formatter.format(new Date());
 					}
