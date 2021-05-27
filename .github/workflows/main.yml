@@ -45,11 +45,13 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Docker login
-        run: echo ${{ secrets.DOCKERHUB_PASSWORD }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
+      run: echo ${{ secrets.DOCKERHUB_PASSWORD }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
     - name: start container
-        run: chmod +x docker_start.sh
-        run: ./docker_start.sh
+      run: |
+        chmod +x docker_start.sh 
+        ./docker_start.sh
     - name: publish image
-        if: ${{ github.event_name == 'push'}}
-        run: chmod +x docker_push.sh
-        run: ./docker_push.sh
+      if: ${{ github.event_name == 'push'}}
+      run: | 
+        chmod +x docker_push.sh
+        ./docker_push.sh
