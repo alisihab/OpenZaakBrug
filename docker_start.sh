@@ -2,7 +2,7 @@
 
 set -x
 
-git_tag=$(git describe --tags --abbrev=0 master)
+git_tag=${tag_name}
 set +x
 
 mv ./src/main/resources/application.properties_example ./src/main/resources/application.properties
