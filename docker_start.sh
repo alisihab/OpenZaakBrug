@@ -1,10 +1,5 @@
 #!/bin/sh
 
-set -x
-
-git_tag=${tag_name}
-set +x
-
 mv ./src/main/resources/application.properties_example ./src/main/resources/application.properties
 mv ./src/main/resources/config.json_example ./src/main/resources/config.json
 

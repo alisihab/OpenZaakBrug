@@ -59,18 +59,19 @@ jobs:
         key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
         restore-keys: ${{ runner.os }}-m2
 
-    - name: Get Previous tag
-      id: previoustag
-      uses: "WyriHaximus/github-action-get-previous-tag@master"
-
     - name: start container
       run: |
         chmod +x docker_start.sh
-        export tag_name=${{steps.previoustag.outputs.tag}}
         ./docker_start.sh
+
+    - name: Get Previous tag
+      id: previoustag
+      if: ${{ github.event_name == 'push'}}
+      uses: "WyriHaximus/github-action-get-previous-tag@master"
 
     - name: publish image
       if: ${{ github.event_name == 'push'}}
       run: | 
         chmod +x docker_push.sh
+        export tag_name=${{steps.previoustag.outputs.tag}}
         ./docker_push.sh
