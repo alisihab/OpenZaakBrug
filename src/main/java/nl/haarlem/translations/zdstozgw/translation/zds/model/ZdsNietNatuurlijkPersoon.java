@@ -21,8 +21,11 @@ public class ZdsNietNatuurlijkPersoon extends ZdsObject {
 	@XmlElement(namespace = BG, name = "inn.nnpId")
 	public String innNnpId;
 	
-	@XmlElement(namespace = BG, name = "ann.identificatie")
-	public String annIdentificatie;
+	@XmlElement(namespace = BG)
+	public ZdsAuthentiek authentiek = new ZdsAuthentiek();	
+	
+	//@XmlElement(namespace = BG, name = "ann.identificatie")
+	//public String annIdentificatie;
 
 	@XmlElement(namespace = BG)
 	public String statutaireNaam;

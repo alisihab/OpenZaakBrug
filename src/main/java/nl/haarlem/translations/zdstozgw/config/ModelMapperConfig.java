@@ -1,7 +1,6 @@
 package nl.haarlem.translations.zdstozgw.config;
 
-import static nl.haarlem.translations.zdstozgw.translation.BetrokkeneType.MEDEWERKER;
-import static nl.haarlem.translations.zdstozgw.translation.BetrokkeneType.NATUURLIJK_PERSOON;
+import nl.haarlem.translations.zdstozgw.translation.BetrokkeneType;
 
 import java.lang.invoke.MethodHandles;
 import java.text.ParseException;
@@ -38,6 +37,7 @@ import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsNatuurlijkPerso
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsNietNatuurlijkPersoon;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsOpschorting;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsRol;
+import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsVestiging;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsZaak;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsZaakDocument;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsZaakDocumentInhoud;
@@ -539,16 +539,27 @@ public class ModelMapperConfig {
 			protected ZdsRol convert(ZgwRol zgwRol) {
 				ZdsRol zdsRol = new ZdsRol();
 				zdsRol.gerelateerde = new ZdsGerelateerde();
-				if (zgwRol.getBetrokkeneType().equalsIgnoreCase(NATUURLIJK_PERSOON.getDescription())) {
-					zdsRol.gerelateerde.natuurlijkPersoon = modelMapper().map(zgwRol.betrokkeneIdentificatie,
-							ZdsNatuurlijkPersoon.class);
+				if (zgwRol.getBetrokkeneType().equalsIgnoreCase(BetrokkeneType.NATUURLIJK_PERSOON.getDescription())) {
+					zdsRol.gerelateerde.natuurlijkPersoon = modelMapper().map(zgwRol.betrokkeneIdentificatie, ZdsNatuurlijkPersoon.class);
 					zdsRol.gerelateerde.natuurlijkPersoon.entiteittype = "NPS";
-				} else if (zgwRol.getBetrokkeneType().equalsIgnoreCase(MEDEWERKER.getDescription())) {
-					zdsRol.gerelateerde.medewerker = modelMapper().map(zgwRol.betrokkeneIdentificatie,
-							ZdsMedewerker.class);
+				} 
+				else if (zgwRol.getBetrokkeneType().equalsIgnoreCase(BetrokkeneType.NIET_NATUURLIJK_PERSOON.getDescription())) {
+					zdsRol.gerelateerde.nietNatuurlijkPersoon = modelMapper().map(zgwRol.betrokkeneIdentificatie, ZdsNietNatuurlijkPersoon.class);
+					zdsRol.gerelateerde.nietNatuurlijkPersoon.entiteittype = "NNP";
+				} 
+				else if (zgwRol.getBetrokkeneType().equalsIgnoreCase(BetrokkeneType.VESTIGING.getDescription())) {
+					zdsRol.gerelateerde.vestiging = modelMapper().map(zgwRol.betrokkeneIdentificatie, ZdsVestiging.class);
+					if(zgwRol.betrokkeneIdentificatie.getHandelsnaam() != null && zgwRol.betrokkeneIdentificatie.getHandelsnaam().length > 0) {
+						zdsRol.gerelateerde.vestiging.handelsnaam = zgwRol.betrokkeneIdentificatie.getHandelsnaam()[0];
+					}
+					zdsRol.gerelateerde.vestiging.entiteittype = "VES";
+				} 
+				else if (zgwRol.getBetrokkeneType().equalsIgnoreCase(BetrokkeneType.MEDEWERKER.getDescription())) {
+					zdsRol.gerelateerde.medewerker = modelMapper().map(zgwRol.betrokkeneIdentificatie, ZdsMedewerker.class);
 					zdsRol.gerelateerde.medewerker.entiteittype = "MDW";
-				} else {
-					throw new RuntimeException("Betrokkene type nog niet geïmplementeerd");
+				} 				
+				else {
+					throw new RuntimeException("Betrokkene type: " + zgwRol.getBetrokkeneType() + " nog niet geïmplementeerd");
 				}
 				log.debug("convertToLowerCase: " + zgwRol.roltoelichting + " --> " + zdsRol.toString());
 				return zdsRol;
