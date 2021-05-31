@@ -20,19 +20,19 @@
                &lt;StUF:organisatie&gt;1900&lt;/StUF:organisatie&gt;&#13;
                &lt;StUF:applicatie&gt;CDR&lt;/StUF:applicatie&gt;&#13;
             &lt;/StUF:ontvanger&gt;&#13;
-            &lt;StUF:referentienummer&gt;942b0f62-841b-44d4-94ec-3727b198b8b4&lt;/StUF:referentienummer&gt;&#13;
-            &lt;StUF:tijdstipBericht&gt;20210528103443413&lt;/StUF:tijdstipBericht&gt;&#13;
+            &lt;StUF:referentienummer&gt;ed7c5ec6-8cb6-4e62-a3bd-77973938c18f&lt;/StUF:referentienummer&gt;&#13;
+            &lt;StUF:tijdstipBericht&gt;20210531150153490&lt;/StUF:tijdstipBericht&gt;&#13;
             &lt;StUF:entiteittype&gt;ZAK&lt;/StUF:entiteittype&gt;&#13;
          &lt;/ZKN:stuurgegevens&gt;&#13;
          &lt;ZKN:parameters&gt;&#13;
             &lt;StUF:mutatiesoort&gt;W&lt;/StUF:mutatiesoort&gt;&#13;
             &lt;StUF:indicatorOvername&gt;V&lt;/StUF:indicatorOvername&gt;&#13;
          &lt;/ZKN:parameters&gt;&#13;
-         &lt;ZKN:object StUF:sleutelVerzendend=&quot;1900128&quot; StUF:entiteittype=&quot;ZAK&quot; StUF:verwerkingssoort=&quot;W&quot;&gt;&#13;
-            &lt;ZKN:identificatie&gt;1900128&lt;/ZKN:identificatie&gt;&#13;
+         &lt;ZKN:object StUF:sleutelVerzendend=&quot;1900135&quot; StUF:entiteittype=&quot;ZAK&quot; StUF:verwerkingssoort=&quot;W&quot;&gt;&#13;
+            &lt;ZKN:identificatie&gt;1900135&lt;/ZKN:identificatie&gt;&#13;
             &lt;ZKN:omschrijving&gt;Aanvraag minimaregelingen (Z)&lt;/ZKN:omschrijving&gt;&#13;
-            &lt;ZKN:startdatum&gt;20210528&lt;/ZKN:startdatum&gt;&#13;
-            &lt;ZKN:registratiedatum&gt;20210528&lt;/ZKN:registratiedatum&gt;&#13;
+            &lt;ZKN:startdatum&gt;20210531&lt;/ZKN:startdatum&gt;&#13;
+            &lt;ZKN:registratiedatum&gt;20210531&lt;/ZKN:registratiedatum&gt;&#13;
             &lt;ZKN:isVan StUF:entiteittype=&quot;ZAKZKT&quot; StUF:verwerkingssoort=&quot;I&quot;&gt;&#13;
                &lt;ZKN:gerelateerde StUF:entiteittype=&quot;ZKT&quot; StUF:verwerkingssoort=&quot;I&quot;&gt;&#13;
                   &lt;ZKN:omschrijving&gt;Aanvraag minima&lt;/ZKN:omschrijving&gt;&#13;
@@ -42,16 +42,16 @@
             &lt;/ZKN:isVan&gt;&#13;
             &lt;ZKN:leidtTot StUF:entiteittype=&quot;ZAKBSL&quot; StUF:verwerkingssoort=&quot;T&quot; xsi:nil=&quot;true&quot; StUF:noValue=&quot;geenWaarde&quot;/&gt;&#13;
          &lt;/ZKN:object&gt;&#13;
-         &lt;ZKN:object StUF:sleutelVerzendend=&quot;1900128&quot; StUF:entiteittype=&quot;ZAK&quot; StUF:verwerkingssoort=&quot;W&quot;&gt;&#13;
-            &lt;ZKN:identificatie&gt;1900128&lt;/ZKN:identificatie&gt;&#13;
+         &lt;ZKN:object StUF:sleutelVerzendend=&quot;1900135&quot; StUF:entiteittype=&quot;ZAK&quot; StUF:verwerkingssoort=&quot;W&quot;&gt;&#13;
+            &lt;ZKN:identificatie&gt;1900135&lt;/ZKN:identificatie&gt;&#13;
             &lt;ZKN:omschrijving&gt;Aanvraag minimaregelingen (Z)&lt;/ZKN:omschrijving&gt;&#13;
             &lt;ZKN:resultaat&gt;&#13;
                &lt;!-- &lt;ZKN:omschrijving&gt;Toegekend&lt;/ZKN:omschrijving&gt;&#13; --&gt;
                &lt;ZKN:omschrijving&gt;Buiten behandeling gesteld&lt;/ZKN:omschrijving&gt;
             &lt;/ZKN:resultaat&gt;&#13;
-            &lt;ZKN:startdatum&gt;20210528&lt;/ZKN:startdatum&gt;&#13;
-            &lt;ZKN:registratiedatum&gt;20210528&lt;/ZKN:registratiedatum&gt;&#13;
-            &lt;ZKN:einddatum&gt;20210528&lt;/ZKN:einddatum&gt;&#13;
+            &lt;ZKN:startdatum&gt;20210531&lt;/ZKN:startdatum&gt;&#13;
+            &lt;ZKN:registratiedatum&gt;20210531&lt;/ZKN:registratiedatum&gt;&#13;
+            &lt;ZKN:einddatum&gt;20210531&lt;/ZKN:einddatum&gt;&#13;
             &lt;ZKN:isVan StUF:entiteittype=&quot;ZAKZKT&quot; StUF:verwerkingssoort=&quot;I&quot;&gt;&#13;
                &lt;ZKN:gerelateerde StUF:entiteittype=&quot;ZKT&quot; StUF:verwerkingssoort=&quot;I&quot;&gt;&#13;
                   &lt;ZKN:omschrijving&gt;Aanvraag minima&lt;/ZKN:omschrijving&gt;&#13;
@@ -68,7 +68,7 @@
                   &lt;ZKN:omschrijving&gt;Afgehandeld&lt;/ZKN:omschrijving&gt;
                   &lt;ZKN:ingangsdatumObject xsi:nil=&quot;true&quot; StUF:noValue=&quot;geenWaarde&quot;/&gt;
                &lt;/ZKN:gerelateerde&gt;
-               &lt;ZKN:datumStatusGezet&gt;20210528103443442&lt;/ZKN:datumStatusGezet&gt;
+               &lt;ZKN:datumStatusGezet&gt;20210531150153528&lt;/ZKN:datumStatusGezet&gt;
                &lt;ZKN:isGezetDoor StUF:entiteittype=&quot;ZAKSTTBTR&quot; StUF:verwerkingssoort=&quot;T&quot;&gt;
                   &lt;ZKN:gerelateerde&gt;
                      &lt;ZKN:medewerker StUF:entiteittype=&quot;MDW&quot; StUF:verwerkingssoort=&quot;I&quot;&gt;
@@ -94,7 +94,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-3</string>
+      <string>Thread-10</string>
      </void>
      <void property="type">
       <int>1</int>
@@ -119,7 +119,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-3</string>
+      <string>Thread-10</string>
      </void>
      <void property="type">
       <int>4</int>
@@ -144,7 +144,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-3</string>
+      <string>Thread-10</string>
      </void>
      <void property="type">
       <int>4</int>
@@ -169,7 +169,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-3</string>
+      <string>Thread-10</string>
      </void>
      <void property="type">
       <int>4</int>
@@ -194,7 +194,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-3</string>
+      <string>Thread-10</string>
      </void>
      <void property="type">
       <int>4</int>
@@ -219,7 +219,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-3</string>
+      <string>Thread-10</string>
      </void>
      <void property="type">
       <int>4</int>
@@ -232,7 +232,7 @@
       <int>1</int>
      </void>
      <void property="message">
-      <string>Ladybug_Test_Tool-2.2-20210518.202847--1313bd4a:179b20c5ef2:-7fb7</string>
+      <string>Ladybug_Test_Tool-2.2-20210518.202847--6fa83a2b:179c2808b33:-7faa</string>
      </void>
      <void property="name">
       <string>referentienummer</string>
@@ -244,7 +244,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-3</string>
+      <string>Thread-10</string>
      </void>
      <void property="type">
       <int>6</int>
@@ -269,7 +269,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-3</string>
+      <string>Thread-10</string>
      </void>
      <void property="type">
       <int>6</int>
@@ -294,7 +294,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-3</string>
+      <string>Thread-10</string>
      </void>
      <void property="type">
       <int>6</int>
@@ -319,7 +319,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-3</string>
+      <string>Thread-10</string>
      </void>
      <void property="type">
       <int>6</int>
@@ -341,7 +341,7 @@
       <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-3</string>
+      <string>Thread-10</string>
      </void>
      <void property="type">
       <int>1</int>
@@ -354,7 +354,7 @@
       <int>2</int>
      </void>
      <void property="message">
-      <string>https://fieldlab.westeurope.cloudapp.azure.com/zaken/api/v1/zaken?identificatie=1900128</string>
+      <string>https://fieldlab.westeurope.cloudapp.azure.com/zaken/api/v1/zaken?identificatie=1900135</string>
      </void>
      <void property="name">
       <string>url</string>
@@ -366,7 +366,7 @@
       <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-3</string>
+      <string>Thread-10</string>
      </void>
      <void property="type">
       <int>4</int>
@@ -379,7 +379,7 @@
       <int>2</int>
      </void>
      <void property="message">
-      <string>1900128</string>
+      <string>1900135</string>
      </void>
      <void property="name">
       <string>Parameter identificatie</string>
@@ -391,7 +391,7 @@
       <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-3</string>
+      <string>Thread-10</string>
      </void>
      <void property="type">
       <int>4</int>
@@ -404,7 +404,7 @@
       <int>2</int>
      </void>
      <void property="message">
-      <string>{&quot;count&quot;:1,&quot;next&quot;:null,&quot;previous&quot;:null,&quot;results&quot;:[{&quot;url&quot;:&quot;https://fieldlab.westeurope.cloudapp.azure.com/zaken/api/v1/zaken/cbd7d6be-1730-49e5-b5dc-2e830f05325d&quot;,&quot;uuid&quot;:&quot;cbd7d6be-1730-49e5-b5dc-2e830f05325d&quot;,&quot;identificatie&quot;:&quot;1900128&quot;,&quot;bronorganisatie&quot;:&quot;823288444&quot;,&quot;omschrijving&quot;:&quot;Aanvraag minimaregelingen (Z)&quot;,&quot;toelichting&quot;:&quot;&quot;,&quot;zaaktype&quot;:&quot;https://fieldlab.westeurope.cloudapp.azure.com/catalogi/api/v1/zaaktypen/d06a9962-a04e-4d64-9c5d-78dbde1a6b8e&quot;,&quot;registratiedatum&quot;:&quot;2021-05-28&quot;,&quot;verantwoordelijkeOrganisatie&quot;:&quot;823288444&quot;,&quot;startdatum&quot;:&quot;2021-05-28&quot;,&quot;einddatum&quot;:null,&quot;einddatumGepland&quot;:&quot;2021-01-01&quot;,&quot;uiterlijkeEinddatumAfdoening&quot;:null,&quot;publicatiedatum&quot;:null,&quot;communicatiekanaal&quot;:&quot;&quot;,&quot;productenOfDiensten&quot;:[],&quot;vertrouwelijkheidaanduiding&quot;:&quot;vertrouwelijk&quot;,&quot;betalingsindicatie&quot;:&quot;&quot;,&quot;betalingsindicatieWeergave&quot;:&quot;&quot;,&quot;laatsteBetaaldatum&quot;:null,&quot;zaakgeometrie&quot;:null,&quot;verlenging&quot;:{&quot;reden&quot;:&quot;&quot;,&quot;duur&quot;:null},&quot;opschorting&quot;:{&quot;indicatie&quot;:true,&quot;reden&quot;:&quot;niet tijdig verstrekken inform&quot;},&quot;selectielijstklasse&quot;:&quot;&quot;,&quot;hoofdzaak&quot;:null,&quot;deelzaken&quot;:[],&quot;relevanteAndereZaken&quot;:[],&quot;eigenschappen&quot;:[],&quot;status&quot;:&quot;https://fieldlab.westeurope.cloudapp.azure.com/zaken/api/v1/statussen/296b1612-e428-4ce8-8fc7-ce749fd6ef5a&quot;,&quot;kenmerken&quot;:[{&quot;kenmerk&quot;:&quot;273846&quot;,&quot;bron&quot;:&quot;GWS4all&quot;}],&quot;archiefnominatie&quot;:&quot;vernietigen&quot;,&quot;archiefstatus&quot;:&quot;nog_te_archiveren&quot;,&quot;archiefactiedatum&quot;:null,&quot;resultaat&quot;:null}]}</string>
+      <string>{&quot;count&quot;:1,&quot;next&quot;:null,&quot;previous&quot;:null,&quot;results&quot;:[{&quot;url&quot;:&quot;https://fieldlab.westeurope.cloudapp.azure.com/zaken/api/v1/zaken/129d2dc5-2d3a-4cdf-9b09-1c5c0041c946&quot;,&quot;uuid&quot;:&quot;129d2dc5-2d3a-4cdf-9b09-1c5c0041c946&quot;,&quot;identificatie&quot;:&quot;1900135&quot;,&quot;bronorganisatie&quot;:&quot;823288444&quot;,&quot;omschrijving&quot;:&quot;Aanvraag minimaregelingen (Z)&quot;,&quot;toelichting&quot;:&quot;&quot;,&quot;zaaktype&quot;:&quot;https://fieldlab.westeurope.cloudapp.azure.com/catalogi/api/v1/zaaktypen/d06a9962-a04e-4d64-9c5d-78dbde1a6b8e&quot;,&quot;registratiedatum&quot;:&quot;2021-05-31&quot;,&quot;verantwoordelijkeOrganisatie&quot;:&quot;823288444&quot;,&quot;startdatum&quot;:&quot;2021-05-31&quot;,&quot;einddatum&quot;:null,&quot;einddatumGepland&quot;:&quot;2021-01-01&quot;,&quot;uiterlijkeEinddatumAfdoening&quot;:null,&quot;publicatiedatum&quot;:null,&quot;communicatiekanaal&quot;:&quot;&quot;,&quot;productenOfDiensten&quot;:[],&quot;vertrouwelijkheidaanduiding&quot;:&quot;vertrouwelijk&quot;,&quot;betalingsindicatie&quot;:&quot;&quot;,&quot;betalingsindicatieWeergave&quot;:&quot;&quot;,&quot;laatsteBetaaldatum&quot;:null,&quot;zaakgeometrie&quot;:null,&quot;verlenging&quot;:{&quot;reden&quot;:&quot;&quot;,&quot;duur&quot;:null},&quot;opschorting&quot;:{&quot;indicatie&quot;:true,&quot;reden&quot;:&quot;niet tijdig verstrekken inform&quot;},&quot;selectielijstklasse&quot;:&quot;&quot;,&quot;hoofdzaak&quot;:null,&quot;deelzaken&quot;:[],&quot;relevanteAndereZaken&quot;:[],&quot;eigenschappen&quot;:[],&quot;status&quot;:&quot;https://fieldlab.westeurope.cloudapp.azure.com/zaken/api/v1/statussen/36021762-52e2-43c4-86e8-a95e92bc6c88&quot;,&quot;kenmerken&quot;:[{&quot;kenmerk&quot;:&quot;273846&quot;,&quot;bron&quot;:&quot;GWS4all&quot;}],&quot;archiefnominatie&quot;:&quot;vernietigen&quot;,&quot;archiefstatus&quot;:&quot;nog_te_archiveren&quot;,&quot;archiefactiedatum&quot;:null,&quot;resultaat&quot;:null}]}</string>
      </void>
      <void property="name">
       <string>ZGWClient GET</string>
@@ -419,7 +419,7 @@
       <boolean>true</boolean>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-3</string>
+      <string>Thread-10</string>
      </void>
      <void property="type">
       <int>2</int>
@@ -432,7 +432,7 @@
       <int>1</int>
      </void>
      <void property="message">
-      <string>GET to: https://fieldlab.westeurope.cloudapp.azure.com/zaken/api/v1/zaken?identificatie=1900128 took 0 milliseconds</string>
+      <string>GET to: https://fieldlab.westeurope.cloudapp.azure.com/zaken/api/v1/zaken?identificatie=1900135 took 0 milliseconds</string>
      </void>
      <void property="name">
       <string>Duration</string>
@@ -444,7 +444,7 @@
       <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-3</string>
+      <string>Thread-10</string>
      </void>
      <void property="type">
       <int>6</int>
@@ -466,7 +466,7 @@
       <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-3</string>
+      <string>Thread-10</string>
      </void>
      <void property="type">
       <int>1</int>
@@ -491,7 +491,7 @@
       <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-3</string>
+      <string>Thread-10</string>
      </void>
      <void property="type">
       <int>4</int>
@@ -519,7 +519,7 @@
       <boolean>true</boolean>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-3</string>
+      <string>Thread-10</string>
      </void>
      <void property="type">
       <int>2</int>
@@ -544,7 +544,7 @@
       <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-3</string>
+      <string>Thread-10</string>
      </void>
      <void property="type">
       <int>6</int>
@@ -558,20 +558,20 @@
      </void>
      <void property="message">
       <string>{
-  &quot;url&quot;: &quot;https://fieldlab.westeurope.cloudapp.azure.com/zaken/api/v1/zaken/cbd7d6be-1730-49e5-b5dc-2e830f05325d&quot;,
-  &quot;uuid&quot;: &quot;cbd7d6be-1730-49e5-b5dc-2e830f05325d&quot;,
+  &quot;url&quot;: &quot;https://fieldlab.westeurope.cloudapp.azure.com/zaken/api/v1/zaken/129d2dc5-2d3a-4cdf-9b09-1c5c0041c946&quot;,
+  &quot;uuid&quot;: &quot;129d2dc5-2d3a-4cdf-9b09-1c5c0041c946&quot;,
   &quot;betalingsindicatieWeergave&quot;: &quot;&quot;,
   &quot;deelzaken&quot;: [],
   &quot;eigenschappen&quot;: [],
-  &quot;status&quot;: &quot;https://fieldlab.westeurope.cloudapp.azure.com/zaken/api/v1/statussen/296b1612-e428-4ce8-8fc7-ce749fd6ef5a&quot;,
-  &quot;identificatie&quot;: &quot;1900128&quot;,
+  &quot;status&quot;: &quot;https://fieldlab.westeurope.cloudapp.azure.com/zaken/api/v1/statussen/36021762-52e2-43c4-86e8-a95e92bc6c88&quot;,
+  &quot;identificatie&quot;: &quot;1900135&quot;,
   &quot;bronorganisatie&quot;: &quot;823288444&quot;,
   &quot;omschrijving&quot;: &quot;Aanvraag minimaregelingen (Z)&quot;,
   &quot;toelichting&quot;: &quot;&quot;,
   &quot;zaaktype&quot;: &quot;https://fieldlab.westeurope.cloudapp.azure.com/catalogi/api/v1/zaaktypen/d06a9962-a04e-4d64-9c5d-78dbde1a6b8e&quot;,
-  &quot;registratiedatum&quot;: &quot;2021-05-28&quot;,
+  &quot;registratiedatum&quot;: &quot;2021-05-31&quot;,
   &quot;verantwoordelijkeOrganisatie&quot;: &quot;823288444&quot;,
-  &quot;startdatum&quot;: &quot;2021-05-28&quot;,
+  &quot;startdatum&quot;: &quot;2021-05-31&quot;,
   &quot;einddatumGepland&quot;: &quot;2021-01-01&quot;,
   &quot;communicatiekanaal&quot;: &quot;&quot;,
   &quot;productenOfDiensten&quot;: [],
@@ -603,7 +603,7 @@
       <string>nl.haarlem.translations.zdstozgw.debug.ModelMapperAdvice</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-3</string>
+      <string>Thread-10</string>
      </void>
      <void property="type">
       <int>1</int>
@@ -625,8 +625,8 @@
       &quot;bron&quot;: &quot;GWS4all&quot;
     }
   ],
-  &quot;startdatum&quot;: &quot;20210528&quot;,
-  &quot;registratiedatum&quot;: &quot;20210528&quot;,
+  &quot;startdatum&quot;: &quot;20210531&quot;,
+  &quot;registratiedatum&quot;: &quot;20210531&quot;,
   &quot;einddatumGepland&quot;: &quot;20210101&quot;,
   &quot;opschorting&quot;: {
     &quot;indicatie&quot;: &quot;J&quot;,
@@ -634,7 +634,7 @@
   },
   &quot;archiefnominatie&quot;: &quot;N&quot;,
   &quot;entiteittype&quot;: &quot;ZAK&quot;,
-  &quot;identificatie&quot;: &quot;1900128&quot;
+  &quot;identificatie&quot;: &quot;1900135&quot;
 }</string>
      </void>
      <void property="name">
@@ -647,7 +647,7 @@
       <string>nl.haarlem.translations.zdstozgw.debug.ModelMapperAdvice</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-3</string>
+      <string>Thread-10</string>
      </void>
      <void property="type">
       <int>2</int>
@@ -672,7 +672,7 @@
       <string>nl.haarlem.translations.zdstozgw.translation.zds.services.ZaakService</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-3</string>
+      <string>Thread-10</string>
      </void>
      <void property="type">
       <int>6</int>
@@ -697,57 +697,7 @@
       <string>nl.haarlem.translations.zdstozgw.translation.zds.services.ZaakService</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-3</string>
-     </void>
-     <void property="type">
-      <int>6</int>
-     </void>
-    </object>
-   </void>
-   <void method="add">
-    <object class="nl.nn.testtool.Checkpoint">
-     <void property="level">
-      <int>1</int>
-     </void>
-     <void property="message">
-      <string>The field: archiefnominatie does not match (DELETED) stored-value:&apos;N&apos; , was-value:&apos;null&apos;</string>
-     </void>
-     <void property="name">
-      <string>Warning</string>
-     </void>
-     <void property="report">
-      <object idref="Report0"/>
-     </void>
-     <void property="sourceClassName">
-      <string>nl.haarlem.translations.zdstozgw.translation.zds.services.ZaakService</string>
-     </void>
-     <void property="threadName">
-      <string>http-nio-8080-exec-3</string>
-     </void>
-     <void property="type">
-      <int>6</int>
-     </void>
-    </object>
-   </void>
-   <void method="add">
-    <object class="nl.nn.testtool.Checkpoint">
-     <void property="level">
-      <int>1</int>
-     </void>
-     <void property="message">
-      <string>The field: toelichting does not match (DELETED) stored-value:&apos;&apos; , was-value:&apos;null&apos;</string>
-     </void>
-     <void property="name">
-      <string>Warning</string>
-     </void>
-     <void property="report">
-      <object idref="Report0"/>
-     </void>
-     <void property="sourceClassName">
-      <string>nl.haarlem.translations.zdstozgw.translation.zds.services.ZaakService</string>
-     </void>
-     <void property="threadName">
-      <string>http-nio-8080-exec-3</string>
+      <string>Thread-10</string>
      </void>
      <void property="type">
       <int>6</int>
@@ -772,7 +722,57 @@
       <string>nl.haarlem.translations.zdstozgw.translation.zds.services.ZaakService</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-3</string>
+      <string>Thread-10</string>
+     </void>
+     <void property="type">
+      <int>6</int>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="nl.nn.testtool.Checkpoint">
+     <void property="level">
+      <int>1</int>
+     </void>
+     <void property="message">
+      <string>The field: toelichting does not match (DELETED) stored-value:&apos;&apos; , was-value:&apos;null&apos;</string>
+     </void>
+     <void property="name">
+      <string>Warning</string>
+     </void>
+     <void property="report">
+      <object idref="Report0"/>
+     </void>
+     <void property="sourceClassName">
+      <string>nl.haarlem.translations.zdstozgw.translation.zds.services.ZaakService</string>
+     </void>
+     <void property="threadName">
+      <string>Thread-10</string>
+     </void>
+     <void property="type">
+      <int>6</int>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="nl.nn.testtool.Checkpoint">
+     <void property="level">
+      <int>1</int>
+     </void>
+     <void property="message">
+      <string>The field: archiefnominatie does not match (DELETED) stored-value:&apos;N&apos; , was-value:&apos;null&apos;</string>
+     </void>
+     <void property="name">
+      <string>Warning</string>
+     </void>
+     <void property="report">
+      <object idref="Report0"/>
+     </void>
+     <void property="sourceClassName">
+      <string>nl.haarlem.translations.zdstozgw.translation.zds.services.ZaakService</string>
+     </void>
+     <void property="threadName">
+      <string>Thread-10</string>
      </void>
      <void property="type">
       <int>6</int>
@@ -790,9 +790,9 @@
   &quot;resultaat&quot;: {
     &quot;omschrijving&quot;: &quot;Buiten behandeling gesteld&quot;
   },
-  &quot;startdatum&quot;: &quot;20210528&quot;,
-  &quot;registratiedatum&quot;: &quot;20210528&quot;,
-  &quot;einddatum&quot;: &quot;20210528&quot;,
+  &quot;startdatum&quot;: &quot;20210531&quot;,
+  &quot;registratiedatum&quot;: &quot;20210531&quot;,
+  &quot;einddatum&quot;: &quot;20210531&quot;,
   &quot;isVan&quot;: {
     &quot;entiteittype&quot;: &quot;ZAKZKT&quot;,
     &quot;gerelateerde&quot;: {
@@ -816,7 +816,7 @@
         &quot;ingangsdatumObject&quot;: &quot;&quot;,
         &quot;volgnummer&quot;: &quot;0010&quot;
       },
-      &quot;datumStatusGezet&quot;: &quot;20210528103443442&quot;,
+      &quot;datumStatusGezet&quot;: &quot;20210531150153528&quot;,
       &quot;isGezetDoor&quot;: {
         &quot;entiteittype&quot;: &quot;ZAKSTTBTR&quot;,
         &quot;gerelateerde&quot;: {
@@ -831,7 +831,7 @@
     }
   ],
   &quot;entiteittype&quot;: &quot;ZAK&quot;,
-  &quot;identificatie&quot;: &quot;1900128&quot;
+  &quot;identificatie&quot;: &quot;1900135&quot;
 }</string>
      </void>
      <void property="name">
@@ -844,7 +844,7 @@
       <string>nl.haarlem.translations.zdstozgw.debug.ModelMapperAdvice</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-3</string>
+      <string>Thread-10</string>
      </void>
      <void property="type">
       <int>1</int>
@@ -858,10 +858,10 @@
      </void>
      <void property="message">
       <string>{
-  &quot;identificatie&quot;: &quot;1900128&quot;,
+  &quot;identificatie&quot;: &quot;1900135&quot;,
   &quot;omschrijving&quot;: &quot;Aanvraag minimaregelingen (Z)&quot;,
-  &quot;registratiedatum&quot;: &quot;2021-05-28&quot;,
-  &quot;startdatum&quot;: &quot;2021-05-28&quot;
+  &quot;registratiedatum&quot;: &quot;2021-05-31&quot;,
+  &quot;startdatum&quot;: &quot;2021-05-31&quot;
 }</string>
      </void>
      <void property="name">
@@ -874,7 +874,7 @@
       <string>nl.haarlem.translations.zdstozgw.debug.ModelMapperAdvice</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-3</string>
+      <string>Thread-10</string>
      </void>
      <void property="type">
       <int>2</int>
@@ -887,7 +887,7 @@
       <int>1</int>
      </void>
      <void property="message">
-      <string>{&quot;identificatie&quot;:&quot;1900128&quot;,&quot;bronorganisatie&quot;:&quot;823288444&quot;,&quot;toelichting&quot;:&quot;&quot;,&quot;zaaktype&quot;:&quot;https://fieldlab.westeurope.cloudapp.azure.com/catalogi/api/v1/zaaktypen/d06a9962-a04e-4d64-9c5d-78dbde1a6b8e&quot;,&quot;registratiedatum&quot;:&quot;2021-05-28&quot;,&quot;verantwoordelijkeOrganisatie&quot;:&quot;823288444&quot;,&quot;startdatum&quot;:&quot;2021-05-28&quot;,&quot;einddatumGepland&quot;:&quot;2021-01-01&quot;,&quot;communicatiekanaal&quot;:&quot;&quot;,&quot;productenOfDiensten&quot;:[],&quot;vertrouwelijkheidaanduiding&quot;:&quot;vertrouwelijk&quot;,&quot;betalingsindicatie&quot;:&quot;&quot;,&quot;opschorting&quot;:{&quot;indicatie&quot;:true,&quot;reden&quot;:&quot;niet tijdig verstrekken inform&quot;},&quot;selectielijstklasse&quot;:&quot;&quot;,&quot;relevanteAndereZaken&quot;:[],&quot;kenmerken&quot;:[{&quot;kenmerk&quot;:&quot;273846&quot;,&quot;bron&quot;:&quot;GWS4all&quot;}],&quot;archiefnominatie&quot;:&quot;vernietigen&quot;,&quot;archiefstatus&quot;:&quot;nog_te_archiveren&quot;}</string>
+      <string>{&quot;identificatie&quot;:&quot;1900135&quot;,&quot;bronorganisatie&quot;:&quot;823288444&quot;,&quot;toelichting&quot;:&quot;&quot;,&quot;zaaktype&quot;:&quot;https://fieldlab.westeurope.cloudapp.azure.com/catalogi/api/v1/zaaktypen/d06a9962-a04e-4d64-9c5d-78dbde1a6b8e&quot;,&quot;registratiedatum&quot;:&quot;2021-05-31&quot;,&quot;verantwoordelijkeOrganisatie&quot;:&quot;823288444&quot;,&quot;startdatum&quot;:&quot;2021-05-31&quot;,&quot;einddatumGepland&quot;:&quot;2021-01-01&quot;,&quot;communicatiekanaal&quot;:&quot;&quot;,&quot;productenOfDiensten&quot;:[],&quot;vertrouwelijkheidaanduiding&quot;:&quot;vertrouwelijk&quot;,&quot;betalingsindicatie&quot;:&quot;&quot;,&quot;opschorting&quot;:{&quot;indicatie&quot;:true,&quot;reden&quot;:&quot;niet tijdig verstrekken inform&quot;},&quot;selectielijstklasse&quot;:&quot;&quot;,&quot;relevanteAndereZaken&quot;:[],&quot;kenmerken&quot;:[{&quot;kenmerk&quot;:&quot;273846&quot;,&quot;bron&quot;:&quot;GWS4all&quot;}],&quot;archiefnominatie&quot;:&quot;vernietigen&quot;,&quot;archiefstatus&quot;:&quot;nog_te_archiveren&quot;}</string>
      </void>
      <void property="name">
       <string>ZGWClient PUT</string>
@@ -899,7 +899,7 @@
       <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-3</string>
+      <string>Thread-10</string>
      </void>
      <void property="type">
       <int>1</int>
@@ -912,7 +912,7 @@
       <int>2</int>
      </void>
      <void property="message">
-      <string>https://fieldlab.westeurope.cloudapp.azure.com/zaken/api/v1/zaken/cbd7d6be-1730-49e5-b5dc-2e830f05325d</string>
+      <string>https://fieldlab.westeurope.cloudapp.azure.com/zaken/api/v1/zaken/129d2dc5-2d3a-4cdf-9b09-1c5c0041c946</string>
      </void>
      <void property="name">
       <string>url</string>
@@ -924,7 +924,7 @@
       <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-3</string>
+      <string>Thread-10</string>
      </void>
      <void property="type">
       <int>4</int>
@@ -937,7 +937,7 @@
       <int>2</int>
      </void>
      <void property="message">
-      <string>{&quot;url&quot;:&quot;https://fieldlab.westeurope.cloudapp.azure.com/zaken/api/v1/zaken/cbd7d6be-1730-49e5-b5dc-2e830f05325d&quot;,&quot;uuid&quot;:&quot;cbd7d6be-1730-49e5-b5dc-2e830f05325d&quot;,&quot;identificatie&quot;:&quot;1900128&quot;,&quot;bronorganisatie&quot;:&quot;823288444&quot;,&quot;omschrijving&quot;:&quot;Aanvraag minimaregelingen (Z)&quot;,&quot;toelichting&quot;:&quot;&quot;,&quot;zaaktype&quot;:&quot;https://fieldlab.westeurope.cloudapp.azure.com/catalogi/api/v1/zaaktypen/d06a9962-a04e-4d64-9c5d-78dbde1a6b8e&quot;,&quot;registratiedatum&quot;:&quot;2021-05-28&quot;,&quot;verantwoordelijkeOrganisatie&quot;:&quot;823288444&quot;,&quot;startdatum&quot;:&quot;2021-05-28&quot;,&quot;einddatum&quot;:null,&quot;einddatumGepland&quot;:&quot;2021-01-01&quot;,&quot;uiterlijkeEinddatumAfdoening&quot;:null,&quot;publicatiedatum&quot;:null,&quot;communicatiekanaal&quot;:&quot;&quot;,&quot;productenOfDiensten&quot;:[],&quot;vertrouwelijkheidaanduiding&quot;:&quot;vertrouwelijk&quot;,&quot;betalingsindicatie&quot;:&quot;&quot;,&quot;betalingsindicatieWeergave&quot;:&quot;&quot;,&quot;laatsteBetaaldatum&quot;:null,&quot;zaakgeometrie&quot;:null,&quot;verlenging&quot;:{&quot;reden&quot;:&quot;&quot;,&quot;duur&quot;:null},&quot;opschorting&quot;:{&quot;indicatie&quot;:true,&quot;reden&quot;:&quot;niet tijdig verstrekken inform&quot;},&quot;selectielijstklasse&quot;:&quot;&quot;,&quot;hoofdzaak&quot;:null,&quot;deelzaken&quot;:[],&quot;relevanteAndereZaken&quot;:[],&quot;eigenschappen&quot;:[],&quot;status&quot;:&quot;https://fieldlab.westeurope.cloudapp.azure.com/zaken/api/v1/statussen/5b4dae48-fd3c-4318-bb22-34ef8db9c0e3&quot;,&quot;kenmerken&quot;:[{&quot;kenmerk&quot;:&quot;273846&quot;,&quot;bron&quot;:&quot;GWS4all&quot;}],&quot;archiefnominatie&quot;:&quot;vernietigen&quot;,&quot;archiefstatus&quot;:&quot;nog_te_archiveren&quot;,&quot;archiefactiedatum&quot;:null,&quot;resultaat&quot;:null}</string>
+      <string>{&quot;url&quot;:&quot;https://fieldlab.westeurope.cloudapp.azure.com/zaken/api/v1/zaken/129d2dc5-2d3a-4cdf-9b09-1c5c0041c946&quot;,&quot;uuid&quot;:&quot;129d2dc5-2d3a-4cdf-9b09-1c5c0041c946&quot;,&quot;identificatie&quot;:&quot;1900135&quot;,&quot;bronorganisatie&quot;:&quot;823288444&quot;,&quot;omschrijving&quot;:&quot;Aanvraag minimaregelingen (Z)&quot;,&quot;toelichting&quot;:&quot;&quot;,&quot;zaaktype&quot;:&quot;https://fieldlab.westeurope.cloudapp.azure.com/catalogi/api/v1/zaaktypen/d06a9962-a04e-4d64-9c5d-78dbde1a6b8e&quot;,&quot;registratiedatum&quot;:&quot;2021-05-31&quot;,&quot;verantwoordelijkeOrganisatie&quot;:&quot;823288444&quot;,&quot;startdatum&quot;:&quot;2021-05-31&quot;,&quot;einddatum&quot;:null,&quot;einddatumGepland&quot;:&quot;2021-01-01&quot;,&quot;uiterlijkeEinddatumAfdoening&quot;:null,&quot;publicatiedatum&quot;:null,&quot;communicatiekanaal&quot;:&quot;&quot;,&quot;productenOfDiensten&quot;:[],&quot;vertrouwelijkheidaanduiding&quot;:&quot;vertrouwelijk&quot;,&quot;betalingsindicatie&quot;:&quot;&quot;,&quot;betalingsindicatieWeergave&quot;:&quot;&quot;,&quot;laatsteBetaaldatum&quot;:null,&quot;zaakgeometrie&quot;:null,&quot;verlenging&quot;:{&quot;reden&quot;:&quot;&quot;,&quot;duur&quot;:null},&quot;opschorting&quot;:{&quot;indicatie&quot;:true,&quot;reden&quot;:&quot;niet tijdig verstrekken inform&quot;},&quot;selectielijstklasse&quot;:&quot;&quot;,&quot;hoofdzaak&quot;:null,&quot;deelzaken&quot;:[],&quot;relevanteAndereZaken&quot;:[],&quot;eigenschappen&quot;:[],&quot;status&quot;:&quot;https://fieldlab.westeurope.cloudapp.azure.com/zaken/api/v1/statussen/1ea14e1b-5e10-4769-ae52-fff6bebda89a&quot;,&quot;kenmerken&quot;:[{&quot;kenmerk&quot;:&quot;273846&quot;,&quot;bron&quot;:&quot;GWS4all&quot;}],&quot;archiefnominatie&quot;:&quot;vernietigen&quot;,&quot;archiefstatus&quot;:&quot;nog_te_archiveren&quot;,&quot;archiefactiedatum&quot;:null,&quot;resultaat&quot;:null}</string>
      </void>
      <void property="name">
       <string>ZGWClient PUT</string>
@@ -952,7 +952,7 @@
       <boolean>true</boolean>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-3</string>
+      <string>Thread-10</string>
      </void>
      <void property="type">
       <int>2</int>
@@ -965,7 +965,7 @@
       <int>1</int>
      </void>
      <void property="message">
-      <string>PUT to: https://fieldlab.westeurope.cloudapp.azure.com/zaken/api/v1/zaken/cbd7d6be-1730-49e5-b5dc-2e830f05325d took 0 milliseconds</string>
+      <string>PUT to: https://fieldlab.westeurope.cloudapp.azure.com/zaken/api/v1/zaken/129d2dc5-2d3a-4cdf-9b09-1c5c0041c946 took 0 milliseconds</string>
      </void>
      <void property="name">
       <string>Duration</string>
@@ -977,7 +977,7 @@
       <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-3</string>
+      <string>Thread-10</string>
      </void>
      <void property="type">
       <int>6</int>
@@ -999,7 +999,7 @@
       <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-3</string>
+      <string>Thread-10</string>
      </void>
      <void property="type">
       <int>1</int>
@@ -1024,7 +1024,7 @@
       <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-3</string>
+      <string>Thread-10</string>
      </void>
      <void property="type">
       <int>4</int>
@@ -1052,7 +1052,7 @@
       <boolean>true</boolean>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-3</string>
+      <string>Thread-10</string>
      </void>
      <void property="type">
       <int>2</int>
@@ -1077,7 +1077,7 @@
       <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-3</string>
+      <string>Thread-10</string>
      </void>
      <void property="type">
       <int>6</int>
@@ -1099,7 +1099,7 @@
       <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-3</string>
+      <string>Thread-10</string>
      </void>
      <void property="type">
       <int>1</int>
@@ -1124,7 +1124,7 @@
       <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-3</string>
+      <string>Thread-10</string>
      </void>
      <void property="type">
       <int>4</int>
@@ -1152,7 +1152,7 @@
       <boolean>true</boolean>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-3</string>
+      <string>Thread-10</string>
      </void>
      <void property="type">
       <int>2</int>
@@ -1177,7 +1177,7 @@
       <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-3</string>
+      <string>Thread-10</string>
      </void>
      <void property="type">
       <int>6</int>
@@ -1199,7 +1199,7 @@
       <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-3</string>
+      <string>Thread-10</string>
      </void>
      <void property="type">
       <int>1</int>
@@ -1224,7 +1224,7 @@
       <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-3</string>
+      <string>Thread-10</string>
      </void>
      <void property="type">
       <int>4</int>
@@ -1252,7 +1252,7 @@
       <boolean>true</boolean>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-3</string>
+      <string>Thread-10</string>
      </void>
      <void property="type">
       <int>2</int>
@@ -1265,7 +1265,7 @@
       <int>1</int>
      </void>
      <void property="message">
-      <string>GET to: https://fieldlab.westeurope.cloudapp.azure.com/catalogi/api/v1/resultaattypen/cd6726a2-0fdd-4b6d-ba1c-8cc5dee185ac took 1 milliseconds</string>
+      <string>GET to: https://fieldlab.westeurope.cloudapp.azure.com/catalogi/api/v1/resultaattypen/cd6726a2-0fdd-4b6d-ba1c-8cc5dee185ac took 0 milliseconds</string>
      </void>
      <void property="name">
       <string>Duration</string>
@@ -1277,7 +1277,7 @@
       <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-3</string>
+      <string>Thread-10</string>
      </void>
      <void property="type">
       <int>6</int>
@@ -1299,7 +1299,7 @@
       <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-3</string>
+      <string>Thread-10</string>
      </void>
      <void property="type">
       <int>1</int>
@@ -1324,7 +1324,7 @@
       <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-3</string>
+      <string>Thread-10</string>
      </void>
      <void property="type">
       <int>4</int>
@@ -1352,7 +1352,7 @@
       <boolean>true</boolean>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-3</string>
+      <string>Thread-10</string>
      </void>
      <void property="type">
       <int>2</int>
@@ -1377,7 +1377,7 @@
       <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-3</string>
+      <string>Thread-10</string>
      </void>
      <void property="type">
       <int>6</int>
@@ -1399,7 +1399,7 @@
       <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-3</string>
+      <string>Thread-10</string>
      </void>
      <void property="type">
       <int>1</int>
@@ -1412,7 +1412,7 @@
       <int>2</int>
      </void>
      <void property="message">
-      <string>https://fieldlab.westeurope.cloudapp.azure.com/zaken/api/v1/resultaten?zaak=https://fieldlab.westeurope.cloudapp.azure.com/zaken/api/v1/zaken/cbd7d6be-1730-49e5-b5dc-2e830f05325d</string>
+      <string>https://fieldlab.westeurope.cloudapp.azure.com/zaken/api/v1/resultaten?zaak=https://fieldlab.westeurope.cloudapp.azure.com/zaken/api/v1/zaken/129d2dc5-2d3a-4cdf-9b09-1c5c0041c946</string>
      </void>
      <void property="name">
       <string>url</string>
@@ -1424,7 +1424,7 @@
       <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-3</string>
+      <string>Thread-10</string>
      </void>
      <void property="type">
       <int>4</int>
@@ -1437,7 +1437,7 @@
       <int>2</int>
      </void>
      <void property="message">
-      <string>https://fieldlab.westeurope.cloudapp.azure.com/zaken/api/v1/zaken/cbd7d6be-1730-49e5-b5dc-2e830f05325d</string>
+      <string>https://fieldlab.westeurope.cloudapp.azure.com/zaken/api/v1/zaken/129d2dc5-2d3a-4cdf-9b09-1c5c0041c946</string>
      </void>
      <void property="name">
       <string>Parameter zaak</string>
@@ -1449,7 +1449,7 @@
       <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-3</string>
+      <string>Thread-10</string>
      </void>
      <void property="type">
       <int>4</int>
@@ -1477,7 +1477,7 @@
       <boolean>true</boolean>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-3</string>
+      <string>Thread-10</string>
      </void>
      <void property="type">
       <int>2</int>
@@ -1490,7 +1490,7 @@
       <int>1</int>
      </void>
      <void property="message">
-      <string>GET to: https://fieldlab.westeurope.cloudapp.azure.com/zaken/api/v1/resultaten?zaak=https://fieldlab.westeurope.cloudapp.azure.com/zaken/api/v1/zaken/cbd7d6be-1730-49e5-b5dc-2e830f05325d took 0 milliseconds</string>
+      <string>GET to: https://fieldlab.westeurope.cloudapp.azure.com/zaken/api/v1/resultaten?zaak=https://fieldlab.westeurope.cloudapp.azure.com/zaken/api/v1/zaken/129d2dc5-2d3a-4cdf-9b09-1c5c0041c946 took 0 milliseconds</string>
      </void>
      <void property="name">
       <string>Duration</string>
@@ -1502,7 +1502,7 @@
       <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-3</string>
+      <string>Thread-10</string>
      </void>
      <void property="type">
       <int>6</int>
@@ -1515,7 +1515,7 @@
       <int>1</int>
      </void>
      <void property="message">
-      <string>{&quot;zaak&quot;:&quot;https://fieldlab.westeurope.cloudapp.azure.com/zaken/api/v1/zaken/cbd7d6be-1730-49e5-b5dc-2e830f05325d&quot;,&quot;resultaattype&quot;:&quot;https://fieldlab.westeurope.cloudapp.azure.com/catalogi/api/v1/resultaattypen/a82392e8-91a1-4d5c-94be-f3c3b05ee5d5&quot;,&quot;toelichting&quot;:&quot;Buiten behandeling gesteld&quot;}</string>
+      <string>{&quot;zaak&quot;:&quot;https://fieldlab.westeurope.cloudapp.azure.com/zaken/api/v1/zaken/129d2dc5-2d3a-4cdf-9b09-1c5c0041c946&quot;,&quot;resultaattype&quot;:&quot;https://fieldlab.westeurope.cloudapp.azure.com/catalogi/api/v1/resultaattypen/a82392e8-91a1-4d5c-94be-f3c3b05ee5d5&quot;,&quot;toelichting&quot;:&quot;Buiten behandeling gesteld&quot;}</string>
      </void>
      <void property="name">
       <string>ZGWClient POST</string>
@@ -1527,7 +1527,7 @@
       <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-3</string>
+      <string>Thread-10</string>
      </void>
      <void property="type">
       <int>1</int>
@@ -1552,7 +1552,7 @@
       <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-3</string>
+      <string>Thread-10</string>
      </void>
      <void property="type">
       <int>4</int>
@@ -1565,7 +1565,7 @@
       <int>2</int>
      </void>
      <void property="message">
-      <string>{&quot;url&quot;:&quot;https://fieldlab.westeurope.cloudapp.azure.com/zaken/api/v1/resultaten/534264b2-a100-49e9-b9a4-76e9a0a833eb&quot;,&quot;uuid&quot;:&quot;534264b2-a100-49e9-b9a4-76e9a0a833eb&quot;,&quot;zaak&quot;:&quot;https://fieldlab.westeurope.cloudapp.azure.com/zaken/api/v1/zaken/cbd7d6be-1730-49e5-b5dc-2e830f05325d&quot;,&quot;resultaattype&quot;:&quot;https://fieldlab.westeurope.cloudapp.azure.com/catalogi/api/v1/resultaattypen/a82392e8-91a1-4d5c-94be-f3c3b05ee5d5&quot;,&quot;toelichting&quot;:&quot;Buiten behandeling gesteld&quot;}</string>
+      <string>{&quot;url&quot;:&quot;https://fieldlab.westeurope.cloudapp.azure.com/zaken/api/v1/resultaten/5791f779-aa80-49c4-93b4-9e593a349627&quot;,&quot;uuid&quot;:&quot;5791f779-aa80-49c4-93b4-9e593a349627&quot;,&quot;zaak&quot;:&quot;https://fieldlab.westeurope.cloudapp.azure.com/zaken/api/v1/zaken/129d2dc5-2d3a-4cdf-9b09-1c5c0041c946&quot;,&quot;resultaattype&quot;:&quot;https://fieldlab.westeurope.cloudapp.azure.com/catalogi/api/v1/resultaattypen/a82392e8-91a1-4d5c-94be-f3c3b05ee5d5&quot;,&quot;toelichting&quot;:&quot;Buiten behandeling gesteld&quot;}</string>
      </void>
      <void property="name">
       <string>ZGWClient POST</string>
@@ -1580,7 +1580,7 @@
       <boolean>true</boolean>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-3</string>
+      <string>Thread-10</string>
      </void>
      <void property="type">
       <int>2</int>
@@ -1605,7 +1605,7 @@
       <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-3</string>
+      <string>Thread-10</string>
      </void>
      <void property="type">
       <int>6</int>
@@ -1627,7 +1627,7 @@
       <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-3</string>
+      <string>Thread-10</string>
      </void>
      <void property="type">
       <int>1</int>
@@ -1652,7 +1652,7 @@
       <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-3</string>
+      <string>Thread-10</string>
      </void>
      <void property="type">
       <int>4</int>
@@ -1677,7 +1677,7 @@
       <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-3</string>
+      <string>Thread-10</string>
      </void>
      <void property="type">
       <int>4</int>
@@ -1705,7 +1705,7 @@
       <boolean>true</boolean>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-3</string>
+      <string>Thread-10</string>
      </void>
      <void property="type">
       <int>2</int>
@@ -1730,7 +1730,7 @@
       <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-3</string>
+      <string>Thread-10</string>
      </void>
      <void property="type">
       <int>6</int>
@@ -1755,7 +1755,7 @@
     &quot;ingangsdatumObject&quot;: &quot;&quot;,
     &quot;volgnummer&quot;: &quot;0010&quot;
   },
-  &quot;datumStatusGezet&quot;: &quot;20210528103443442&quot;,
+  &quot;datumStatusGezet&quot;: &quot;20210531150153528&quot;,
   &quot;isGezetDoor&quot;: {
     &quot;entiteittype&quot;: &quot;ZAKSTTBTR&quot;,
     &quot;gerelateerde&quot;: {
@@ -1779,7 +1779,7 @@
       <string>nl.haarlem.translations.zdstozgw.debug.ModelMapperAdvice</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-3</string>
+      <string>Thread-10</string>
      </void>
      <void property="type">
       <int>1</int>
@@ -1793,7 +1793,7 @@
      </void>
      <void property="message">
       <string>{
-  &quot;datumStatusGezet&quot;: &quot;2021-05-28T08:29:43.440000Z&quot;
+  &quot;datumStatusGezet&quot;: &quot;2021-05-31T12:56:53.520000Z&quot;
 }</string>
      </void>
      <void property="name">
@@ -1806,7 +1806,7 @@
       <string>nl.haarlem.translations.zdstozgw.debug.ModelMapperAdvice</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-3</string>
+      <string>Thread-10</string>
      </void>
      <void property="type">
       <int>2</int>
@@ -1831,7 +1831,7 @@
       <string>nl.haarlem.translations.zdstozgw.translation.zds.services.ZaakService</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-3</string>
+      <string>Thread-10</string>
      </void>
      <void property="type">
       <int>6</int>
@@ -1844,7 +1844,7 @@
       <int>1</int>
      </void>
      <void property="message">
-      <string>{&quot;zaak&quot;:&quot;https://fieldlab.westeurope.cloudapp.azure.com/zaken/api/v1/zaken/cbd7d6be-1730-49e5-b5dc-2e830f05325d&quot;,&quot;statustype&quot;:&quot;https://fieldlab.westeurope.cloudapp.azure.com/catalogi/api/v1/statustypen/6cd40dd5-0e5d-473e-b656-69d3073c6987&quot;,&quot;datumStatusGezet&quot;:&quot;2021-05-28T08:32:01.570000Z&quot;,&quot;statustoelichting&quot;:&quot;Afgehandeld&quot;}</string>
+      <string>{&quot;zaak&quot;:&quot;https://fieldlab.westeurope.cloudapp.azure.com/zaken/api/v1/zaken/129d2dc5-2d3a-4cdf-9b09-1c5c0041c946&quot;,&quot;statustype&quot;:&quot;https://fieldlab.westeurope.cloudapp.azure.com/catalogi/api/v1/statustypen/6cd40dd5-0e5d-473e-b656-69d3073c6987&quot;,&quot;datumStatusGezet&quot;:&quot;2021-05-31T12:59:07.900000Z&quot;,&quot;statustoelichting&quot;:&quot;Afgehandeld&quot;}</string>
      </void>
      <void property="name">
       <string>ZGWClient POST</string>
@@ -1856,7 +1856,7 @@
       <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-3</string>
+      <string>Thread-10</string>
      </void>
      <void property="type">
       <int>1</int>
@@ -1881,7 +1881,7 @@
       <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-3</string>
+      <string>Thread-10</string>
      </void>
      <void property="type">
       <int>4</int>
@@ -1894,7 +1894,7 @@
       <int>2</int>
      </void>
      <void property="message">
-      <string>{&quot;url&quot;:&quot;https://fieldlab.westeurope.cloudapp.azure.com/zaken/api/v1/statussen/fd58fe2e-7b98-403f-8ead-8108864ac3aa&quot;,&quot;uuid&quot;:&quot;fd58fe2e-7b98-403f-8ead-8108864ac3aa&quot;,&quot;zaak&quot;:&quot;https://fieldlab.westeurope.cloudapp.azure.com/zaken/api/v1/zaken/cbd7d6be-1730-49e5-b5dc-2e830f05325d&quot;,&quot;statustype&quot;:&quot;https://fieldlab.westeurope.cloudapp.azure.com/catalogi/api/v1/statustypen/6cd40dd5-0e5d-473e-b656-69d3073c6987&quot;,&quot;datumStatusGezet&quot;:&quot;2021-05-28T08:29:49.840000Z&quot;,&quot;statustoelichting&quot;:&quot;Afgehandeld&quot;}</string>
+      <string>{&quot;url&quot;:&quot;https://fieldlab.westeurope.cloudapp.azure.com/zaken/api/v1/statussen/32e93b31-9b2b-4451-b114-f1f417510928&quot;,&quot;uuid&quot;:&quot;32e93b31-9b2b-4451-b114-f1f417510928&quot;,&quot;zaak&quot;:&quot;https://fieldlab.westeurope.cloudapp.azure.com/zaken/api/v1/zaken/129d2dc5-2d3a-4cdf-9b09-1c5c0041c946&quot;,&quot;statustype&quot;:&quot;https://fieldlab.westeurope.cloudapp.azure.com/catalogi/api/v1/statustypen/6cd40dd5-0e5d-473e-b656-69d3073c6987&quot;,&quot;datumStatusGezet&quot;:&quot;2021-05-31T12:56:59.200000Z&quot;,&quot;statustoelichting&quot;:&quot;Afgehandeld&quot;}</string>
      </void>
      <void property="name">
       <string>ZGWClient POST</string>
@@ -1909,7 +1909,7 @@
       <boolean>true</boolean>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-3</string>
+      <string>Thread-10</string>
      </void>
      <void property="type">
       <int>2</int>
@@ -1934,7 +1934,7 @@
       <string>nl.haarlem.translations.zdstozgw.translation.zgw.client.ZGWClient</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-3</string>
+      <string>Thread-10</string>
      </void>
      <void property="type">
       <int>6</int>
@@ -1969,7 +1969,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-3</string>
+      <string>Thread-10</string>
      </void>
      <void property="type">
       <int>5</int>
@@ -1982,7 +1982,7 @@
       <int>1</int>
      </void>
      <void property="message">
-      <string>zaakidentificatie:1900128</string>
+      <string>zaakidentificatie:1900135</string>
      </void>
      <void property="name">
       <string>kenmerk</string>
@@ -1994,7 +1994,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-3</string>
+      <string>Thread-10</string>
      </void>
      <void property="type">
       <int>5</int>
@@ -2007,7 +2007,7 @@
       <int>1</int>
      </void>
      <void property="message">
-      <string>Soapaction: &quot;http://www.egem.nl/StUF/sector/zkn/0310/updateZaak_Lk01&quot; took 53 milliseconds</string>
+      <string>Soapaction: &quot;http://www.egem.nl/StUF/sector/zkn/0310/updateZaak_Lk01&quot; took 85 milliseconds</string>
      </void>
      <void property="name">
       <string>Total duration</string>
@@ -2019,7 +2019,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-3</string>
+      <string>Thread-10</string>
      </void>
      <void property="type">
       <int>6</int>
@@ -2047,9 +2047,9 @@
           &lt;applicatie&gt;GWS4all&lt;/applicatie&gt;&#13;
           &lt;gebruiker&gt;Gebruiker&lt;/gebruiker&gt;&#13;
         &lt;/ontvanger&gt;&#13;
-        &lt;referentienummer&gt;Ladybug_Test_Tool-2.2-20210518.202847--1313bd4a:179b20c5ef2:-7fb7&lt;/referentienummer&gt;&#13;
-        &lt;tijdstipBericht&gt;20210528103701&lt;/tijdstipBericht&gt;&#13;
-        &lt;crossRefnummer&gt;942b0f62-841b-44d4-94ec-3727b198b8b4&lt;/crossRefnummer&gt;&#13;
+        &lt;referentienummer&gt;Ladybug_Test_Tool-2.2-20210518.202847--6fa83a2b:179c2808b33:-7faa&lt;/referentienummer&gt;&#13;
+        &lt;tijdstipBericht&gt;20210531150407&lt;/tijdstipBericht&gt;&#13;
+        &lt;crossRefnummer&gt;ed7c5ec6-8cb6-4e62-a3bd-77973938c18f&lt;/crossRefnummer&gt;&#13;
       &lt;/stuurgegevens&gt;&#13;
     &lt;/Bv03Bericht&gt;&#13;
   &lt;/SOAP-ENV:Body&gt;&#13;
@@ -2066,7 +2066,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-3</string>
+      <string>Thread-10</string>
      </void>
      <void property="type">
       <int>2</int>
@@ -2075,13 +2075,13 @@
    </void>
   </void>
   <void property="correlationId">
-   <string>Ladybug_Test_Tool-2.2-20210518.202847--1313bd4a:179b20c5ef2:-7fb7</string>
+   <string>Ladybug_Test_Tool-2.2-20210518.202847--6fa83a2b:179c2808b33:-7faa</string>
   </void>
   <void property="description">
    <string></string>
   </void>
   <void property="endTime">
-   <long>1622191021076</long>
+   <long>1622466247938</long>
   </void>
   <void property="name">
    <string>Suites4SociaalDomein 14 Translate updateZaak_Lk01</string>
@@ -2090,10 +2090,10 @@
    <string></string>
   </void>
   <void property="startTime">
-   <long>1622191021022</long>
+   <long>1622466247852</long>
   </void>
   <void property="storageId">
-   <int>433</int>
+   <int>437</int>
   </void>
   <void property="stubStrategy">
    <string>Stub all external connection code</string>
