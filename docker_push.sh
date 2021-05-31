@@ -12,7 +12,7 @@ mvn install -Dmaven.javadoc.skip=true -B -V -DskipTests
 # Echo script commands
 set -x
 
-git_tag=$(git tag --sort=-creatordate | head -1)
+git_tag=${tag_name}
 
 REPO=openzaakbrug/openzaakbrug
 TAG=${git_tag:-latest}
