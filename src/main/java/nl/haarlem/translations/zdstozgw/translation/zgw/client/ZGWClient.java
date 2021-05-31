@@ -251,7 +251,7 @@ public class ZGWClient {
 		Gson gson = new Gson();
 		QueryResult<ZgwEnkelvoudigInformatieObject> queryResult = gson.fromJson(documentJson, type);
 
-		if (queryResult.getResults().size() == 1) {
+		if (queryResult.getResults() != null && queryResult.getResults().size() == 1) {
 			return queryResult.getResults().get(0);
 		}
 		log.debug("zaakdocument #" + identificatie + " not found!");
@@ -313,7 +313,7 @@ public class ZGWClient {
 		}.getType();
 		Gson gson = new Gson();
 		QueryResult<ZgwZaak> queryResult = gson.fromJson(zaakJson, type);
-		if (queryResult.getResults().size() == 1) {
+		if (queryResult.getResults() != null &&  queryResult.getResults().size() == 1) {
 			result = queryResult.getResults().get(0);
 		}
 		return result;
@@ -374,6 +374,9 @@ public class ZGWClient {
 		}.getType();
 		Gson gson = new Gson();
 		QueryResult<ZgwStatusType> queryResult = gson.fromJson(statusTypeJson, type);
+		if(queryResult.getResults() == null) {
+			return new ArrayList<ZgwStatusType>(); 
+		}
 		return queryResult.getResults();
 	}
 	
@@ -383,6 +386,9 @@ public class ZGWClient {
 		}.getType();
 		Gson gson = new Gson();
 		QueryResult<ZgwResultaatType> queryResult = gson.fromJson(restulaatTypeJson, type);
+		if(queryResult.getResults() == null) {
+			return new ArrayList<ZgwResultaatType>(); 
+		}		
 		return queryResult.getResults();
 	}		
 
@@ -392,6 +398,9 @@ public class ZGWClient {
 		}.getType();
 		Gson gson = new Gson();
 		QueryResult<ZgwResultaat> queryResult = gson.fromJson(restulaatJson, type);
+		if(queryResult.getResults() == null) {
+			return new ArrayList<ZgwResultaat>(); 
+		}				
 		return queryResult.getResults();
 	}		
 	
@@ -402,6 +411,9 @@ public class ZGWClient {
 		}.getType();
 		Gson gson = new Gson();
 		QueryResult<ZgwStatus> queryResult = gson.fromJson(statusTypeJson, type);
+		if(queryResult == null) {
+			return new ArrayList<ZgwStatus>();
+		}
 		return queryResult.getResults();
 	}
 
@@ -431,6 +443,9 @@ public class ZGWClient {
 		}.getType();
 		Gson gson = new Gson();
 		QueryResult<ZgwZaakType> queryResult = gson.fromJson(zaakTypeJson, type);
+		if(queryResult == null) {
+			return new ArrayList<ZgwZaakType>();
+		}		
 		return queryResult.getResults();
 	}
 
@@ -452,6 +467,9 @@ public class ZGWClient {
 		}.getType();
 		Gson gson = new Gson();
 		QueryResult<ZgwRol> queryResult = gson.fromJson(zaakTypeJson, type);
+		if(queryResult == null) {
+			return new ArrayList<ZgwRol>();
+		}		
 		return queryResult.getResults();
 	}
 
@@ -461,6 +479,9 @@ public class ZGWClient {
 		}.getType();
 		Gson gson = new Gson();
 		QueryResult<ZgwRolType> queryResult = gson.fromJson(rolTypeJson, type);
+		if(queryResult == null) {
+			return new ArrayList<ZgwRolType>();
+		}		
 		return queryResult.getResults();
 	}
 
