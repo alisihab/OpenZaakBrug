@@ -1,13 +1,13 @@
-# OpenZaakBrug deployment Instructions 
+# Open ZaakBrug deployment Instructions 
 
 
 ## Commit/PR-CI
 
-In the OpenZaakBrug repository we use github actions for the ci/cd. 
+In the Open ZaakBrug repository we use github actions for the ci/cd. 
 First of all the CI tool will build the application and run the unit tests.
-Afterwards, it will start the application in docker container(this step might be redundant however 
+Afterwards, it will start the application in docker container (this step might be redundant however 
 we had some problems in the past that the application was not working properly in docker container)
-Just to see that the OZB performs well in docker container ci tool(using curl) will ask OZB to generate zaak identification.
+Just to see that the OZB performs well in docker container, ci tool (using curl) will ask OZB to generate zaak identification.
 Then, if the CI tool is triggered for a commit to the master it will create a docker image and push it to docker hub. 
 (https://hub.docker.com/repository/docker/openzaakbrug/openzaakbrug)
 
@@ -81,6 +81,13 @@ After editing the file do not forget to restart the deamon (```systemctl restart
 In case nginx requires some adjustments the config file can be found in _/etc/nginx/conf.d/_.
 Do not forget to restart nginx after making changes (```systemctl restart nginx```)
 
+## Asked questions
+
+#### Docker volumes
+
+	In het update script zie ik: -v /root/config:/home/config -v data-debug:/home/data. Waar kan ik de data-debug folder vinden? Zit niet onder /root zo te zien, maar waar dan wel? 
+
+	The former will mount the folder in the host machine to the docker container and the latter(data-debug) is the name of the volume. It will keep the persisted data in /home/data folder in the docker container. Available volumes can be seen by executing the command:  docker volume ls
 
 
 
