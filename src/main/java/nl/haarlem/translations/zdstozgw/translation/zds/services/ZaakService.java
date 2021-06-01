@@ -362,7 +362,7 @@ public class ZaakService {
 			zgwRol.betrokkeneIdentificatie = this.modelMapper.map(zdsRol.gerelateerde.nietNatuurlijkPersoon, ZgwBetrokkeneIdentificatie.class);
 			// https://github.com/Sudwest-Fryslan/OpenZaakBrug/issues/118
 			//zgwRol.betrokkeneIdentificatie.innNnpId = zdsRol.gerelateerde.nietNatuurlijkPersoon.annIdentificatie;
-			zgwRol.betrokkeneIdentificatie.annIdentificatie = zdsRol.gerelateerde.nietNatuurlijkPersoon.annIdentificatie;
+			//zgwRol.betrokkeneIdentificatie.annIdentificatie = zdsRol.gerelateerde.nietNatuurlijkPersoon.annIdentificatie;
 			zgwRol.betrokkeneIdentificatie.statutaireNaam = zdsRol.gerelateerde.nietNatuurlijkPersoon.statutaireNaam;
 		
 			var rechtsvorm = zdsRol.gerelateerde.nietNatuurlijkPersoon.innRechtsvorm.toLowerCase();
