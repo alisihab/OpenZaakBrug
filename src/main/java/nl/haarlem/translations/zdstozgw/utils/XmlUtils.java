@@ -243,11 +243,28 @@ public class XmlUtils {
 	public static Object getStUFObject(String body, Class c) {
 		Object object = null;
 		try {
-			object = JAXBContext.newInstance(c).createUnmarshaller().unmarshal(
-					MessageFactory.newInstance().createMessage(null, new ByteArrayInputStream(body.getBytes()))
-							.getSOAPBody().extractContentAsDocument());
-		} catch (Exception e) {
-			e.printStackTrace();
+			// WORKAROUND [A] : replace header '﻿<?xml version="1.0" encoding="utf-8"?>' here
+			var WRITE_XML_DECLARATION = "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?>";
+			if(body.startsWith(WRITE_XML_DECLARATION)) {
+				body = body.substring(WRITE_XML_DECLARATION.length());
+			}
+			var inputstream = new ByteArrayInputStream(body.getBytes());
+			var message = MessageFactory.newInstance().createMessage(null, inputstream);
+			var document = message.getSOAPBody().extractContentAsDocument();
+			var unmarshaller = JAXBContext.newInstance(c).createUnmarshaller();
+			// WORKAROUND [A] : otherwise here exception: 
+			//	java.lang.RuntimeException: com.sun.xml.messaging.saaj.SOAPExceptionImpl: XML declaration parsing failed
+			//	java.io.IOException: Unexpected characters before XML declaration
+			object = unmarshaller.unmarshal(document);
+		}
+		catch (SOAPException se) {
+			throw new ConverterException("create soapmessage from request:" + se.toString(), body, se);
+		}		
+		catch (JAXBException jaxbe) {
+			throw new ConverterException("unmarshalllen request to class:" + c.getName() + " : " + jaxbe.toString(), jaxbe.getMessage(), jaxbe);
+		} 		
+		catch (Exception e) {
+			throw new ConverterException("fout bij parsen xml:" + e.toString(), e);
 		}
 		return object;
 	}
