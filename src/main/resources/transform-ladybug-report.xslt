@@ -35,7 +35,10 @@
 			<xsl:apply-templates select="@*"/>
 			<xsl:choose>
 				<xsl:when test="string-length(.) > 10"><xsl:value-of select="'IGNORED'"/></xsl:when>
-				<xsl:otherwise><xsl:value-of select="concat('[', current-dateTime(), ' WRONG referentienummer: ', ., ']')"/></xsl:otherwise>
+				<xsl:otherwise>
+					<!-- Add timestamp to make test fail and inform user to adjust this xslt -->
+					<xsl:value-of select="concat('[', current-dateTime(), ' WRONG referentienummer or transform-ladybug-report.xslt needs to be adjusted for value: ', ., ']')"/>
+				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:copy>
 	</xsl:template>
@@ -46,7 +49,10 @@
 			<xsl:apply-templates select="@*"/>
 			<xsl:choose>
 				<xsl:when test="string-length(.) > 10"><xsl:value-of select="'IGNORED'"/></xsl:when>
-				<xsl:otherwise><xsl:value-of select="concat('[', current-dateTime(), ' WRONG referentienummer: ', ., ']')"/></xsl:otherwise>
+				<xsl:otherwise>
+					<!-- Add timestamp to make test fail and inform user to adjust this xslt -->
+					<xsl:value-of select="concat('[', current-dateTime(), ' WRONG referentienummer or transform-ladybug-report.xslt needs to be adjusted for value: ', ., ']')"/>
+				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:copy>
 	</xsl:template>
@@ -58,7 +64,10 @@
 			<xsl:choose>
 				<xsl:when test="string-length(.) = 0"/>
 				<xsl:when test="string-length(.) > 4"><xsl:value-of select="'IGNORED'"/></xsl:when>
-				<xsl:otherwise><xsl:value-of select="concat('[', current-dateTime(), ' WRONG identificatie: ', ., ']')"/></xsl:otherwise>
+				<xsl:otherwise>
+					<!-- Add timestamp to make test fail and inform user to adjust this xslt -->
+					<xsl:value-of select="concat('[', current-dateTime(), ' WRONG identificatie or transform-ladybug-report.xslt needs to be adjusted for value: ', ., ']')"/>
+				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:copy>
 	</xsl:template>
@@ -110,12 +119,14 @@
 	<xsl:template match="*[local-name()='Checkpoint' and @Name='kenmerk' and @Type='Outputpoint' and @Level='1']">
 		<xsl:copy>
 			<xsl:apply-templates select="@*"/>
-			<xsl:value-of select="concat(substring-before(., ':'), ':')"/>
+			<xsl:if test="contains(.,':')">
+				<xsl:value-of select="concat(substring-before(., ':'), ':')"/>
+			</xsl:if>
 			<xsl:choose>
 				<xsl:when test="substring-before(., ':') = 'zaakidentificatie'"><xsl:value-of select="'IGNORED'"/></xsl:when>
 				<xsl:when test="substring-before(., ':') = 'bsn'"><xsl:value-of select="'IGNORED'"/></xsl:when>
 				<xsl:when test="substring-before(., ':') = 'documentidentificatie'"><xsl:value-of select="'IGNORED'"/></xsl:when>
-				<xsl:otherwise><xsl:value-of select="concat('[', current-dateTime(), ' WRONG kenmerk: ', ., ']')"/></xsl:otherwise>
+				<xsl:otherwise><xsl:value-of select="."/></xsl:otherwise>
 			</xsl:choose>
 		</xsl:copy>
 	</xsl:template>
