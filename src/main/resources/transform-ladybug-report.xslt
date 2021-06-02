@@ -35,7 +35,10 @@
 			<xsl:apply-templates select="@*"/>
 			<xsl:choose>
 				<xsl:when test="string-length(.) > 10"><xsl:value-of select="'IGNORED'"/></xsl:when>
-				<xsl:otherwise><xsl:value-of select="concat('[', current-dateTime(), ' WRONG referentienummer or transform-ladybug-report.xslt needs to be adjusted for value: ', ., ']')"/></xsl:otherwise>
+				<xsl:otherwise>
+					<!-- Add timestamp to make test fail and inform user to adjust this xslt -->
+					<xsl:value-of select="concat('[', current-dateTime(), ' WRONG referentienummer or transform-ladybug-report.xslt needs to be adjusted for value: ', ., ']')"/>
+				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:copy>
 	</xsl:template>
@@ -46,7 +49,10 @@
 			<xsl:apply-templates select="@*"/>
 			<xsl:choose>
 				<xsl:when test="string-length(.) > 10"><xsl:value-of select="'IGNORED'"/></xsl:when>
-				<xsl:otherwise><xsl:value-of select="concat('[', current-dateTime(), ' WRONG referentienummer or transform-ladybug-report.xslt needs to be adjusted for value: ', ., ']')"/></xsl:otherwise>
+				<xsl:otherwise>
+					<!-- Add timestamp to make test fail and inform user to adjust this xslt -->
+					<xsl:value-of select="concat('[', current-dateTime(), ' WRONG referentienummer or transform-ladybug-report.xslt needs to be adjusted for value: ', ., ']')"/>
+				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:copy>
 	</xsl:template>
@@ -58,7 +64,10 @@
 			<xsl:choose>
 				<xsl:when test="string-length(.) = 0"/>
 				<xsl:when test="string-length(.) > 4"><xsl:value-of select="'IGNORED'"/></xsl:when>
-				<xsl:otherwise><xsl:value-of select="concat('[', current-dateTime(), ' WRONG identificatie or transform-ladybug-report.xslt needs to be adjusted for value: ', ., ']')"/></xsl:otherwise>
+				<xsl:otherwise>
+					<!-- Add timestamp to make test fail and inform user to adjust this xslt -->
+					<xsl:value-of select="concat('[', current-dateTime(), ' WRONG identificatie or transform-ladybug-report.xslt needs to be adjusted for value: ', ., ']')"/>
+				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:copy>
 	</xsl:template>
