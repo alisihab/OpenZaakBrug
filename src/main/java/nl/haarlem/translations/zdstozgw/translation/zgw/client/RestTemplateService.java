@@ -37,16 +37,22 @@ public class RestTemplateService {
 	private RestTemplate restTemplate;
 
 	@Autowired
-	public RestTemplateService(@Value("${nl.haarlem.translations.zdstozgw.trustAllCerts:false}") boolean trustAllCerts,
+	public RestTemplateService(
+			@Value("${nl.haarlem.translations.zdstozgw.trustAllCerts:false}") boolean trustAllCerts,
+			@Value("${nl.haarlem.translations.zdstozgw.connectionRequestTimeout:30000}") int connectionRequestTimeout,
+			@Value("${nl.haarlem.translations.zdstozgw.connectTimeout:30000}") int connectTimeout,
+			@Value("${nl.haarlem.translations.zdstozgw.readTimeout:600000}") int readTimeout,
 			RestTemplateBuilder restTemplateBuilder) {
 	    if(trustAllCerts){
             HttpsURLConnection.setDefaultHostnameVerifier((hostname, session) -> true);
         }
 		this.restTemplate = restTemplateBuilder.build();
-		this.restTemplate.setRequestFactory(new BufferingClientHttpRequestFactory(getAllCertsTrustingRequestFactory()));
+		this.restTemplate.setRequestFactory(new BufferingClientHttpRequestFactory(getAllCertsTrustingRequestFactory(
+				connectionRequestTimeout, connectTimeout, readTimeout)));
 	}
 
-	private HttpComponentsClientHttpRequestFactory getAllCertsTrustingRequestFactory() {
+	private HttpComponentsClientHttpRequestFactory getAllCertsTrustingRequestFactory(int connectionRequestTimeout,
+			int connectTimeout, int readTimeout) {
 		TrustStrategy acceptingTrustStrategy = (X509Certificate[] chain, String authType) -> true;
 
 		SSLContext sslContext = null;
@@ -60,6 +66,9 @@ public class RestTemplateService {
 		CloseableHttpClient httpClient = HttpClients.custom().setSSLSocketFactory(csf).build();
 
 		HttpComponentsClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory();
+		requestFactory.setConnectionRequestTimeout(connectionRequestTimeout);
+		requestFactory.setConnectTimeout(connectTimeout);
+		requestFactory.setReadTimeout(readTimeout);
 
 		requestFactory.setHttpClient(httpClient);
 		return requestFactory;
