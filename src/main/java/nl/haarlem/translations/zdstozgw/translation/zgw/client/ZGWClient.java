@@ -92,12 +92,18 @@ public class ZGWClient {
 		HttpEntity<String> entity = new HttpEntity<String>(json, this.restTemplateService.getHeaders());
 		try {
 			long startTime = System.currentTimeMillis();
+			long[] exchangeDuration = new long[2];
 			String finalUrl = url;
-			String zgwResponse = (String) debug.endpoint(debugName,
-					() -> this.restTemplateService.getRestTemplate().postForObject(finalUrl, entity, String.class));
+			String zgwResponse = (String) debug.endpoint(debugName, () -> {
+				exchangeDuration[0] = System.currentTimeMillis();
+				String response = this.restTemplateService.getRestTemplate().postForObject(finalUrl, entity, String.class);
+				exchangeDuration[1] = System.currentTimeMillis();
+				return response;
+			});
+			var innerDuration = exchangeDuration[1] - exchangeDuration[0];
 			long endTime = System.currentTimeMillis();			
 			var duration = endTime - startTime;
-			var message = "POST to: " + url + " took " + duration + " milliseconds";
+			var message = "POST to: " + url + " took " + innerDuration + "/" + duration + " milliseconds";
 			log.debug(message);
 			debug.infopoint("Duration", message);
 			log.debug("POST response: " + zgwResponse);
@@ -134,15 +140,19 @@ public class ZGWClient {
 		HttpEntity entity = new HttpEntity(this.restTemplateService.getHeaders());
 		try {
 			long startTime = System.currentTimeMillis();
+			long[] exchangeDuration = new long[2];
 			String finalUrl = url;
 			String zgwResponse = (String) debug.endpoint(debugName, () -> {
+				exchangeDuration[0] = System.currentTimeMillis();
 				ResponseEntity<String> response = this.restTemplateService.getRestTemplate().exchange(finalUrl,
 						HttpMethod.GET, entity, String.class);
+				exchangeDuration[1] = System.currentTimeMillis();
 				return response.getBody();
 			});
+			var innerDuration = exchangeDuration[1] - exchangeDuration[0];
 			long endTime = System.currentTimeMillis();
 			var duration = endTime - startTime;
-			var message = "GET to: " + url + " took " + duration + " milliseconds";
+			var message = "GET to: " + url + " took " + innerDuration + "/" + duration + " milliseconds";
 			log.debug(message);
 			debug.infopoint("Duration", message);			
 			log.debug("GET response: " + zgwResponse);
@@ -168,16 +178,19 @@ public class ZGWClient {
 		HttpEntity entity = new HttpEntity(this.restTemplateService.getHeaders());
 		try {
 			long startTime = System.currentTimeMillis();
+			long[] exchangeDuration = new long[2];
 			String finalUrl = url;
 			String zgwResponse = (String) debug.endpoint(debugName, () -> {
+				exchangeDuration[0] = System.currentTimeMillis();
 				ResponseEntity<String> response = this.restTemplateService.getRestTemplate().exchange(finalUrl,
 						HttpMethod.DELETE, entity, String.class);
+				exchangeDuration[1] = System.currentTimeMillis();
 				return response.getBody();
 			});
+			var innerDuration = exchangeDuration[1] - exchangeDuration[0];
 			long endTime = System.currentTimeMillis();
-
 			var duration = endTime - startTime;
-			var message = "DELETE to: " + url + " took " + duration + " milliseconds";
+			var message = "DELETE to: " + url + " took " + innerDuration + "/" + duration + " milliseconds";
 			log.debug(message);
 			debug.infopoint("Duration", message);			
 			log.debug("DELETE response: " + zgwResponse);
@@ -203,15 +216,19 @@ public class ZGWClient {
 		HttpEntity<String> entity = new HttpEntity<String>(json, this.restTemplateService.getHeaders());
 		try {
 			long startTime = System.currentTimeMillis();
+			long[] exchangeDuration = new long[2];
 			String finalUrl = url;
 			String zgwResponse = (String) debug.endpoint(debugName, () -> {
+				exchangeDuration[0] = System.currentTimeMillis();
 				ResponseEntity<String> response = this.restTemplateService.getRestTemplate().exchange(finalUrl,
 						HttpMethod.PUT, entity, String.class);
+				exchangeDuration[1] = System.currentTimeMillis();
 				return response.getBody();
 			});
+			var innerDuration = exchangeDuration[1] - exchangeDuration[0];
 			long endTime = System.currentTimeMillis();
 			var duration = endTime - startTime;
-			var message = "PUT to: " + url + " took " + duration + " milliseconds";
+			var message = "PUT to: " + url + " took " + innerDuration + "/" + duration + " milliseconds";
 			log.debug(message);
 			debug.infopoint("Duration", message);						
 			log.debug("PUT response: " + zgwResponse);
