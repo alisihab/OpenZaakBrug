@@ -11,6 +11,9 @@ openzaak.baseUrl = https://openzaak.local
 nl.haarlem.translations.zdstozgw.trustAllCerts = false
 nl.haarlem.translations.zdstozgw.enableJWTEntpoint = false
 nl.haarlem.translations.zdstozgw.timeoffset.minutes = -5
+nl.haarlem.translations.zdstozgw.connectionRequestTimeout = 30000
+nl.haarlem.translations.zdstozgw.connectTimeout = 30000
+nl.haarlem.translations.zdstozgw.readTimeout = 600000
 
 #openzaak endpoints
 zgw.endpoint.roltype = /catalogi/api/v1/roltypen
