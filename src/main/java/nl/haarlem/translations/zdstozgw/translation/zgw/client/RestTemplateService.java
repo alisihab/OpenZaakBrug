@@ -72,7 +72,6 @@ public class RestTemplateService {
 		requestFactory.setConnectionRequestTimeout(connectionRequestTimeout);
 		requestFactory.setConnectTimeout(connectTimeout);
 		requestFactory.setReadTimeout(readTimeout);
-		
 
 		requestFactory.setHttpClient(httpClient);
 		return requestFactory;
