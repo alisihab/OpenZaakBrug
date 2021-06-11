@@ -42,17 +42,19 @@ public class RestTemplateService {
 			@Value("${nl.haarlem.translations.zdstozgw.connectionRequestTimeout:30000}") int connectionRequestTimeout,
 			@Value("${nl.haarlem.translations.zdstozgw.connectTimeout:30000}") int connectTimeout,
 			@Value("${nl.haarlem.translations.zdstozgw.readTimeout:600000}") int readTimeout,
+			@Value("${nl.haarlem.translations.zdstozgw.maxConnPerRoute:20}") int maxConnPerRoute,
+			@Value("${nl.haarlem.translations.zdstozgw.maxConnTotal:100}") int maxConnTotal,
 			RestTemplateBuilder restTemplateBuilder) {
 	    if(trustAllCerts){
             HttpsURLConnection.setDefaultHostnameVerifier((hostname, session) -> true);
         }
 		this.restTemplate = restTemplateBuilder.build();
 		this.restTemplate.setRequestFactory(new BufferingClientHttpRequestFactory(getAllCertsTrustingRequestFactory(
-				connectionRequestTimeout, connectTimeout, readTimeout)));
+				connectionRequestTimeout, connectTimeout, readTimeout, maxConnPerRoute, maxConnTotal)));
 	}
 
 	private HttpComponentsClientHttpRequestFactory getAllCertsTrustingRequestFactory(int connectionRequestTimeout,
-			int connectTimeout, int readTimeout) {
+			int connectTimeout, int readTimeout, int maxConnPerRoute, int maxConnTotal) {
 		TrustStrategy acceptingTrustStrategy = (X509Certificate[] chain, String authType) -> true;
 
 		SSLContext sslContext = null;
@@ -63,7 +65,8 @@ public class RestTemplateService {
 		}
 
 		SSLConnectionSocketFactory csf = new SSLConnectionSocketFactory(sslContext);
-		CloseableHttpClient httpClient = HttpClients.custom().setSSLSocketFactory(csf).build();
+		CloseableHttpClient httpClient = HttpClients.custom().setSSLSocketFactory(csf)
+				.setMaxConnPerRoute(maxConnPerRoute).setMaxConnTotal(maxConnTotal).build();
 
 		HttpComponentsClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory();
 		requestFactory.setConnectionRequestTimeout(connectionRequestTimeout);
