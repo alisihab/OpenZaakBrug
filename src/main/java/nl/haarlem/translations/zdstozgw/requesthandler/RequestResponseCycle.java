@@ -56,6 +56,8 @@ public class RequestResponseCycle {
 	
 	private Integer AantalZakenGerepliceerd = 0;
 	private Integer AantalDocumentenGerepliceerd = 0;
+	
+	private String ThreadName;
 		
 	@Column(columnDefinition="TEXT")
 	private String stackTrace;
@@ -77,6 +79,8 @@ public class RequestResponseCycle {
 		this.clientRequestSize = requestBody.length();
 		this.clientRequestBody = requestBody;
 
+		// how many threads are running?
+		this.ThreadName= Thread.currentThread().getName();		
 		startdatetime = LocalDateTime.now();
 	}
 

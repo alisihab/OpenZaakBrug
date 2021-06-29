@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 
 import lombok.Data;
 import nl.haarlem.translations.zdstozgw.requesthandler.RequestResponseCycle;
+import nl.haarlem.translations.zdstozgw.utils.StringUtils;
 
 @Data
 @Entity
@@ -51,7 +52,7 @@ public class ZdsRequestResponseCycle {
 		this.zdsSoapAction = zdsSoapAction;
 
 		this.zdsRequestSize = zdsRequestBody.length();
-		this.zdsShortenedRequestBody = RequestResponseCycle.shortenLongMessages(zdsRequestBody);		
+		this.zdsShortenedRequestBody = StringUtils.shortenLongString(zdsRequestBody, StringUtils.MAX_MESSAGE_SIZE);
 		
 		this.referentienummer = referentienummer;		
 		startdatetime = LocalDateTime.now();
@@ -67,7 +68,7 @@ public class ZdsRequestResponseCycle {
 
 		var message = response.getBody().toString();
 		this.zdsResponseSize = message.length();
-		this.zdsShortenedResponseBody = RequestResponseCycle.shortenLongMessages(message);	
+		this.zdsShortenedResponseBody = StringUtils.shortenLongString(message, StringUtils.MAX_MESSAGE_SIZE);
 				
 		this.stopdatetime = LocalDateTime.now();
 		this.durationInMilliseconds = Duration.between(startdatetime, stopdatetime).toMillis();
