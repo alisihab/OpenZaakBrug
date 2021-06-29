@@ -27,7 +27,7 @@ public class GeefZaakDetailsTranslator extends Converter {
 
 	@Override
 	public void load() throws ResponseStatusException {
-		this.zdsDocument = (ZdsZakLv01) XmlUtils.getStUFObject(this.getSession().getClientOriginalRequestBody(), ZdsZakLv01.class);
+		this.zdsDocument = (ZdsZakLv01) XmlUtils.getStUFObject(this.getSession().getClientRequestBody(), ZdsZakLv01.class);
 	}
 
 	@Override
@@ -60,7 +60,7 @@ public class GeefZaakDetailsTranslator extends Converter {
 			var bsn = gerelateerdeidentificatie.substring(2);
 			
 			this.getSession().setFunctie("GeefZaakDetails-Bsn");		
-			this.getSession().setKenmerk(bsn);
+			this.getSession().setKenmerk("bsn:" + bsn);
 
 			zdsResponse.antwoord.zaak = this.getZaakService()
 					.getZaakDetailsByBsn(gerelateerdeidentificatie.substring(2));

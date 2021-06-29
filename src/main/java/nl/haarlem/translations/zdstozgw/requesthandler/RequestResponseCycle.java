@@ -23,7 +23,7 @@ import lombok.Data;
 		@Index(columnList = "kenmerk")}
 )
 public class RequestResponseCycle {
-	static int MAX_MESSAGE_SIZE = 32768;
+	static int MAX_MESSAGE_SIZE = 2 * 1024;
 	
 	@Id
 	@GeneratedValue
@@ -40,10 +40,8 @@ public class RequestResponseCycle {
 	
 	private String clientUrl;
 	private String clientSoapAction;
-	@Transient	
-	private String clientOriginalRequestBody;	
 	@Column(columnDefinition="TEXT", name = "client_request_body")
-	private String clientShortenedRequestBody;
+	private String clientRequestBody;
 	private Integer clientRequestSize;	
 	private String referentienummer;
 	
@@ -53,7 +51,7 @@ public class RequestResponseCycle {
 	private String converterTemplate;
 
 	@Column(columnDefinition="TEXT", name = "client_response_body")
-	private String clientShortenedResponseBody;
+	private String clientResponseBody;
 	private int clientResponseCode;
 	private Integer clientResponseSize;
 	
@@ -76,10 +74,10 @@ public class RequestResponseCycle {
 		this.clientSoapAction = soapAction;
 		this.referentienummer = referentienummer;		
 		
-		this.clientOriginalRequestBody = requestBody;
-		this.clientRequestSize = this.clientOriginalRequestBody.length();
-		this.clientShortenedResponseBody = RequestResponseCycle.shortenLongMessages(this.clientOriginalRequestBody);
-		
+		// always store the orginal request
+		this.clientRequestSize = requestBody.length();
+		this.clientRequestBody = requestBody;
+
 		startdatetime = LocalDateTime.now();
 	}
 
@@ -102,9 +100,14 @@ public class RequestResponseCycle {
 	public void setResponse(ResponseEntity<?> response) {
 		this.clientResponseCode = response.getStatusCodeValue();
 
-		var message  = response.getBody().toString();
-		this.clientResponseSize = message.length();
-		this.clientShortenedResponseBody = RequestResponseCycle.shortenLongMessages(message);	
+		this.clientResponseBody  = response.getBody().toString();
+		this.clientResponseSize = this.clientResponseBody.length();
+		
+		if(this.clientResponseCode == 200) {
+			// status = OK, message can be shortened
+			this.clientRequestBody = RequestResponseCycle.shortenLongMessages(this.clientRequestBody);
+			this.clientResponseBody = RequestResponseCycle.shortenLongMessages(this.clientResponseBody);
+		}
 
 		this.stopdatetime = LocalDateTime.now();
 		this.durationInMilliseconds = Duration.between(startdatetime, stopdatetime).toMillis();

@@ -21,16 +21,17 @@ public class VoegZaakdocumentToeTranslator extends Converter {
 
 	@Override
 	public void load() throws ResponseStatusException {
-		this.zdsDocument = (ZdsEdcLk01) XmlUtils.getStUFObject(this.getSession().getClientOriginalRequestBody(), ZdsEdcLk01.class);
+		this.zdsDocument = (ZdsEdcLk01) XmlUtils.getStUFObject(this.getSession().getClientRequestBody(), ZdsEdcLk01.class);
 	}
 
 	@Override
 	public ResponseEntity<?> execute() throws ResponseStatusException {
 		var zdsEdcLk01 = (ZdsEdcLk01) this.getZdsDocument();
 		var zdsInformatieObject = zdsEdcLk01.objects.get(0);
+		var zdsZaakObject = zdsInformatieObject.isRelevantVoor.gerelateerde; 
 		
-		this.getSession().setFunctie("VoegZaakdocumentToe");		
-		this.getSession().setKenmerk("zaakidentificatie:" + zdsInformatieObject.identificatie + " in zaak:" + zdsInformatieObject.identificatie);			
+		this.getSession().setFunctie("VoegZaakdocumentToe");				
+		this.getSession().setKenmerk("zaakidentificatie:" + zdsZaakObject.identificatie + " documentidentificatie:" + zdsInformatieObject.identificatie);			
 		
 		this.getZaakService().voegZaakDocumentToe(
 				this.getZaakService().getRSIN(zdsEdcLk01.stuurgegevens.zender.organisatie), zdsInformatieObject);

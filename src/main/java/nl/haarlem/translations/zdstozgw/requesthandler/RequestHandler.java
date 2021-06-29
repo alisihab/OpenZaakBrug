@@ -70,7 +70,7 @@ public abstract class RequestHandler {
 		}
 		fo03.body.detailsXML = new ZdsDetailsXML();
 		// TODO: put the xml in DetailsXml, without escaping
-		fo03.body.detailsXML.todo = this.converter.getSession().getClientOriginalRequestBody();
+		fo03.body.detailsXML.todo = this.converter.getSession().getClientRequestBody();
 		return fo03;
 	}
 

@@ -21,18 +21,18 @@ public class CreeerZaakTranslator extends Converter {
 
 	@Override
 	public void load() throws ResponseStatusException {
-		this.zdsDocument = (ZdsZakLk01) XmlUtils.getStUFObject(this.getSession().getClientOriginalRequestBody(), ZdsZakLk01.class);
+		this.zdsDocument = (ZdsZakLk01) XmlUtils.getStUFObject(this.getSession().getClientRequestBody(), ZdsZakLk01.class);
 	}
 
 	@Override
 	public ResponseEntity<?> execute() throws ResponseStatusException {
 		String rsin = this.getZaakService().getRSIN(this.zdsDocument.stuurgegevens.zender.organisatie);
-
 		ZdsZakLk01 zdsZakLk01 = (ZdsZakLk01) this.zdsDocument;
 		ZdsZaak zdsZaak = zdsZakLk01.objects.get(0);
 		
 		this.getSession().setFunctie("CreeerZaak");		
 		this.getSession().setKenmerk("zaakidentificatie:" + zdsZaak.identificatie);
+		
 		var zgwZaak = this.getZaakService().creeerZaak(rsin, zdsZaak);
 		var bv03 = new ZdsBv03(zdsZakLk01.stuurgegevens, this.getSession().getReferentienummer());
 		var response = XmlUtils.getSOAPMessageFromObject(bv03);
