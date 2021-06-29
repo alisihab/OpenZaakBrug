@@ -37,6 +37,7 @@ import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwZaak;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwZaakInformatieObject;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwZaakPut;
 import nl.haarlem.translations.zdstozgw.translation.zgw.model.ZgwZaakType;
+import nl.haarlem.translations.zdstozgw.utils.StringUtils;
 
 @Service
 public class ZGWClient {
@@ -114,7 +115,7 @@ public class ZGWClient {
 			}
 			var response = hsce.getResponseBodyAsString().replace("{", "{\n").replace("\",", "\",\n").replace("\"}",
 					"\"\n}");
-			var details = "--------------POST:\n" + url + "\n" + json + "\n--------------RESPONSE:\n" + response;
+			var details = "--------------POST:\n" + url + "\n" + StringUtils.shortenLongString(json, StringUtils.MAX_ERROR_SIZE) + "\n--------------RESPONSE:\n" + StringUtils.shortenLongString(response, StringUtils.MAX_ERROR_SIZE);
 			log.warn("POST naar OpenZaak: " + url + " gaf foutmelding:\n" + details, hsce);
 			throw new ConverterException("POST naar OpenZaak: " + url + " gaf foutmelding:" + hsce.toString(), details,
 					hsce);
@@ -160,7 +161,7 @@ public class ZGWClient {
 		} catch (HttpStatusCodeException hsce) {
 			var response = hsce.getResponseBodyAsString().replace("{", "{\n").replace("\",", "\",\n").replace("\"}",
 					"\"\n}");
-			var details = "--------------GET:\n" + url + "\n--------------RESPONSE:\n" + response;
+			var details = "--------------GET:\n" + url + "\n--------------RESPONSE:\n" + StringUtils.shortenLongString(response, StringUtils.MAX_ERROR_SIZE);
 			log.warn("GET naar OpenZaak: " + url + " gaf foutmelding:\n" + details, hsce);
 			throw new ConverterException("GET naar OpenZaak: " + url + " gaf foutmelding:" + hsce.toString(), details,
 					hsce);
@@ -198,7 +199,7 @@ public class ZGWClient {
 		} catch (HttpStatusCodeException hsce) {
 			var response = hsce.getResponseBodyAsString().replace("{", "{\n").replace("\",", "\",\n").replace("\"}",
 					"\"\n}");
-			var details = "--------------DELETE:\n" + url + "\n--------------RESPONSE:\n" + response;
+			var details = "--------------DELETE:\n" + url + "\n--------------RESPONSE:\n" + StringUtils.shortenLongString(response, StringUtils.MAX_ERROR_SIZE);
 			log.warn("DELETE naar OpenZaak: " + url + " gaf foutmelding:\n" + details, hsce);
 			throw new ConverterException("DELETE naar OpenZaak: " + url + " gaf foutmelding:" + hsce.toString(),
 					details, hsce);
@@ -237,7 +238,7 @@ public class ZGWClient {
 			json = json.replace("{", "{\n").replace("\",", "\",\n").replace("\"}", "\"\n}");
 			var response = hsce.getResponseBodyAsString().replace("{", "{\n").replace("\",", "\",\n").replace("\"}",
 					"\"\n}");
-			var details = "--------------PUT:\n" + url + "\n" + json + "\n--------------RESPONSE:\n" + response;
+			var details = "--------------PUT:\n" + url + "\n" + StringUtils.shortenLongString(json, StringUtils.MAX_ERROR_SIZE) + "\n--------------RESPONSE:\n" + StringUtils.shortenLongString(response, StringUtils.MAX_ERROR_SIZE);
 			log.warn("PUT naar OpenZaak: " + url + " gaf foutmelding:\n" + details, hsce);
 			throw new ConverterException("PUT naar OpenZaak: " + url + " gaf foutmelding:" + hsce.toString(), details,
 					hsce);
@@ -313,7 +314,7 @@ public class ZGWClient {
 		} catch (HttpStatusCodeException hsce) {
 			var response = hsce.getResponseBodyAsString().replace("{", "{\n").replace("\",", "\",\n").replace("\"}",
 					"\"\n}");
-			var details = "--------------GET:\n" + url + "\n--------------RESPONSE:\n" + response;
+			var details = "--------------GET:\n" + url + "\n--------------RESPONSE:\n" + StringUtils.shortenLongString(response, StringUtils.MAX_ERROR_SIZE);
 			log.warn("GET(BASE64) naar OpenZaak: " + url + " gaf foutmelding:\n" + details, hsce);
 			throw new ConverterException("GET(BASE64) naar OpenZaak: " + url + " gaf foutmelding:" + hsce.toString(), details,
 					hsce);

@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Indexed;
 
 import lombok.Data;
+import nl.haarlem.translations.zdstozgw.utils.StringUtils;
 
 @Data
 @Entity
@@ -23,8 +24,6 @@ import lombok.Data;
 		@Index(columnList = "kenmerk")}
 )
 public class RequestResponseCycle {
-	static int MAX_MESSAGE_SIZE = 2 * 1024;
-	
 	@Id
 	@GeneratedValue
 	private long id;
@@ -86,17 +85,6 @@ public class RequestResponseCycle {
 		return milliseconds;
 	}
 
-	public static String shortenLongMessages(String message) {
-		if(message.length() > RequestResponseCycle.MAX_MESSAGE_SIZE) {
-			var niceEnding = "...(" + (message.length() - RequestResponseCycle.MAX_MESSAGE_SIZE) + " characters have been trimmed)..";
-			return message.substring(0, RequestResponseCycle.MAX_MESSAGE_SIZE) + niceEnding;
-		}
-		else {
-			// do nothing
-			return message;
-		}
-	}
-	
 	public void setResponse(ResponseEntity<?> response) {
 		this.clientResponseCode = response.getStatusCodeValue();
 
@@ -105,8 +93,8 @@ public class RequestResponseCycle {
 		
 		if(this.clientResponseCode == 200) {
 			// status = OK, message can be shortened
-			this.clientRequestBody = RequestResponseCycle.shortenLongMessages(this.clientRequestBody);
-			this.clientResponseBody = RequestResponseCycle.shortenLongMessages(this.clientResponseBody);
+			this.clientRequestBody = StringUtils.shortenLongString(this.clientRequestBody, StringUtils.MAX_MESSAGE_SIZE);
+			this.clientResponseBody = StringUtils.shortenLongString(this.clientResponseBody, StringUtils.MAX_MESSAGE_SIZE);
 		}
 
 		this.stopdatetime = LocalDateTime.now();
