@@ -21,7 +21,7 @@ public class ActualiseerZaakStatusTranslator extends Converter {
 
 	@Override
 	public void load() throws ResponseStatusException {
-		this.zdsDocument = (ZdsZakLk01ActualiseerZaakstatus) XmlUtils.getStUFObject(this.getSession().getClientOriginalRequestBody(),
+		this.zdsDocument = (ZdsZakLk01ActualiseerZaakstatus) XmlUtils.getStUFObject(this.getSession().getClientRequestBody(),
 				ZdsZakLk01ActualiseerZaakstatus.class);
 	}
 
@@ -29,8 +29,10 @@ public class ActualiseerZaakStatusTranslator extends Converter {
 	public ResponseEntity<?> execute() throws ResponseStatusException {
 		var zdsZakLk01ActualiseerZaakstatus = (ZdsZakLk01ActualiseerZaakstatus) this.zdsDocument;
 		var zdsWasZaak = zdsZakLk01ActualiseerZaakstatus.objects.get(0);
+		
 		this.getSession().setFunctie("ActualiseerZaakStatus");		
 		this.getSession().setKenmerk("zaakidentificatie:" + zdsWasZaak.identificatie);
+		
 		var zdsWordtZaak = zdsZakLk01ActualiseerZaakstatus.objects.get(1);
 		var zgwZaak = this.getZaakService().actualiseerZaakstatus(zdsWasZaak, zdsWordtZaak);
 		var bv03 = new ZdsBv03(zdsZakLk01ActualiseerZaakstatus.stuurgegevens, this.getSession().getReferentienummer());

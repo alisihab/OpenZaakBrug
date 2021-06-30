@@ -34,6 +34,7 @@ zgw.endpoint.zaak = /zaken/api/v1/zaken
 #spring.jpa.show-sql=true
 #spring.jpa.hibernate.ddl-auto=create
 spring.jpa.hibernate.ddl-auto=update
+spring.jpa.open-in-view=true
 
 ## Postgresql
 #	spring.datasource.driverClassName=org.postgresql.Driver

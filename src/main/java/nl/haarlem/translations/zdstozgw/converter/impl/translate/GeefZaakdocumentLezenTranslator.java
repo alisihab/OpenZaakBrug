@@ -27,7 +27,7 @@ public class GeefZaakdocumentLezenTranslator extends Converter {
 
 	@Override
 	public void load() throws ResponseStatusException {
-		this.zdsDocument = (ZdsEdcLv01) XmlUtils.getStUFObject(this.getSession().getClientOriginalRequestBody(), ZdsEdcLv01.class);
+		this.zdsDocument = (ZdsEdcLv01) XmlUtils.getStUFObject(this.getSession().getClientRequestBody(), ZdsEdcLv01.class);
 	}
 
 	@Override

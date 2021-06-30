@@ -35,7 +35,7 @@ public class GeefZaakdocumentBewerkenTranslator extends Converter {
 
 	@Override
 	public void load() throws ResponseStatusException {
-		this.zdsDocument = (ZdsGeefZaakdocumentbewerkenDi02) XmlUtils.getStUFObject(this.getSession().getClientOriginalRequestBody(), ZdsGeefZaakdocumentbewerkenDi02.class);
+		this.zdsDocument = (ZdsGeefZaakdocumentbewerkenDi02) XmlUtils.getStUFObject(this.getSession().getClientRequestBody(), ZdsGeefZaakdocumentbewerkenDi02.class);
 	}
 
 	@Override
@@ -44,7 +44,7 @@ public class GeefZaakdocumentBewerkenTranslator extends Converter {
 		var documentIdentificatie = zdsGeefZaakdocumentbewerkenDi02.edcLv01.gelijk.identificatie;
 		
 		this.getSession().setFunctie("GeefZaakdocumentBewerken");		
-		this.getSession().setKenmerk("zaakidentificatie:" + documentIdentificatie);		
+		this.getSession().setKenmerk("documentidentificatie:" + documentIdentificatie);		
 
 		// het document ophalen
 		ZdsZaakDocumentInhoud document = this.getZaakService().getZaakDocumentLezen(documentIdentificatie);
