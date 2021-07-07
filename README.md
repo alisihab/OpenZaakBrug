@@ -82,9 +82,9 @@ Op dit moment wordt er druk gewerkt om de Open Zaakbrug live te krijgen. Hiervoo
 | Applicatie                                                   | Proxy functionaliteit     | Translate functionaliteit | Replicatie functionaliteit | Status        |
 | ------------------------------------------------------------ | ------------------------- | ------------------------- | -------------------------- | ------------- |
 | Suites voor Sociaaldomein                                    | Getest door fb en akkoord | Getest door fb en akkoord | Getest door fb en akkoord  | in acceptatie |
-| Gisvg (wabo/apv-vergunningen)                                | Getest door fb en akkoord | Getest door fb en *live*  | Getest door fb en *live*   | *live* |
-| Midofficevuller met BZ (verhuizing/identieitskaart/rijbewijs) | Getest door fb en akkoord | Getest door fb en *live* | nvt.                       | *live*          |
-| [Sleeptool](https://github.com/Sudwest-Fryslan/DeSleepTool) (toevoegen documenten aan bestaande zaak) | Getest door fb en akkoord | Getest door fb en *live* | nvt,                       | -             |
+| Gisvg (wabo/apv-vergunningen)                                | Getest door fb en akkoord | Getest door fb en **live**  | Getest door fb en **live**   | **live** |
+| Midofficevuller met BZ (verhuizing/identieitskaart/rijbewijs) | Getest door fb en akkoord | Getest door fb en **live** | nvt.                       | **live**          |
+| [Sleeptool](https://github.com/Sudwest-Fryslan/DeSleepTool) (toevoegen documenten aan bestaande zaak) | Getest door fb en akkoord | Getest door fb en **live** | nvt,                       | -             |
 | Verint Kana                                                  | Getest door fb en akkoord | Getest door fb en akkoord | Getest door fb en akkoord  | in acceptatie |
 | Gidso regiesysteem                                           | -                         | -                         | -                          | -             |
 | Powerbrowser                                                 | -                         | -                         | -                          | -             |
