@@ -3,10 +3,15 @@ package nl.haarlem.translations.zdstozgw.debug;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 
 import nl.haarlem.translations.zdstozgw.config.SpringContext;
+import nl.haarlem.translations.zdstozgw.converter.Converter;
+import nl.haarlem.translations.zdstozgw.requesthandler.RequestHandler;
+import nl.haarlem.translations.zdstozgw.requesthandler.RequestResponseCycle;
 import nl.nn.testtool.ExternalConnectionCode;
 import nl.nn.testtool.ExternalConnectionCodeThrowsException;
 import nl.nn.testtool.TestTool;
@@ -90,4 +95,35 @@ public class Debugger {
 				.getAttribute("referentienummer", RequestAttributes.SCOPE_REQUEST);
 	}
 
+	public void startpoint(RequestResponseCycle session) {
+		this.startpoint(session.getReportName(), session.getClientRequestBody());
+		this.inputpoint("modus", session.getModus());
+		this.inputpoint("version", session.getVersion());
+		this.inputpoint("protocol", session.getProtocol());
+		this.inputpoint("endpoint", session.getEndpoint());
+		this.inputpoint("soapAction", session.getClientSoapAction());
+		this.infopoint("referentienummer", session.getReferentienummer());
+	}	
+	
+	public void infopoint(Converter converter, RequestHandler handler, String path) {
+		this.infopoint("converter", converter.getClass().getCanonicalName());
+		this.infopoint("handler", handler.getClass().getCanonicalName());
+		this.infopoint("path", path);		
+	}
+
+	public void endpoint(RequestResponseCycle session, ResponseEntity<?> response) {
+		this.outputpoint("statusCode", response.getStatusCodeValue());
+		this.outputpoint("kenmerk", session.getKenmerk());
+
+		var message = "Soapaction: " + session.getClientSoapAction() + " took " + session.getDurationInMilliseconds() + " milliseconds";			
+		this.infopoint("Total duration", message);			
+		this.endpoint(session.getReportName(), response.getBody().toString());
+		
+		if(response.getStatusCode() == HttpStatus.OK) {
+			this.endpoint(session.getReportName(), response.getBody().toString());
+		}
+		else {
+			this.abortpoint(session.getReportName(), response.getBody().toString());
+		}
+	}
 }

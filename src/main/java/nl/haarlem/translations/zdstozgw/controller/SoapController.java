@@ -5,6 +5,7 @@ import java.lang.invoke.MethodHandles;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -95,16 +96,9 @@ public class SoapController {
 			var handler = this.requestHandlerFactory.getRequestHandler(converter);		
 			handler.save(session);
 			
-			debug.infopoint("converter", converter.getClass().getCanonicalName());
-			debug.infopoint("handler", handler.getClass().getCanonicalName());
-			debug.infopoint("path", path);
+			debug.infopoint(converter, handler, path);
 			response = handler.execute();
-			debug.outputpoint("statusCode", response.getStatusCodeValue());
-			debug.outputpoint("kenmerk", session.getKenmerk());
-
-			var message = "Soapaction: " + soapAction + " took " + session.getDurationInMilliseconds() + " milliseconds";			
-			debug.infopoint("Total duration", message);			
-			debug.endpoint(session.getReportName(), response.getBody().toString());
+			debug.endpoint(session, response);			
 
 			session.setResponse(response);
 			handler.save(session);			
