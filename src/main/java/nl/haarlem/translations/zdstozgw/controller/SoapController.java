@@ -48,12 +48,10 @@ public class SoapController {
      *
      * @return List of available endpoints
      */
-	@GetMapping(path = { "/" }, produces = MediaType.TEXT_HTML_VALUE)
-	public ResponseEntity<?> HandleRequest() {
-		var session = new RequestResponseCycle();
-		
-		this.requestHandlerFactory.getRequestHandler(this.converterFactory.getConverter(session));
-		return null;
+	@GetMapping(path = { "/" }, produces = MediaType.TEXT_PLAIN_VALUE)
+	public ResponseEntity<?> HandleRequest() {	
+		return new  ResponseEntity<>("Open Zaakbrug, supported translations:\n" + this.configService.getConfiguration().getTranslationsString() 
+				+ "\n\nRequest-log can be found at path 'debug/' (not persistent)", HttpStatus.OK);
 	}
 
     /**
@@ -82,13 +80,7 @@ public class SoapController {
 		
 		var session = new RequestResponseCycle(modus, version, protocol, endpoint, path, soapAction.replace("\"", ""), body, referentienummer);		
 		RequestContextHolder.getRequestAttributes().setAttribute("referentienummer", referentienummer, RequestAttributes.SCOPE_REQUEST);
-		debug.startpoint(session.getReportName(), body);
-		debug.inputpoint("modus", modus);
-		debug.inputpoint("version", version);
-		debug.inputpoint("protocol", protocol);
-		debug.inputpoint("endpoint", endpoint);
-		debug.inputpoint("soapAction", soapAction);
-		debug.infopoint("referentienummer", referentienummer);
+		debug.startpoint(session);
 		
 		ResponseEntity<?> response;
 		try {

@@ -36,7 +36,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-1</string>
+      <string>Thread-75</string>
      </void>
      <void property="type">
       <int>1</int>
@@ -61,7 +61,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-1</string>
+      <string>Thread-75</string>
      </void>
      <void property="type">
       <int>4</int>
@@ -86,7 +86,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-1</string>
+      <string>Thread-75</string>
      </void>
      <void property="type">
       <int>4</int>
@@ -111,7 +111,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-1</string>
+      <string>Thread-75</string>
      </void>
      <void property="type">
       <int>4</int>
@@ -136,7 +136,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-1</string>
+      <string>Thread-75</string>
      </void>
      <void property="type">
       <int>4</int>
@@ -161,7 +161,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-1</string>
+      <string>Thread-75</string>
      </void>
      <void property="type">
       <int>4</int>
@@ -174,7 +174,7 @@
       <int>1</int>
      </void>
      <void property="message">
-      <string>ozb-1e0ae5ef-243f-4858-884e-e6bc7e6be853</string>
+      <string>Ladybug_Test_Tool-2.2-20210518.202847--5efdfd72:17aa23591ab:-7ffd</string>
      </void>
      <void property="name">
       <string>referentienummer</string>
@@ -186,7 +186,7 @@
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-1</string>
+      <string>Thread-75</string>
      </void>
      <void property="type">
       <int>6</int>
@@ -254,7 +254,7 @@ available services:
       <string>nl.haarlem.translations.zdstozgw.controller.SoapController</string>
      </void>
      <void property="threadName">
-      <string>http-nio-8080-exec-1</string>
+      <string>Thread-75</string>
      </void>
      <void property="type">
       <int>3</int>
@@ -263,13 +263,13 @@ available services:
    </void>
   </void>
   <void property="correlationId">
-   <string>ozb-1e0ae5ef-243f-4858-884e-e6bc7e6be853</string>
+   <string>Ladybug_Test_Tool-2.2-20210518.202847--5efdfd72:17aa23591ab:-7ffd</string>
   </void>
   <void property="description">
    <string></string>
   </void>
   <void property="endTime">
-   <long>1621539788812</long>
+   <long>1626219060032</long>
   </void>
   <void property="name">
    <string>ErrorHandling 04 Invalid SoapAction</string>
@@ -278,10 +278,10 @@ available services:
    <string></string>
   </void>
   <void property="startTime">
-   <long>1621539788812</long>
+   <long>1626219060031</long>
   </void>
   <void property="storageId">
-   <int>395</int>
+   <int>446</int>
   </void>
   <void property="stubStrategy">
    <string>Stub all external connection code</string>
