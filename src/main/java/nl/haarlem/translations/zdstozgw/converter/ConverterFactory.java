@@ -35,15 +35,10 @@ public class ConverterFactory {
 				session.getClientSoapAction());
 
 		if (translation == null) {
-			String combinations = "";
-			for (Translation t : this.configService.getConfiguration().getTranslations()) {
-				combinations += "\n\tpath: '" + t.getPath() + "' soapaction: '" + t.getSoapAction() + "'";
-			}
-			log.error("Could not load a convertor for path: '" + session.getClientUrl() + "' with soapaction: '"
-					+ session.getClientSoapAction() + "'");
+			log.error("Could not load a convertor for path: '" + session.getClientUrl() + "' with soapaction: '" + session.getClientSoapAction() + "'");
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND,
 					"Could not load a convertor for path: '" + session.getClientUrl() + "' with soapaction: '"
-							+ session.getClientSoapAction() + "'\navailable services:" + combinations);
+							+ session.getClientSoapAction() + "'\navailable services:" + this.configService.getConfiguration().getTranslationsString());
 		}
 		String classname = translation.implementation;
 		session.setConverterImplementation(classname);

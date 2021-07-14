@@ -5,6 +5,7 @@ import java.lang.invoke.MethodHandles;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -47,12 +48,10 @@ public class SoapController {
      *
      * @return List of available endpoints
      */
-	@GetMapping(path = { "/" }, produces = MediaType.TEXT_HTML_VALUE)
-	public ResponseEntity<?> HandleRequest() {
-		var session = new RequestResponseCycle();
-		
-		this.requestHandlerFactory.getRequestHandler(this.converterFactory.getConverter(session));
-		return null;
+	@GetMapping(path = { "/" }, produces = MediaType.TEXT_PLAIN_VALUE)
+	public ResponseEntity<?> HandleRequest() {	
+		return new  ResponseEntity<>("Open Zaakbrug, supported translations:\n" + this.configService.getConfiguration().getTranslationsString() 
+				+ "\n\nRequest-log can be found at path 'debug/' (not persistent)", HttpStatus.OK);
 	}
 
     /**
@@ -81,13 +80,7 @@ public class SoapController {
 		
 		var session = new RequestResponseCycle(modus, version, protocol, endpoint, path, soapAction.replace("\"", ""), body, referentienummer);		
 		RequestContextHolder.getRequestAttributes().setAttribute("referentienummer", referentienummer, RequestAttributes.SCOPE_REQUEST);
-		debug.startpoint(session.getReportName(), body);
-		debug.inputpoint("modus", modus);
-		debug.inputpoint("version", version);
-		debug.inputpoint("protocol", protocol);
-		debug.inputpoint("endpoint", endpoint);
-		debug.inputpoint("soapAction", soapAction);
-		debug.infopoint("referentienummer", referentienummer);
+		debug.startpoint(session);
 		
 		ResponseEntity<?> response;
 		try {
@@ -95,16 +88,9 @@ public class SoapController {
 			var handler = this.requestHandlerFactory.getRequestHandler(converter);		
 			handler.save(session);
 			
-			debug.infopoint("converter", converter.getClass().getCanonicalName());
-			debug.infopoint("handler", handler.getClass().getCanonicalName());
-			debug.infopoint("path", path);
+			debug.infopoint(converter, handler, path);
 			response = handler.execute();
-			debug.outputpoint("statusCode", response.getStatusCodeValue());
-			debug.outputpoint("kenmerk", session.getKenmerk());
-
-			var message = "Soapaction: " + soapAction + " took " + session.getDurationInMilliseconds() + " milliseconds";			
-			debug.infopoint("Total duration", message);			
-			debug.endpoint(session.getReportName(), response.getBody().toString());
+			debug.endpoint(session, response);			
 
 			session.setResponse(response);
 			handler.save(session);			
