@@ -12,9 +12,15 @@ mvn install -Dmaven.javadoc.skip=true -B -V -DskipTests
 # Echo script commands
 set -x
 
-git_tag=${tag_name}
+if [[ ${BRANCH_NAME} == release-* ]]; then
+	version = $(echo $BRANCH_NAME| cut -d'-' -f 2)
+	if [[ ${EVENT_TYPE} == push ]]; then
+		version = "${version}-latest"
+	fi
+fi
+
 REPO=sihab/brug
-TAG=${git_tag:-latest}
+TAG=${version:-latest}
 
 # Build the image
 docker build -t $REPO:$TAG .
