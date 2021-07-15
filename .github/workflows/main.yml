@@ -71,6 +71,6 @@ jobs:
         if: ${{ github.event_name == 'push'}}
         run: |
           chmod +x docker_push.sh
-          echo "::set-env name=BRANCH_NAME::${GITHUB_REF##*/}"
+          export BRANCH_NAME=${GITHUB_REF##*/}
           export EVENT_TYPE=push
           ./docker_push.sh
