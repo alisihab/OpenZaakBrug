@@ -67,16 +67,10 @@ jobs:
           chmod +x docker_start.sh
           ./docker_start.sh
 
-      - name: Get Previous tag
-        id: previoustag
-        if: ${{ github.event_name == 'push'}}
-        uses: "WyriHaximus/github-action-get-previous-tag@v1.1.0"
-        with:
-          fallback: latest
-
       - name: publish image
         if: ${{ github.event_name == 'push'}}
         run: |
           chmod +x docker_push.sh
-          export tag_name=${{steps.previoustag.outputs.tag}}
+          export BRANCH_NAME=${GITHUB_REF##*/}
+          export EVENT_TYPE=push
           ./docker_push.sh
