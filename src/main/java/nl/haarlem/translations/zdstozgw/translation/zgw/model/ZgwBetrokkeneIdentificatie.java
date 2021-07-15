@@ -7,6 +7,7 @@ import lombok.Data;
 
 @Data
 public class ZgwBetrokkeneIdentificatie {
+	// Natuurlijk persoon
 	@SerializedName("inpBsn")
 	@Expose
 	public String inpBsn;
@@ -47,6 +48,7 @@ public class ZgwBetrokkeneIdentificatie {
 	@Expose
 	public String geboortedatum;
 
+	// ook gebruikt door vestiging
 	@SerializedName("verblijfsadres")
 	@Expose
 	public ZgwAdres verblijfsadres;
@@ -62,4 +64,32 @@ public class ZgwBetrokkeneIdentificatie {
 	@SerializedName("naam")
 	@Expose
 	public String naam;
+	
+	// Niet natuurlijk persoon	
+	@Expose
+	public String innNnpId;
+	
+	@Expose
+	public String annIdentificatie;
+
+	@Expose
+	public String statutaireNaam;
+	
+	@Expose
+	public String innRechtsvorm;
+
+	@Expose
+	public String bezoekadres;
+	
+	// Vestiging 
+	@Expose
+	public String vestigingsNummer;
+	
+	@Expose
+	public String[] handelsnaam;	
+	
+	// verblijfsobject was al gedefinieerd
+	
+	@Expose
+	public String subVerblijfBuitenland;	
 }

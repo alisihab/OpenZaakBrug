@@ -13,12 +13,13 @@ public class ConverterException extends RuntimeException {
 	}
 
 	public ConverterException(String omschrijving, Throwable cause) {
-		super(omschrijving);
+		super(omschrijving, cause);
 		log.error(cause.getStackTrace().toString());
 	}
 
 	public ConverterException(String omschrijving, String details, Throwable cause) {
-		super(omschrijving);
+		super(omschrijving, cause);
+		log.error(cause.getStackTrace().toString());
 		this.details = details;
 	}
 }

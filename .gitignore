@@ -1,5 +1,6 @@
 HELP.md
 target/
+bin/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**
 !**/src/test/**
@@ -12,7 +13,6 @@ target/
 .settings
 .springBeans
 .sts4-cache
-/data/
 
 ### IntelliJ IDEA ###
 .idea
@@ -31,9 +31,6 @@ build/
 ### VS Code ###
 .vscode/
 
-*.db
-
-src/main/resources/*.properties
-src/main/resources/*.json
-
-/src/test/resources/ladybug/**
+/data/
+/src/main/resources/*.properties
+/src/main/resources/*.json

@@ -10,7 +10,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import nl.haarlem.translations.zdstozgw.config.model.Translation;
 import nl.haarlem.translations.zdstozgw.converter.impl.translate.UpdateZaakTranslator;
-import nl.haarlem.translations.zdstozgw.requesthandler.RequestHandlerContext;
+import nl.haarlem.translations.zdstozgw.requesthandler.RequestResponseCycle;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsZakLk01;
 import nl.haarlem.translations.zdstozgw.translation.zds.services.ZaakService;
 
@@ -18,8 +18,8 @@ public class UpdateZaakReplicator extends UpdateZaakTranslator {
 
 	private static final Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
-	public UpdateZaakReplicator(RequestHandlerContext context, Translation translation, ZaakService zaakService) {
-		super(context, translation, zaakService);
+	public UpdateZaakReplicator(RequestResponseCycle session, Translation translation, ZaakService zaakService) {
+		super(session, translation, zaakService);
 	}
 
     /**
@@ -31,17 +31,15 @@ public class UpdateZaakReplicator extends UpdateZaakTranslator {
 	@Override
 	public ResponseEntity<?> execute() throws ResponseStatusException {
 		var zdsZakLk01 = (ZdsZakLk01) this.getZdsDocument();
-
+		
 		var replicator = new Replicator(this);
-		replicator.replicateZaak(zdsZakLk01.objects.get(0).identificatie);
-
 		var legacyresponse = replicator.proxy();
 		if (legacyresponse.getStatusCode() != HttpStatus.OK) {
 			log.warn("Service:" + this.getTranslation().getLegacyservice() + " SoapAction: "
-					+ this.getContext().getSoapAction());
+					+ this.getSession().getClientSoapAction());
 			return legacyresponse;
 		}
-
+		replicator.replicateZaak(zdsZakLk01.objects.get(0).identificatie);
 		return super.execute();
 	}
 }

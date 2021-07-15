@@ -7,18 +7,12 @@ set +x
 rm -f ./src/main/resources/application.properties
 rm -f ./src/main/resources/config.json
 
-mvn clean install -Dmaven.javadoc.skip=true -B -V -DskipTests
-
-# Login to Docker Hub
-docker login -u "$DOCKER_USERNAME" --password "$DOCKER_PASSWORD"
+mvn install -Dmaven.javadoc.skip=true -B -V -DskipTests
 
 # Echo script commands
 set -x
 
-git_tag=$(git tag --sort=-creatordate | head -1)
-
-echo "$git_tag"
-
+git_tag=${tag_name}
 REPO=sihab/brug
 TAG=${git_tag:-latest}
 

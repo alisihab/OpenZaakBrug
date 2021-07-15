@@ -29,4 +29,12 @@ public class Configuration {
 	@Expose
 	public List<Translation> translations = null;
 
+	public String getTranslationsString() {
+		String combinations = "";
+		for (Translation t : this.getTranslations()) {
+			combinations += "\n\tpath: '" + t.getPath() + "' soapaction: '" + t.getSoapAction() + "'";
+		}
+		return combinations;
+	}
+
 }

@@ -33,39 +33,40 @@ public class ZDSClient {
 		this.repository = zdsRequestResponseCycleRepository;
 	}
 
-	public ResponseEntity<?> post(String zdsUrl, String zdsSoapAction, ZdsObject zdsRequest) {
+	public ResponseEntity<?> post(String referentienummer, String zdsUrl, String zdsSoapAction, ZdsObject zdsRequest) {
 		var request = XmlUtils.getSOAPMessageFromObject(zdsRequest);
-		return post(zdsUrl, zdsSoapAction, request);
+		return post(referentienummer, zdsUrl, zdsSoapAction, request);
 	}
 
-	public ResponseEntity<?> post(String zdsUrl, String zdsSoapAction, String zdsRequest) {
+	public ResponseEntity<?> post(String referentienummer, String zdsUrl, String zdsSoapAction, String zdsRequestBody) {
 		log.info("Performing ZDS request to: '" + zdsUrl + "' for soapaction:" + zdsSoapAction);
-		log.debug("Requestbody:\n" + zdsRequest);
+		log.debug("Requestbody:\n" + zdsRequestBody);
 		var method = new PostMethod(zdsUrl);
 		try {
 			long startTime = System.currentTimeMillis();
 			method.setRequestHeader("SOAPAction", zdsSoapAction);
 			method.setRequestHeader("Content-Type", "text/xml; charset=utf-8");
 			StringRequestEntity requestEntity = new org.apache.commons.httpclient.methods.StringRequestEntity(
-					zdsRequest, "text/xml", "utf-8");
+					zdsRequestBody, "text/xml", "utf-8");
 			method.setRequestEntity(requestEntity);
 			var httpclient = new org.apache.commons.httpclient.HttpClient();
 
-			String referentienummer = (String) RequestContextHolder.getRequestAttributes()
-					.getAttribute("referentienummer", RequestAttributes.SCOPE_REQUEST);
-            ZdsRequestResponseCycle zdsRequestResponseCycle = getZdsRequestResponseCycle(zdsUrl, zdsSoapAction, zdsRequest, method, referentienummer);
+			//String referentienummer = (String) RequestContextHolder.getRequestAttributes().getAttribute("referentienummer", RequestAttributes.SCOPE_REQUEST);
+			
+            ZdsRequestResponseCycle zdsRequestResponseCycle = new ZdsRequestResponseCycle(zdsUrl, zdsSoapAction, zdsRequestBody, referentienummer);
             this.repository.save(zdsRequestResponseCycle);
 
 			String debugName = "ZDSClient POST";
-			debug.startpoint(debugName, zdsRequest);
+			debug.startpoint(debugName, zdsRequestBody);
 			int responsecode = (Integer) debug.outputpoint("statusCode", () -> {
 				return httpclient.executeMethod(method);
 			}, (IOException)null);
 			String zdsResponseBody = (String) debug.endpoint(debugName, () -> {
 					return method.getResponseBodyAsString();
 			}, (IOException)null);
-			zdsRequestResponseCycle.setZdsResponseCode(responsecode);
-			zdsRequestResponseCycle.setZdsResponseBody(zdsResponseBody);
+			
+			ResponseEntity<?> result = new ResponseEntity<>(zdsResponseBody, HttpStatus.valueOf(responsecode));	
+			zdsRequestResponseCycle.setResponse(result);
 			this.repository.save(zdsRequestResponseCycle);
 
 			if(responsecode != 200) {
@@ -76,8 +77,11 @@ public class ZDSClient {
 				throw new ConverterException(message);
 			}
 			long endTime = System.currentTimeMillis();
-			log.info("Soapaction: " + zdsSoapAction + " took " + (endTime - startTime) + " milliseconds");
-			return new ResponseEntity<>(zdsResponseBody, HttpStatus.valueOf(responsecode));
+			var duration = endTime - startTime;
+			var message = "Soapaction: " + zdsSoapAction + " took " + duration + " milliseconds";
+			log.info(message);
+			debug.infopoint("Duration", message);
+			return result;
 		} catch (IOException ce) {
 			throw new ConverterException(
 					"Error: " + ce.toString() + " requesting url:" + zdsUrl + " with soapaction: " + zdsSoapAction, ce);
@@ -90,14 +94,4 @@ public class ZDSClient {
 			method.releaseConnection();
 		}
 	}
-
-    private ZdsRequestResponseCycle getZdsRequestResponseCycle(String zdsUrl, String zdsSoapAction, String zdsRequest, PostMethod method, String referentienummer) {
-        ZdsRequestResponseCycle session = new ZdsRequestResponseCycle();
-        session.setReferentienummer(referentienummer);
-        session.setZdsUrl(zdsUrl);
-        session.setZdsMethod(method.getName());
-        session.setZdsSoapAction(zdsSoapAction);
-        session.setZdsRequestBody(zdsRequest);
-        return session;
-    }
 }

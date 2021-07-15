@@ -11,7 +11,7 @@ import org.springframework.web.server.ResponseStatusException;
 import nl.haarlem.translations.zdstozgw.config.model.Translation;
 import nl.haarlem.translations.zdstozgw.converter.impl.translate.CancelCheckoutTranslator;
 import nl.haarlem.translations.zdstozgw.converter.impl.translate.CreeerZaakTranslator;
-import nl.haarlem.translations.zdstozgw.requesthandler.RequestHandlerContext;
+import nl.haarlem.translations.zdstozgw.requesthandler.RequestResponseCycle;
 import nl.haarlem.translations.zdstozgw.translation.zds.model.ZdsZakLk01;
 import nl.haarlem.translations.zdstozgw.translation.zds.services.ZaakService;
 
@@ -19,8 +19,8 @@ public class CancelCheckoutReplicator extends CancelCheckoutTranslator {
 
 	private static final Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
-	public CancelCheckoutReplicator(RequestHandlerContext context, Translation translation, ZaakService zaakService) {
-		super(context, translation, zaakService);
+	public CancelCheckoutReplicator(RequestResponseCycle session, Translation translation, ZaakService zaakService) {
+		super(session, translation, zaakService);
 	}
 
 

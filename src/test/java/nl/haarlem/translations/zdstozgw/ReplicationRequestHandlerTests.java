@@ -1,16 +1,17 @@
 package nl.haarlem.translations.zdstozgw;
 
-import nl.haarlem.translations.zdstozgw.config.ConfigService;
-//import nl.haarlem.translations.zdstozgw.config.model.Replication;
-//import nl.haarlem.translations.zdstozgw.config.model.ResponseType;
-import nl.haarlem.translations.zdstozgw.requesthandler.impl.LoggingRequestHandler;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import static org.mockito.Mockito.doReturn;
+import nl.haarlem.translations.zdstozgw.config.ConfigService;
+//import nl.haarlem.translations.zdstozgw.config.model.Replication;
+//import nl.haarlem.translations.zdstozgw.config.model.ResponseType;
+import nl.haarlem.translations.zdstozgw.requesthandler.impl.LoggingRequestHandler;
 
+@Ignore
 @RunWith(SpringRunner.class)
 public class ReplicationRequestHandlerTests {
 

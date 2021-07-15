@@ -11,7 +11,11 @@ openzaak.baseUrl = https://openzaak.local
 nl.haarlem.translations.zdstozgw.trustAllCerts = false
 nl.haarlem.translations.zdstozgw.enableJWTEntpoint = false
 nl.haarlem.translations.zdstozgw.timeoffset.minutes = -5
-nl.haarlem.translations.zdstozgw.auto.laststatus = true
+nl.haarlem.translations.zdstozgw.connectionRequestTimeout = 30000
+nl.haarlem.translations.zdstozgw.connectTimeout = 30000
+nl.haarlem.translations.zdstozgw.readTimeout = 600000
+nl.haarlem.translations.zdstozgw.maxConnPerRoute = 20
+nl.haarlem.translations.zdstozgw.maxConnTotal = 100
 
 #openzaak endpoints
 zgw.endpoint.roltype = /catalogi/api/v1/roltypen
@@ -30,6 +34,7 @@ zgw.endpoint.zaak = /zaken/api/v1/zaken
 #spring.jpa.show-sql=true
 #spring.jpa.hibernate.ddl-auto=create
 spring.jpa.hibernate.ddl-auto=update
+spring.jpa.open-in-view=true
 
 ## Postgresql
 #	spring.datasource.driverClassName=org.postgresql.Driver
@@ -54,5 +59,7 @@ version=@version@
 ladybug.maxCheckpoints=2500
 ladybug.maxMemoryUsage=100000000
 ladybug.maxMessageLength=1000000
+ladybug.maximumFileSize=10485760
+ladybug.maximumBackupIndex=9
 ladybug.regexFilter=.*
 ladybug.reportTransformation=transform-ladybug-report.xslt
