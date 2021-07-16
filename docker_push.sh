@@ -14,7 +14,7 @@ set -x
 
 if [[ ! -z ${TAG_NAME} ]]; then
 	version=${TAG_NAME}
-else [[ ${BRANCH_NAME} == release-* ]]
+elif [[ ${BRANCH_NAME} == release-* ]]; then
 	version=$(echo $BRANCH_NAME| cut -d'-' -f 2)
 	if [[ ${EVENT_TYPE} == push ]]; then
 		version="${version}-latest"
