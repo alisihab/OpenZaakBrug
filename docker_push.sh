@@ -11,6 +11,7 @@ mvn install -Dmaven.javadoc.skip=true -B -V -DskipTests
 
 # Echo script commands
 set -x
+
 if [[ ! -z ${TAG_NAME} ]]; then
 	version=${TAG_NAME}
 else [[ ${BRANCH_NAME} == release-* ]]
