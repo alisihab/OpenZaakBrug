@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # error on unset variables, exit on error
-set -eu
+set -e
 set +x
 
 rm -f ./src/main/resources/application.properties
