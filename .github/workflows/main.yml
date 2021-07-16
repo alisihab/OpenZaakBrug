@@ -68,7 +68,7 @@ jobs:
           ./docker_start.sh
 
       - name: publish image
-        if: github.event.pull_request.merged == true
+        if: ${{ github.event_name == 'push'}}
         run: |
           chmod +x docker_push.sh
           export BRANCH_NAME=${GITHUB_REF##*/}
