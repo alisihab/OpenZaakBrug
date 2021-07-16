@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # error on unset variables, exit on error
-set -eu
+set -e
 set +x
 
 rm -f ./src/main/resources/application.properties
@@ -12,7 +12,9 @@ mvn install -Dmaven.javadoc.skip=true -B -V -DskipTests
 # Echo script commands
 set -x
 
-if [[ ${BRANCH_NAME} == release-* ]]; then
+if [[ ! -z ${TAG_NAME} ]]; then
+	version=${TAG_NAME}
+else [[ ${BRANCH_NAME} == release-* ]]
 	version=$(echo $BRANCH_NAME| cut -d'-' -f 2)
 	if [[ ${EVENT_TYPE} == push ]]; then
 		version="${version}-latest"
