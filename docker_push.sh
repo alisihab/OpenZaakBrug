@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # error on unset variables, exit on error
 set -eu
@@ -13,9 +13,9 @@ mvn install -Dmaven.javadoc.skip=true -B -V -DskipTests
 set -x
 
 if [[ ${BRANCH_NAME} == release-* ]]; then
-	version = $(echo $BRANCH_NAME| cut -d'-' -f 2)
+	version=$(echo $BRANCH_NAME| cut -d'-' -f 2)
 	if [[ ${EVENT_TYPE} == push ]]; then
-		version = "${version}-latest"
+		version="${version}-latest"
 	fi
 fi
 
